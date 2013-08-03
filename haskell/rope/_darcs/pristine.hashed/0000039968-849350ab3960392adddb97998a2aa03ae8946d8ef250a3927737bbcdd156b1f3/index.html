@@ -1,0 +1,2301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Rope</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Rope.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Rope.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Rope</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Size
+</A
+></DT
+><DT
+><A HREF="#2"
+>Slicing
+</A
+></DT
+><DT
+><A HREF="#3"
+>Walking
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#4"
+>construction
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#5"
+>Deconstructing <TT
+><A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TT
+>s
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ARope"
+>Rope</A
+> </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Alength"
+>length</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anull"
+>null</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3ABreakable"
+>Breakable</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Abreak"
+>break</A
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aspan"
+>span</A
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtakeWhile"
+>takeWhile</A
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdropWhile"
+>dropWhile</A
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsplitAt"
+>splitAt</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atake"
+>take</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adrop"
+>drop</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="#t%3AReducer"
+>Reducer</A
+> c m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunit"
+>unit</A
+> :: c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asnoc"
+>snoc</A
+> :: m -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acons"
+>cons</A
+> :: c -&gt; m -&gt; m</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aempty"
+>empty</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromByteString"
+>fromByteString</A
+> :: ByteString -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromChunks"
+>fromChunks</A
+> :: [ByteString] -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromLazyByteString"
+>fromLazyByteString</A
+> :: ByteString -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromWords"
+>fromWords</A
+> :: [<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>] -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromChar"
+>fromChar</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromWord8"
+>fromWord8</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromString"
+>fromString</A
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AUnpackable"
+>Unpackable</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunpack"
+>unpack</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ahead"
+>head</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Alast"
+>last</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Auncons"
+>uncons</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunsnoc"
+>unsnoc</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, a)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoChunks"
+>toChunks</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; [ByteString]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoLazyByteString"
+>toLazyByteString</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; ByteString</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoString"
+>toString</A
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+><A NAME="1"
+>Size
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Rope"
+><A NAME="t%3ARope"
+></A
+></A
+><B
+>Rope</B
+>  </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#Rope"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Rope')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Rope" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>UTF8Bytes <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ([] <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:length"
+><A NAME="v%3Alength"
+></A
+></A
+><B
+>length</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#length"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:null"
+><A NAME="v%3Anull"
+></A
+></A
+><B
+>null</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#null"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+><A NAME="2"
+>Slicing
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:Breakable"
+><A NAME="t%3ABreakable"
+></A
+></A
+><B
+>Breakable</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#Breakable"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:break"
+><A NAME="v%3Abreak"
+></A
+></A
+><B
+>break</B
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#break"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:span"
+><A NAME="v%3Aspan"
+></A
+></A
+><B
+>span</B
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#span"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:takeWhile"
+><A NAME="v%3AtakeWhile"
+></A
+></A
+><B
+>takeWhile</B
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#takeWhile"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:dropWhile"
+><A NAME="v%3AdropWhile"
+></A
+></A
+><B
+>dropWhile</B
+> :: (a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#dropWhile"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Breakable')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Breakable" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3ABreakable"
+>Breakable</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:splitAt"
+><A NAME="v%3AsplitAt"
+></A
+></A
+><B
+>splitAt</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#splitAt"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:take"
+><A NAME="v%3Atake"
+></A
+></A
+><B
+>take</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#take"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:drop"
+><A NAME="v%3Adrop"
+></A
+></A
+><B
+>drop</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#drop"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+><A NAME="3"
+>Walking
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="4"
+><A NAME="4"
+>construction
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A NAME="t:Reducer"
+><A NAME="t%3AReducer"
+></A
+></A
+><B
+>Reducer</B
+> c m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Util-Reducer.html#Reducer"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>This type may be best read infix. A <TT
+>c <TT
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+></TT
+> m</TT
+> is a <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>m</TT
+> that maps
+ values of type <TT
+>c</TT
+> through <TT
+>unit</TT
+> to values of type <TT
+>m</TT
+>. A <TT
+>c</TT
+>-<TT
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+></TT
+> may also
+ supply operations which tack-on another <TT
+>c</TT
+> to an existing <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>m</TT
+> on the left
+ or right. These specialized reductions may be more efficient in some scenarios
+ and are used when appropriate by a Generator. The names <TT
+><A HREF="Data-Rope.html#v%3Acons"
+>cons</A
+></TT
+> and <TT
+><A HREF="Data-Rope.html#v%3Asnoc"
+>snoc</A
+></TT
+> work
+ by analogy to the synonymous operations in the list monoid.
+</P
+><P
+>This class deliberately avoids functional-dependencies, so that () can be a <TT
+>c</TT
+>-Reducer
+ for all <TT
+>c</TT
+>, and so many common reducers can work over multiple types, for instance,
+ First and Last may reduce both <TT
+>a</TT
+> and <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TT
+> <TT
+>a</TT
+>. Since a Generator has a fixed element
+ type, the input to the reducer is generally known and extracting from the monoid usually
+ is sufficient to fix the result type. Combinators are available for most scenarios where
+ this is not the case, and the few remaining cases can be handled by using an explicit 
+ type annotation.
+</P
+><P
+>Minimal definition: <TT
+><A HREF="Data-Rope.html#v%3Aunit"
+>unit</A
+></TT
+> or <TT
+><A HREF="Data-Rope.html#v%3Asnoc"
+>snoc</A
+></TT
+>
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:unit"
+><A NAME="v%3Aunit"
+></A
+></A
+><B
+>unit</B
+> :: c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Util-Reducer.html#unit"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Convert a value into a <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:snoc"
+><A NAME="v%3Asnoc"
+></A
+></A
+><B
+>snoc</B
+> :: m -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Util-Reducer.html#snoc"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Append a value to a <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> for use in left-to-right reduction
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:cons"
+><A NAME="v%3Acons"
+></A
+></A
+><B
+>cons</B
+> :: c -&gt; m -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Util-Reducer.html#cons"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Prepend a value onto a <TT
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> for use during right-to-left reduction
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Reducer')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Reducer" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AAll"
+>All</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AAll"
+>All</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AAny"
+>Any</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AAny"
+>Any</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString ByteString</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString ByteString</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString ByteString</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ByteString <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3ALast"
+>Last</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AFirst"
+>First</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AProduct"
+>Product</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3ASum"
+>Sum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c ([] c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured v a =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> a (FingerTree v a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c m, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c n) =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c (<A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Tuple.html#t%3A%28%2C%29"
+>(,)</A
+> m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c m, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c n, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c o) =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c (<A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Tuple.html#t%3A%28%2C%2C%29"
+>(,,)</A
+> m n o)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c m, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c n, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c o, <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c p) =&gt; <A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> c (<A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Tuple.html#t%3A%28%2C%2C%2C%29"
+>(,,,)</A
+> m n o p)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ([] <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> ([] <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3ALast"
+>Last</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3ALast"
+>Last</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AFirst"
+>First</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AFirst"
+>First</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (a -&gt; a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AEndo"
+>Endo</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AReducer"
+>Reducer</A
+> (a -&gt; a) (<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AEndo"
+>Endo</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:empty"
+><A NAME="v%3Aempty"
+></A
+></A
+><B
+>empty</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#empty"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromByteString"
+><A NAME="v%3AfromByteString"
+></A
+></A
+><B
+>fromByteString</B
+> :: ByteString -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromByteString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromChunks"
+><A NAME="v%3AfromChunks"
+></A
+></A
+><B
+>fromChunks</B
+> :: [ByteString] -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromChunks"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromLazyByteString"
+><A NAME="v%3AfromLazyByteString"
+></A
+></A
+><B
+>fromLazyByteString</B
+> :: ByteString -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromLazyByteString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromWords"
+><A NAME="v%3AfromWords"
+></A
+></A
+><B
+>fromWords</B
+> :: [<A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>] -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromWords"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromChar"
+><A NAME="v%3AfromChar"
+></A
+></A
+><B
+>fromChar</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromChar"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromWord8"
+><A NAME="v%3AfromWord8"
+></A
+></A
+><B
+>fromWord8</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromWord8"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fromString"
+><A NAME="v%3AfromString"
+></A
+></A
+><B
+>fromString</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#fromString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+><A NAME="5"
+>Deconstructing <TT
+><A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+></TT
+>s
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:Unpackable"
+><A NAME="t%3AUnpackable"
+></A
+></A
+><B
+>Unpackable</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#Unpackable"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:unpack"
+><A NAME="v%3Aunpack"
+></A
+></A
+><B
+>unpack</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#unpack"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:head"
+><A NAME="v%3Ahead"
+></A
+></A
+><B
+>head</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#head"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:last"
+><A NAME="v%3Alast"
+></A
+></A
+><B
+>last</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#last"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:uncons"
+><A NAME="v%3Auncons"
+></A
+></A
+><B
+>uncons</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#uncons"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:unsnoc"
+><A NAME="v%3Aunsnoc"
+></A
+></A
+><B
+>unsnoc</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+>, a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#unsnoc"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Unpackable')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Unpackable" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AUnpackable"
+>Unpackable</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AUnpackable"
+>Unpackable</A
+> <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AUnpackable"
+>Unpackable</A
+> ByteString</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope.html#t%3AUnpackable"
+>Unpackable</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:toChunks"
+><A NAME="v%3AtoChunks"
+></A
+></A
+><B
+>toChunks</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; [ByteString]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#toChunks"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:toLazyByteString"
+><A NAME="v%3AtoLazyByteString"
+></A
+></A
+><B
+>toLazyByteString</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; ByteString</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#toLazyByteString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:toString"
+><A NAME="v%3AtoString"
+></A
+></A
+><B
+>toString</B
+> :: <A HREF="Data-Rope.html#t%3ARope"
+>Rope</A
+> -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Internal.html#toString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

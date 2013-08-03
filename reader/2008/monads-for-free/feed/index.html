@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Monads for Free</title>
+	<atom:link href="http://comonad.com/reader/2008/monads-for-free/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/monads-for-free/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-21220</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 22 Sep 2010 20:27:36 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-21220</guid>
+		<description>There are plenty of non-monadic ways to deal with control flow. Applicatives, comonads, continuation passing style, lazy request/response lists, etc.
+
+The Haskell community has converged on monads because out of the alternatives, monads seem to give you the most bang for the buck (and Wadler wrote a lot of the early papers, so they have geek cred.)</description>
+		<content:encoded><![CDATA[<p>There are plenty of non-monadic ways to deal with control flow. Applicatives, comonads, continuation passing style, lazy request/response lists, etc.</p>
+<p>The Haskell community has converged on monads because out of the alternatives, monads seem to give you the most bang for the buck (and Wadler wrote a lot of the early papers, so they have geek cred.)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: antivirus 2011</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-21159</link>
+		<dc:creator>antivirus 2011</dc:creator>
+		<pubDate>Wed, 22 Sep 2010 01:53:34 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-21159</guid>
+		<description>I&#039;m new to this monad stuff, is there other way to control the sequence in which calculations are performed without using monad? Or the compiler/interpreter will strictly decide for that?</description>
+		<content:encoded><![CDATA[<p>I&#8217;m new to this monad stuff, is there other way to control the sequence in which calculations are performed without using monad? Or the compiler/interpreter will strictly decide for that?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Zipping and Unzipping Functors</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-4083</link>
+		<dc:creator>The Comonad.Reader &#187; Zipping and Unzipping Functors</dc:creator>
+		<pubDate>Sat, 08 Nov 2008 14:16:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-4083</guid>
+		<description>[...] On the other hand, we do not get the same result for the Free Monad, because it is built over BiffB Either Identity f, and Either is not a zippable bifunctor. [...]</description>
+		<content:encoded><![CDATA[<p>[...] On the other hand, we do not get the same result for the Free Monad, because it is built over BiffB Either Identity f, and Either is not a zippable bifunctor. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-1044</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 13 Apr 2008 07:06:21 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-1044</guid>
+		<description>Woops, thats what I get for typing both of those in from memory rather than pasting from the working code. Yes, and yes. Fixed in the post.
+
+I&#039;ll include the cofree comonad next time. I just wanted to put things out in digestible chunks. ;)
+
+The free monad should use a sum, the cofree comonad uses a product.</description>
+		<content:encoded><![CDATA[<p>Woops, thats what I get for typing both of those in from memory rather than pasting from the working code. Yes, and yes. Fixed in the post.</p>
+<p>I&#8217;ll include the cofree comonad next time. I just wanted to put things out in digestible chunks. ;)</p>
+<p>The free monad should use a sum, the cofree comonad uses a product.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Omar</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-1043</link>
+		<dc:creator>Omar</dc:creator>
+		<pubDate>Sat, 12 Apr 2008 17:50:44 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-1043</guid>
+		<description>data Free f a = Roll (f (Free f a)) &#124; Return a
+
+newtype Free f a = Free { unfree :: (a, f (Free f a)) }
+
+Aren&#039;t those two different types? Isn&#039;t the first a sum and the second a product? Should g = Free f a satisfy g=(f g) + a or g=(f g) x a?</description>
+		<content:encoded><![CDATA[<p>data Free f a = Roll (f (Free f a)) | Return a</p>
+<p>newtype Free f a = Free { unfree :: (a, f (Free f a)) }</p>
+<p>Aren&#8217;t those two different types? Isn&#8217;t the first a sum and the second a product? Should g = Free f a satisfy g=(f g) + a or g=(f g) x a?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jaak</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-1042</link>
+		<dc:creator>Jaak</dc:creator>
+		<pubDate>Sat, 12 Apr 2008 15:29:07 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-1042</guid>
+		<description>I&#039;m sorry, but what is the Place constructor in the Functor instance of Free? Looks to me that it sould be &quot;Return (f x)&quot; instead.
+
+- Jaak</description>
+		<content:encoded><![CDATA[<p>I&#8217;m sorry, but what is the Place constructor in the Functor instance of Free? Looks to me that it sould be &#8220;Return (f x)&#8221; instead.</p>
+<p>- Jaak</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Pseudonym</title>
+		<link>http://comonad.com/reader/2008/monads-for-free/comment-page-1/#comment-1041</link>
+		<dc:creator>Pseudonym</dc:creator>
+		<pubDate>Sat, 12 Apr 2008 13:48:40 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/monads-for-free/#comment-1041</guid>
+		<description>And for your next trick, define the free comonad.
+
+Finally, define the free arrow Free a -&gt; Free b.</description>
+		<content:encoded><![CDATA[<p>And for your next trick, define the free comonad.</p>
+<p>Finally, define the free arrow Free a -&gt; Free b.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

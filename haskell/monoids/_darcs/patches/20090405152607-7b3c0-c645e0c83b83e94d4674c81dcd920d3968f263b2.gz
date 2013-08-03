@@ -1,0 +1,6 @@
+[version bump
+ekmett@gmail.com**20090405152607
+ Ignore-this: 9526f07edc14b0859fdfb47847b7bcf5
+] hunk ./monoids.cabal 2
+-version:	    0.1.29
++version:	    0.1.30

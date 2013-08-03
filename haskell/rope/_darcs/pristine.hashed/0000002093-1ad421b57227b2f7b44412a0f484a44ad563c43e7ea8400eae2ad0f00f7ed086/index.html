@@ -1,0 +1,38 @@
+module Data.Rope.Annotated
+    ( 
+    -- * Annotated 'Rope's 
+      A(rope)   
+    , Ann
+    , Annotation
+    -- * Unpacking Annotated 'Rope'
+    , null      -- :: A s a -> Bool
+    , head      -- :: Unpackable t => A s a -> t
+    , last      -- :: Unpackable t => A s a -> t
+    , uncons    -- :: (Annotation f, Unpackable t, Uncons t a b) => Ann a f -> Maybe (t, Ann b f)
+    , unsnoc    -- :: (Annotation f, Unpackable t, Unsnoc t a b) => Ann a f -> Maybe (t, Ann b f)
+
+    -- * Building Annotated 'Rope'
+    , empty     -- :: (Annotation f) => Ann Empty f 
+    , append    -- :: (Annotation f, Append a b c) => Ann a f -> Ann b f -> Ann c f
+    , unit      -- :: (Annotation f, Reducer t Rope) => t -> Ann a f
+    , snoc      -- :: (Annotation f, Reducer t Rope) => t -> Ann a f -> (forall c. Ann (Snoc c t a) f -> r) -> r
+    , cons      -- :: (Annotation f, Reducer t Rope) => Ann a f -> t -> (forall c. Ann (Cons c t a) f -> r) -> r
+
+    -- * Cutting An Annotated 'Rope'
+    , splitAt   -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , drop      -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Drop n a) f -> r) -> r
+    , take      -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Take n a) f -> r) -> r
+    , break     -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , span      -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , takeWhile -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> r) -> r
+    , dropWhile -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Drop n a) f -> r) -> r
+
+    -- * Type-level constructors
+    , Drop, Take, Snoc, Cons, Tail, Init, Empty, (:<>)
+
+    -- * Annotation Product
+    , (:*:)(..), fstF, sndF
+    ) where
+
+import Prelude hiding (null, head, last, take, drop, span, break, splitAt, takeWhile, dropWhile)
+import Data.Rope.Annotated.Internal

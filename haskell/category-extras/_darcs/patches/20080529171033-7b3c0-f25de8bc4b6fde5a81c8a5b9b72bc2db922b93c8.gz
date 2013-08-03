@@ -1,0 +1,27 @@
+[faithful identity and discrete
+ekmett@gmail.com**20080529171033] {
+hunk ./CHANGELOG 43
++0.52.1 
++------
++* Added Control.Category.Discrete to represent |Hask|
++
+hunk ./category-extras.cabal 3
+-version:                0.52.1
++version:                0.52.2
+hunk ./category-extras.cabal 18
+-                        operaters ala /Functional Programming with Bananas, Lenses,
+-                        Envelopes and Barbed Wire/.
++                        operaters ala /Functional Programming with Bananas, Lenses, Envelopes and Barbed Wire/.
+hunk ./category-extras.cabal 58
++                Control.Category.Discrete,
+hunk ./src/Control/Category/Cartesian/Closed.hs 13
+--- <http://hachomage.hashomell.org/trac/ghc/tichomet/2291>
++-- <http://hackage.haskell.org/trac/ghc/ticket/2291>
+hunk ./src/Control/Functor/Full.hs 15
++import Control.Monad.Identity
+hunk ./src/Control/Functor/Full.hs 27
++instance Full Identity where
++	premap f = runIdentity . f . Identity
+hunk ./src/Control/Functor/Full.hs 35
++instance Faithful Identity 
+}

@@ -1,0 +1,1905 @@
+[fixed annotated ropes, though, with lobotomized brands
+ekmett@gmail.com**20100323191040
+ Ignore-this: a455acbfd454d9426d8f21c3417792e6
+] rmdir ./dist/src
+hunk ./Data/Rope/Annotated.hs 9
+-    , rope      -- :: A s a -> Rope
+hunk ./Data/Rope/Annotated.hs 32
+-    , Drop, Take, Snoc, Cons, Tail, Init, Empty
++    , Drop, Take, Snoc, Cons, Tail, Init, Empty, (:<>)
+hunk ./Data/Rope/Annotated.hs 34
+-    , Append, Unsnoc, Uncons
+hunk ./Data/Rope/Annotated.hs 36
++import Prelude hiding (null, head, last, take, drop, span, break, splitAt, takeWhile, dropWhile)
+hunk ./Data/Rope/Annotated/Internal.hs 10
+-    , (:*:)(..)
++    , (:*:)(..), fstF, sndF
++
+hunk ./Data/Rope/Annotated/Internal.hs 14
+-    , rope      -- :: A s a -> Rope
+hunk ./Data/Rope/Annotated/Internal.hs 16
++    , unpack    -- :: Unpackable t => A s a -> [t]
+hunk ./Data/Rope/Annotated/Internal.hs 19
+-    , append    -- :: (Annotation f, Append a b c) => Ann a f -> Ann b f -> Ann c f
++    , append    -- :: (Annotation f, ) => Ann a f -> Ann b f -> Ann (a :<> b) f
+hunk ./Data/Rope/Annotated/Internal.hs 29
+-    , uncons    -- :: (Annotation f, Unpackable t, Uncons t a b) => Ann a f -> Maybe (t, Ann b f)
+-    , unsnoc    -- :: (Annotation f, Unpackable t, Unsnoc t a b) => Ann a f -> Maybe (t, Ann b f)
++    , uncons    -- :: (Annotation f, Unpackable t) => Ann a f -> Maybe (t, Ann (Tail t a) f)
++    , unsnoc    -- :: (Annotation f, Unpackable t) => Ann a f -> Maybe (t, Ann (Init a t) f)
+hunk ./Data/Rope/Annotated/Internal.hs 38
+-    , Drop, Take, Snoc, Cons, Tail, Init, Empty
+-    -- * Type-level programming classes
+-    , Append, Unsnoc, Uncons, (:<>)
++    , Drop, Take, Snoc, Cons, Tail, Init, Empty, (:<>)
+hunk ./Data/Rope/Annotated/Internal.hs 42
++import Prelude hiding (null, head, last, take, drop, span, break, splitAt, takeWhile, dropWhile)
+hunk ./Data/Rope/Annotated/Internal.hs 51
+-import Data.Traversable (Traversable(traverse), foldMapDefault)
++import Data.Traversable (Traversable(traverse))
+hunk ./Data/Rope/Annotated/Internal.hs 78
+-    extract (A _ a) = a
++    extract = extractA
+hunk ./Data/Rope/Annotated/Internal.hs 110
+-unit t = A rope (unitA rope)
++unit t = A r (unitA r)
+hunk ./Data/Rope/Annotated/Internal.hs 112
+-        rope :: Rope
+-        rope = Reducer.unit t
++        r :: Rope
++        r = Reducer.unit t
+hunk ./Data/Rope/Annotated/Internal.hs 126
+-snoc (A r a) t k = k (A r' (snocA r' (Rope.length r' - Rope.length r)))
++snoc (A r a) t k = k (A r' (snocA r' (Rope.length r' - Rope.length r) a))
+hunk ./Data/Rope/Annotated/Internal.hs 130
+-cons t (A r a) k = k (A r' (consA (Rope.length r' - Rope.length r) r'))
++cons t (A r a) k = k (A r' (consA (Rope.length r' - Rope.length r) r' a))
+hunk ./Data/Rope/Annotated/Internal.hs 137
+-break p (A r a) k = k (A x b) (A x c) where
++break p (A r a) k = k (A x b) (A y c) where
+hunk ./Data/Rope/Annotated/Internal.hs 142
+-span p (A r a) k = k (A x b) (A x c) where
++span p (A r a) k = k (A x b) (A y c) where
+hunk ./Data/Rope/Annotated/Internal.hs 166
+--- functor product
++-- annotation product
+hunk ./Data/Rope/Annotated/Internal.hs 181
++instance (Applicative f, Applicative g) => Applicative (f :*: g) where
++    pure a = pure a :*: pure a
++    (f :*: g) <*> (a :*: b) = (f <*> a) :*: (g <*> b)
++
+hunk ./Data/Rope/Annotated/Internal.hs 201
++    appendA (A r (a :*: a')) (A s (b :*: b')) = 
++        appendA (A r a) (A s b) :*: appendA (A r a') (A s b')
++
+hunk ./Data/Rope/Annotated/Internal.hs 210
+-data (:<>) a b -- Append
++data (:<>) a b
+hunk ./dist/doc/html/rope/Data-Rope-Body.html 24
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/Data-Rope-Body.html 267
++><TR
++><TD CLASS="decl"
++>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
++>Offset</A
++> (<A HREF="Data-Rope-Annotated-Internal.html#t%3AA"
++>A</A
++> s a)</TD
++></TR
+hunk ./dist/doc/html/rope/Data-Rope-Internal.html 24
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/Data-Rope-Util-Reducer.html 24
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/Data-Rope.html 24
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/doc-index.html 7
+->rope-0.2: Tools for manipulating fingertrees of bytestrings (Index)</TITLE
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations (Index)</TITLE
+hunk ./dist/doc/html/rope/doc-index.html 22
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/doc-index.html 49
++><TD CLASS="indexentry" COLSPAN="2"
++>:*:</TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Type/Class)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3A%3A%2A%3A"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3A%3A%2A%3A"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>2 (Data Constructor)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3A%3A%2A%3A"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3A%3A%2A%3A"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>:&lt;&gt;</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3A%3A%3C%3E"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3A%3A%3C%3E"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>:~&gt;</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3A%3A~%3E"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3A%3A~%3E"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
++>A</TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Type/Class)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3AA"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3AA"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>2 (Data Constructor)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Ann</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3AAnn"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3AAnn"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Annotation</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3AAnnotation"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3AAnnotation"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>append</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aappend"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Aappend"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>appendA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AappendA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 169
+-><TD CLASS="indexentry"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 171
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 183
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Abreak"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Abreak"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 224
++>Comonad</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Util-Comonad.html#t%3AComonad"
++>Data.Rope.Util.Comonad</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Cons</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3ACons"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3ACons"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 243
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 255
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Acons"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Acons"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 274
++>consA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AconsA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Drop</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3ADrop"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3ADrop"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 293
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 305
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Adrop"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Adrop"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 316
++>dropA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AdropA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 325
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 337
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AdropWhile"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3AdropWhile"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 348
++>duplicate</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Util-Comonad.html#v%3Aduplicate"
++>Data.Rope.Util.Comonad</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Empty</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3AEmpty"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3AEmpty"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 367
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 379
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aempty"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Aempty"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>emptyA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AemptyA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>extend</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Util-Comonad.html#v%3Aextend"
++>Data.Rope.Util.Comonad</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>extract</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Util-Comonad.html#v%3Aextract"
++>Data.Rope.Util.Comonad</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 508
++>fstF</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AfstF"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
+hunk ./dist/doc/html/rope/doc-index.html 523
+-><TD CLASS="indexentry"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 525
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 537
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Ahead"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Ahead"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 548
++>Init</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3AInit"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3AInit"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 559
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 571
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Alast"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Alast"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 599
+-><TD CLASS="indexentry"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 601
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 613
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Anull"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Anull"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 700
++>rope</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Arope"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Arope"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>sndF</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AsndF"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Snoc</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3ASnoc"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3ASnoc"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 729
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 741
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Asnoc"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Asnoc"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 760
++>snocA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AsnocA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 769
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 781
+-><TD CLASS="indexentry"
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aspan"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Aspan"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 793
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 805
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AsplitAt"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3AsplitAt"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 816
++>splitAtA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AsplitAtA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Tail</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3ATail"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3ATail"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry"
++>Take</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#t%3ATake"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#t%3ATake"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 845
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 857
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Atake"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Atake"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 868
++>takeA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AtakeA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 877
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 889
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AtakeWhile"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3AtakeWhile"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 937
+-><TD CLASS="indexentry"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 939
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 951
+-><TD CLASS="indexentry"
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Auncons"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Auncons"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 963
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 975
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aunit"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Aunit"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 986
++>unitA</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3AunitA"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 995
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 1007
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aunpack"
++>Data.Rope.Annotated.Internal</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/doc-index.html 1025
+-><TD CLASS="indexentry"
++><TD CLASS="indexentry" COLSPAN="2"
+hunk ./dist/doc/html/rope/doc-index.html 1027
++></TR
++><TR CLASS="indexrow"
++><TD CLASS="indexannot"
++>1 (Function)</TD
+hunk ./dist/doc/html/rope/doc-index.html 1039
++><TD CLASS="indexannot"
++>2 (Function)</TD
++><TD CLASS="indexlinks"
++><A HREF="Data-Rope-Annotated-Internal.html#v%3Aunsnoc"
++>Data.Rope.Annotated.Internal</A
++>, <A HREF="Data-Rope-Annotated.html#v%3Aunsnoc"
++>Data.Rope.Annotated</A
++></TD
++></TR
++><TR CLASS="indexrow"
+hunk ./dist/doc/html/rope/index-frames.html 7
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TITLE
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TITLE
+hunk ./dist/doc/html/rope/index-frames.html 18
++><A HREF="Data-Rope-Annotated.html" TARGET="main"
++>Data.Rope.Annotated</A
++><BR
++><A HREF="Data-Rope-Annotated-Internal.html" TARGET="main"
++>Data.Rope.Annotated.Internal</A
++><BR
+hunk ./dist/doc/html/rope/index-frames.html 30
++><A HREF="Data-Rope-Util-Comonad.html" TARGET="main"
++>Data.Rope.Util.Comonad</A
++><BR
+hunk ./dist/doc/html/rope/index.html 7
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TITLE
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TITLE
+hunk ./dist/doc/html/rope/index.html 22
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/index.html 37
+->rope-0.2: Tools for manipulating fingertrees of bytestrings</TD
++>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+hunk ./dist/doc/html/rope/index.html 41
+->Tools for manipulating fingertrees of bytestrings
++>Tools for manipulating fingertrees of bytestrings with optional annotations
+hunk ./dist/doc/html/rope/index.html 78
++><TD STYLE="width: 46em"
++><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:2')" ALT="show/hide"
++><A HREF="Data-Rope-Annotated.html"
++>Data.Rope.Annotated</A
++></TD
++><TD
++></TD
++><TD
++></TD
++></TR
++><TR
++><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
++><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:2" STYLE="display:block;"
++><TR
++><TD STYLE="padding-left: 1.25em;width: 44em"
++><A HREF="Data-Rope-Annotated-Internal.html"
++>Data.Rope.Annotated.Internal</A
++></TD
++><TD
++></TD
++><TD
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
+hunk ./dist/doc/html/rope/index.html 126
+-><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:2')" ALT="show/hide"
++><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:3')" ALT="show/hide"
+hunk ./dist/doc/html/rope/index.html 135
+-><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:2" STYLE="display:block;"
++><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:3" STYLE="display:block;"
++><TR
++><TD STYLE="padding-left: 1.25em;width: 44em"
++><A HREF="Data-Rope-Util-Comonad.html"
++>Data.Rope.Util.Comonad</A
++></TD
++><TD
++></TD
++><TD
++></TD
++></TR
+binary ./dist/doc/html/rope/rope.haddock
+oldhex
+*0d0cface000c000000000000286b000000000000231d3300000000000000000000000000000000
+*000000000000000100000000000000010000000000000000000000000000000100000000000000
+*020000000000000000000000000000000100000000000000030000000000000000000000000000
+*000100000000000000040000000000000000000000000000000100000000000000050000000000
+*000000000000000000000100000000000000060000000000000000000000000000000100000000
+*000000070000000000000000000000000000000100000000000000080000000000000000000000
+*0000000002000000000000000900000000000000000000000000000002000000000000000a0000
+*0000000000000000000000000002000000000000000b0000000000000000000000000000000200
+*0000000000000c00000000000000000000000000000002000000000000000d0000000000000000
+*0000000000000002000000000000000e0000000000000000000000000000000200000000000000
+*0f0000000000000000000000000000000200000000000000100000000000000000000000000000
+*000200000000000000110000000000000000000000000000000200000000000000120000000000
+*000000000000000000000300000000000000130000000000000000000000000000000300000000
+*000000140000000000000000000000000000000300000000000000150000000000000000000000
+*000000000300000000000000160000000000000000000000000000000300000000000000170000
+*000000000000000000000000000300000000000000180000000000000000000000000000000300
+*0000000000001900000000000000000000000000000003000000000000001a0000000000000000
+*0000000000000003000000000000001b0000000000000000000000000000000300000000000000
+*1c00000000000000000000000000000003000000000000001d0000000000000000000000000000
+*0003000000000000001e00000000000000000000000000000003000000000000001f0000000000
+*000000000000000000000300000000000000200000000000000000000000000000000300000000
+*000000210000000000000000000000000000000300000000000000220000000000000000000000
+*000000000300000000000000230000000000000000000000000000000300000000000000240000
+*000000000000000000000000000300000000000000250000000000000000000000000000000300
+*000000000000260000000000000000000000000000000300000000000000270000000000000000
+*000000000000000300000000000000280000000000000000000000000000000300000000000000
+*2900000000000000000000000000000003000000000000002a0000000000000000000000000000
+*0003000000000000002b00000000000000000000000000000003000000000000002c0000000000
+*0000000000000000000003000000000000002d0000000000000000000000000000000300000000
+*0000002e00000000000000000000000000000003000000000000002f0000000000000000000000
+*000000000300000000000000300000000000000000000000000000000300000000000000310000
+*000000000000000000000000000300000000000000320000000000000000000000000000000304
+*000000000000000000000000000000010000000006000000000000000001030102240000005400
+*00006800000069000000730000002000000074000000790000007000000065000000200000006d
+*000000610000007900000020000000620000006500000020000000620000006500000073000000
+*74000000200000007200000065000000610000006400000020000000690000006e000000660000
+*0069000000780000002e0000002000000041000000200107010202000000630000002001040100
+*0000000000000000000000000000000000000000000000010202000000200000006d0102060000
+*002000000069000000730000002000000061000000200104010000000000000000330000000000
+*000004000000000000000501020100000020010702010000006d01020b00000020000000740000
+*00680000006100000074000000200000006d0000006100000070000000730000000a0102100000
+*002000000076000000610000006c000000750000006500000073000000200000006f0000006600
+*000020000000740000007900000070000000650000002001070201000000630102090000002000
+*00007400000068000000720000006f000000750000006700000068000000200107020400000075
+*0000006e000000690000007401021300000020000000740000006f000000200000007600000061
+*0000006c000000750000006500000073000000200000006f000000660000002000000074000000
+*79000000700000006500000020010702010000006d0102040000002e0000002000000041000000
+*2001070201000000630102010000002d0104010000000000000000000000000000000000000000
+*000000000101020a000000200000006d000000610000007900000020000000610000006c000000
+*730000006f0000000a01022900000020000000730000007500000070000000700000006c000000
+*79000000200000006f0000007000000065000000720000006100000074000000690000006f0000
+*006e00000073000000200000007700000068000000690000006300000068000000200000007400
+*000061000000630000006b0000002d0000006f0000006e00000020000000610000006e0000006f
+*000000740000006800000065000000720000002001070201000000630102100000002000000074
+*0000006f00000020000000610000006e0000002000000065000000780000006900000073000000
+*74000000690000006e000000670000002001040100000000000000003300000000000000040000
+*00000000000501020100000020010702010000006d01020d000000200000006f0000006e000000
+*20000000740000006800000065000000200000006c0000006500000066000000740000000a0102
+*50000000200000006f000000720000002000000072000000690000006700000068000000740000
+*002e00000020000000540000006800000065000000730000006500000020000000730000007000
+*0000650000006300000069000000610000006c000000690000007a000000650000006400000020
+*000000720000006500000064000000750000006300000074000000690000006f0000006e000000
+*73000000200000006d0000006100000079000000200000006200000065000000200000006d0000
+*006f00000072000000650000002000000065000000660000006600000069000000630000006900
+*0000650000006e0000007400000020000000690000006e00000020000000730000006f0000006d
+*00000065000000200000007300000063000000650000006e000000610000007200000069000000
+*6f000000730000000a01022400000020000000610000006e000000640000002000000061000000
+*720000006500000020000000750000007300000065000000640000002000000077000000680000
+*00650000006e00000020000000610000007000000070000000720000006f000000700000007200
+*000069000000610000007400000065000000200000006200000079000000200000006100000020
+*01020900000047000000650000006e000000650000007200000061000000740000006f00000072
+*01020c0000002e00000020000000540000006800000065000000200000006e000000610000006d
+*000000650000007300000020010401000000000000000003000000000000000000000000000000
+*0101020500000020000000610000006e0000006400000020010401000000000000000002000000
+*0000000000000000000000000101020600000020000000770000006f000000720000006b000000
+*0a023d00000020000000620000007900000020000000610000006e000000610000006c0000006f
+*000000670000007900000020000000740000006f00000020000000740000006800000065000000
+*2000000073000000790000006e0000006f0000006e000000790000006d0000006f000000750000
+*0073000000200000006f0000007000000065000000720000006100000074000000690000006f00
+*00006e0000007300000020000000690000006e0000002000000074000000680000006500000020
+*0000006c000000690000007300000074000000200000006d0000006f0000006e0000006f000000
+*69000000640000002e0000000a010301024c000000540000006800000069000000730000002000
+*0000630000006c0000006100000073000000730000002000000064000000650000006c00000069
+*0000006200000065000000720000006100000074000000650000006c0000007900000020000000
+*61000000760000006f0000006900000064000000730000002000000066000000750000006e0000
+*006300000074000000690000006f0000006e000000610000006c0000002d000000640000006500
+*000070000000650000006e00000064000000650000006e00000063000000690000006500000073
+*0000002c00000020000000730000006f0000002000000074000000680000006100000074000000
+*2000000028000000290000002000000063000000610000006e0000002000000062000000650000
+*0020000000610000002001070201000000630102090000002d0000005200000065000000640000
+*00750000006300000065000000720000000a01020900000020000000660000006f000000720000
+*0020000000610000006c0000006c00000020010702010000006301024a0000002c000000200000
+*00610000006e0000006400000020000000730000006f000000200000006d000000610000006e00
+*00007900000020000000630000006f0000006d0000006d0000006f0000006e0000002000000072
+*000000650000006400000075000000630000006500000072000000730000002000000063000000
+*610000006e00000020000000770000006f000000720000006b000000200000006f000000760000
+*006500000072000000200000006d000000750000006c0000007400000069000000700000006c00
+*0000650000002000000074000000790000007000000065000000730000002c0000002000000066
+*0000006f0000007200000020000000690000006e0000007300000074000000610000006e000000
+*63000000650000002c0000000a0102200000002000000046000000690000007200000073000000
+*7400000020000000610000006e00000064000000200000004c0000006100000073000000740000
+*00200000006d000000610000007900000020000000720000006500000064000000750000006300
+*00006500000020000000620000006f000000740000006800000020010702010000006101020500
+*000020000000610000006e00000064000000200104010000000000000000340000000000000004
+*000000000000000601020100000020010702010000006101020a0000002e000000200000005300
+*0000690000006e0000006300000065000000200000006100000020010209000000470000006500
+*00006e000000650000007200000061000000740000006f00000072010215000000200000006800
+*000061000000730000002000000061000000200000006600000069000000780000006500000064
+*00000020000000650000006c000000650000006d000000650000006e000000740000000a01025a
+*00000020000000740000007900000070000000650000002c000000200000007400000068000000
+*6500000020000000690000006e00000070000000750000007400000020000000740000006f0000
+*002000000074000000680000006500000020000000720000006500000064000000750000006300
+*000065000000720000002000000069000000730000002000000067000000650000006e00000065
+*00000072000000610000006c0000006c00000079000000200000006b0000006e0000006f000000
+*770000006e00000020000000610000006e00000064000000200000006500000078000000740000
+*0072000000610000006300000074000000690000006e0000006700000020000000660000007200
+*00006f0000006d00000020000000740000006800000065000000200000006d0000006f0000006e
+*0000006f000000690000006400000020000000750000007300000075000000610000006c000000
+*6c000000790000000a01025a000000200000006900000073000000200000007300000075000000
+*6600000066000000690000006300000069000000650000006e0000007400000020000000740000
+*006f00000020000000660000006900000078000000200000007400000068000000650000002000
+*0000720000006500000073000000750000006c0000007400000020000000740000007900000070
+*000000650000002e00000020000000430000006f0000006d00000062000000690000006e000000
+*61000000740000006f000000720000007300000020000000610000007200000065000000200000
+*00610000007600000061000000690000006c00000061000000620000006c000000650000002000
+*0000660000006f00000072000000200000006d0000006f00000073000000740000002000000073
+*00000063000000650000006e0000006100000072000000690000006f0000007300000020000000
+*77000000680000006500000072000000650000000a010258000000200000007400000068000000
+*6900000073000000200000006900000073000000200000006e0000006f00000074000000200000
+*0074000000680000006500000020000000630000006100000073000000650000002c0000002000
+*0000610000006e0000006400000020000000740000006800000065000000200000006600000065
+*000000770000002000000072000000650000006d00000061000000690000006e00000069000000
+*6e0000006700000020000000630000006100000073000000650000007300000020000000630000
+*00610000006e0000002000000062000000650000002000000068000000610000006e0000006400
+*00006c000000650000006400000020000000620000007900000020000000750000007300000069
+*0000006e0000006700000020000000610000006e00000020000000650000007800000070000000
+*6c00000069000000630000006900000074000000200000000a0212000000200000007400000079
+*000000700000006500000020000000610000006e0000006e0000006f0000007400000061000000
+*74000000690000006f0000006e0000002e0000000a030102140000004d000000690000006e0000
+*00690000006d000000610000006c00000020000000640000006500000066000000690000006e00
+*00006900000074000000690000006f0000006e0000003a00000020010401000000000000000001
+*00000000000000000000000000000001010204000000200000006f000000720000002001040100
+*00000000000000020000000000000000000000000000000102010000000a000000000000000103
+*010217000000430000006f0000006e000000760000006500000072000000740000002000000061
+*0000002000000076000000610000006c000000750000006500000020000000690000006e000000
+*740000006f00000020000000610000002001040100000000000000003300000000000000040000
+*00000000000502010000000a000000000000000203010214000000410000007000000070000000
+*650000006e0000006400000020000000610000002000000076000000610000006c000000750000
+*006500000020000000740000006f00000020000000610000002001040100000000000000003300
+*000000000000040000000000000005022400000020000000660000006f00000072000000200000
+*0075000000730000006500000020000000690000006e000000200000006c000000650000006600
+*0000740000002d000000740000006f0000002d0000007200000069000000670000006800000074
+*00000020000000720000006500000064000000750000006300000074000000690000006f000000
+*6e0000000a00000000000000030301021700000050000000720000006500000070000000650000
+*006e0000006400000020000000610000002000000076000000610000006c000000750000006500
+*0000200000006f0000006e000000740000006f0000002000000061000000200104010000000000
+*0000003300000000000000040000000000000005022800000020000000660000006f0000007200
+*00002000000075000000730000006500000020000000640000007500000072000000690000006e
+*000000670000002000000072000000690000006700000068000000740000002d00000074000000
+*6f0000002d0000006c000000650000006600000074000000200000007200000065000000640000
+*00750000006300000074000000690000006f0000006e0000000a00000000000000040301020800
+*00004100000070000000700000006c000000790000002000000061000000200104010000000000
+*000000000000000000000000000000000000000101020600000020000000740000006f00000020
+*000000610000002001040100000000000000003500000000000000040000000000000007024b00
+*000020000000630000006f0000006e0000007400000061000000690000006e0000006500000072
+*0000002c000000200000006100000066000000740000006500000072000000200000006d000000
+*610000007000000070000000690000006e00000067000000200000007400000068000000650000
+*0020000000630000006f0000006e00000074000000650000006e00000074000000730000002000
+*0000690000006e000000740000006f000000200000006100000020000000730000007500000069
+*0000007400000061000000620000006c0000006500000020000000660000006f00000072000000
+*6d00000020000000660000006f0000007200000020000000720000006500000064000000750000
+*006300000074000000690000006f0000006e0000002e0000000a00000000000000050301020800
+*00004100000070000000700000006c000000790000002000000061000000200104010000000000
+*000000000000000000000000000000000000000101020600000020000000740000006f00000020
+*00000061000000200104010000000000000000350000000000000004000000000000000701021e
+*000000200000006d000000610000007000000070000000690000006e0000006700000020000000
+*6500000061000000630000006800000020000000650000006c000000650000006d000000650000
+*006e00000074000000200000007400000068000000720000006f00000075000000670000006800
+*0000200104010000000000000000010000000000000000000000000000000102010000000a0800
+*000000000000000000000000000001000000000000000200000000000000030000000000000004
+*000000000000000500000000000000060000000000000007080000000000000000000000000000
+*000100000000000000020000000000000003000000000000000400000000000000050000000000
+*000007000000000000000600080000000000000000030000000000000001000000000000000200
+*000000000000030000000000000001000000000000000002000000000000000003000000000000
+*000004000000000000000005000000000000000006000000000000000007000000000000000000
+*000000000000000200000000000a00000000000000080000000000000009000000000000000a00
+*0000000000000b000000000000000c000000000000000d000000000000000e000000000000000f
+*000000000000001000000000000000110a0000000000000008000000000000000c000000000000
+*000d000000000000000e0000000000000009000000000000000a000000000000000b0000000000
+*00000f00000000000000100000000000000011000a000000000000000800000000000000000902
+*000000000000000a000000000000000b000000000000000a00000000000000000b000000000000
+*00000c02000000000000000d000000000000000e000000000000000d00000000000000000e0000
+*0000000000000f0000000000000000100000000000000000110000000000000000000000000000
+*000003000000000021000000000000001200000000000000130000000000000014000000000000
+*001500000000000000160000000000000017000000000000001800000000000000190000000000
+*00001a000000000000001b000000000000001c000000000000001d000000000000001e00000000
+*0000001f0000000000000020000000000000002100000000000000220000000000000023000000
+*000000002400000000000000250000000000000026000000000000002700000000000000280000
+*000000000029000000000000002a000000000000002b000000000000002c000000000000002d00
+*0000000000002e000000000000002f000000000000003000000000000000310000000000000032
+*21000000000000001d000000000000001e000000000000001f0000000000000020000000000000
+*0021000000000000002200000000000000280000000000000029000000000000002a0000000000
+*00002b000000000000002c000000000000002d0000000000000026000000000000002700000000
+*0000002300000000000000250000000000000024000000000000002e000000000000002f000000
+*000000003000000000000000120000000000000013000000000000001400000000000000150000
+*000000000016000000000000001700000000000000180000000000000019000000000000001a00
+*0000000000001b000000000000001c000000000000003200000000000000310021000000000000
+*001205000000000000001300000000000000140000000000000015000000000000001600000000
+*000000170000000000000013000000000000000014000000000000000015000000000000000016
+*000000000000000017000000000000000018040000000000000019000000000000001a00000000
+*0000001b000000000000001c000000000000001900000000000000001a00000000000000001b00
+*000000000000001c00000000000000001d02000000000000001e000000000000001f0000000000
+*00001e00000000000000001f000000000000000020000000000000000021000000000000000022
+*000000000000000023000000000000000024000000000000000025000000000000000026000000
+*00000000002700000000000000002800000000000000002900000000000000002a000000000000
+*00002b00000000000000002c00000000000000002d00000000000000002e00000000000000002f
+*000000000000000030000000000000000031000000000000000032000000000000000000000000
+*000000000800000000002000000000000000000000000000000001000000000000000200000000
+*000000030000000000000012000000000000001300000000000000140000000000000015000000
+*0000000016000000000000001700000000000000180000000000000019000000000000001a0000
+*00000000001b000000000000001c000000000000001d0000000000000021000000000000002200
+*000000000000230000000000000024000000000000002500000000000000260000000000000027
+*00000000000000280000000000000029000000000000002a000000000000002b00000000000000
+*2c000000000000002d000000000000002e000000000000002f0000000000000030200000000000
+*00001d000000000000002600000000000000270000000000000018000000000000001900000000
+*0000001a000000000000001b000000000000001c000000000000002e000000000000002f000000
+*000000003000000000000000000000000000000001000000000000000200000000000000030000
+*000000000021000000000000002800000000000000220000000000000029000000000000002b00
+*0000000000002c000000000000002d000000000000002a00000000000000120000000000000013
+*000000000000001400000000000000150000000000000016000000000000001700000000000000
+*230000000000000024000000000000002500000000000000000036000000000000000000000000
+*000000010300000000000000090000000000000000000000000000000100000000000000000a00
+*00000000000000000000000000000100000000000000000b000000000000000000000000000000
+*0100000000000000000c0000000000000000000000000000000100000000000000000d00000000
+*00000000000000000000000100000000000000000e000000000000000000000000000000010000
+*0000000000000f0000000000000000000000000000000100000000000000001000000000000000
+*000000000000000002030000000000000011000000000000000000000000000000020300000000
+*000000120000000000000000000000000000000201000000000000001200000000000000000000
+*000000000002000000000000000013000000000000000000000000000000020300000000000000
+*140000000000000000000000000000000201000000000000001400000000000000000000000000
+*000002000000000000000015000000000000000000000000000000020000000000000000160000
+*000000000000000000000000000200000000000000001700000000000000000000000000000002
+*000000000000000018000000000000000000000000000000030300000000000000190000000000
+*000000000000000000000300000000000000001a00000000000000000000000000000003000000
+*00000000001b0000000000000000000000000000000300000000000000001c0000000000000000
+*000000000000000300000000000000001d00000000000000000000000000000003000000000000
+*00001e0000000000000000000000000000000303000000000000001f0000000000000000000000
+*000000000300000000000000002000000000000000000000000000000003000000000000000021
+*000000000000000000000000000000030000000000000000220000000000000000000000000000
+*000300000000000000002300000000000000000000000000000003030000000000000024000000
+*000000000000000000000000030100000000000000240000000000000000000000000000000300
+*000000000000002500000000000000000000000000000003000000000000000026000000000000
+*000000000000000000030000000000000000270000000000000000000000000000000300000000
+*000000002800000000000000000000000000000003000000000000000029000000000000000000
+*0000000000000300000000000000002a0000000000000000000000000000000300000000000000
+*002b0000000000000000000000000000000300000000000000002c000000000000000000000000
+*0000000300000000000000002d0000000000000000000000000000000300000000000000002e00
+*00000000000000000000000000000300000000000000002f000000000000000000000000000000
+*030000000000000000300000000000000000000000000000000300000000000000003100000000
+*000000000000000000000003000000000000000032000000000000000000000000000000030000
+*000000000000330000000000000000000000000000000300000000000000003400000000000000
+*000000000000000003000000000000000035000000000000000000000000000000030000000000
+*000000360000000000000000000000000000000300000000000000003700000000000000000000
+*000000000003000000000000000038000000000000000400000000000000050300000000000000
+*390000000000000004000000000000000603000000000000003a00000000000000040000000000
+*00000703000000000000003b000000000000003c0000000000000008726f70652d302e32000000
+*0000000016446174612e526f70652e5574696c2e52656475636572000000000000000e44617461
+*2e526f70652e426f64790000000000000012446174612e526f70652e496e7465726e616c000000
+*000000000462617365000000000000000b446174612e4d6f6e6f6964000000000000000a446174
+*612e4d61796265000000000000000d446174612e466f6c6461626c650000000000000009446174
+*612e526f70650000000000000007526564756365720000000000000004756e6974000000000000
+*0004736e6f630000000000000004636f6e73000000000000000d666f6c644d6170526564756365
+*000000000000000a666f6c64526564756365000000000000000a72657475726e556e6974000000
+*000000000870757265556e69740000000000000004426f647900000000000000054368756e6b00
+*00000000000007756e6368756e6b00000000000000064f66667365740000000000000009676574
+*4f6666736574000000000000000b6d656173757265426f64790000000000000005636f6e732700
+*00000000000005736e6f6327000000000000000a556e7061636b61626c65000000000000000675
+*6e7061636b00000000000000046865616400000000000000046c6173740000000000000006756e
+*636f6e730000000000000006756e736e6f630000000000000009427265616b61626c6500000000
+*00000005627265616b00000000000000047370616e000000000000000974616b655768696c6500
+*0000000000000964726f705768696c650000000000000004526f70650000000000000004626f64
+*7900000000000000047061636b0000000000000005656d707479000000000000000a66726f6d43
+*68756e6b730000000000000008746f4368756e6b730000000000000010746f4c617a7942797465
+*537472696e670000000000000008746f537472696e6700000000000000066c656e677468000000
+*00000000046e756c6c000000000000000e66726f6d42797465537472696e670000000000000012
+*66726f6d4c617a7942797465537472696e67000000000000000a66726f6d537472696e67000000
+*000000000966726f6d576f726473000000000000000866726f6d43686172000000000000000966
+*726f6d576f726438000000000000000773706c69744174000000000000000474616b6500000000
+*0000000464726f70000000000000000e66696e64496e6465784f72456e64000000000000000377
+*326300000000000000064d6f6e6f696400000000000000054d617962650000000000000008466f
+*6c6461626c65
+newhex
+*0d0cface000c00000000000039060000000000002f086300000000000000000000000000000000
+*000000000000000100000000000000010000000000000000000000000000000100000000000000
+*020000000000000000000000000000000100000000000000030000000000000000000000000000
+*000100000000000000040000000000000000000000000000000100000000000000050000000000
+*000000000000000000000100000000000000060000000000000000000000000000000100000000
+*000000070000000000000000000000000000000100000000000000080000000000000000000000
+*0000000002000000000000000900000000000000000000000000000002000000000000000a0000
+*0000000000000000000000000002000000000000000b0000000000000000000000000000000200
+*0000000000000c00000000000000000000000000000003000000000000000d0000000000000000
+*0000000000000003000000000000000e0000000000000000000000000000000300000000000000
+*0f0000000000000000000000000000000300000000000000100000000000000000000000000000
+*000300000000000000110000000000000000000000000000000300000000000000120000000000
+*000000000000000000000300000000000000130000000000000000000000000000000300000000
+*000000140000000000000000000000000000000300000000000000150000000000000000000000
+*000000000300000000000000160000000000000000000000000000000400000000000000170000
+*000000000000000000000000000400000000000000180000000000000000000000000000000400
+*0000000000001900000000000000000000000000000004000000000000001a0000000000000000
+*0000000000000004000000000000001b0000000000000000000000000000000400000000000000
+*1c00000000000000000000000000000004000000000000001d0000000000000000000000000000
+*0004000000000000001e00000000000000000000000000000004000000000000001f0000000000
+*000000000000000000000400000000000000200000000000000000000000000000000400000000
+*000000210000000000000000000000000000000400000000000000220000000000000000000000
+*000000000400000000000000230000000000000000000000000000000400000000000000240000
+*000000000000000000000000000400000000000000250000000000000000000000000000000400
+*000000000000260000000000000000000000000000000400000000000000270000000000000000
+*000000000000000400000000000000280000000000000000000000000000000400000000000000
+*2900000000000000000000000000000004000000000000002a0000000000000000000000000000
+*0004000000000000002b00000000000000000000000000000004000000000000002c0000000000
+*0000000000000000000004000000000000002d0000000000000000000000000000000400000000
+*0000002e00000000000000000000000000000004000000000000002f0000000000000000000000
+*000000000400000000000000300000000000000000000000000000000400000000000000310000
+*000000000000000000000000000400000000000000320000000000000000000000000000000400
+*000000000000330000000000000000000000000000000400000000000000340000000000000000
+*000000000000000400000000000000350000000000000000000000000000000400000000000000
+*360000000000000000000000000000000400000000000000370000000000000000000000000000
+*000500000000000000380000000000000000000000000000000500000000000000390000000000
+*0000000000000000000005000000000000003a0000000000000000000000000000000500000000
+*0000003b00000000000000000000000000000005000000000000003c0000000000000000000000
+*0000000005000000000000003d00000000000000000000000000000005000000000000003e0000
+*0000000000000000000000000005000000000000003f0000000000000000000000000000000500
+*000000000000400000000000000000000000000000000500000000000000410000000000000000
+*000000000000000500000000000000420000000000000000000000000000000500000000000000
+*430000000000000000000000000000000500000000000000440000000000000000000000000000
+*000500000000000000450000000000000000000000000000000500000000000000460000000000
+*000000000000000000000500000000000000470000000000000000000000000000000500000000
+*000000480000000000000000000000000000000500000000000000490000000000000000000000
+*0000000005000000000000004a00000000000000000000000000000005000000000000004b0000
+*0000000000000000000000000005000000000000004c0000000000000000000000000000000500
+*0000000000004d00000000000000000000000000000005000000000000004e0000000000000000
+*0000000000000005000000000000004f0000000000000000000000000000000500000000000000
+*500000000000000000000000000000000500000000000000510000000000000000000000000000
+*000500000000000000520000000000000000000000000000000500000000000000530000000000
+*000000000000000000000500000000000000540000000000000000000000000000000500000000
+*000000550000000000000000000000000000000500000000000000560000000000000000000000
+*000000000500000000000000570000000000000000000000000000000500000000000000580000
+*000000000000000000000000000500000000000000590000000000000000000000000000000500
+*0000000000005a00000000000000000000000000000005000000000000005b0000000000000000
+*0000000000000005000000000000005c0000000000000000000000000000000500000000000000
+*5d00000000000000000000000000000005000000000000005e0000000000000000000000000000
+*0005000000000000005f0000000000000000000000000000000500000000000000600000000000
+*000000000000000000000500000000000000610000000000000000000000000000000500000000
+*000000620000000000000000000000000000000507000000000000000000000000000000010000
+*000006000000000000000001030102240000005400000068000000690000007300000020000000
+*74000000790000007000000065000000200000006d000000610000007900000020000000620000
+*006500000020000000620000006500000073000000740000002000000072000000650000006100
+*00006400000020000000690000006e0000006600000069000000780000002e0000002000000041
+*000000200107010202000000630000002001040100000000000000000000000000000000000000
+*0000000000010202000000200000006d0102060000002000000069000000730000002000000061
+*000000200104010000000000000000630000000000000006000000000000000701020100000020
+*010702010000006d01020b0000002000000074000000680000006100000074000000200000006d
+*0000006100000070000000730000000a0102100000002000000076000000610000006c00000075
+*0000006500000073000000200000006f0000006600000020000000740000007900000070000000
+*65000000200107020100000063010209000000200000007400000068000000720000006f000000
+*7500000067000000680000002001070204000000750000006e0000006900000074010213000000
+*20000000740000006f0000002000000076000000610000006c0000007500000065000000730000
+*00200000006f000000660000002000000074000000790000007000000065000000200107020100
+*00006d0102040000002e00000020000000410000002001070201000000630102010000002d0104
+*010000000000000000000000000000000000000000000000000101020a000000200000006d0000
+*00610000007900000020000000610000006c000000730000006f0000000a010229000000200000
+*00730000007500000070000000700000006c00000079000000200000006f000000700000006500
+*0000720000006100000074000000690000006f0000006e00000073000000200000007700000068
+*000000690000006300000068000000200000007400000061000000630000006b0000002d000000
+*6f0000006e00000020000000610000006e0000006f000000740000006800000065000000720000
+*0020010702010000006301021000000020000000740000006f00000020000000610000006e0000
+*00200000006500000078000000690000007300000074000000690000006e000000670000002001
+*040100000000000000006300000000000000060000000000000007010201000000200107020100
+*00006d01020d000000200000006f0000006e000000200000007400000068000000650000002000
+*00006c0000006500000066000000740000000a010250000000200000006f000000720000002000
+*000072000000690000006700000068000000740000002e00000020000000540000006800000065
+*000000730000006500000020000000730000007000000065000000630000006900000061000000
+*6c000000690000007a000000650000006400000020000000720000006500000064000000750000
+*006300000074000000690000006f0000006e00000073000000200000006d000000610000007900
+*0000200000006200000065000000200000006d0000006f00000072000000650000002000000065
+*0000006600000066000000690000006300000069000000650000006e0000007400000020000000
+*690000006e00000020000000730000006f0000006d000000650000002000000073000000630000
+*00650000006e0000006100000072000000690000006f000000730000000a010224000000200000
+*00610000006e000000640000002000000061000000720000006500000020000000750000007300
+*00006500000064000000200000007700000068000000650000006e000000200000006100000070
+*00000070000000720000006f000000700000007200000069000000610000007400000065000000
+*20000000620000007900000020000000610000002001020900000047000000650000006e000000
+*650000007200000061000000740000006f0000007201020c0000002e0000002000000054000000
+*6800000065000000200000006e000000610000006d000000650000007300000020010401000000
+*0000000000030000000000000000000000000000000101020500000020000000610000006e0000
+*006400000020010401000000000000000002000000000000000000000000000000010102060000
+*0020000000770000006f000000720000006b0000000a023d000000200000006200000079000000
+*20000000610000006e000000610000006c0000006f000000670000007900000020000000740000
+*006f000000200000007400000068000000650000002000000073000000790000006e0000006f00
+*00006e000000790000006d0000006f0000007500000073000000200000006f0000007000000065
+*000000720000006100000074000000690000006f0000006e000000730000002000000069000000
+*6e00000020000000740000006800000065000000200000006c0000006900000073000000740000
+*00200000006d0000006f0000006e0000006f00000069000000640000002e0000000a010301024c
+*0000005400000068000000690000007300000020000000630000006c0000006100000073000000
+*730000002000000064000000650000006c00000069000000620000006500000072000000610000
+*0074000000650000006c000000790000002000000061000000760000006f000000690000006400
+*0000730000002000000066000000750000006e0000006300000074000000690000006f0000006e
+*000000610000006c0000002d000000640000006500000070000000650000006e00000064000000
+*650000006e000000630000006900000065000000730000002c00000020000000730000006f0000
+*002000000074000000680000006100000074000000200000002800000029000000200000006300
+*0000610000006e0000002000000062000000650000002000000061000000200107020100000063
+*0102090000002d000000520000006500000064000000750000006300000065000000720000000a
+*01020900000020000000660000006f0000007200000020000000610000006c0000006c00000020
+*010702010000006301024a0000002c00000020000000610000006e000000640000002000000073
+*0000006f000000200000006d000000610000006e0000007900000020000000630000006f000000
+*6d0000006d0000006f0000006e0000002000000072000000650000006400000075000000630000
+*006500000072000000730000002000000063000000610000006e00000020000000770000006f00
+*0000720000006b000000200000006f000000760000006500000072000000200000006d00000075
+*0000006c0000007400000069000000700000006c00000065000000200000007400000079000000
+*7000000065000000730000002c00000020000000660000006f0000007200000020000000690000
+*006e0000007300000074000000610000006e00000063000000650000002c0000000a0102200000
+*0020000000460000006900000072000000730000007400000020000000610000006e0000006400
+*0000200000004c000000610000007300000074000000200000006d000000610000007900000020
+*00000072000000650000006400000075000000630000006500000020000000620000006f000000
+*740000006800000020010702010000006101020500000020000000610000006e00000064000000
+*200104010000000000000000640000000000000006000000000000000801020100000020010702
+*010000006101020a0000002e0000002000000053000000690000006e0000006300000065000000
+*20000000610000002001020900000047000000650000006e000000650000007200000061000000
+*740000006f00000072010215000000200000006800000061000000730000002000000061000000
+*20000000660000006900000078000000650000006400000020000000650000006c000000650000
+*006d000000650000006e000000740000000a01025a000000200000007400000079000000700000
+*00650000002c0000002000000074000000680000006500000020000000690000006e0000007000
+*0000750000007400000020000000740000006f0000002000000074000000680000006500000020
+*000000720000006500000064000000750000006300000065000000720000002000000069000000
+*730000002000000067000000650000006e0000006500000072000000610000006c0000006c0000
+*0079000000200000006b0000006e0000006f000000770000006e00000020000000610000006e00
+*000064000000200000006500000078000000740000007200000061000000630000007400000069
+*0000006e000000670000002000000066000000720000006f0000006d0000002000000074000000
+*6800000065000000200000006d0000006f0000006e0000006f0000006900000064000000200000
+*00750000007300000075000000610000006c0000006c000000790000000a01025a000000200000
+*006900000073000000200000007300000075000000660000006600000069000000630000006900
+*0000650000006e0000007400000020000000740000006f00000020000000660000006900000078
+*000000200000007400000068000000650000002000000072000000650000007300000075000000
+*6c0000007400000020000000740000007900000070000000650000002e00000020000000430000
+*006f0000006d00000062000000690000006e00000061000000740000006f000000720000007300
+*00002000000061000000720000006500000020000000610000007600000061000000690000006c
+*00000061000000620000006c0000006500000020000000660000006f0000007200000020000000
+*6d0000006f0000007300000074000000200000007300000063000000650000006e000000610000
+*0072000000690000006f0000007300000020000000770000006800000065000000720000006500
+*00000a010258000000200000007400000068000000690000007300000020000000690000007300
+*0000200000006e0000006f00000074000000200000007400000068000000650000002000000063
+*0000006100000073000000650000002c00000020000000610000006e0000006400000020000000
+*740000006800000065000000200000006600000065000000770000002000000072000000650000
+*006d00000061000000690000006e000000690000006e0000006700000020000000630000006100
+*00007300000065000000730000002000000063000000610000006e000000200000006200000065
+*0000002000000068000000610000006e000000640000006c000000650000006400000020000000
+*6200000079000000200000007500000073000000690000006e0000006700000020000000610000
+*006e000000200000006500000078000000700000006c0000006900000063000000690000007400
+*0000200000000a0212000000200000007400000079000000700000006500000020000000610000
+*006e0000006e0000006f000000740000006100000074000000690000006f0000006e0000002e00
+*00000a030102140000004d000000690000006e000000690000006d000000610000006c00000020
+*000000640000006500000066000000690000006e0000006900000074000000690000006f000000
+*6e0000003a00000020010401000000000000000001000000000000000000000000000000010102
+*04000000200000006f000000720000002001040100000000000000000200000000000000000000
+*00000000000102010000000a000000000000000103010217000000430000006f0000006e000000
+*7600000065000000720000007400000020000000610000002000000076000000610000006c0000
+*00750000006500000020000000690000006e000000740000006f00000020000000610000002001
+*04010000000000000000630000000000000006000000000000000702010000000a000000000000
+*000203010214000000410000007000000070000000650000006e00000064000000200000006100
+*00002000000076000000610000006c000000750000006500000020000000740000006f00000020
+*000000610000002001040100000000000000006300000000000000060000000000000007022400
+*000020000000660000006f00000072000000200000007500000073000000650000002000000069
+*0000006e000000200000006c0000006500000066000000740000002d000000740000006f000000
+*2d0000007200000069000000670000006800000074000000200000007200000065000000640000
+*00750000006300000074000000690000006f0000006e0000000a00000000000000030301021700
+*000050000000720000006500000070000000650000006e00000064000000200000006100000020
+*00000076000000610000006c0000007500000065000000200000006f0000006e00000074000000
+*6f0000002000000061000000200104010000000000000000630000000000000006000000000000
+*0007022800000020000000660000006f0000007200000020000000750000007300000065000000
+*20000000640000007500000072000000690000006e000000670000002000000072000000690000
+*006700000068000000740000002d000000740000006f0000002d0000006c000000650000006600
+*00007400000020000000720000006500000064000000750000006300000074000000690000006f
+*0000006e0000000a0000000000000004030102080000004100000070000000700000006c000000
+*790000002000000061000000200104010000000000000000000000000000000000000000000000
+*000101020600000020000000740000006f00000020000000610000002001040100000000000000
+*006500000000000000060000000000000009024b00000020000000630000006f0000006e000000
+*7400000061000000690000006e00000065000000720000002c0000002000000061000000660000
+*00740000006500000072000000200000006d000000610000007000000070000000690000006e00
+*0000670000002000000074000000680000006500000020000000630000006f0000006e00000074
+*000000650000006e000000740000007300000020000000690000006e000000740000006f000000
+*2000000061000000200000007300000075000000690000007400000061000000620000006c0000
+*006500000020000000660000006f000000720000006d00000020000000660000006f0000007200
+*000020000000720000006500000064000000750000006300000074000000690000006f0000006e
+*0000002e0000000a0000000000000005030102080000004100000070000000700000006c000000
+*790000002000000061000000200104010000000000000000000000000000000000000000000000
+*000101020600000020000000740000006f00000020000000610000002001040100000000000000
+*00650000000000000006000000000000000901021e000000200000006d00000061000000700000
+*0070000000690000006e0000006700000020000000650000006100000063000000680000002000
+*0000650000006c000000650000006d000000650000006e00000074000000200000007400000068
+*000000720000006f00000075000000670000006800000020010401000000000000000001000000
+*0000000000000000000000000102010000000a0800000000000000000000000000000001000000
+*000000000200000000000000030000000000000004000000000000000500000000000000060000
+*000000000007080000000000000000000000000000000100000000000000020000000000000003
+*000000000000000400000000000000050000000000000007000000000000000600080000000000
+*000000030000000000000001000000000000000200000000000000030000000000000001000000
+*000000000002000000000000000003000000000000000004000000000000000005000000000000
+*000006000000000000000007000000000000000000000000000000000200000000000400000000
+*000000080000000000000009000000000000000a000000000000000b0400000000000000080000
+*000000000009000000000000000a000000000000000b0004000000000000000803000000000000
+*0009000000000000000a000000000000000b000000000000000900000000000000000a00000000
+*000000000b000000000000000000000000000000000300000000000a000000000000000c000000
+*000000000d000000000000000e000000000000000f000000000000001000000000000000110000
+*0000000000120000000000000013000000000000001400000000000000150a000000000000000c
+*000000000000001000000000000000110000000000000012000000000000000d00000000000000
+*0e000000000000000f000000000000001300000000000000140000000000000015000a00000000
+*0000000c00000000000000000d02000000000000000e000000000000000f000000000000000e00
+*000000000000000f00000000000000001002000000000000001100000000000000120000000000
+*000011000000000000000012000000000000000013000000000000000014000000000000000015
+*000000000000000000000000000000000400000000002100000000000000160000000000000017
+*00000000000000180000000000000019000000000000001a000000000000001b00000000000000
+*1c000000000000001d000000000000001e000000000000001f0000000000000020000000000000
+*002100000000000000220000000000000023000000000000002400000000000000250000000000
+*000026000000000000002700000000000000280000000000000029000000000000002a00000000
+*0000002b000000000000002c000000000000002d000000000000002e000000000000002f000000
+*000000003000000000000000310000000000000032000000000000003300000000000000340000
+*000000000035000000000000003621000000000000002100000000000000220000000000000023
+*000000000000002400000000000000250000000000000026000000000000002c00000000000000
+*2d000000000000002e000000000000002f00000000000000300000000000000031000000000000
+*002a000000000000002b0000000000000027000000000000002900000000000000280000000000
+*000032000000000000003300000000000000340000000000000016000000000000001700000000
+*000000180000000000000019000000000000001a000000000000001b000000000000001c000000
+*000000001d000000000000001e000000000000001f000000000000002000000000000000360000
+*000000000035002100000000000000160500000000000000170000000000000018000000000000
+*0019000000000000001a000000000000001b000000000000001700000000000000001800000000
+*000000001900000000000000001a00000000000000001b00000000000000001c04000000000000
+*001d000000000000001e000000000000001f0000000000000020000000000000001d0000000000
+*0000001e00000000000000001f0000000000000000200000000000000000210200000000000000
+*220000000000000023000000000000002200000000000000002300000000000000002400000000
+*000000002500000000000000002600000000000000002700000000000000002800000000000000
+*002900000000000000002a00000000000000002b00000000000000002c00000000000000002d00
+*000000000000002e00000000000000002f00000000000000003000000000000000003100000000
+*000000003200000000000000003300000000000000003400000000000000003500000000000000
+*0036000000000000000000000000000000000500000000002c0000000000000037000000000000
+*00380000000000000039000000000000003a000000000000003b000000000000003c0000000000
+*00003d000000000000003e000000000000003f0000000000000040000000000000004100000000
+*000000420000000000000043000000000000004400000000000000450000000000000046000000
+*000000004700000000000000480000000000000049000000000000004a000000000000004b0000
+*00000000004c000000000000004d000000000000004e000000000000004f000000000000005000
+*000000000000510000000000000052000000000000005300000000000000540000000000000055
+*000000000000005600000000000000570000000000000058000000000000005900000000000000
+*5a000000000000005b000000000000005c000000000000005d000000000000005e000000000000
+*005f0000000000000060000000000000006100000000000000622c000000000000004b00000000
+*0000004c000000000000004d000000000000004a00000000000000410000000000000042000000
+*000000004300000000000000440000000000000045000000000000004600000000000000470000
+*0000000000480000000000000049000000000000004e000000000000003f000000000000004000
+*000000000000600000000000000061000000000000004f00000000000000500000000000000051
+*000000000000006200000000000000520000000000000059000000000000005400000000000000
+*550000000000000056000000000000005300000000000000570000000000000058000000000000
+*005e000000000000005f000000000000005a000000000000005b000000000000005c0000000000
+*00005d000000000000003d000000000000003e000000000000003a000000000000003b00000000
+*000000380000000000000037000000000000003c0000000000000039002c000000000000003700
+*000000000000003800000000000000003900000000000000003a00000000000000003b00000000
+*000000003c00000000000000003d00000000000000003e00000000000000003f01000000000000
+*004000000000000000400000000000000000410800000000000000420000000000000043000000
+*000000004400000000000000450000000000000046000000000000004700000000000000480000
+*000000000049000000000000004200000000000000004300000000000000004400000000000000
+*004500000000000000004600000000000000004700000000000000004800000000000000004900
+*000000000000004a00000000000000004b02000000000000004c000000000000004d0000000000
+*00004c00000000000000004d00000000000000004e00000000000000004f000000000000000050
+*000000000000000051000000000000000052000000000000000053000000000000000054000000
+*000000000055000000000000000056000000000000000057000000000000000058000000000000
+*00005900000000000000005a00000000000000005b00000000000000005c00000000000000005d
+*00000000000000005e00000000000000005f000000000000000060000000000000000061000000
+*000000000062000000000000000000000000000000000a00000000002000000000000000370000
+*0000000000380000000000000039000000000000003a000000000000003b000000000000003c00
+*0000000000003d000000000000003e000000000000003f00000000000000400000000000000041
+*000000000000004a000000000000004b000000000000004d000000000000004e00000000000000
+*4f0000000000000050000000000000005100000000000000520000000000000053000000000000
+*005400000000000000550000000000000056000000000000005700000000000000580000000000
+*000059000000000000005a000000000000005b000000000000005c000000000000005d00000000
+*0000005e000000000000005f20000000000000004b000000000000004d000000000000004a0000
+*000000000041000000000000004e000000000000003f0000000000000040000000000000004f00
+*000000000000500000000000000051000000000000005200000000000000590000000000000054
+*000000000000005500000000000000560000000000000053000000000000005700000000000000
+*58000000000000005e000000000000005f000000000000005a000000000000005b000000000000
+*005c000000000000005d000000000000003d000000000000003e000000000000003a0000000000
+*00003b00000000000000380000000000000037000000000000003c000000000000003900000000
+*000000000000000000000000000b00000000002000000000000000000000000000000001000000
+*000000000200000000000000030000000000000016000000000000001700000000000000180000
+*000000000019000000000000001a000000000000001b000000000000001c000000000000001d00
+*0000000000001e000000000000001f000000000000002000000000000000210000000000000025
+*000000000000002600000000000000270000000000000028000000000000002900000000000000
+*2a000000000000002b000000000000002c000000000000002d000000000000002e000000000000
+*002f00000000000000300000000000000031000000000000003200000000000000330000000000
+*000034200000000000000021000000000000002a000000000000002b000000000000001c000000
+*000000001d000000000000001e000000000000001f000000000000002000000000000000320000
+*000000000033000000000000003400000000000000000000000000000001000000000000000200
+*000000000000030000000000000025000000000000002c0000000000000026000000000000002d
+*000000000000002f00000000000000300000000000000031000000000000002e00000000000000
+*16000000000000001700000000000000180000000000000019000000000000001a000000000000
+*001b00000000000000270000000000000028000000000000002900000000000000000066000000
+*0000000000000000000000000103000000000000000c0000000000000000000000000000000100
+*000000000000000d0000000000000000000000000000000100000000000000000e000000000000
+*0000000000000000000100000000000000000f0000000000000000000000000000000100000000
+*000000001000000000000000000000000000000001000000000000000011000000000000000000
+*000000000000010000000000000000120000000000000000000000000000000100000000000000
+*001300000000000000000000000000000002030000000000000014000000000000000000000000
+*000000020000000000000000150000000000000000000000000000000200000000000000001600
+*000000000000000000000000000002000000000000000017000000000000000000000000000000
+*030300000000000000180000000000000000000000000000000303000000000000001900000000
+*000000000000000000000003010000000000000019000000000000000000000000000000030000
+*0000000000001a0000000000000000000000000000000303000000000000001b00000000000000
+*00000000000000000301000000000000001b000000000000000000000000000000030000000000
+*0000001c0000000000000000000000000000000300000000000000001d00000000000000000000
+*00000000000300000000000000001e000000000000000000000000000000030000000000000000
+*1f0000000000000000000000000000000403000000000000002000000000000000000000000000
+*000004000000000000000021000000000000000000000000000000040000000000000000220000
+*000000000000000000000000000400000000000000002300000000000000000000000000000004
+*000000000000000024000000000000000000000000000000040000000000000000250000000000
+*000000000000000000000403000000000000002600000000000000000000000000000004000000
+*000000000027000000000000000000000000000000040000000000000000280000000000000000
+*000000000000000400000000000000002900000000000000000000000000000004000000000000
+*00002a0000000000000000000000000000000403000000000000002b0000000000000000000000
+*000000000401000000000000002b0000000000000000000000000000000400000000000000002c
+*0000000000000000000000000000000400000000000000002d0000000000000000000000000000
+*000400000000000000002e0000000000000000000000000000000400000000000000002f000000
+*000000000000000000000000040000000000000000300000000000000000000000000000000400
+*000000000000003100000000000000000000000000000004000000000000000032000000000000
+*000000000000000000040000000000000000330000000000000000000000000000000400000000
+*000000003400000000000000000000000000000004000000000000000035000000000000000000
+*000000000000040000000000000000360000000000000000000000000000000400000000000000
+*003700000000000000000000000000000004000000000000000038000000000000000000000000
+*000000040000000000000000390000000000000000000000000000000400000000000000003a00
+*00000000000000000000000000000400000000000000003b000000000000000000000000000000
+*0400000000000000003c0000000000000000000000000000000400000000000000003d00000000
+*00000000000000000000000400000000000000003e000000000000000000000000000000040000
+*0000000000003f0000000000000000000000000000000503000000000000004000000000000000
+*000000000000000005030000000000000041000000000000000000000000000000050300000000
+*000000420000000000000000000000000000000503000000000000004300000000000000000000
+*000000000005030000000000000044000000000000000000000000000000050300000000000000
+*450000000000000000000000000000000503000000000000004600000000000000000000000000
+*000005030000000000000047000000000000000000000000000000050300000000000000480000
+*000000000000000000000000000501000000000000004800000000000000000000000000000005
+*0300000000000000490000000000000000000000000000000500000000000000004a0000000000
+*000000000000000000000500000000000000004b00000000000000000000000000000005000000
+*00000000004c0000000000000000000000000000000500000000000000004d0000000000000000
+*000000000000000500000000000000004e00000000000000000000000000000005000000000000
+*00004f000000000000000000000000000000050000000000000000500000000000000000000000
+*000000000500000000000000005100000000000000000000000000000005030000000000000052
+*000000000000000000000000000000050300000000000000530000000000000000000000000000
+*000501000000000000005300000000000000000000000000000005000000000000000054000000
+*000000000000000000000000050300000000000000550000000000000000000000000000000500
+*000000000000003400000000000000000000000000000005000000000000000022000000000000
+*000000000000000000050000000000000000230000000000000000000000000000000500000000
+*000000002e0000000000000000000000000000000500000000000000000d000000000000000000
+*0000000000000500000000000000003b0000000000000000000000000000000500000000000000
+*003d0000000000000000000000000000000500000000000000003c000000000000000000000000
+*0000000500000000000000000e0000000000000000000000000000000500000000000000000f00
+*000000000000000000000000000005000000000000000056000000000000000000000000000000
+*050000000000000000270000000000000000000000000000000500000000000000002800000000
+*000000000000000000000005000000000000000029000000000000000000000000000000050000
+*0000000000002a0000000000000000000000000000000500000000000000002400000000000000
+*000000000000000005000000000000000025000000000000000000000000000000050000000000
+*000000570000000000000000000000000000000500000000000000005800000000000000000000
+*000000000005000000000000000021000000000000000600000000000000070300000000000000
+*590000000000000006000000000000000803000000000000005a00000000000000060000000000
+*00000903000000000000005b000000000000005c0000000000000008726f70652d302e33000000
+*0000000016446174612e526f70652e5574696c2e52656475636572000000000000001644617461
+*2e526f70652e5574696c2e436f6d6f6e6164000000000000000e446174612e526f70652e426f64
+*790000000000000012446174612e526f70652e496e7465726e616c000000000000001c44617461
+*2e526f70652e416e6e6f74617465642e496e7465726e616c000000000000000462617365000000
+*000000000b446174612e4d6f6e6f6964000000000000000a446174612e4d617962650000000000
+*00000d446174612e466f6c6461626c650000000000000013446174612e526f70652e416e6e6f74
+*617465640000000000000009446174612e526f7065000000000000000752656475636572000000
+*0000000004756e69740000000000000004736e6f630000000000000004636f6e73000000000000
+*000d666f6c644d6170526564756365000000000000000a666f6c64526564756365000000000000
+*000a72657475726e556e6974000000000000000870757265556e69740000000000000007436f6d
+*6f6e616400000000000000076578747261637400000000000000096475706c6963617465000000
+*0000000006657874656e640000000000000004426f647900000000000000054368756e6b000000
+*0000000007756e6368756e6b00000000000000064f666673657400000000000000096765744f66
+*66736574000000000000000b6d656173757265426f64790000000000000005636f6e7327000000
+*0000000005736e6f6327000000000000000a556e7061636b61626c650000000000000006756e70
+*61636b00000000000000046865616400000000000000046c6173740000000000000006756e636f
+*6e730000000000000006756e736e6f630000000000000009427265616b61626c65000000000000
+*0005627265616b00000000000000047370616e000000000000000974616b655768696c65000000
+*000000000964726f705768696c650000000000000004526f70650000000000000004626f647900
+*000000000000047061636b0000000000000005656d707479000000000000000a66726f6d436875
+*6e6b730000000000000008746f4368756e6b730000000000000010746f4c617a79427974655374
+*72696e670000000000000008746f537472696e6700000000000000066c656e6774680000000000
+*0000046e756c6c000000000000000e66726f6d42797465537472696e6700000000000000126672
+*6f6d4c617a7942797465537472696e67000000000000000a66726f6d537472696e670000000000
+*00000966726f6d576f726473000000000000000866726f6d43686172000000000000000966726f
+*6d576f726438000000000000000773706c69744174000000000000000474616b65000000000000
+*000464726f70000000000000000e66696e64496e6465784f72456e640000000000000003773263
+*0000000000000004496e697400000000000000045461696c00000000000000033a3c3e00000000
+*00000004536e6f630000000000000004436f6e730000000000000005456d707479000000000000
+*000444726f70000000000000000454616b6500000000000000033a2a3a000000000000000a416e
+*6e6f746174696f6e0000000000000005756e697441000000000000000873706c69744174410000
+*00000000000574616b6541000000000000000564726f70410000000000000005736e6f63410000
+*000000000005636f6e73410000000000000006656d707479410000000000000007617070656e64
+*410000000000000003416e6e0000000000000001410000000000000004726f7065000000000000
+*00033a7e3e0000000000000006617070656e640000000000000004667374460000000000000004
+*736e644600000000000000064d6f6e6f696400000000000000054d617962650000000000000008
+*466f6c6461626c65
+binary ./dist/rope-0.1.tar.gz
+oldhex
+*1f8b0800000000000003ed7d6b73dbc6b2e0f9cc5f31f14d85404cf158b265675da6cbb66225de
+*c88f8aec4d6d25597b4882124a204003a0253a3efbdbb71ff3040624e5eb289b8a704e2c601e3d
+*3d3d3d3d3d3d3dcdb258243bb786bbfffed79ff7dc82e7defe3efd85a7f997de77776fefefeeef
+*dfbdbb7ff75fb7766fedefedfd4becff8938996759d5b20454febb709a9dfb9b3ca51effe3a45e
+*2e86a7d59fd006d2e3ee9d3bdde30f63ee8fffdeeefebd7f892b21e23f7cfcd3f9a2286bf17d5a
+*d5653a5ed669910f8f21314b7a7399e66224a6c94c2eb3fa397cf5fe6a6caf9f2ffd98f98f2fc3
+*891ccbec8bb7b161feefdebb75af39ffefdcbd753dffafe2c9e53cb92fec836cd0fb9094150802
+*930efcd1cbd2499257b6ec93e3ef6febc49d599a51ced1b383a72f8e9ff6e4b23e2d4a0bf7e9f4
+*5c9653f178287e9a27754da2a586ff1255a6912f1e2467f8f7d10914cc869362feb007c3344eb3
+*b45e29a8c9c52229d3790270b2de69314f16f2c460775ad78bfbfffe37542c72394500ff2e1339
+*4dcade44d6c949516a28e248e6274ba8d9ab5679b1a8d24a67bc2e8aac12b3a2147399a78b6526
+*eb343f1132cf8b1a604c895295286662bcaa13949ef949d59b26d5a44c17b5a6dee74199148b55
+*999e9cd60a9968128b3dd08a5a741c2fd36cba53af16aae74a72d334deb1a3f870b43bdcebbd06
+*f8c974e797b43ea5d23ffc78301add1deede1adee9c1488e4b59ae7a4230cc69b248f22953a387
+*ff8c6595002071477cf38d7820ee0e54b2411b336f0dffc77077a88a00d7dc1a50a1196427655d
+*260917821c53844bcceb0cb3767506e0cb19cb7af6dd8edbc0ede1beae7ba7476c5054d0ab7931
+*5d6649759f2a7d2f6b39fc1939d9fb1a3e29a6ab46d2b3bc4eca1c58c84f7e932fe4e44c8eb326
+*88373530e49374b6cc27755186320f98e9c2598b12f09cd4a1cc57dd593f279093706bf0cfc9e9
+*64a7201e83f1d9f94566d9e72fcc46feaba9fb05458b7936ea7f7b771af27f777feff6b5fcbf8a
+*e77196899f51d454e2e7a44aca0fc9f45acbfb073d66fea3c8f9938c0097dfffefdebe77fb7aff
+*7f158f3ffeb4e47c711bc006f97f7bffde6e53ffbf7b67ef5afe5fc5c37a93553858ab8bf8cfce
+*8ef81674ca8fac04096154aa81c892fca43e5585eedfa72c31173b0f056854aa4cbe84c54584ca
+*3c01b5d8696101fb0850f05435a5ed44c361ec94f18a3c66fd193420536a20922c9d264e73b610
+*343a22c4147ef8c722c36f0a4805b8d48feb4d406ced885f072a492353cbb3446c46a6038b294c
+*cbcfad4de402a5f0cc92cb6ab33e515f412a2ad67dacde37e9905164ab79512e4ed38998809a59
+*97a09942eb0adeab10b46fc5d30b1ac83a5425992fea95f01eeedaf3222fd22977cba3c1ac2ce6
+*4f607771ccca7f37319c424d3a228c83d3657e56355a6dc2f8d502f93d08e5487e5cb90d05a11c
+*0d37e0f24b514eab26055ab860a9efc2681c9ccab245c226002ad4d5fc779b6a73a150756724ba
+*ab077b4fdcf67d62f9c2305da5e74bd118a7b6d070c7c8d46a8c4bbb963b26a656a327ed5a4ef9
+*589c9f2665d2eb2953e9ab32c99620684ed329c28850ca0d4e13391db04c1ce0e41de0fc1f2861
+*02d2525675ac01b4379f5ae83af295e68b276b1da1dae2eee094e9e4de264336f8abc9302d0ee8
+*207e97705827ae8dc06589c9922f40292bc144e44bb3506167cf0cf2d92e277e59876d22fb1ef7
+*7a863f422c6132476249886079c5bbddec6a8a985a7ff5c2af9eb6fef7e5370197d7fff76e43d2
+*b5fe7f054f60fcd14af64537011bf4ffbd3bb79bfaffed7d48bad6ffafe0f963e7bfc4d1e3173f
+*bc79fcc353f1439227a5cc40e19fbe48ced1acfc7d52a61f40820d04bd25c825af211da5ef403c
+*5f6675fa4a96728e6907b0ca554935108759729142818302d6b78b1a5230fb789517f96afe0c54
+*00994f924afcd7ce7f7acded8735d146c2bc0ec441b1cc6b67ed2061ea7ccf13592dcbc4a981aa
+*465febf47931e96fbf96abf5d65f2c0ec984fd1a4dd8917d1f440f3ec583e8d3c378f09c51980e
+*142e035ac1a171289c257591fbf0f01f2f4153d54b64e578fd0ab7c59ac65a83ed582fe7d165ba
+*c29ac47fff102749cdafb092e11ee33f62aa1840444fdf0f5e96d3c18be57c707c5a9c0f7e4695
+*e7690e9fd8f240e30fd05335c45ab767904c791c85396f0646e2167fca059e35c07774d3c50dc7
+*1871a3bf7fc0ba39a13740cde96500438b5d37626ab0146adc848b20651bc20cf57677a8b18045
+*1f71448683520e73b8007b3d872f69afe3372b515f6ed5957a13ed561ed9a1196af47a3d62f206
+*4168770d35d4dfde58bca362ef442d3ef1967c0ce0ea9ea3fd42465143efcfd32a31141f8b079f
+*a0588f660f35a2c1b61aebd5e21d157b07b5b66c04b079a85b724646ab6d4e23d4ae1d9c650e3b
+*4caf19ab2b075b32335044aa3d161b4816c8b69202bb80e5495cfcd582f98a9ec0faaf77255f4c
+*0758bffedfbe77afb5fedfb9737dfe73358fb7feb7176e9d6256edf05adea90abcc9a7c9249dca
+*3688970b5035eaa2ecd003bc7359de19fbb6ab83b68d0967f277a2f9f0d6de590dc53b2564de89
+*791cb078b46c1f01db95e8365f896edbd356d86c3445358c625b010dd9a544a781603b98616b97
+*68990b2ed7fdedad67db51737b63da56f0b6b5ad7d0ee359e67e0c9cbfaa526d99b1c6f636fcf5
+*86f775e58d117e20c6b8c4aeab20cd526f7074cd79660a06cc7881967f3d1e6e65cb0b546d99f3
+*58182c6bb2296eb437f9567ec756ef18ded52b687a284fcc17aa05faeb7c6fe25ad1ab7aadf96b
+*5c26f2cc98d1d27cfa0ca4e2c5cbf2693edd6a57a2ec8a625664d3ccd7e583f6332859d5b8ed99
+*c606268af4b2c8868f1768a307da7cb0f049bec5cd92cfc975ea973205413c24812e224ae32468
+*30413c169001d8a4559de4b639b3c71111fe8bc41808bd791c28e10dcb4b7a91d62bce9d9fe9d4
+*f9992dc93c46041b889309907a370eee9b44f47a05007871c1845d0d56a5ab172040034d776bf7
+*bfd2e4fc882ae2dbcff4f601de32fab774f67b4699e766a2870fac79f1fd1236d1b31414fd6603
+*b212878ae06ae8f4783afb441f3b1874ee9f7e538cd0d99aae806df9b05e97129dc214b9ec4717
+*28b73c407bdd0b6d4edbbb5392133035c2db56eb3c15ced7fe53db99759943788f3fa0bd419741
+*58fb57752266bdb33c0828a44544a21a86c6d63e2840b581dee4b25c0ddfbc3efc6e48e6937422
+*22fc423155c54e794bdbee9a406453d760f1c38f07c327e87d17811092b3e4e0b474e162f6b397
+*58a091f8aa0632c13f6cf9d6d00e8b32494f72cc6d26a9bf819c63182ee69a45929c59600d7e71
+*8437f4e458db538222cac8afb07dc482b2a724ce52ca932ecdb3344f5e25e5ac28e7cf5e76b1b1
+*03eb0d515061c7e47c2dd38ce43bbcff98c8e93650608c68ac82c3db2c8d2a03153f3e00fac1f2
+*b0450bb814629523df8c83b55dcd521393096be9ac56e12d1b32fd397a430c2ec593e56c06932c
+*ade0dd71de2c6602f4fe1dd687277cf2344521af748411bf7c453b76496b9bb5cea059063867ac
+*6c210db58292f92c7d2cde827624c63ddc9b3c7b71f4ecc553565070a3d0322e911145bd737d19
+*876c4dd64840856a5027de29cbd33b95d417f3beee43548b870f202916915b70de77cd484fdf73
+*f3f037d034648dc83ea1cd4911f502ca8c9a69e35838f68b6fbe692b4304ac953a6e54834d5b29
+*273597d61fe36ec35790600a31a573d158e844d0ee2dac4316e34c2f0b6006c412333396d85da1
+*dea3197c128b9188478197c3083a2a4949f8904659b127b2582e7c2694c8946552c1867340f527
+*3217e3442c2be856969e2157cd404f10ca6bf89cd4158bb6ab0135505fb0d18f7bde609839f4e9
+*c1b75a55ef5b6e6ff287eea5cba872da6caa4cea6599773726c5c3872368720482b2368d223701
+*74107c1d6d8fd947d86f9b15363522511c37714145ce1f6ff51eb106cbca9d2921dd1272600b73
+*e905698a367f169bf2ccecd1cc66c7f080a440962872519f266cb913a730b003fa9eb02d6247f9
+*f223cf28f6800aec3def32405d0858c53fa02750c52e4328b51afef6d81c48a3e403a9b1a709ac
+*adf579217833033c001c068c90c9f224c956b034803e8e9541c216628e8e3d341956c5529ce5c5
+*39a109ac838ee8d818a497d4ce570e1328ada6497a3d4799206f99b69267f574c98c9a84e79249
+*d380d0863e13a54fec92f8b174f9d12888cd890be92540f8e86383fcf6d116d885f410b6a49386
+*6a7f542b011568d73679cf1db1619b76f076b5d126077356d221771e7cfd9061f16210f63ad20b
+*057d1e0ef9534dcc9e63ccf93cf38d0360a4281dfda6675d8d7575d928b316fbd87c21f858a3e3
+*2c8c0e5c5a1e2fe38b509237029faa20890e87b0c0c05c37ace336646aa9661a2b51f726bd5574
+*04f90eda4303da6fae518b9a55869096d943a58fdc8340008cdd7081aa62048a6c246d7b08258f
+*8014f4d20641c904a0618afb2c035c03069e6a1c0fcdb986d25dbc43147afcf30de69ac361e09c
+*234625178f4be226cf34290b12f1c5139064a0f295c9fb654a42909650d420ec259f526fbbc64b
+*543332d4536d762f604bfc4c2b6200d2a689c3bdcee8dc2a3c7360408f8621760bb4a6c9823790
+*44924f60d3a6745e14f228f39d3e6fd7d7966dd3a93a0ae100e8be193a8e570d8c5d4cad81f4d2
+*16515bb50b8921b92c355ae72aa671b28c5ece7a6aaa4db66663647f92fb34435ce2885f27bfb7
+*252300f7c8f3dd656db2b6e2781d929541b2729144921e3ba5c721227ec728f2f1c5679f557075
+*e9ce8c11a8462022c8800529c58c30638427e2fe0331a948e228b938c18b77779bf329d2e7f363
+*3189716e4d2ae82a1d9e8eb5bff3db9688f29f06c8b19ea23e143bae2ec9a44b32eea4bf118c1c
+*1754c956465afd1ff26b608f73629595521349997b214191099f172067d58cfdd83866fe9f4b5c
+*282f061755ccd95cfdddec9db8e07f2b25b9b9c9658e8d8a332ca9db748c9b9068dbdd0d34b887
+*69301af07fd596d2b789fc909794256cc66ea886b21b3dd336083c6a0850d235d4e9f945a577c6
+*5cc266bb0b0cb6a6f2593155d6d99733687944aaae36d89afc03b4d4d2fe858db662a6b42f6de4
+*b54091e51578a704ae7fca22ecb5206e50a11be2d7dfd1503e4b2f7a0ea8ce4abc1450ad673956
+*ea79f98082e982973172acd1e246fb7c92be006c47df7ee7765e4fb005b23febef9136488b1b04
+*c25574b5059b278d9a173c9444f65da2bb35680b05f3d7df69c5faf1f5eb578e65ea45029b9bf2
+*6cc8461dea623bf3f5c12b90406ce50f8a1f9e51ee5473b73178b6d2d75e438d4b1664e491d8e6
+*eb97dfbfc4bfb6c60c96eb12b7d2339c4d7a37546673d8b7d89d2d5d878035bf0229848a2ae773
+*f30c0e1f4c45f70d758303b602760755e28e1c0ba95c17578b24ee66754134a9854b49273f57a8
+*0f2de05c4d12c0795d7dcecfc9df64ead5173053e82a8bef5d2f3beeb048fba6ea2151472e8587
+*762fd9eb69fa74437708c2af6a8f0fa4d195734b68c4d86b80aebe6c035d214de511a026a9078d
+*c6fe12d0a83cc52d5104f6a0592b900517c56d4e7e4bff1b619ecf362a398a07dadec158ebe2ce
+*d89a24e4d1c0c001b78d63c576a0e36c2c056f129a1d53e1aed5cff91a37672cb2f738d0d90b81
+*fbde3188fc039883262df63e7c325c18358391279ac8fe60dc070c651f5ffab1db143e5800f262
+*97772c2019db826306102e3876e97e61315709b1f3e68c86535025c4f6ad5b9b584f4f71ffdbfb
+*7f0649155c4d56fe54a4551f7f2bf2feb183dc5d42df934a1bfa6628e9eb53592b2b1e9adc26c5
+*c774b1200bcfa9a4638322cf56f04f22faa74596f47b498a8ac901eb0ceabc0eb56c23ab70aaa8
+*094309137c9d3abb44dcd74ee81b55cfa9813813278606951cd311448ab6ec6806328433a04f27
+*ce0714eb9975ed3379e829350f3875b391c6706b4672aad8d4d8fb688cb129df1ee5c6209b925f
+*7216ddfc67f77e9d0cf9db74dfdb93393d74b4c95617d1fe38051d3e4fa67e377251aa7da05138
+*ac76e849285352a911ad625a0f50c5947ee0150be2ed19a62e8df991c13cc26d3e6e174e4a9989
+*3cded09123eec8e65a5ebf8eb85feb6b8587c7f7aeded4bd5ba2c44d5d34573e2c06fe2c6ed161
+*664d97b0dfc4f03dae7996c0cc06ca32173b45ddbd6774615ccb57fd01fcd737d6f18fb68ebf10
+*e283d02d6e5e166cda571f6332f212b6227aa88e433d82cd62af165b2e566835f90875d9a6b2fa
+*e8435628c61eeb46b9d8f17a0ed366151e0cd9940e6ddbc516fc471b2ab3ee0fcce9b6ecb75486
+*7a50fb7a40ae8cffb4cd2a5da501b4cf5651432cda5ff12afffd4bf1e2e56bf1e6f8e957e83f22
+*d0368c53489d9055b4a40fc5ff2e96fd2cc3651e704bca12bd8cc5cb28ff3f7bb190d50a78a2a8
+*d349f595a5d3cb12cd270d02e1a911aacb1fdcae69ca9fd1296d940dc4f321ace43f25ab0a0f7e
+*ea22472f9d6a3966eccf62f1b598cbd53811e844f07c084d2625a5eb6d2602990f4aecff731ed8
+*a3a2385b2ed022630edd59d3bfdafe1f2735f63fdcfb4af5fe78fbde1febce972d5e3114385e43
+*015c05d8df3174393c32e64b3c6cb14a5938928282c3679a91e562c3d1f8d1776d870e63f781b3
+*895f094adf9e6959866eabcb913b4d71669416a482339954be5d15130a4fc23c458176445d52e7
+*88037da0e8c914df100bc509aaef200abd47cb60fb10e896ffe9350628c5ad0a3909e107aeb997
+*2bb56cd991594c2771ac2edb61a25a3a8d15b87d30e5096f8d173a3044930a860dfe7187645205
+*20849ed4a036e1a635ac5eaf412db49eb779cc3f61c203c34635e8deab63d0702a91217e0dbf32
+*981fe7a0f858f73828f9b5f86d86c04e0adc1fbc5b64cb0a32de892aa65b6d8eadb9100ba881d4
+*c7bfefaae4fd3bf8e2bf8732a355ce97e50e3569d5245fee917619c99a65dce5725a8873f16047
+*a09b1eb6b781c0e90cba7ebe7114a0815c379f6f2c9d609f902ed45f43995d585cf39bbbfe49a4
+*3f0c64d7d786f880f8b0b2e239c92b1e6a2b30ac0ddf9ba1c61322780002d0d8967f3cb44e8062
+*a2a09a547413843a5af9a0431056c17601b43e060160eacc003b422ee35b75448b3ee566aaab7a
+*1d295b1d01ecef3f34dd311d61c421536b4e7e1f8c7aaf1ccba1951d1c9d321e089f06a15ee12a
+*1f525da85fc67955f728a6c5d9ce86316b5c8ef95031d4d8b3dba11194527944d94fc178e32759
+*32e74393e6cc51a7f77e229e5db6126b24c5063eb1bc22915764658d081e45a5e10ae973858162
+*5704754ad3e9023c34241c128ad14f2632d33cbeafaaf35936ba65dda005f77c8fce178ce0a328
+*1e983812c665580c85bb39d0da5a5d6044d10a441e282105ddc94231394dcb6452672b127ce690
+*401f2ce01153592f7359a37f141a73e672728ae15c57224f9229fb61512c520cd02a7e04e19bc8
+*b948abbc5f53c8ce52bb5391c7c1b44828e704568a652564be628ee9e4337b946119cd6132ca7d
+*b940be79a2decd50fc81d96f4f7f48f0def36fa722254b90590251ef3505d0bb41031050d40019
+*983274552eaf2b06d609ca14f3413601be5a2aacc664c6d2490d3c22768ed1963a1fa12318860d
+*c85091b588685fa8b97fe6c999e6bab63a9f6964c3549848ecc69cdf1ad9eac0becbd5c02de2a2
+*d880425158509330ef5e7f86ca7fa851cbb9e0dbcc51c268e45d0d72f325ca265ef3955e1a014f
+*e2ac82ff60ae35c722ad90ccaf93728eca2b790644c707e448216efc56fe96df403fe076ada78a
+*f426ce0f3effa169cec773fa829177004760432b8d3d1a999b82d98682812ae5fa55cc6dc56946
+*928425dca4739c573a604bdaa2954e2e1777f6c7a6c3e4cdd1e8f3c80f5ba4dbdde8046165fb17
+*7584c0e7ed96ee0ef874b9b2c8df7b0e919cde485f23f0fae3ab036bfa83bdd5054daf26ec6843
+*7364eeca16a73feea5fd60d975fd690f282f58c111b591a7784847cabfe2ef4e16dfb305175398
+*53092f83bc3c4a48d9c14b1de85f8caecd9353999f24da87195d9fbf0aae8c39ce49435b264e1e
+*37c9ab8966fdbcd14449fe30d16f92171ec99ae33be31d3a360e74751c1ac89695d41949e5ba16
+*a8a53dd13a19a00ad50a5a659d8a8eeb69a0768755d7a9df086a1694437eb89060e33656887b67
+*22b2d2db3b1760e72e7db94d86b41a5a42589ab2f2cf8a314d0fb6fbf0ea4673a3b76dfc0ad4f9
+*1af11f6c7cb52f1401627dfc875dfcaf19ffe1eebdebf84f57f278f11f82411cc2f1191a01f2a3
+*508cd14df79a296822c5466cc4fdb3d7d55495353732db3752e99a32fcd5470b03ada85eeec6ec
+*9697789d2b8e5b458c12db5d31a6ebc4db5db3bcfa5b8fdb5f5ffc8c0b88c1ebc4a04ae910604e
+*f42f15e64b45f8f2c280c578379f0aae09bbe99cd33238be4d8985f81b0d02edc804263680090b
+*40ad61b58148eac9b077a92bc29f7d3f98f7034e684ce92d17b42cf9d740b45a8933cfcf92367d
+*a467dd903e8726ce2596c0d9daaca9daa305691b6397f48325330d2f6526934e9cb0433cc9836d
+*7db9cc0f11484730aeff88f6ddd1c3d045d1436daba7e4436fe772483adc219eda3f7c20bc2355
+*6bfa3a0cdbbc6e811810b3d83d3cc56fdf2c1699247cba4e4da1d0c673d343ffe834c6d622fff8
+*74ddf96974010a68e729a97fa0faa58f468922c61ec8ee91d62ca669e51908670d4b1e31c32c60
+*c9db68f53dec30f90ab2f9864c7ada348aa96cb353e3ec20345b8b49579befdc4396860d913ff1
+*b6d60d6cf446c3324a3745e926aeeb11805739dc32c3e6552caca1d5d6a1bd1036a4d9e52abb87
+*68f930b7714ab63a9aeb37656c6ed0b9376eec5512423638e19a17b0a861dc27058d9c2a7d9d9d
+*d399a2565236779e4a5ad22e73226b3c55a621a154a3c9c73e4dc63a1e0ec9496f63b5dee440e6
+*64da3f1eb38c955b8c3216bc616570b8b9c6d6f7adddf94a6e8eea369afb39d41c16bce14a76df
+*06af84f6c804c60992b961b131543e7a3334719487e140d26b97224305c7ac2fb4239e8373f9a8
+*4d262b496095c54b5d305debd83b6375ae7db8931b1f161a7290c75684c8813eb428e326719ac8
+*05c9741cde941a7275ce4a9f032f779cf1d62efbcc2a9b796ec3715488e33634405c26bc21fb8c
+*3319330cec2e53e93398c8987a646c0ee9ba85b71ab62d7a29ab46379d83376c5e9dafb92b1b1e
+*0de1099b8c0393cf9cae8527916f6e306cf1df61843f9b05b61efc2f33f62af96fc101aad25a3e
+*68900ad63debbf209bb92806f960f06b71e3a7c0167d7843dcbc09c5e09f1bf7ddd34321fe2971
+*4eaf9ff013b2ffd569f6457f04e0f2f1ff6fefedee5fc7ffbf8aa76bfc55b4b42f6201de10ffff
+*ceee5e73fcf777efdebdb6ff5ec5e3d97fbdb8bcc1e0bf97b110377fd43412d1fd6fefc74e604c
+*95ab6d6df5e981ca58e61fd345d086ecda79b51dd901d315fc6f7d50c14d21091b91f69b766c1d
+*6d732026cbb25c9179905ff8be84ea4fb7791b3586572af49abed34437a3d24a87e04873229090
+*e5c9127d6a54e03575530c1480aff8f52b37da97e91753de8df59396155d913557d838d00f7df0
+*691286779d368af0eb4c15e1eb51746f2a00e6c40b3ca68385458c89e7d2ae2386051b6a87500a
+*81307194de5a18639dc38191e4f8916ae1addb82e462f6aa70b09c74118974e8b9813624f2b51e
+*7dfc10b81638f73d6aa880e35c63ab585b6334a1b4696c3d6df0e61a57359e0853172f7d7e3821
+*4dd87c8cbdc3c54910413a5de42d2bbd60017eb5878d136f885412a7a88fb13d88b445b5cb8dc1
+*9e3ec6f0a14dd8964f177486ada6c0c2e511d6823116dcd86e2d2a76f935a96365a24ac95f85ef
+*02e23f54803b821393dc844d25be0c680b4ff496c41475f26203ce16a58969cba93bbd0dd00bec
+*31b35a2a4f0c7a084a59d0299d6f51a2277e3ab5c0718e8d9cf936a4c2eed9b422596b9e57e63a
+*e95b1b6e0bc9d69e2944b61183706835a3ce8edc09ea11a82d44c63ee2d2130ad2f655dae915ea
+*caa0d99191783584bfa60bf85de5530ff9818b3a16a0370f614c55ef6d443178df00df631f4f1d
+*1a8024390db6e1d281116e339a6833c55b8a55281c20fe3b8e556d35c611cbbd0a3d83e8950236
+*3bded15c5ac7213a287eca92b4ca52117df3cd37718f6fdbaec5049b765872e65e8655586a8646
+*49c21015af3186684db5589ee8cf26a65c1331fdabf599ebe7724f97feaf568b2bd0ff776fefde
+*6dfa7fecef42f16bfdff0a9ecdfe1f817dc01a855f6b194ae30ffe962ffa5b90a51b7dcbfbaa88
+*f92550150b9293f58f2818178d1928d5ada058bcd8264aaed1c7dc81a64009b11db419a42104e7
+*3790fb4ed0d83ec7c0737ef400c3c6be415d49386db86166a19989d34c4ecd4cb8110d84afd768
+*300a08878e9db7aa7b759b5ba440a8ff606c7fb19da78bf9dacabbc5fc0c9a1f117fed0f6e6eef
+*4e822edd1b63d0ebd1e5ab2a41d8c7c9fb6582ca06bac424efbdea262f82b74e1f1cbc774995eb
+*46e59aee6476d67b96d7aa2abf79b55566c47fd7c1c0034a86016f4d18747ac97f3b612800cdda
+*5495ea29ade393788daea9e46931972b8cb33b4ef01c00cf19528ca435148fc523973fe78f3870
+*789f07a72f1e410a6d674175a0d8bb1f64b64c388c22c27d34c1fcb2589e9c8a47b8e97884d747
+*9a85e68fb8a5473b4664104632ab0a045a2d81df5742dd61c1fdc8f9693a3915b59c9ceda0b76d
+*cea185a9b5023e616b98f2d55c0f53159e244b66f45b01a04c95e9c9693d044260a0e06a914c52
+*fe8d442b082a4d9b7951262299cdd2498a175f60d75e1573a834497259a605f59e625e972a5ef1
+*395ead83dd1cacc3658adbcff10a49c7bfc4089a5c9fda15b99c032dfaec898000fafcb36c782d
+*076162ad5c66c5c90afb46c129f9279a8a65e59224559dc3638339757a08d52986090e336fc7a6
+*49968eb10adeee911fa050256883062064b6334d70ef095324c5c581eef0c0d846b18ec32c6990
+*b4cd0440cf808632cb309923765318e57c05bbc6f91ca33873510ee48c3d12c50718a839ae460b
+*90d238fed580c0e85dc200e11e921103011ee1d1140e018362edf5917cc4a422e7a13e7e0fc571
+*4ad3dea5b038951ce7fe02c623e12b4b74358a7e8004c995e68b65ad09abb0451e3fe1dfcb042a
+*611ce89c5a539608642bf443e0db516c1858564b2c4cd1d72ae057c32600195a57d031b039b53d
+*448bc738cdf957b29063e4079966bc70012de6050639d79c65c3a1295f72742ce708dab24a98ee
+*147627398746e632cd1145cc3301b431e876063400665a56e45d887344fda6bba688e387ae59e7
+*39c09acb4cd059778a39f7451fe7711f670f73aadae97b71978d4162ee6cf448e6c03af5012fa1
+*4b9602783bad70248ab558c02239f117eb4f18e09d6d255cd7ab4984838987130167f84e5decd0
+*f46e2ceada238d9ccf2656a1a0065e9589d7429187db982e39642ec2c786b0c1463bda674e7582
+*7be2ba7bf35d022710b0ba5c606d4273728b486bd7295ce7a99c9ea64b46c2c5884f465baf977d
+*8ab52ef11a1fb0cb0c43c6231cec8209c48e57d8d46054cbb4d6bc38a73e9bae0d7bbe12f7991a
+*9c0f045dbc749c70be4f35445fb96dfba6bb92485813d42c37ab0e736bcf5116b75713dd5a1643
+*a6bba3d4ad53e71c6d50b875cc9d6f3d8e46d3dc5ec39c819668aa8df8270e34b890e570ee5a0e
+*f3a6e5703ec85b56c30b73c1ed62c07f58d7e7c2ea2609159a9baf015d81e7772e7da1a3357335
+*8efca2e2370f6c6e1e6f83b6fb5104fa3028b6e8c540347b83d536f767208a757d43209dbd73de
+*8bcbf7d4fd5804bb3d585ca2e321022080cb9100f647ebc98120b72288f3be708913facdd8b03f
+*154d016558552e5aee25565f7aae6f81fcd6d73543053ce74a9ecc01b0138c5ddd86a0ca3b9845
+*ca327b51b983005f376f8a5f2f7e0f828e5a23ee44aa7cabe1f8694c641dbeb24d86a2c8c4e3bc
+*f5abbc234cec2c0f1a60bb7c9605caf36a8056d3a7f9b4f04f7a5445cce8f83120e716d5f7a070
+*05ab63067d5b102f96f356fde3e53c581dd27beb6b6a9b6ca8f62bf33363ad8eb39f3bf65c29b7
+*81ea9413a82c3756021e4437a5f50d932e1d028119e166d756318da2dadbfa1da20ffe0f383966
+*850f1622c7f8b51efaa690f21b56f9f677c41f3e08fedaf787d63085dbf3e866da321737fd1818
+*2ebb24efc3ec92bc776abbf319731e7c8a5d8144699f1e86e61dde2b503682561b9c1e6e46e571
+*6427b7ad59962efc5cd470494f1da7b02b4acb1254a50f3277071ee350b5264a1266804e941af8
+*ec60c89a29b483975cc605ecb68a728a9bac9c1df1fa4fdff74d98081b5842ff620fccf2840c1c
+*ea3c95ba079b72bced0b0d01e78c519ba58058552396927f6fc2a104140fcd1420d7e043ac0d2c
+*7ee031d56b7dd2c445c2046894e9189ba12937f44bfe82b6d3af3982bc48a78de1397387273a23
+*7c11d9b3b5e86ec4754b44bbb1bc3e20faffede93aff31c175bfc009d006ffafdbf7f6ee35cf7f
+*f6f7aecf7faee4e9f6ff5a73c8637f29953606a096def4fcbae0dbfd34c59db449d1ede3b5e600
+*a3d371aba700d2ced8890c3d70c344f79b07e4957b3aaf4ec5d1c08a67f51aa0ba47458be2a74f
+*9ff88b6c3aca636b5274fb6ca518f2076b6abf2d8afe687cb76e9267c5b33c135fc99ebf283dcb
+*4bd1e5cb7533e8ca8560e857cff0857f84d0e6bfc5fc927d341834497076f27adba82cddcc9346
+*cde8447b80687f946675db369778db0123e81d7633e41c164690b2368176ad240cde87af7ef311
+*aad22741a71f7a7cebb585a0df523a9768e6cd545ea9f24a870acd9f820cf4d2fc1ca48f07fe06
+*641b0ffbdb90f4a3764d1f2a8a86ee0647b7cd102b6ad7a3cab8eab005f4fe7d766ab2e911f07b
+*6c3d9bd85724721ca12adf116a5268df26cc5057405c073e8d930a7ade400cf60b78e862311a89
+*9f699e595c74086ab7b9e8882698756fd2e954596784d068cc24850410dbc3410f0963e0b3fb4c
+*35c9793ea39f689733858ea9a47e31d1a69706492318d8a9137bd647d7cea6ca4a5deb777b7bde
+*0c7b7b323c6a8c5f03624281a62ee8f786b06881690a8c008ca0d858838f233a3aa1850548d0bd
+*b41b6b2d45b668c5e39cfb01d621b86d06ee37f9c74125c0412e264d26726a0698dde46cbdfe77
+*e97f8699fe7cfd6f77ef76cbff7f1fb2aff5bf2b78c20a9e234acc2bb9d76b4dadb9e6ccdc7807
+*34739bfeb09eeba1d46713e87668a54fa38e576ee28a182ce82c4333bd0c510d4fe459af596df6
+*65083a5d7bd91ad7da911563430d252c643dff540be0fff22ff65857d271ec61d4c857b9a6519b
+*ed560e21d05a441b82d58aba3562d591778e88f6168c201c7fb970a184160b074470a96863f157
+*cf8b7fcad3bdffa7cb165771ffebd6ed7bfb2dffcfdbd7f7bfaee4e9dae0f3551bb5bf579fedc0
+*5ebc0c68e5eb9c371e5cf53c703b07c4f6b9f71b78e6d28dcd3917d179e347cd51da9fbb9eeca6
+*e8b8d78033d275945c37b77f743414efe7e0fe6ae25f3fd7cff573fdfc85cfff03690bafb100bc
+*0000
+newhex
+*
+rmfile ./dist/rope-0.1.tar.gz
+binary ./dist/rope-0.2.tar.gz
+oldhex
+*1f8b0800000000000003ed3d6b73db4692f98c5f31a54d85e406422459b27d3e51654aa26cee51
+*a28ea4e24be552ab2138945002011a00f5709cff7edd3d33c0e04551bbb6b7722b542202f3e8ee
+*e9eee9e96e0cc651b8109b5bcece4fdf7dbd6b0bae577b7bf40b57f197eeb7b75feced6c6d6fbd
+*dc7ef51dfcec6ded7cc7f6be224de9b58c131e0129ff2c9ce2e0fe2457a4e53f12c972e15cc75f
+*0107f2e3e5ee6ebdfcf75e16e4bfb3fde2d577ec9b30f1df5cfede7c1146093bf6e224f226cbc4
+*0b03670485beb0e6dc0b589b4dc58c2ffde4149eac7f35b5cfd797bed2f98f378ecb27dcffe238
+*1e99ffdbbb2ff68af37ff7c5cbe7f9ff2dae80cfc51b965da806d6ad886230046939e887e57bae
+*08e2acede1e8f8852edc9c793ed5f47b47ddb351d7e2cbe43a8c32b8dde91d8fa6ace3b0ff9a8b
+*2421d392c0ff42b529d4b37d7183bf6fafa0a1efb8e1fcc002314d3cdf4b1e145471bf10913717
+*00c7b7aec3b958f0ab94baeb2459bcf9e927e818067c8a007e8a049f8ac8727922aec24843617d
+*1e5c2da1a7153f04e122f6625d310e433f66b33062731e788ba5cf132fb86233f823a224122266
+*e18c4d1e12819633b88aada988ddc85b249a734f87e0868b87c8bbba4e14114db7c5705294f837
+*597afe74337958a8112b8b4dd3773393de417b1b243706f862baf9c14baea9f5bbf747edf64b67
+*7bcbd9b540829388470f166312e6542c4430955cb0f0cf84c70200b15df6c30f6c9fbdb455714a
+*36566e39ffe16c3baac91680b6a9513654d9086ad226b2c53299bdde34e1bc70f674935d8ba41c
+*c640fc3c9c2e7d11bfa14ec73ce1ce101535f7e41c86d38742512f4844148086e48b2f1250aba1
+*982e5d500935d4ab6b773324e9c1e8373f70dfff7758ee52fbafa6eed7c0f188fddf79f5b2e8ff
+*6fef6def3edbff6f711d6993931a1b5b5b1b696a3abecfa841cc22118be8564c1dcb82b963788c
+*8c0753b6043b010e631c2e235750c9c40bc0b4a0059cc736bb03fbc3c018e26fb88435209c7a33
+*0fec3100b0198f0403833ef712b0556c1185b7de146e926b9ec01f01407c3fbc4333e186c1d4a3
+*698a9d2c20f28d4573f8af2c4f159957458e1b4e059b83ac6110b8f0104c3e096fb14a71c09246
+*37081358d56c68e1c5cc077808c6441a4c0b140152d7e7b016454e1d2580d1e086a60486892628
+*2346919092f4746214848c24a6063b0ddd25ad965a603f812c42a8c1e5098ca4c761b1d27c5750
+*4864d4d90c0ff418cf8447ddb101ba11485a2fe6dc657f0b0358dc8230ab235910b67488818418
+*463110f0c0260235084613325880a054a0b20041f330114c720a7410d670ef36257006d5923771
+*384bee5089947ab178215cd42fe8eaa1d645a85981d4b13896e318bfef8dd8687032fed0197619
+*dc9f0f073ff78ebbc7ecf017367edf654783f35f86bd77efc7ecfda07fdc1d8e58e7ec184acfc6
+*c3dee1c578301c591b9d11f4dca08aced92facfb3fe7c3ee68c40643d63b3deff70018401f76ce
+*c6bdeec866bdb3a3fec571efec9dcd00003b1b8cad7eefb4378666e3814d48cbddd8e0849d7687
+*47efe1b173d8ebf7c6bf10be93def80c719d0c8656879d7786e3ded145bf3364e717c3f3c1a8cb
+*7058c7bdd151bfd33bed1e3b801d30b2eecfddb3311bbdeff4fbf9515a830f67dd21926e0e911d
+*76c1b1eb1cf6bb88880679dc1b768fc6389aecee081807e4f56d6b74de3deac10df0a20b63e90c
+*7fb115cc51f7bf2fa01154b2e3ce69e71d0cadf9084740244717c3ee29920c6c185d1c8ec6bdf1
+*c5b8cbde0d06c7c4e75177f833ac5ea3ff64fdc188987531eadad67167dc21c400023805d5707f
+*7831ea11cf7a67e3ee7078713eee0dce5a20de0fc015a0b1035d8f89b983331c2ae8487730fc05
+*81220f88f736fbf0be0be543e42771aa832c1801c78ec66633c0070c1c5bd918d959f75dbff7ae
+*7b76d4c5da0142f9d01b755b20aade081bf4082d081f705ed0905144409545b786c2da2448d63b
+*619de39f7b48b66a0ca21ff5949a10cb8ede2b763b2597265dffd139fa4a49c0a7e7ffe0e1c573
+*feef5b5c79f99373fcc573808ff97f7b2f768bf1ffcb9dad67ffef5b5c32b0ca4223d694f1dde6
+*26acf023ef937649d270cb66be08aec02f908ddebca12ab679c020d6522d8225388dacdce21022
+*6203baefb9da6301db0f01fa0d9ff8a2e9382d55162f20e0ef24291cc0806034b826ded8f4a87b
+*24fc4698980b3d8c514c41f3d76949a4423478a349c582bfa2ff022e11b824e04928882a9e34e8
+*17f345f2c07257c610d5065d984308a6473208ceda188579cab1c7d1f532b8890b507fcdbafc56
+*d1a7cf3f3d9840a94fdf5989e743184de322f5bf62e9eb2a1447d73c2a0d960aab41bf2eb69585
+*e5c60677b2c6155493b48e45261da86f606d2356d02e8205778b8a968405861635d7646ddaa7c0
+*d0621f93b5699fc2408a7d8cd62d7607eeb2b02c95a23f8f84bf8428e6da9b2284264e32fb5af0
+*a92d27a48d1a6de304b0d5bc81a9cae3a4a50154a73f6016657a5bd1566750a459689a8221f5ce
+*190563fe9794b552df6bd5b3a88305252bea5149550a0c2fc8b946842b4c51a5da283e1bb6c730
+*2ead3f45faa8bcfe7f7927f0e9fedfcececbad67ffef5b5c15f2c734ea1775021ff3ff76778bfe
+*df8bbdedbd67ffef5b5cbf6ffe85f53b67ef2e203a64ef442022ee83d7373d1377f87ae118d32d
+*60196d467702b5640ce568086d76baf413ef9c477c8e6547b0dac422b6d9892fee3d687014c2da
+*719f4009568f1e82307898f76065e6812b62f697cd3faca2fb99e5f09b2cbd85407a368b456258
+*5e32e3c6f35cf0781909a30bba000d6da783d06dacbfa8aac52cbf189ed0bb8c31becb6866f776
+*73ff73cb6e7e3e68d9a79284a9ad68b1697904e4d0d8174918e4e1e19f5c81666baef0340c426f
+*ba7a05cfd51afe4833bb974b7236302b90e2558c656d7df33bbb1289ba574ef11f32e74610bb1f
+*ed4134b5cf96737b741dded943743fba013c22725b0f0110784acc4c8e40c397dc4749cca573dc
+*665bf2912ff0c5133c377f34e8233943a1fcfd9d2d0397eef2fe7105891979f594298169da240e
+*9342aacf98e3e8d0c7d174581651896a07cd0c15c981b42c433d91f42266ceda0715bdb98eaacc
+*ee6d43428ea6d1b248ddcb61037551bfd6845d52b34b96b0cf32489b003c9df896d76799a6bdf3
+*6291f27dc2f63f43338be61121d1604bc8ac845d52b34be8b52612a0e6406332e4a31d540309e1
+*cd24b40cbc248f2673492b31a5739135153e6940902d509dd90c1c02b627c3f1afb6d15ff3aa58
+*ffb5c7ffc57c80d5ebffcedeab57c5fd5fbbbbdbdbcfebffb7b872eb7f79e1d625e9aa5dbd96d7
+*ba0217c154b8de9497410c16e06ae0db9f2ad7a2da37c8bdcc979168ea0250e07f544eca60d4c6
+*4a970cba39bb5436e65206e06085b94c27e442dc9aeeab53326ccdac4c21f7c3d64aff94320feb
+*65734ac987fa444a65fa873d3903c49e960462f57920127007a4ff107b3a7ecf3291d5d2a9cb4a
+*d6b7ce6728cd4452aa5115b9a21298ca745199fb2bb23f95f9a55287528a494e83654289af75b2
+*14592f99e1c8f057663ccaa911e88bcea807d344b5b9db71b584bd60da030b703f88bae0dbe5c6
+*dc4c458c3c6f95bd092db8d465aff3d9290746a92ead1136be0f9ffa79af376584e4811cbecd26
+*3822ace39983fe710941d0cc03074de14a71a3658c42dfe92c0016ee5db8cde8205bd1b24a5e3e
+*6be25f6498cdb491b395ad020bebdd03ef64edfc4697ce6fb2965207898fadca888135f59dcce1
+*d5c62d3f7be2ae4fa8f06e4877b770e7d3dfc8086652175512d63cd86f5570a78880c7ec44f141
+*715b8bc00882eac080c4683008c4aa0a82ca5110399ceb6537251b65286893e358e013aaa352ca
+*ace6ddfb23e71037c0359741cc67e2e83aca2a4fc248785781739e44c522f55b513382254fca6c
+*21c44d2d378ca900fc18e9c0b4528353f5d63cc6f1e1dcadcaff6680b3ccae11284a717b81ef05
+*e25c44b859a537a893bc01eb82d8a36895bc1a73cf474af0fe3d4cd175a08c4f5e238c0bd6cc96
+*ab35faa1a1c47efd7ccc2b7990adcd99ed8685dd17f3fc945a0d3ea5ad9f232eb3eb2dc34680cf
+*e31cd2761feae6505ec57359139f10705c81b5be1b724477b42c309f9c1d2e6733dcdb13c3bdb1
+*cb329c3170cc36a5d7e2ca54b70ea5a587237f7e6713158a5244f58734dd59104dd1335b11ce13
+*948a603e8bbfa80504832ab0571e56d2d024341376b00fcf26f0eec72260888cdb14d8e960bc49
+*84f31696e7cb262d66047e3ffc505e400958a974c20c0a0651696c1ca3e6f98247e25246b265b0
+*598332f4150987121375be41df392426cb222716977d65d478d15d051f89dab4c9b259e8d4f7ce
+*fabdb3aef47fd19bb6a488b4dfaa0546804e1c2937a39faca78e86735be7ce1a4ddab4f682e1fd
+*5f5fbea065492b7db1daf4b31444aba5d4c6446b0022dca9b355e75ca50d221abccc0eed7f7f00
+*630259e08639a91d60b70d34692f85a420b43a0fabd4b00df506c94ef6822987acd04b212d234b
+*d1a4e0a521b72ce5e916fc5a55da36d39f5a690c025433424b4e70d1e1a5c236b08c6eca00a838
+*d5853ca32a028e42234cd08c9c3445a36c452e1f44573e5523f5e5c4a948d9b48a1a53e42d98c8
+*b343b92f30121f975e24d04ee21646373177ae47da37982c31dbe6e33292555b1591565d8c55d1
+*74f5449063f129b196ce04607ddfa952a10af07aa0b8839e898036b84a8b8fab00eebb34469151
+*5f4177466f190b1074e1186f550b3499b464f16245809855d6a17148d10bf06517c30a4110590c
+*26d30a7795d634cd61b05fdddf5a65352228b9b1bc2ec7a259d56425be915136a94026611036b4
+*88654c294659cd33256a33177d52f2dc19ee08a6b924f1baeccd3e73639a726adebb6c9f6dbf2c
+*aa5e5367dc27cc6da11abab10ce8fe5e8e91f3216b1e8ecc0dcbaeb496115fccd17373e8723034
+*ec745da420a9b0185e5104c766ec1359761a309877ea1de921e37506464369f4a742faf76fb8cb
+*ba796fdfc72d592dbb5fce2ed9bdfc1b2b3324512e0344ca6eb0a5c669045f5098e1ddae40b883
+*65c059f84fe16ab574dddfb14e445118b10d85c8dfb052dc30e9091190a47ba8acf67dacdd2ad9
+*22ab36ad256253f5d29553d1e3600698dbf455970e289527a023cdac27cd2c09c36881165b85a5
+*39306c831a6db05f7fc32879e6dd5b06a8da4eb4fc5f52af5e809dac5c3d9090d299ab681b2131
+*db28e704e909c0d68ced37cbd29bc9eaf691c96d64ba55a0a6db2c95200a84edb7d916bea39aab
+*20b7aacd417e3d9e617bd9ce5676de6c6f4a51366bdea7af501e1a2d85a3f9d068a4bed3a74caf
+*8c29a32fd0f8874f2d5acf693410bd6b8f3368b159aead9cc30f68343e410f69521e3ee5e13d34
+*6ca0a4d192f35a31a819b0cddc38ef5b0c5c55da8057b39d8eeaf093e2598cefae5256e79c256c
+*43e68136e8d540a2ba805ed04ceb20511b695f311b9da5aec094664ca3f40fe5a3782e1755bbc7
+*1013454f698f03fa70edf96245a734c98934afd5382305d54b0ea21984c8d65911efcce0387628
+*609a196ca46a8bc0bdae49d2550e54f59891ad56eb54c3d6215fc35c1d52d56a428b446a15756f
+*649eba6ea2ca5d37ceaf795810e614b98bd3aa4f74a960c6d6514dcb6c975f24a139412de42967
+*64e9cb1eea56fe3187ccd5cba77905d266984bb1ec54e52ea8d9e1b65a6a7b03162a45cfafd0f9
+*cb34219a2e80cd9a6e0c22803f268bddb80242d5e5a5a4b912b586654e3125f6fc6a9ecd33a93c
+*c5b9a668790d5e569eedeb26850bdd804fe72358d063e6e3400bb92bf63d7d119425e4a0e5f7ec
+*7f6708ec2a64cd19bb5cf8cb182a2e19b809b819c1704242b6801e2846fcbd8cc5c74b7892bf27
+*dc27a3bd045280a4f49ba4542cb412d01b87367e75b68c02e617db98d67f1ab23bb6bfc9303188
+*f81e91943783a1df3d2a4e401068f4c1a3ad058e09f942e34d39b3dd02ebf2e376de89cd8b8194
+*407b68468079ca1f264209569b8bcc91cb4d6b3dffab3d5a80251dba9193251599abd7475d8a69
+*47e8a3974a9833daad0500ca593487a16951f4e3c25b45bfb4762a3dac9be5e88f4af403d16f0e
+*d251a4f44b7aa152aff279d261fae747f818fd9216a2ff6ec7cdc511b455160bdb2c4d60e31201
+*f1073a4e5711f74d58d8323f9975c68942a3828b4ebb2fdaf92db9b491e2d150a52cdc7f3c5c49
+*79531794e0950526f93090ff96edf64869e679a9e6a8ce8b7405d53826dd30a5dda5e44505d5e6
+*0e98b5a82e4b48cabc5e44d9366963b3cb6bf6e7187f3e9c2c0f9ea0548f9d5e1c15db2b4ed673
+*4ba53bca3d75626335a3e3d5db98ea3b1bc9c632845ce6a91e46614f7bd5644646af4344b6d38d
+*5906a0f46d8404821ebab1cacba0a39d7ae5b2943c99b6f4ca6589b4bce47f96168159abde56fc
+*230b01335602bc327f519b542c4db08b8efbf264cd56d2b36a09320d5586965201f21193d41b88
+*5ae603d23753a4f933983b397b4db932b38d53cc41630f2d3527cb83abb42ea250ef0a886ac748
+*534672cd483393b0942907379799ccd275446fd59b04aca8cc2aeb682cdb5d900bc764be3b97ed
+*476b8755f89adface059695bbfa777e8d149d3e6d802df81e6fb294ca47de5959e9bd19b5c5d6b
+*fd016ebebd328654f47cd5b0c8e8ba3c39050991b650693ac75a35e2a2412555d324a998261cd5
+*926c6b6e7ef0359410116d644c4baadc9b3ccabf67cb019728a96701d9b00a1936dc3045d1d6be
+*98c9f9b67670aa194d7e49059ffb174efa16c5a9fece67a5e6a43c30fc7bdcb8321e1c0f4c9aa3
+*b7455727b58dce5450523e6d60869446d6d234407849dbc6eda095593aaebe570c74746c70a748
+*5d259f0c935ec1adc72d0671e71177bd4a05b9a1298f2bdc23fe7495c23d8280948ce524f6a441
+*f03827041225af34e8a6189574d6180e8f0be33142041e938129cf248daa6646e477b1a742fe67
+*c4fab505bab628bf8c2455f1bf409eaa66a5540b03cfbdb4e3c55ab450f2b5c2f7665a3c530867
+*83fdf82334833f1b6fd4628d07c96c3070e92af77fe3fea92ffa11e0d3bfff7bb1fd6aeff9fbbf
+*6f71d5c95fc50a5fe41b80d5fbff41d87b2f0af2dfdbde79fefeef9b5cb9fdff8f7ccff7c8a77b
+*b97d9764e09aa5331168a7316ef5244f048f976aa826e907fa188e80832c8bf566e17477e8cc66
+*c2d8b63f6fe12e28f9a64490c3349376776e4053a0185b0fda8c91a33f370ec26818fb7d1b72db
+*88f98dc1321217183e330387b94318d0b8069a80d0b81289062253b41a8c02728ac757b279a97b
+*ae6ff19bc68a3dcac52a0977bd0dbde9d33a9f43a67bdcea769d9a3b349fb2b3137e1fdf14ace5
+*6a59bf6fd6c01e898f4b812e136e55151f73ddd3ba26dcd56ecd1de19779d8392974c68c84486a
+*fb4100afbacabb5c6f55d994bfab6060ec2861c05d11060596f2b716860250ec4d5da99fda58f4
+*998d710315ed1d5507b44d041d5b07aae3e1bb7b8775d85b5333e76fe58ed486144e83bd85123a
+*c20f228c1881de727f290f8323b86f5dac8fc2e5d5357b8b19a8b778fe5bb1d1fcadc4f4763335
+*164411f7e31081c64bd0f40716d21745742cdeddb5e75eb3045ca04d3aec4e9e7347d842786460
+*cf627936884969284fcaf3c52c41b0e053d1217c0e304280d74727cac9afa33313901e5e370f23
+*c1c46ce6b99e08127912e21c3ab922e09117d2e8f1b43e3ca38e0ebabbc317337cb1801538f278
+*02dc7d40d6c96fb093306a105e757a5e4366b11040437e857917463708137b05dc0faf1e706cb4
+*ef4b7e9c152e639325ea18403a43704e8376a03b422031cbaccc54f8de04bb08e027bf8546319b
+*81bb8d20b8af0e878529e2e1b2108752b64db047c0d30966725048fab364008d87df72dfc7629b
+*88873e731e3c30379c03117a035e4c0070442cbcc50309711d5a807d46f9c73681d1b18e8d704f
+*bc08b30c00b08f61068a408282d006d694b7fcad6415256b1af8ecb09147d3dee430bbe67203f5
+*3dc803736a2039049fd07717c82e2f582c13cd58452deaf895fc521eb874138477f2004c719f44
+*5c1e39a3ce25148ad320f0253646d87856e1325513800cd815f418864db81d30d4733c2f924e47
+*448de1b7dcf3e59285e7098730e854b394f947ba51921e9ebc280fcdc460c5cece88147780048f
+*5e4612b12ed682bb86363ef000946919d39e669c23b87cc072a43902850098cb3320a5ea9c02ac
+*39f719e5203c79f27103e77103678fd45495f0531bc7e7b8f46927c185c72c52259b032b146800
+*eec6242b0002c0199bced32c550dcba39b5fa63fb38e7ccda0fbe67a12e3d419a538c337937053
+*9eb1995fce75be6f4ebb03325782109c472287210caa714c97727f29c2474488b08047671fd520
+*e448cc4c3c11626e969505325d4354cc295fe525e65b1d5da76a2ccd179f8c4b6a3e25d97abd6c
+*d0719c741e37a8cb2ca13341170b1c02a9117e0e1a24b11646bcf412ad8b731a733a34c7cabb6f
+*ffa0ef960732537b69698922eed02e9775c7a6872238ac096a96a7ab8ed456cb7013d77710cd5e
+*198592ef863bb7ca9133fc4066f649770c6839a63ee6fabee50cfcc3b45b9bbcd4145c9a396a1a
+*73d13626a684933d37e798902cbc2ebac7dd3ef2ce963fd2cb978de9f5f6a56c344f9f6cda4021
+*ef65eb7bf9a6e452756bd30638590224a5f7416b1db2cd87b0620c76b8c6286c561c0d767b7c3c
+*360b578d0d81d48eceb80f9f3e52f36151396c7bf18481573100013c8d051019ad6607825c8b21
+*c6fda2b5fadd6a4da65bbf0b4e0d696a2a2bace76a0cf439d82a34d420f74a4e4ee60ab02e6e45
+*2f4350ed0dca9a6f1407635308f0f4e38fecd7fbaa0d012e3a6605c8b817b8a9f7932838f932c9
+*645556c18630f45927281dc2d1c6c2daf6e00196dbfb7e457bb91af0166b7683698837a58e5851
+*fe208d9b3a8f9fdc82c355d91d2be8390371b69c97fa8fb0aca23b945bab7b9ecba3aa2b7babba
+*aa81cbf78a3872e5dc5674a79a8acefcd14ea08398895e8d987ce92a1058518d7665971429babd
+*a58fe06e25e794fc8c2402d6b432a796199f17668dd47b66559f1d1e74b05f79c4cf6d494cd5f8
+*727c4b71a59b4f6462a1820f23f1b15a5dc447a3b7399fb166ff73cb344854f6f9a06adee1160b
+*952328e190e5d568541dc003a7dac435f3bd45be163d5cf253271e44455e1481ab74cb0353f0f8
+*756469a2886a05a825a940cf266e789c021efcd0758227b787d1541e5b4fef5a1add8f0d360d45
+*1c3420aac67fe684fc37792ac3123744084a70a84d07343c08ca716f122002cd99a037cb10735c
+*d8d29bdf7e6970029a57cd1460977ddbd20916765b316a88959751f4a0d233d50c28b4a9918d93
+*b673f22df1df7161dfcb0f53f2bb9b503c37a6789a37442f127bb392dc47695d93d07a2a37fff8
+*7f7d8cd2f3f57c3d5fcfd79feefa3f3108436000760000
+newhex
+*
+rmfile ./dist/rope-0.2.tar.gz

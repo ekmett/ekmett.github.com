@@ -1,0 +1,87 @@
+[More robust generator scheme
+ekmett@gmail.com**20090322194105] {
+hunk ./Data/Monoid/Lexical/Generator.hs 1
+-{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
++{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeFamilies #-}
+hunk ./Data/Monoid/Lexical/Generator.hs 5
+-    , lexMany, affixMany, prefixMany
++    , Elem
++    , mapReduce
++    , affixMapReduce
++    , prefixMapReduce
++    , lexReduce
+hunk ./Data/Monoid/Lexical/Generator.hs 23
+-class Monoid m => Generator c m where
+-    lexMany :: c -> m
+-    affixMany :: m -> c -> m
+-    prefixMany :: c -> m -> m
++-- minimal definition mapReduce or affixMapReduce
++class Generator c where
++    type Elem c     :: * 
++    mapReduce       :: Lexer e m => (Elem c -> e) -> c -> m
++    affixMapReduce  :: Lexer e m => (Elem c -> e) -> m -> c -> m 
++    prefixMapReduce :: Lexer e m => (Elem c -> e) -> c -> m -> m
+hunk ./Data/Monoid/Lexical/Generator.hs 30
+-    lexMany = affixMany mempty
+-    affixMany m c = m `mappend` lexMany c
+-    prefixMany c m = lexMany c `mappend` m 
++    mapReduce f = affixMapReduce f mempty
++    affixMapReduce f m c = m `mappend` mapReduce f c 
++    prefixMapReduce f c m = mapReduce f c `mappend` m
+hunk ./Data/Monoid/Lexical/Generator.hs 34
+-instance Lexer Word8 m => Generator Strict.ByteString m where
+-    affixMany = Strict.foldl' affix
++{-# INLINE lexReduce #-}
++lexReduce :: (Lexer (Elem c) m, Generator c) => c -> m
++lexReduce = mapReduce id
+hunk ./Data/Monoid/Lexical/Generator.hs 38
+-instance Lexer Word8 m => Generator Lazy.ByteString m where
+-    lexMany = fold . parMap rwhnf lexMany . Lazy.toChunks
++instance Generator Strict.ByteString where
++    type Elem Strict.ByteString = Word8
++    affixMapReduce f = Strict.foldl' (\a -> affix a . f)
+hunk ./Data/Monoid/Lexical/Generator.hs 42
+-instance Lexer Char m => Generator Text m where
+-    affixMany = Text.foldl' affix
++instance Generator Lazy.ByteString where
++    type Elem Lazy.ByteString = Elem Strict.ByteString
++    mapReduce f = fold . parMap rwhnf (mapReduce f) . Lazy.toChunks
+hunk ./Data/Monoid/Lexical/Generator.hs 46
+-instance Lexer c m => Generator [c] m where
+-    lexMany = foldMap lex
+-
+-instance Measured v a => Generator (FingerTree v a) v where
+-    lexMany = measure
+-    affixMany m c = m `mappend` measure c
+-    prefixMany c m = measure c `mappend` m
++instance Generator Text where
++    type Elem Text = Char
++    affixMapReduce f = Text.foldl' (\a -> affix a . f)
+hunk ./Data/Monoid/Lexical/Generator.hs 50
++instance Generator [c] where
++    type Elem [c] = c
++    mapReduce f = foldMap (lex . f)
+hunk ./Data/Monoid/Lexical/Words.hs 1
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, FlexibleContexts, GeneralizedNewtypeDeriving, ParallelListComp #-}
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, FlexibleContexts, GeneralizedNewtypeDeriving, ParallelListComp, TypeFamilies #-}
+hunk ./Data/Monoid/Lexical/Words.hs 91
+--- accumulator, per-word, and up-until-next-word monoids
+-wordsFrom :: (Lexer Char m, Lexer Char n, Lexer Char o, Generator c (Words (m, Unspaced n, o))) => m -> c -> [(m,n,o)]
+-wordsFrom s c = [(x,y,z) | x <- scanl mappend s ls | y <- map runUnspaced ms | z <- rs ] where
+-    (ls,ms,rs) = unzip3 (runWords (lexMany c))
++-- accumulator, inside-word, and until-next-word monoids
++wordsFrom :: (Generator c, Elem c ~ Char, Char `Lexer` m, Char `Lexer` n, Char `Lexer` o) => m -> c -> [(m,n,o)]
++wordsFrom s c = [(x,runUnlined y,z) | x <- scanl mappend s ls | (y,z) <- rs ] where
++    (ls,rs) = unzip (runWords (lexReduce c))
+hunk ./Data/Monoid/Lexical/Words.hs 96
+--- accumulator, per-line, and up-until-next-line monoids
+-linesFrom :: (Lexer Char m, Lexer Char n, Lexer Char o, Generator c (Lines (m, Unlined n, o))) => m -> c -> [(m,n,o)]
+-linesFrom s c = [(x,y,z) | x <- scanl mappend s ls | y <- map runUnlined ms | z <- rs] where
+-    (ls,ms,rs) = unzip3 (runLines (lexMany c))
++-- accumulator, inside-line, and until-next-line monoids
++linesFrom :: (Generator c, Elem c ~ Char, Char `Lexer` m, Char `Lexer` n, Char `Lexer` o) => m -> c -> [(m,n,o)]
++linesFrom s c = [(x,runUnlined y,z) | x <- scanl mappend s ls | (y,z) <- rs ] where
++    (ls,rs) = unzip (runLines (lexReduce c))
+hunk ./Data/Monoid/Lexical.hs 53
++
+}

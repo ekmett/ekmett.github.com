@@ -1,0 +1,119 @@
+[Representable adjunctions
+ekmett@gmail.com**20080530085558
+ 
+ Made Representable a prerequisite for Adjunction, and provided the default implementations
+ as repAdjunction and unrepAdjunction. Since the converse also holds in categories with 
+ small copowers, we should be able to eliminate Representable entirely.
+ 
+ Now properly generates Category instances for BiKleisli and CoKleisli for pre 6.9 
+ 
+] {
+hunk ./src/Control/Arrow/BiKleisli.hs 18
+-#if __GLASGOW_HASKELL__ >= 609
+hunk ./src/Control/Arrow/BiKleisli.hs 20
+-#endif
+hunk ./src/Control/Arrow/BiKleisli.hs 35
+-#if __GLASGOW_HASKELL__ >= 609
++#if __GLASGOW_HASKELL__ < 609
++	BiKleisli g >>> BiKleisli f = BiKleisli ((>>= f) . dist . extend g)
++#endif
++
+hunk ./src/Control/Arrow/BiKleisli.hs 42
+-#else
+-	BiKleisli g >>> BiKleisli f = BiKleisli ((>>= f) . dist . extend g)
+-#endif
+hunk ./src/Control/Arrow/CoKleisli.hs 19
+-#if __GLASGOW_HASKELL__ >= 609
+hunk ./src/Control/Arrow/CoKleisli.hs 21
+-#endif
+hunk ./src/Control/Arrow/CoKleisli.hs 35
+-#if __GLASGOW_HASKELL__ >= 609
+-instance Comonad w => Category (CoKleisli w) where
+-	id = CoKleisli extract
+-	CoKleisli b . CoKleisli a = CoKleisli (b . fmap a . duplicate)
+-#else
++#if __GLASGOW_HASKELL__ < 609
+hunk ./src/Control/Arrow/CoKleisli.hs 39
++instance Comonad w => Category (CoKleisli w) where
++	id = CoKleisli extract
++	CoKleisli b . CoKleisli a = CoKleisli (b . fmap a . duplicate)
+hunk ./src/Control/Functor/Adjunction.hs 17
++	-- * Every Right Adjoint is Representable 
++	, repAdjunction, unrepAdjunction
+hunk ./src/Control/Functor/Adjunction.hs 24
++import Control.Functor.Strong
+hunk ./src/Control/Functor/Adjunction.hs 26
++import Control.Functor.Representable
++import Control.Functor.Zap
+hunk ./src/Control/Functor/Adjunction.hs 43
+-class (Functor f, Functor g) => Adjunction f g | f -> g, g -> f where
++-- The following ambiguous instances prevent the requirement that (Zap f g, Zap g f) be 
++-- a prerequisite for Adjunction:
++
++-- instance (Adjunction f1 g1, Adjunction f2 g2) => Zap (CompF g1 g2) (CompF f2 f1) where ...
++-- instance (Adjunction f1 g1, Adjunction f2 g2) => Zap (CompF f2 f1) (CompF g1 g2) where ...
++-- instance (Zap f g, Zap f' g') => Zap (CompF f f') (Comp g g')
++--	zapWith f a b = zapWith (zapWith f) (decompose a) (decompose b)
++-- instance (Zap f g, Zap g f, Representable g (f ()), Functor f) => Adjunction f g | f -> g, g -> f where
++class (Representable g (f ()), Functor f) => Adjunction f g | f -> g, g -> f where
+hunk ./src/Control/Functor/Adjunction.hs 62
++zapWithGF :: Adjunction g f => (a -> b -> c) -> f a -> g b -> c
++zapWithGF f a b = uncurry (flip f) . counit . fmap (uncurry (flip strength)) $ strength a b
++
++-- more appropriate to use 'data Empty' or a (co)limit to ground out f ?
++repAdjunction :: Adjunction f g => (f () -> a) -> g a
++repAdjunction f = leftAdjunct f ()
++
++unrepAdjunction :: Adjunction f g => g a -> (f () -> a)
++unrepAdjunction = rightAdjunct . const
++
++	
++-- TODO: widen?
++instance (Adjunction f1 g1, Adjunction f2 g2) => Representable (CompF g1 g2) (CompF f2 f1 ()) where
++	rep = repAdjunction
++	unrep = unrepAdjunction
++
+hunk ./src/Control/Functor/Adjunction.hs 82
+-
+hunk ./src/Control/Functor/Adjunction.hs 102
++instance Zap ((->)e) ((,)e) where
++	zapWith = zapWithGF
++
++instance Representable ((->)e) (e,()) where
++	rep = repAdjunction
++	unrep = unrepAdjunction
++
++instance Representable ((->)e) e where
++	rep = id
++	unrep = id
++
+hunk ./src/Control/Functor/Adjunction.hs 119
++instance Representable Identity (Identity ()) where
++	rep = repAdjunction
++	unrep = unrepAdjunction
++
+hunk ./src/Control/Functor/Adjunction.hs 127
++instance Zap (Reader e) (Coreader e) where
++	zapWith = zapWithGF
++
++instance Representable (Reader e) (Coreader e ()) where
++	rep = repAdjunction
++	unrep = unrepAdjunction
++
+hunk ./src/Control/Functor/Lambek.hs 23
+-import Control.Functor.Extras
+hunk ./src/Control/Functor/Representable.hs 14
+-module Control.Functor.Representable where
++module Control.Functor.Representable 
++	( Representable, rep, unrep
++--	, repAdjunction, unrepAdjunction
++	, Both(..), EitherF(..)
++	) where
+hunk ./src/Control/Functor/Representable.hs 31
++--repAdjunction :: Adjunction f g => (f () -> a) -> g a
++--repAdjunction f = leftAdjunct f ()
++
++--unrepAdjunction :: Adjunction f g => g a -> (f () -> a)
++--unrepAdjunction = rightAdjunction . const
++
+}

@@ -1,0 +1,31 @@
+name: rope
+version: 0.2
+license: BSD3
+copyright: (c) 2010 Edward A. Kmett
+maintainer: Edward A. Kmett <ekmett@gmail.com>
+stability: experimental
+homepage: http://comonad.com/reader
+package-url:
+description: Tools for manipulating fingertrees of bytestrings
+category: Language
+author: Edward A. Kmett
+exposed: True
+exposed-modules: Data.Rope Data.Rope.Body Data.Rope.Internal
+                 Data.Rope.Util.Reducer
+hidden-modules:
+import-dirs: /home/ekmett/.cabal/lib/rope-0.2/ghc-6.10.4
+library-dirs: /home/ekmett/.cabal/lib/rope-0.2/ghc-6.10.4
+hs-libraries: HSrope-0.2
+extra-libraries:
+extra-ghci-libraries:
+include-dirs:
+includes:
+depends: base-4.1.0.0 bytestring-0.9.1.5 fingertree-0.0.1.0
+         utf8-string-0.3.5
+hugs-options:
+cc-options:
+ld-options:
+framework-dirs:
+frameworks:
+haddock-interfaces: /home/ekmett/.cabal/share/doc/rope-0.2/html/rope.haddock
+haddock-html: /home/ekmett/.cabal/share/doc/rope-0.2/html

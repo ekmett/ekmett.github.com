@@ -1,0 +1,27 @@
+[Control.Category for 6.8
+ekmett@gmail.com**20080523022614] {
+adddir ./pre-6.9
+adddir ./pre-6.9/Control
+addfile ./pre-6.9/Control/Category.hs
+hunk ./pre-6.9/Control/Category.hs 1
++module Control.Category 
++	( (>>>), (<<<), Category ((.), id)
++	) where
++
++import Prelude hiding (id,(.))
++import qualified Prelude hiding (flip)
++
++class Category (~>) where
++	(.) :: (b ~> c) -> (a ~> b) -> a ~> c
++	id :: a ~> a
++
++(<<<) :: Category (~>) => (b ~> c) -> (a ~> b) -> a ~> c
++(<<<) = (.)
++
++(>>>) :: Category (~>) => (a ~> b) -> (b ~> c) -> a ~> c
++(>>>) = flip (.)
++
++instance Category (->) where
++	(.) = (Prelude..)
++	id = Prelude.id
+}

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Introducing Speculation</title>
+	<atom:link href="http://comonad.com/reader/2010/introducing-speculation/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2010/introducing-speculation/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-30881</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 26 Dec 2010 20:45:05 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-30881</guid>
+		<description>@Rafael: Good idea =)</description>
+		<content:encoded><![CDATA[<p>@Rafael: Good idea =)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Rafael Calsaverini</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-30823</link>
+		<dc:creator>Rafael Calsaverini</dc:creator>
+		<pubDate>Sun, 26 Dec 2010 03:22:04 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-30823</guid>
+		<description>This may be useful for Markov Chain Monte Carlo simulations by using the guess that the new sample proposal will be rejected... seems interesting.</description>
+		<content:encoded><![CDATA[<p>This may be useful for Markov Chain Monte Carlo simulations by using the guess that the new sample proposal will be rejected&#8230; seems interesting.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-21221</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 22 Sep 2010 20:28:00 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-21221</guid>
+		<description>Apparently, undefined will sometimes claim to be evaluated. Now I need to chase bottoms too!</description>
+		<content:encoded><![CDATA[<p>Apparently, undefined will sometimes claim to be evaluated. Now I need to chase bottoms too!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-20828</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 16 Sep 2010 11:11:52 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-20828</guid>
+		<description>FYI, I did wind up adding that info table check to the tag-bits library, although I do so only after checking the tag bits themselves as a fallback.
+
+It works well, and lets the library be useful even from ghci. 
+
+Thanks!</description>
+		<content:encoded><![CDATA[<p>FYI, I did wind up adding that info table check to the tag-bits library, although I do so only after checking the tag bits themselves as a fallback.</p>
+<p>It works well, and lets the library be useful even from ghci. </p>
+<p>Thanks!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18805</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Mon, 02 Aug 2010 15:30:02 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18805</guid>
+		<description>That said, it might be worthwhile to add that as a second check, assuming we can get something like the unboxed version to work in the first place.
+
+That way it could check the tag bits, and if zero, before giving up it could double check the info table, that way we avoid having to actually use the target object in case where the tag bits having been propagated, which potentially avoids paging it in.</description>
+		<content:encoded><![CDATA[<p>That said, it might be worthwhile to add that as a second check, assuming we can get something like the unboxed version to work in the first place.</p>
+<p>That way it could check the tag bits, and if zero, before giving up it could double check the info table, that way we avoid having to actually use the target object in case where the tag bits having been propagated, which potentially avoids paging it in.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18804</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Mon, 02 Aug 2010 15:26:00 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18804</guid>
+		<description>I was deliberately avoiding reading the info table to avoid dealing with variations in ghc compilation options changing the layout.
+
+I&#039;ll revert to the boxed version for now I guess and then see if I can get a better way to do the unsafeCoerce# without forcing.</description>
+		<content:encoded><![CDATA[<p>I was deliberately avoiding reading the info table to avoid dealing with variations in ghc compilation options changing the layout.</p>
+<p>I&#8217;ll revert to the boxed version for now I guess and then see if I can get a better way to do the unsafeCoerce# without forcing.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: pepeiborra</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18803</link>
+		<dc:creator>pepeiborra</dc:creator>
+		<pubDate>Mon, 02 Aug 2010 15:03:58 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18803</guid>
+		<description>Ed,
+
+thanks for the tips. I tried inserting a call to performGC in the example, but it didn&#039;t help the boxed version. 
+
+main = do
+  let i = trace &quot;--&gt; evaluated&quot; ()
+  putStrLn $ &quot;tagbits: &quot; ++ show (unsafeGetTagBits i)
+  print i
+  performGC &gt;&gt; putStrLn &quot;--&gt; GC performed&quot;
+  putStrLn $ &quot;tagbits: &quot; ++ show (unsafeGetTagBits i)
+
+
+pepe:~/Dropbox/code/snippets$ ghc --make TagBits&amp;&amp; ./TagBits 
+Linking TagBits ...
+tagbits: 0
+--&gt; evaluated
+()
+--&gt; GC performed
+tagbits: 0
+
+Nevertheless, I have gone back to my actual use case (pruning the non-evaluated branches of an incomplete infinite proof tree, for display purposes), and found I was traversing the tree bottom-up, with a non strict fold. In a bottom-up traversal, the boxed version was *correctly* returning False for subtrees (since the fold is lazy), whereas the unboxed version was actually seq&#039;ing subtrees and returning True, which in the particular example at hand was what I expected. Hence the unboxed version was hiding an actual mistake in my reasoning. Now the boxed version works as expected with a top-down traversal. 
+
+To see why the unboxed version forces evaluation of the argument, let&#039;s look at the core generated by ghc:
+
+Data.TagBits.unsafeGetTagBits =
+  \ (@ a_aqz) (a_syV :: a_aqz) -&gt;
+    case a_syV
+         `cast` (CoUnsafe a_aqz GHC.Prim.Word# :: a_aqz ~ GHC.Prim.Word#)
+    of wild_syX { __DEFAULT -&gt;
+    case GHC.Prim.and# wild_syX __word 3 of sat_sz3 { __DEFAULT -&gt;
+    GHC.Word.W# sat_sz3
+    }
+    }
+
+There is a case expression where the scrutinee is the argument. Unless I am wrong, this case expression forces the evaluation of the argument.
+
+If you are curious I also cooked a version of unsafeIsEvaluated which avoids the tricky pointer tagging business and looks directly at the info table: http://gist.github.com/504764</description>
+		<content:encoded><![CDATA[<p>Ed,</p>
+<p>thanks for the tips. I tried inserting a call to performGC in the example, but it didn&#8217;t help the boxed version. </p>
+<p>main = do<br />
+  let i = trace &#8220;&#8211;&gt; evaluated&#8221; ()<br />
+  putStrLn $ &#8220;tagbits: &#8221; ++ show (unsafeGetTagBits i)<br />
+  print i<br />
+  performGC &gt;&gt; putStrLn &#8220;&#8211;&gt; GC performed&#8221;<br />
+  putStrLn $ &#8220;tagbits: &#8221; ++ show (unsafeGetTagBits i)</p>
+<p>pepe:~/Dropbox/code/snippets$ ghc &#8211;make TagBits&amp;&amp; ./TagBits<br />
+Linking TagBits &#8230;<br />
+tagbits: 0<br />
+&#8211;&gt; evaluated<br />
+()<br />
+&#8211;&gt; GC performed<br />
+tagbits: 0</p>
+<p>Nevertheless, I have gone back to my actual use case (pruning the non-evaluated branches of an incomplete infinite proof tree, for display purposes), and found I was traversing the tree bottom-up, with a non strict fold. In a bottom-up traversal, the boxed version was *correctly* returning False for subtrees (since the fold is lazy), whereas the unboxed version was actually seq&#8217;ing subtrees and returning True, which in the particular example at hand was what I expected. Hence the unboxed version was hiding an actual mistake in my reasoning. Now the boxed version works as expected with a top-down traversal. </p>
+<p>To see why the unboxed version forces evaluation of the argument, let&#8217;s look at the core generated by ghc:</p>
+<p>Data.TagBits.unsafeGetTagBits =<br />
+  \ (@ a_aqz) (a_syV :: a_aqz) -&gt;<br />
+    case a_syV<br />
+         `cast` (CoUnsafe a_aqz GHC.Prim.Word# :: a_aqz ~ GHC.Prim.Word#)<br />
+    of wild_syX { __DEFAULT -&gt;<br />
+    case GHC.Prim.and# wild_syX __word 3 of sat_sz3 { __DEFAULT -&gt;<br />
+    GHC.Word.W# sat_sz3<br />
+    }<br />
+    }</p>
+<p>There is a case expression where the scrutinee is the argument. Unless I am wrong, this case expression forces the evaluation of the argument.</p>
+<p>If you are curious I also cooked a version of unsafeIsEvaluated which avoids the tricky pointer tagging business and looks directly at the info table: <a href="http://gist.github.com/504764" rel="nofollow">http://gist.github.com/504764</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18776</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 01 Aug 2010 18:39:10 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18776</guid>
+		<description>@Pepe: There are a couple of things happening here.
+
+You definitely shouldn&#039;t be getting segfaults on the unboxed version. If so, then I have faulty reasoning and will need to revert to the boxed version.
+
+With regards to the boxed version still showing unevaluated-ness, what you&#039;re experiencing is that the &#039;i&#039; value at that point still points to the indirection because a garbage collection hasn&#039;t happened yet to propagate the tag bits. I&#039;d hazard that if you inserted a call to performGc in the middle there that you&#039;d start seeing the tags.</description>
+		<content:encoded><![CDATA[<p>@Pepe: There are a couple of things happening here.</p>
+<p>You definitely shouldn&#8217;t be getting segfaults on the unboxed version. If so, then I have faulty reasoning and will need to revert to the boxed version.</p>
+<p>With regards to the boxed version still showing unevaluated-ness, what you&#8217;re experiencing is that the &#8216;i&#8217; value at that point still points to the indirection because a garbage collection hasn&#8217;t happened yet to propagate the tag bits. I&#8217;d hazard that if you inserted a call to performGc in the middle there that you&#8217;d start seeing the tags.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: pepeiborra</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18767</link>
+		<dc:creator>pepeiborra</dc:creator>
+		<pubDate>Sun, 01 Aug 2010 11:37:34 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18767</guid>
+		<description>Looking at the unboxed version of unsafeGetTagBits, defined as:
+
+unsafeGetTagBits a = W# (and# (unsafeCoerce# a) (int2Word# mask#))
+
+I believe that this performs some evaluation of its argument. The program
+
+
+import Data.TagBits
+import Debug.Trace
+
+main = do
+  let i = trace &quot;X&quot; [1]
+  print (unsafeGetTagBits i)
+  print i
+  print (unsafeGetTagBits i)
+
+produces the output
+
+X
+2
+[1]
+2
+
+
+Also, I have been experiencing segfaults with this unboxed version.
+
+The boxed version does not segfault nor perform any evaluation, but in my experiments it seems to return always the value 0.
+For the program above, I obtain
+
+0
+X
+[1]
+0
+
+Concretely, I am using this code:
+
+data Box a = Box a
+unsafeGetTagBits a = unsafeCoerce (Box a) .&amp;. fromIntegral (sizeOf (undefined :: Int) - 1)
+
+Any idea of what is going on?</description>
+		<content:encoded><![CDATA[<p>Looking at the unboxed version of unsafeGetTagBits, defined as:</p>
+<p>unsafeGetTagBits a = W# (and# (unsafeCoerce# a) (int2Word# mask#))</p>
+<p>I believe that this performs some evaluation of its argument. The program</p>
+<p>import Data.TagBits<br />
+import Debug.Trace</p>
+<p>main = do<br />
+  let i = trace &#8220;X&#8221; [1]<br />
+  print (unsafeGetTagBits i)<br />
+  print i<br />
+  print (unsafeGetTagBits i)</p>
+<p>produces the output</p>
+<p>X<br />
+2<br />
+[1]<br />
+2</p>
+<p>Also, I have been experiencing segfaults with this unboxed version.</p>
+<p>The boxed version does not segfault nor perform any evaluation, but in my experiments it seems to return always the value 0.<br />
+For the program above, I obtain</p>
+<p>0<br />
+X<br />
+[1]<br />
+0</p>
+<p>Concretely, I am using this code:</p>
+<p>data Box a = Box a<br />
+unsafeGetTagBits a = unsafeCoerce (Box a) .&amp;. fromIntegral (sizeOf (undefined :: Int) &#8211; 1)</p>
+<p>Any idea of what is going on?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2010/introducing-speculation/comment-page-1/#comment-18645</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 28 Jul 2010 13:34:03 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=205#comment-18645</guid>
+		<description>@Asger: You could likely exploit the speculation primitive if you supply your own equality check that checked fitness instead of value and used it to wrap the continuation, but I&#039;ll admit I haven&#039;t thought it through in depth.</description>
+		<content:encoded><![CDATA[<p>@Asger: You could likely exploit the speculation primitive if you supply your own equality check that checked fitness instead of value and used it to wrap the continuation, but I&#8217;ll admit I haven&#8217;t thought it through in depth.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

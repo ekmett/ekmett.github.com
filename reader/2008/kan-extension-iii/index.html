@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Kan Extensions III: As Ends and Coends</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Kan Extensions III: As Ends and Coends Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Kan Extensions II: Adjunctions, Composition, Lifting' href='../kan-extensions-ii/index.html' />
+<link rel='next' title='Linear Bloom Filters' href='../linear-bloom-filters/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Mon 26 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Kan Extensions III: As Ends and Coends">Kan Extensions III: As Ends and Coends</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> <br/><a href="index.html#comments" title="Comment on Kan Extensions III: As Ends and Coends">[14] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Grant B. <a href="../kan-extensions/index.html#comment-1412">asked me</a> to post the derivation for the right and left Kan extension formula used in previous Kan Extension posts (<a href="../kan-extensions/index.html">1</a>,<a href="../kan-extensions-ii/index.html">2</a>). For that we can turn to the definition of Kan extensions in terms of ends, but first we need to take a couple of steps back to find a way to represent (co)ends in Haskell.</p>
+<p><span id="more-65"></span></p>
+<p><b>Dinatural Transformations</b></p>
+<p>Rather than repeat the <a href="http://en.wikipedia.org/wiki/Dinatural_transformation">definition</a> here, we'll just note we can define a dinatural transformation in Haskell letting polymorphism represent the family of morphisms.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Dinatural f g = <span style="color: #06c; font-weight: bold;">forall</span> a. f a a -&gt; g a a
+&nbsp;</pre>
+<p><b>Ends</b></p>
+<p>So what is an end?</p>
+<p>An end is a universal dinatural transformation from some object e to some functor s.</p>
+<p>Diving into the formal definition:</p>
+<p>Given a functor <img src='../../../latex/b35dfd1bbc05f7e719f05a2175be3373.png' title='$F : \mathcal{C}^{op} \times \mathcal{C} -&gt; \mathcal{D}$' alt='$F : \mathcal{C}^{op} \times \mathcal{C} -&gt; \mathcal{D}$' align=absmiddle>, and end of <img src='../../../latex/b8bc815b5e9d5177af01fd4d3d3c2f10.png' title='$F$' alt='$F$' align=absmiddle> is a pair <img src='../../../latex/763a93bddd524facef7935b3d88a7ffa.png' title='$(e,\omega)$' alt='$(e,\omega)$' align=absmiddle> where <img src='../../../latex/8cd34385ed61aca950a6b06d09fb50ac.png' title='$e$' alt='$e$' align=absmiddle> is an object of <img src='../../../latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> and omega is a dinatural transformation from e to S such that given any other dinatural transformation <img src='../../../latex/8217ed3c32a785f0b5aad4055f432ad8.png' title='$\beta$' alt='$\beta$' align=absmiddle> to S from another object x in <img src='../../../latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle>, there exists a unique morphism <img src='../../../latex/a055131dbf96d032acc4a3cb6b0d026c.png' title='$h : x -&gt; e$' alt='$h : x -&gt; e$' align=absmiddle>, such that <img src='../../../latex/b939ce746b7bc891ee36616d56a98750.png' title='$\beta_a = \omega_a \cdot h$' alt='$\beta_a = \omega_a \cdot h$' align=absmiddle> for every <img src='../../../latex/44bc9d542a92714cac84e01cbbb7fd61.png' title='$a$' alt='$a$' align=absmiddle> in <img src='../../../latex/db5f7b3e9934fbc5a2859d88c4ba84a3.png' title='$\mathcal{C}$' alt='$\mathcal{C}$' align=absmiddle>. </p>
+<p>We usually choose to write ends as <img src='../../../latex/d19bfb8af65a4892a19718fee54deacf.png' title='$e = \int_c S(c,c)$' alt='$e = \int_c S(c,c)$' align=absmiddle>, and abuse terminology calling <img src='../../../latex/8cd34385ed61aca950a6b06d09fb50ac.png' title='$e$' alt='$e$' align=absmiddle> the end of <img src='../../../latex/e257acd1ccbe7fcb654708f1a866bfe9.png' title='$S$' alt='$S$' align=absmiddle>.</p>
+<p>Note this uses a dinatural transformation from an object <img src='../../../latex/332cc365a4987aacce0ead01b8bdcc0b.png' title='$x$' alt='$x$' align=absmiddle> in <img src='../../../latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle>, which we can choose to represent an arbitrary dinatural transformation from an object <img src='../../../latex/332cc365a4987aacce0ead01b8bdcc0b.png' title='$x$' alt='$x$' align=absmiddle> to a functor <img src='../../../latex/e257acd1ccbe7fcb654708f1a866bfe9.png' title='$S$' alt='$S$' align=absmiddle> in terms of a dinatural transformation from the constant bifunctor:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Const x a b = Const <span style="color: green;">&#123;</span> runConst :: x <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>This leaves us with the definition of a dinatural transformation from an object as:</p>
+<pre class="haskell">&nbsp;
+Dinatural <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> s ~ <span style="color: #06c; font-weight: bold;">forall</span> a. Const x a a -&gt; s a a
+&nbsp;</pre>
+<p>but the universal quantification over the <code>Const</code> term is rather useless and the <code>Const</code> bifunctor is supplying no information so we can just specialize that down to:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> DinaturalFromObject x s = x -&gt; <span style="color: #06c; font-weight: bold;">forall</span> a. s a a
+&nbsp;</pre>
+<p>Now, clearly for any such transformation, we could rewrite it trivially using the definition:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> End s = <span style="color: #06c; font-weight: bold;">forall</span> a. s a a
+&nbsp;</pre>
+<p>with <img src='../../../latex/ae4fb5973f393577570881fc24fc2054.png' title='$\omega$' alt='$\omega$' align=absmiddle> = id.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> DinaturalFromObject x s = x -&gt; End s
+&nbsp;</pre>
+<p>And so <code>End</code> above fully complies with the definition for an end, and we just say <code>e = End s</code> abusing the terminology as earlier. The function <img src='../../../latex/ae4fb5973f393577570881fc24fc2054.png' title='$\omega$' alt='$\omega$' align=absmiddle> = id is implicit.</p>
+<p>For End to be a proper end, we assume that <code>s</code> is contravariant in its first argument and covariant in its second argument. </p>
+<p><b>Example: Hom</b></p>
+<p>A good example of this is (->) in Haskell, which is as category theory types would call it the Hom functor for Hask. Then <code>End (->) = forall a. a -> a</code> which has just one inhabitant <code>id</code> if you discard cheating inhabitants involving fix or undefined.</p>
+<p>We write <img src='../../../latex/e543f80f31bc5a83531f2fcdb5060939.png' title='$\mathcal{C}(a,b)$' alt='$\mathcal{C}(a,b)$' align=absmiddle> or <img src='../../../latex/7b68f95bd81ad0dc547e30c61e293a2a.png' title='$\mathrm{Hom}_\mathcal{C}(a,b)$' alt='$\mathrm{Hom}_\mathcal{C}(a,b)$' align=absmiddle> to denote <code>a -> b</code>. Similarly we use <img src='../../../latex/de56b5a9d12dc80210c09c1ff97b423a.png' title='b^a' alt='b^a' align=absmiddle> to denote an exponential object within a category, and since in Haskell we have first class functions using the same syntax this also translates to <code>a -> b</code>. We'll need these later.</p>
+<p><b>Example: Natural Transformations</b></p>
+<p>If we define:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> HomFG f g a b =
+        HomFG <span style="color: green;">&#123;</span> runHomFG :: f a -&gt; g b <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>then we <em>could</em> of course choose to define natural transformations in terms of <code>End</code> as:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Nat f g = End <span style="color: green;">&#40;</span>HomFG f g<span style="color: green;">&#41;</span> <span style="color: #5d478b; font-style: italic;">-- forall a. f a -&gt; g a</span>
+&nbsp;</pre>
+<p><b>Right Kan Extension as an End</b></p>
+<p>Turning to <a href="http://en.wikipedia.org/wiki/Kan_extension#Kan_extensions_as_coends">Wikipedia</a> or Categories for the Working Mathematician you can find the following definition for right Kan extension of <img src='../../../latex/2f118ee06d05f3c2d98361d9c30e38ce.png' title='$T$' alt='$T$' align=absmiddle> along <img src='../../../latex/d6328eaebbcd5c358f426dbea4bdbf70.png' title='$K$' alt='$K$' align=absmiddle> in terms of ends.</p>
+<p><img src='../../../latex/dea76fc481ff2c837e2e80f8a7973197.png' title='$(\mathrm{Ran}_KT)c=\int_m Tm^{\mathbf{C}(c,Km)}$' alt='$(\mathrm{Ran}_KT)c=\int_m Tm^{\mathbf{C}(c,Km)}$' align=absmiddle></p>
+<p>Working by rote, we note that <img src='../../../latex/51b8b6f515e3601005740530f09382dd.png' title='$\mathbf{C}(c,Km)$' alt='$\mathbf{C}(c,Km)$' align=absmiddle> is just <code>c -> K m</code> as noted above, and that <img src='../../../latex/05979bd4b7a87c197852764db8aef119.png' title='$(Tm)^{\mathbf{C}(c,Km)}$' alt='$(Tm)^{\mathbf{C}(c,Km)}$' align=absmiddle> is then just <code>(c -> K m) -> T m'</code>. So now we just have to take the end over that, and read off:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> RanT k t c m m' = <span style="color: green;">&#40;</span>c -&gt; k m<span style="color: green;">&#41;</span> -&gt; t m'
+<span style="color: #06c; font-weight: bold;">type</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> k t c = End <span style="color: green;">&#40;</span>RanT k t c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Which, modulo newtype noise is the same as the type previously supplied type:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> f g c = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#123;</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> :: <span style="color: #06c; font-weight: bold;">forall</span> m. <span style="color: green;">&#40;</span>c -&gt; f m<span style="color: green;">&#41;</span> -&gt; g m <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p><b>Coends</b></p>
+<p>The derivation for the left Kan extension follows similarly from defining <a href="http://en.wikipedia.org/wiki/Coend_(category_theory)#Coend">coends</a> over <strong>Hask</strong> in terms of existential quantification and copowers as products.</p>
+<p>The coend derivation is complicated slightly by Haskell's semantics. Disposing of the constant bifunctor as before we get:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> DinaturalToObject s c = <span style="color: #06c; font-weight: bold;">forall</span> a. <span style="color: green;">&#40;</span>s a a -&gt; c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Which since we want to be able to box up the s a a term separately, we need to use existential quantification.</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. s a a -&gt; c<span style="color: green;">&#41;</span> ~ <span style="color: green;">&#40;</span>exists a. s a a<span style="color: green;">&#41;</span> -&gt; c
+&nbsp;</pre>
+<p>We cannot represent this directly in terms of a type annotation in Haskell, but we can do so with a data type: </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Coend f = <span style="color: #06c; font-weight: bold;">forall</span> a. Coend <span style="color: green;">&#40;</span>f a a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Recall that in Haskell, existential quantification is represented by using universal quantification outside of the type constructor.</p>
+<p>The main difference is that in our coend <img src='../../../latex/00d7106d8a39b341522cc78f15d1b1bc.png' title='$(e,\zeta)$' alt='$(e,\zeta)$' align=absmiddle> the function <img src='../../../latex/e5c0c55191274dbb2a4499ab5c5b8175.png' title='$\zeta$' alt='$\zeta$' align=absmiddle> is now <code>runCoend</code> instead of <code>id</code>, because we have a <code>Coend</code> data constructor around the existential. Technicalities make it a little more complicated than that even, because you can't define a well-typed <code>runCoend</code> and have to use pattern matching on the <code>Coend</code> data constructor to avoid having an existentially quantified type escape the current scope, but the idea is the same.</p>
+<p><b>Left Kan Extension as a Coend</b></p>
+<p>Then given the definition for the left Kan extension of <img src='../../../latex/2f118ee06d05f3c2d98361d9c30e38ce.png' title='$T$' alt='$T$' align=absmiddle> along <img src='../../../latex/d6328eaebbcd5c358f426dbea4bdbf70.png' title='$K$' alt='$K$' align=absmiddle> as a coend:</p>
+<p><img src='../../../latex/a40bec8bbeec6c224b4fb32c1f7c2cda.png' title='$(\mathrm{Lan}_KT)c=\int^m \mathbf{C}(Km,c)\cdot Tm$' alt='$(\mathrm{Lan}_KT)c=\int^m \mathbf{C}(Km,c)\cdot Tm$' align=absmiddle></p>
+<p>we can read off:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> LanT k t c m m' = LanT <span style="color: green;">&#40;</span>k m -&gt; c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>t m'<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">type</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> k t c = Coend <span style="color: green;">&#40;</span>LanT k t c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Which is <em>almost</em> isomorphic to the previously supplied type:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> k t c = <span style="color: #06c; font-weight: bold;">forall</span> m. <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>k m -&gt; c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>t m<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>except for the fact that we had to use two layers of data declarations when using the separate <code>Coend</code> data type, so we introduced an extra place for a <img src='../../../latex/d1cca51f81e4659e1d2de727392d4476.png' title='$\perp$' alt='$\perp$' align=absmiddle> to hide. </p>
+<p>A <code>newtype</code> isn't allowed to use existential quantification in Haskell, so this form forces a spurious case analysis that we'd prefer to do without. This motivates why <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/category-extras">category-extras</a> uses a separate definition for <code>Lan</code> rather than the more elaborate definition in terms of <code>Coend</code>.</p>
+<p>[Edit: Fixed a typo in the definition of RanT]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">14 Responses to &#8220;Kan Extensions III: As Ends and Coends&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1481">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a41270ddebc8fd1971bfc72c4680448c&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Grant B.</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1481" title="">May 27th, 2008 at 5:27 am</a> </small>
+			<br clear="all"/>
+
+			<p>Awesome! This helped my understanding a lot, thanks.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1489">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8daf174e400f51951ed6e9ab912bbc17&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://sigfpe.blogspot.com' rel='external nofollow' class='url'>Dan P</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1489" title="">May 27th, 2008 at 3:45 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Hey! Stop writing posts faster than I can read them :-)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1682">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a41270ddebc8fd1971bfc72c4680448c&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Grant B</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1682" title="">June 13th, 2008 at 5:41 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I&#8217;m curious as to how you would motivate Kan extensions as a functional programming (specifically Haskell) tool.  The right Kan extension almost looks like the CPS-transform of &#8220;a&#8221;, except with variant answer types.  Shan&#8217;s <a href="http://www.cs.rutgers.edu/~ccshan/dissertation/book.pdf" rel="nofollow">thesis</a> on page 73 shows how the ordinary function type is modified via the presence of delimited control into something like a right Kan extension.</p>
+<p>Care to shed some light on this (and its dual)?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1685">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1685" title="">June 14th, 2008 at 8:16 am</a> </small>
+			<br clear="all"/>
+
+			<p>Well, you can look at the Codensity monad (Ran m m) of a monad m as a weaker form of ContT which isn&#8217;t allowed to use the type of the ultimate return value to &#8216;pull any tricks&#8217;. Consequently, it has fewer inhabitants than ContT and we can say more about them. My favorite example so far is in:</p>
+<p><a href="http://wwwtcs.inf.tu-dresden.de/~voigt/mpc08.pdf" rel="nofollow">http://wwwtcs.inf.tu-dresden.de/~voigt/mpc08.pdf</a></p>
+<p>That paper shows that you can substitute a reference to the Codensity monad of a free monad in many places where you&#8217;d use the original free monad and change the asymptotic performance of the resulting algorithm because the continuation &#8216;linearizes&#8217; the cost of repeatedly traversing the tree by piling the cost up in the continuation so you only traverse once.</p>
+<p>I&#8217;d conjecture that the left Kan extension of a cofree comonad should let us pile up the cost of mapping or extending cofree comonads similarly. Though here I have yet to actually generate any performance results here due to other distractions.</p>
+<p>We _can_ however definitely do the same thing with the Yoneda and Coyoneda lemmas. The resulting (co)monads fit very closely to the operational characteristics of the base monad. </p>
+<p>If you transform a monad with Yoneda you get a monad that has the same overall costs for return and >>=, but where if your monad had a non constant cost for map (such as in the free monad of anything other than the trivial functor that maps everything to _|_), you can fuse the costs of all of your maps together by accumulating them and applying them all at once during the next (>>=) (or when you extract f from the Yoneda f). </p>
+<p>Similarly CoYoneda accumulates maps for comonads, which is a win if map is expensive (such as in the cofree comonad case).</p>
+<p>You can get a feel for why this works by looking at:</p>
+<p><a href="../../../haskell/category-extras/src/Control/Functor/Yoneda.hs" rel="nofollow">http://comonad.com/haskell/category-extras/src/Control/Functor/Yoneda.hs</a></p>
+<p>and noting what fmap does and how >>= works for Yoneda. and how fmap and extend work for CoYoneda.</p>
+<p>In category-extras I have generalized all of the constructive algorithmic morphisms that use the free monad or cofree comonad (histomorphisms, futumorphisms, dynamorphisms, chronomorphisms) to support the codensity monad of the free monad, density comonad of the cofree comonad, Yoneda of the free monad, Coyoneda of the cofree comonad, etc by defining a couple of extra typeclasses that express their &#8216;Free-Like&#8217; behavior in the spirit of the above linked paper by Voigtlaender in </p>
+<p><a href="../../../haskell/category-extras/src/Control/Monad/Free.hs" rel="nofollow">http://comonad.com/haskell/category-extras/src/Control/Monad/Free.hs</a></p>
+<p>The generalization can be seen in use here:</p>
+<p><a href="../../../haskell/category-extras/src/Control/Morphism/Futu.hs" rel="nofollow">http://comonad.com/haskell/category-extras/src/Control/Morphism/Futu.hs</a></p>
+<p>and the instances for Codensity here:</p>
+<p><a href="../../../haskell/category-extras/src/Control/Monad/Codensity.hs" rel="nofollow">http://comonad.com/haskell/category-extras/src/Control/Monad/Codensity.hs</a></p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-6412">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8daf174e400f51951ed6e9ab912bbc17&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://blog.sigfpe.com' rel='external nofollow' class='url'>Dan P</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6412" title="">February 25th, 2009 at 7:45 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Now that I&#8217;ve been thinking about these things I can point out a tiny tiny typo:</p>
+<p>data LanT k t c m m&#8217; = LanT (k m -&gt; c) (t m)</p>
+<p>should probably be</p>
+<p>data LanT k t c m m&#8217; = LanT (k m -&gt; c) (t m&#8217;)</p>
+<p>though it makes no difference in the definition of Lan.</p>
+<p>On a less trivial level, I still don&#8217;t know what theorem I could quote to justify that, say,</p>
+<p>type DinaturalFromObject x s = x -&gt; forall a. s a a</p>
+<p>defines dinaturals from a constant functor. For a specific choice of s dinaturality is a free theorem. But how do you uniformly prove this for all s, implemented in Haskell, with the right c/contravariance in the arguments?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-6414">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6414" title="">February 25th, 2009 at 9:02 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Hey Dan,</p>
+<p>Fixed the LanT definition. (Woops!) </p>
+<p>Re the dinatural transformation piece, I&#8217;m not as deep as I used to be in this area, so I&#8217;ll go back and see what I can dig up from whatever notes I still have from when I wrote this. I recall it seeming quite obvious at the time, but now I can only barely remember what dinaturality is. :) I&#8217;d be quite surprised (and pleased) if you came up with a counterexample, however. ;)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-6418">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8daf174e400f51951ed6e9ab912bbc17&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://sigfpe.blogspot.com' rel='external nofollow' class='url'>sigfpe</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6418" title="">February 26th, 2009 at 12:29 am</a> </small>
+			<br clear="all"/>
+
+			<p>All of the various types of naturality (including dinaturality and extranaturality) seem to arise as free theorems but I&#8217;ve not seen a paper spelling this out clearly &#8211; at least not in a form I&#8217;d recognise. I can&#8217;t tell if it&#8217;s because nobody has figured it the details, or if the papers are just over my head.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-12474">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=90631719404b3e6b78d3bcce2a9e5e43&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://community.haskell.org/~wren/' rel='external nofollow' class='url'>wren ng thornton</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-12474" title="">October 17th, 2009 at 11:15 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Just a minor typo note:</p>
+<p>&gt; newtype RanT f g c m m&#8217; = (c -&gt; K m) -&gt; T m&#8217;</p>
+<p>Should be:</p>
+<p>&gt; newtype RanT k t c m m&#8217; = (c -&gt; k m) -&gt; t m&#8217;</p>
+<p>right?</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-12490">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-12490" title="">October 18th, 2009 at 4:35 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Wren: Fixed!</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-20353">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=41e44b99d7704ccbb64200b8665ef875&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Royal Hands</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-20353" title="">September 9th, 2010 at 1:44 am</a> </small>
+			<br clear="all"/>
+
+			<p>Have you ever considered about contributing on additional web sites? You have some great content right here and I’m certain you can share a lot far more when you wrote some content throughout other web sites. You will discover a great deal of associated web-sites to check out. Only one thing to look at. I’m glad I know about it at least.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-20469">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-20469" title="">September 10th, 2010 at 12:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I have written bits and pieces here and there over the years &#8212; I used to write a lot of magazine articles in particular, and I think there is an old column by me still floating around on <a href="http://www.flipcode.com/harmless/" rel="nofollow">flipcode</a>. </p>
+<p>These days I have a lot less time for writing, however. What makes it to this blog are mostly just the things that I found interesting enough to share. To get the message out I largely rely on syndication through planet haskell and reddit, both of which makes the location of the source content less of an issue these days than it used to be. Those have more overlap with would-be readership for this sort of content than almost any mainstream web site I can know of.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-61241">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../2011/free-monads-for-less/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Free Monads for Less (Part 1 of 3): Codensity</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61241" title="">June 24th, 2011 at 3:43 am</a> </small>
+			<br clear="all"/>
+
+			<p>[...] I have spoken about this type (and another that will arise in a subsequent post) on this blog previously, in a series of posts on Kan Extensions. [ 1, 2, 3] [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-63349">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=151c18cc6cc3bd1bb7a0528c6ef88c77&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://reperiendi.wordpress.com' rel='external nofollow' class='url'>Mike Stay</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-63349" title="">July 7th, 2011 at 6:44 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Isn&#8217;t the type (exists a. f a a) the coproduct rather than the coend?  The coend is the coproduct modulo the relation imposed by the commuting square (degenerate hexagon) in the definition of a dinatural transformation.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-106090">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../2012/unnatural-transformations-and-quantifiers/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Unnatural Transformations and Quantifiers</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-106090" title="">September 22nd, 2012 at 10:43 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] the integral notation denotes an end, and the square brackets denote a power, which allows us to take what is essentially an exponential [...]</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="65" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Monday, May 26th, 2008 at 7:22 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> and  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: What Constraints Entail: Part 1</title>
+	<atom:link href="http://comonad.com/reader/2011/what-constraints-entail-part-1/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2011/what-constraints-entail-part-1/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: zzo38</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-1/comment-page-1/#comment-105339</link>
+		<dc:creator>zzo38</dc:creator>
+		<pubDate>Tue, 26 Jun 2012 18:59:20 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=430#comment-105339</guid>
+		<description>What I have decided for Ibtlfmm it does not use this kind of superkinds (and Constraint is named &amp; while @ is used for program modules, although you can give them alphabetic names if you want using kind synonyms), rather I would think (,) and () and so on are macros that decide the corresponding types according to what fits. There could also be &quot;kind classes&quot; to rebind the syntax, although I prefer using macros. But yes () should be a constraint too. I do not think making up the new superkiind for this purpose is such a good idea (including for the reasons you have described).</description>
+		<content:encoded><![CDATA[<p>What I have decided for Ibtlfmm it does not use this kind of superkinds (and Constraint is named &amp; while @ is used for program modules, although you can give them alphabetic names if you want using kind synonyms), rather I would think (,) and () and so on are macros that decide the corresponding types according to what fits. There could also be &#8220;kind classes&#8221; to rebind the syntax, although I prefer using macros. But yes () should be a constraint too. I do not think making up the new superkiind for this purpose is such a good idea (including for the reasons you have described).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Doug McClean</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-1/comment-page-1/#comment-84922</link>
+		<dc:creator>Doug McClean</dc:creator>
+		<pubDate>Wed, 16 Nov 2011 21:13:56 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=430#comment-84922</guid>
+		<description>This overloading problem with (,) and () seems like it&#039;s just yet another case of there be insufficiently many kinds of bracketing characters that (a) Unicode encodes, (b) can be typed (keyboarded) easily, and (c) are visually distinguishable.
+
+The same problem arises with {} signifying the empty set and the record with no attributes. Basically the same thing clutters up the possibility of having a nice concrete syntax for all of: lists, sets, bags, vectors, matrices.
+
+At the same time, it adds a lot more noise to require writing Set { 3, 7, 2 } everywhere since just { 3, 7, 2 } doesn&#039;t overlap with the concrete syntax for records like { frog := 2, apple := &quot;moose&quot; }.
+
+It seems like the middle ground approach is to make a lot of granular &quot;re-bindable syntax&quot; type classes for all of the different literals.
+
+Following that approach seems to work well, and ordinary type ascription expressions suffice to resolve the empty cases. Committing to it fully does feel a little silly in some cases though.
+
+For example, zero is more polymorphic than other numeric literals. This arises because zero may have any dimension, but 3.7 is always dimensionless. The only language I know of that encodes this is CSS, although I&#039;m sure there are others.
+
+This sort of thing is leading to my pet language having a large number of type classes which play a role in desugaring, but I think that&#039;s a tradeoff I&#039;m willing to make.</description>
+		<content:encoded><![CDATA[<p>This overloading problem with (,) and () seems like it&#8217;s just yet another case of there be insufficiently many kinds of bracketing characters that (a) Unicode encodes, (b) can be typed (keyboarded) easily, and (c) are visually distinguishable.</p>
+<p>The same problem arises with {} signifying the empty set and the record with no attributes. Basically the same thing clutters up the possibility of having a nice concrete syntax for all of: lists, sets, bags, vectors, matrices.</p>
+<p>At the same time, it adds a lot more noise to require writing Set { 3, 7, 2 } everywhere since just { 3, 7, 2 } doesn&#8217;t overlap with the concrete syntax for records like { frog := 2, apple := &#8220;moose&#8221; }.</p>
+<p>It seems like the middle ground approach is to make a lot of granular &#8220;re-bindable syntax&#8221; type classes for all of the different literals.</p>
+<p>Following that approach seems to work well, and ordinary type ascription expressions suffice to resolve the empty cases. Committing to it fully does feel a little silly in some cases though.</p>
+<p>For example, zero is more polymorphic than other numeric literals. This arises because zero may have any dimension, but 3.7 is always dimensionless. The only language I know of that encodes this is CSS, although I&#8217;m sure there are others.</p>
+<p>This sort of thing is leading to my pet language having a large number of type classes which play a role in desugaring, but I think that&#8217;s a tradeoff I&#8217;m willing to make.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-1/comment-page-1/#comment-81890</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 03 Nov 2011 15:28:41 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=430#comment-81890</guid>
+		<description>@Dan, 
+
+Good catch. I&#039;d had it drawn that way on the whiteboard at work, but somewhere along the way got it flipped.
+
+In practice, I think just doing the right thing and adding @ so we can do the bounded quantification at the kind level is a better idea than trying to preserve the bandaid.</description>
+		<content:encoded><![CDATA[<p>@Dan, </p>
+<p>Good catch. I&#8217;d had it drawn that way on the whiteboard at work, but somewhere along the way got it flipped.</p>
+<p>In practice, I think just doing the right thing and adding @ so we can do the bounded quantification at the kind level is a better idea than trying to preserve the bandaid.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dan Doel</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-1/comment-page-1/#comment-81888</link>
+		<dc:creator>Dan Doel</dc:creator>
+		<pubDate>Thu, 03 Nov 2011 15:23:55 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=430#comment-81888</guid>
+		<description>I don&#039;t think your subtyping scheme fixes the problem for (), either. If ??? includes both Constraint and *, then making () : ??? doesn&#039;t help, because that doesn&#039;t imply the judgments of both () : * and () : Constraint. What you would need is to make ??? a common lower bound for * and Constraint that contains ().
+
+And of course, this is a long way to go to resolve a single case of overloading.</description>
+		<content:encoded><![CDATA[<p>I don&#8217;t think your subtyping scheme fixes the problem for (), either. If ??? includes both Constraint and *, then making () : ??? doesn&#8217;t help, because that doesn&#8217;t imply the judgments of both () : * and () : Constraint. What you would need is to make ??? a common lower bound for * and Constraint that contains ().</p>
+<p>And of course, this is a long way to go to resolve a single case of overloading.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

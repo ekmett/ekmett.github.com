@@ -1,0 +1,240 @@
+[first clean compilation
+ekmett@gmail.com**20100322021202
+ Ignore-this: 2ff0181715535896596cbe648d4c10a
+] hunk ./Data/Rope.hs 3
+-    ( length    -- :: Rope m -> Int
++    ( Rope
++    , length    -- :: Rope m -> Int
+hunk ./Data/Rope.hs 8
+-    , unit      -- :: a `Reducer` m => a -> m
+-    , cons      -- :: a `Reducer` m => a -> m -> m
+-    , snoc      -- :: a `Reducer` m => m -> a -> m 
+hunk ./Data/Rope.hs 9
+-    , Elidable(..)
++    , Elidable
+hunk ./Data/Rope.hs 16
+-    , unpack    -- :: Unpackable a => Rope m -> [a]
+-    , head      -- :: Unpackable a => Rope m -> a
+-    , last      -- :: Unpackable a => Rope m -> a
+-    , uncons    -- :: (Unpackable a, Elidable m) => Rope m -> Maybe (a, Rope m)
+-    , unsnoc    -- :: (Unpackable a, Elidable m) => Rope m -> Maybe (a, Rope m)
+hunk ./Data/Rope.hs 19
+-    , pack               -- :: (ByteString `Reducer` m, Packable a) => a -> Rope m
+-    , packl              -- :: (ByteString `Reducer` m, Packable a) => a -> Rope m -> Rope m    
+-    , packr              -- :: (ByteString `Reducer` m, Packable a => Rope m -> a -> Rope m
+hunk ./Data/Rope.hs 27
++    , fromString         -- :: ByteString `Reducer` m => String -> Rope m
+hunk ./Data/Rope.hs 34
+-import Prelude hiding (null)
++import Prelude hiding (null,head,length,drop,take,splitAt, last)
+hunk ./Data/Rope.hs 36
+-    ( empty
++    ( Rope
++    , empty
+hunk ./Data/Rope.hs 52
++import Data.ByteString (ByteString)
+hunk ./Data/Rope.hs 57
+-fromString :: ByteString `Reducer` m => String ->  Rope m
+-fromString = pack
++toChunks :: Rope m -> [ByteString]
++toChunks = unpack
+hunk ./Data/Rope/Internal.hs 1
+-{-# LANGUAGE TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances, TypeSynonymInstances #-}
++{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances, MultiParamTypeClasses, UndecidableInstances #-}
+hunk ./Data/Rope/Internal.hs 33
++    , w2c
+hunk ./Data/Rope/Internal.hs 35
+-    , Packable
+-    , pack
+-    , packl
+-    , packr
++    , Packable(..)
++    , break8
++    , findIndexOrEnd
+hunk ./Data/Rope/Internal.hs 46
+-import Data.Typeable (typeOf, typeOfDefault, TyCon, Typeable1(..), mkTyCon, mkTyConApp)
++import Data.Typeable (TyCon, Typeable1(..), mkTyCon, mkTyConApp)
+hunk ./Data/Rope/Internal.hs 48
+-import Data.FingerTree (FingerTree,ViewL(..),ViewR(..),viewl,viewr,(<|),(|>), Measured(..), (><))
+-import qualified Data.FingerTree as F (empty, singleton, split, null, singleton)
++import Data.FingerTree (ViewL(..),ViewR(..),viewl,viewr,(<|),(|>), Measured(..), (><))
++import qualified Data.FingerTree as F (empty, split, null, singleton)
+hunk ./Data/Rope/Internal.hs 60
+-import Data.Rope.Util.Bifunctor
++-- import Data.Rope.Util.Bifunctor
+hunk ./Data/Rope/Internal.hs 64
+-import Data.Rope.Util.Coproduct
++-- import Data.Rope.Util.Coproduct
+hunk ./Data/Rope/Internal.hs 68
+-import Codec.Binary.UTF8.Generic (UTF8Bytes)
+-import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
++-- import Codec.Binary.UTF8.Generic (UTF8Bytes)
++-- import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
+hunk ./Data/Rope/Internal.hs 72
+-import GHC.IOBase
+-import GHC.Ptr (Ptr(..))
++-- import GHC.IOBase
++-- import GHC.Ptr (Ptr(..))
+hunk ./Data/Rope/Internal.hs 77
+-import Foreign.Storable
++import Foreign.Storable (peek)
+hunk ./Data/Rope/Internal.hs 79
+-import qualified Data.ByteString as S (null, splitAt, take, drop, length, head, tail, init, last, singleton)
++import qualified Data.ByteString as S (null, splitAt, take, drop, length, singleton)
+hunk ./Data/Rope/Internal.hs 131
+-    extend f r@(Rope b a) = Rope b (f r)
++    extend f r = Rope (body r) (f r)
+hunk ./Data/Rope/Internal.hs 135
+-    foldr1 f (Rope _ a) = a 
++    foldr1 _ (Rope _ a) = a 
+hunk ./Data/Rope/Internal.hs 137
+-    foldl1 f (Rope _ a) = a
++    foldl1 _ (Rope _ a) = a
+hunk ./Data/Rope/Internal.hs 262
+--- relies on the fact that ropes are cozippable having only one 'hole'
+-eitherC :: Coproduct s => (Rope a -> b) -> (Rope c -> d) -> Rope (s a c) -> s b d
+-eitherC f g (Rope t sab) = bimap (f . Rope t) (g . Rope t) sab
+hunk ./Data/Rope/Internal.hs 270
++
++-- relies on the fact that ropes are cozippable having only one 'hole'
++eitherC :: Coproduct s => (Rope a -> b) -> (Rope c -> d) -> Rope (s a c) -> s b d
++eitherC f g (Rope t sab) = bimap (f . Rope t) (g . Rope t) sab
++
+hunk ./Data/Rope/Internal.hs 308
++    elide' = undefined
+hunk ./Data/Rope/Internal.hs 314
++    elide' = undefined
+hunk ./Data/Rope/Internal.hs 320
++    elide' = undefined
+hunk ./Data/Rope/Internal.hs 332
++    elide' = undefined
+hunk ./Data/Rope/Internal.hs 349
+-break8 f r@(Rope t a) = let (t',t'') = break' t
+-                            (a',a'') = splitAt' (measureBody t') r in
+-                            (Rope t' a', Rope t'' a'')
+-  where break' ccs = case viewl ccs of
++break8 f r = (Rope t' a', Rope t'' a'')
++    where 
++        (t',t'') = break' (body r)
++        (a',a'') = splitAt' (measureBody t') r 
++        break' ccs = case viewl ccs of
+hunk ./Data/Rope/Internal.hs 373
+-uncons8 r@(Rope m a) = case viewl m of
++uncons8 r = case viewl (body r) of
+hunk ./Data/Rope/Internal.hs 378
+-unsnoc8 r@(Rope m a) = case viewr m of
++unsnoc8 r = case viewr (body r) of
+hunk ./Data/Rope/Internal.hs 383
++{-
+hunk ./Data/Rope/Internal.hs 391
+-    tail r@(Rope t ann) = case viewl t of
++    tail r = case viewl (body r) of
+hunk ./Data/Rope/Internal.hs 394
++-}
+hunk ./Data/Rope/Unpackable.hs 1
++{-# LANGUAGE MultiParamTypeClasses #-}
+hunk ./Data/Rope/Unpackable.hs 11
+-import Prelude hiding (head, last)
++import Prelude hiding (head, last, drop)
++import qualified Prelude
+hunk ./Data/Rope/Unpackable.hs 15
+-
++import Data.Monoid (Monoid, mempty, mappend)
+hunk ./Data/Rope/Unpackable.hs 17
+-import Data.Foldable (Foldable)
+hunk ./Data/Rope/Unpackable.hs 18
+-import Data.FingerTree (ViewL(..),ViewR(..),viewl,viewr,(<|),(|>))
++import qualified Data.FingerTree as F (empty, null, split)
++import Data.FingerTree (FingerTree, ViewL(..),ViewR(..),viewl,viewr,(<|),(><))
+hunk ./Data/Rope/Unpackable.hs 22
++import qualified Data.ByteString.Unsafe as S (unsafeTail, unsafeHead)
+hunk ./Data/Rope/Unpackable.hs 27
+-import Data.Rope.Body (Chunk(..), cons', snoc', measureBody) -- Chunk
+-import Data.Rope.Internal (Elidable, splitAt', drop', take', Rope(..), body, drop', take', toLazyByteString, uncons8, unsnoc8) -- Rope, etc.
+-import Codec.Binary.UTF8.Generic (decode)
++import Data.Rope.Body (Count(..), Chunk(..), cons', snoc', measureBody) -- Chunk
++import Data.Rope.Internal (Elidable, drop, drop', take', Rope(..), body, toLazyByteString, uncons8, unsnoc8) -- Rope, etc.
++import Codec.Binary.UTF8.Generic (UTF8Bytes)
++import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
+hunk ./Data/Rope/Unpackable.hs 36
++    head = Prelude.head . unpack
++
+hunk ./Data/Rope/Unpackable.hs 43
++newtype F = F { runF :: FingerTree Count Chunk } 
++
++instance Monoid F where
++    mempty = F F.empty
++    F a `mappend` F b = F (a >< b)
++
++instance UTF8Bytes F Int where
++    bsplit 0 (F f) = (mempty, F f)
++    bsplit n (F f)
++        | n >= measureBody f = (F f, mempty)
++        | otherwise = (F (x `snoc'` y'), F (y'' `cons'` z))
++        where
++            (x, yz) = F.split (> Count n) f
++            Chunk y :< z = viewl yz
++            (y', y'') = S.splitAt (n - measureBody x) y
++    bdrop n = snd . UTF8Bytes.bsplit n
++    buncons f = case viewl (runF f) of
++        Chunk c :< cs -> Just (S.unsafeHead c, F (S.unsafeTail c `cons' ` cs))
++        EmptyL -> Nothing
++    tail (F f) = case viewl f of
++        Chunk c :< cs -> F (S.unsafeTail c `cons'`cs)
++        EmptyL -> errorEmptyList "tail"
++    elemIndex b = fmap fromIntegral . L.elemIndex b . L.fromChunks . map unchunk . F.toList . runF
++    pack = F . foldr (\l r -> Chunk l <| r) F.empty . L.toChunks . L.pack
++    empty = F F.empty
++    null = F.null . runF
++
++-- w2c :: Word8 -> Char
++-- w2c = unsafeChr . fromIntegral
++
+hunk ./Data/Rope/Unpackable.hs 78
++        EmptyL -> errorEmptyList "head"
+hunk ./Data/Rope/Unpackable.hs 81
++        EmptyR -> errorEmptyList "last"
+hunk ./Data/Rope/Unpackable.hs 87
+-    head (Rope t _) = head . unpack
+-    last (Rope t _) = head . unpack
+-    uncons = decode
++    head = Prelude.head . unpack
++    last = undefined -- TODO
++    uncons r@(Rope t _) = case UTF8Bytes.decode (F t) of 
++        Nothing -> Nothing
++        Just (a,n) -> Just (a, drop n r)
+hunk ./Data/Rope/Unpackable.hs 96
+-    head (Rope t _) = case viewl t of
++    head r = case viewl (body r) of
+hunk ./Data/Rope/Unpackable.hs 99
+-    last (Rope t _) = case viewr t of
++    last r = case viewr (body r) of
+hunk ./Data/Rope/Unpackable.hs 102
+-    uncons r@(Rope t m) = case viewl t of
+-        a :< as -> Just (a, Rope as (drop' (S.length a) r))
++    uncons r = case viewl (body r) of
++        Chunk a :< as -> Just (a, Rope as (drop' (S.length a) r))
+hunk ./Data/Rope/Unpackable.hs 105
+-    unsnoc r@(Rope t m) = case viewr t of
+-        as :> a -> Just (Rope as (take' (measureBody as) r), a)
++    unsnoc r = case viewr (body r) of
++        as :> Chunk a -> Just (Rope as (take' (measureBody as) r), a)
+hunk ./Data/Rope/Unpackable.hs 111
+-    head (Rope xs _) = case viewl xs of
++    head r = case viewl (body r) of
+hunk ./Data/Rope/Unpackable.hs 114
+-    last (Rope xs _) = case viewr xs of
++    last r = case viewr (body r) of
+hunk ./Data/Rope/Unpackable.hs 117
+-    uncons r@(Rope xs m) = case viewl xs of
+-        a :< as -> Just (a, Rope as (drop' (S.length a) r))
++    uncons r = case viewl (body r) of
++        Chunk a :< as -> Just (Chunk a, Rope as (drop' (S.length a) r))
+hunk ./Data/Rope/Unpackable.hs 120
+-    unsnoc r@(Rope xs m) = case viewr xs of
+-        as :> a -> Just (Rope as (take' (measureBody as) r), a)
++    unsnoc r = case viewr (body r) of
++        as :> Chunk a -> Just (Rope as (take' (measureBody as) r), Chunk a)
+hunk ./Data/Rope/Unpackable.hs 125
+-errorEmptyList t = error "Kata.Rope.Unpackable." ++ t ++ ": empty list"  
++errorEmptyList t = error $ "Kata.Rope.Unpackable." ++ t ++ ": empty list"  

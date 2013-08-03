@@ -1,0 +1,65 @@
+module Data.Rope 
+    -- * Size
+    ( length    -- :: Rope m -> Int
+    , null      -- :: Rope m -> Bool
+    -- * Splicing
+    , Reducer(..)
+    , unit      -- :: a `Reducer` m => a -> m
+    , cons      -- :: a `Reducer` m => a -> m -> m
+    , snoc      -- :: a `Reducer` m => m -> a -> m 
+    -- * Slicing
+    , Elidable(..)
+    , elide     -- :: Elidable m => Int -> Int -> Rope m -> Rope m
+    , splitAt   -- :: Elidable m => Int -> Rope m -> (Rope m, Rope m)
+    , take      -- :: Elidable m => Int -> Rope m -> Rope m
+    , drop      -- :: Elidable m => Int -> Rope m -> Rope m
+    -- * Walking
+    , Unpackable(..)
+    , unpack    -- :: Unpackable a => Rope m -> [a]
+    , head      -- :: Unpackable a => Rope m -> a
+    , last      -- :: Unpackable a => Rope m -> a
+    , uncons    -- :: (Unpackable a, Elidable m) => Rope m -> Maybe (a, Rope m)
+    , unsnoc    -- :: (Unpackable a, Elidable m) => Rope m -> Maybe (a, Rope m)
+    -- * Packing 'Rope'
+    -- ** Polymorphic construction
+    , Packable(..)
+    , pack               -- :: (ByteString `Reducer` m, Packable a) => a -> Rope m
+    , packl              -- :: (ByteString `Reducer` m, Packable a) => a -> Rope m -> Rope m    
+    , packr              -- :: (ByteString `Reducer` m, Packable a => Rope m -> a -> Rope m
+    -- ** Explicit construction
+    , empty              -- :: Monoid m => Rope m
+    , fromByteString     -- :: ByteString `Reducer` m => ByteString -> Rope m
+    , fromChunks         -- :: ByteString `Reducer` m => [ByteString] -> Rope m
+    , fromLazyByteString -- :: ByteString `Reducer` m => L.ByteString -> Rope m
+    , fromWords          -- :: ByteString `Reducer` m => [Word8] -> Rope m
+    , fromChar           -- :: ByteString `Reducer` m => Char -> Rope m
+    , fromWord8          -- :: ByteString `Reducer` m => Word8 -> Rope m
+    -- * Deconstructing 'Rope's
+    , toChunks           -- :: Rope m -> [ByteString]
+    , toLazyByteString   -- :: Rope m -> L.ByteString
+    , toString           -- :: Rope m -> String
+    ) where
+
+import Prelude hiding (null)
+import Data.Rope.Internal 
+    ( empty
+    , length
+    , null
+    , fromChunks
+    , fromByteString
+    , fromLazyByteString
+    , fromWords
+    , fromChar
+    , fromWord8
+    , fromString
+    , toLazyByteString
+    , Packable, pack, packl, packr
+    , Elidable, elide, splitAt, take, drop)
+import Data.Rope.Unpackable (Unpackable, unpack, head, last, uncons, unsnoc)
+import Data.Rope.Util.Reducer (Reducer, cons, snoc, unit)
+
+toString :: Rope m -> String
+toString = unpack
+
+fromString :: ByteString `Reducer` m => String ->  Rope m
+fromString = pack

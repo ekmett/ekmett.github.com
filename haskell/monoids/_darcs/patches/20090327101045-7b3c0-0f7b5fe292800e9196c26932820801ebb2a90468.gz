@@ -1,0 +1,26 @@
+[added Data.Array Generators
+ekmett@gmail.com**20090327101045] {
+hunk ./Data/Monoid/Generator.hs 15
++import Data.Array 
+hunk ./Data/Monoid/Generator.hs 100
++instance Ix i => Generator (Array i e) where
++    type Elem (Array i e) = (i,e)
++    mapReduce f = mapReduce f . assocs
++
+hunk ./Data/Monoid/Generator.hs 114
++instance Ix i => Generator (Keys (Array i e)) where
++    type Elem (Keys (Array i e)) = i
++    mapReduce f = mapReduce f . range . bounds . getKeys
++
+hunk ./Data/Monoid/Generator.hs 128
++instance Ix i => Generator (Values (Array i e)) where
++    type Elem (Values (Array i e)) = e
++    mapReduce f = mapReduce f . elems . getValues
++
+hunk ./monoids.cabal 2
+-version:	    0.1.2
++version:	    0.1.3
+hunk ./monoids.cabal 17
+-  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm, bitset, QuickCheck
++  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm, bitset, QuickCheck, array
+}

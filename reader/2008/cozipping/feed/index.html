@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Cozipping</title>
+	<atom:link href="http://comonad.com/reader/2008/cozipping/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/cozipping/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Xplat</title>
+		<link>http://comonad.com/reader/2008/cozipping/comment-page-1/#comment-18878</link>
+		<dc:creator>Xplat</dc:creator>
+		<pubDate>Wed, 04 Aug 2010 20:03:21 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/cozipping/#comment-18878</guid>
+		<description>Counzipping makes a pretty good toy model of the runtime type erasure that happens in Java and Scala generics -- it pushes a tag from the root of a container down into the individual &#039;holes&#039;.  Cases where the cozip doesn&#039;t exist become unsafe &#039;unchecked casts&#039;.  I wonder if this sort of analysis could be used as a basis for better compile-time analysis of where unsafety occurs.</description>
+		<content:encoded><![CDATA[<p>Counzipping makes a pretty good toy model of the runtime type erasure that happens in Java and Scala generics &#8212; it pushes a tag from the root of a container down into the individual &#8216;holes&#8217;.  Cases where the cozip doesn&#8217;t exist become unsafe &#8216;unchecked casts&#8217;.  I wonder if this sort of analysis could be used as a basis for better compile-time analysis of where unsafety occurs.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/cozipping/comment-page-1/#comment-1171</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 06 May 2008 01:00:58 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/cozipping/#comment-1171</guid>
+		<description>You&#039;re right, I flipped the names when I was slapping together the code over lunch. I had left my notes at home. I&#039;ll fix it up.
+
+Hrmm, of course now you need an extra &#039;fair&#039; acounzip as well.</description>
+		<content:encoded><![CDATA[<p>You&#8217;re right, I flipped the names when I was slapping together the code over lunch. I had left my notes at home. I&#8217;ll fix it up.</p>
+<p>Hrmm, of course now you need an extra &#8216;fair&#8217; acounzip as well.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Twan van Laarhoven</title>
+		<link>http://comonad.com/reader/2008/cozipping/comment-page-1/#comment-1168</link>
+		<dc:creator>Twan van Laarhoven</dc:creator>
+		<pubDate>Tue, 06 May 2008 00:23:36 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/cozipping/#comment-1168</guid>
+		<description>An interesting post, I was thinking along a slightly different (and wrong) route myself.
+
+First of all, shouldn&#039;t cozip be called counzip and vice-versa? fzip has type &quot;(f a * f b) -&gt; f (a*b)&quot; doesn&#039;t taking the dual give &quot;(f a + f b)  Either (f a) (f b)&quot;?
+
+
+I was thinking about the type
+
+&gt; almostcozip :: f (Either a b) -&gt; (f a, f b)
+
+This function can be implemented unambiguously for [] and Maybe, and is in quite useful in practice. It also has a right inverse,
+
+&gt; acounzip :: (f a, f b) -&gt; f (Either a b)
+
+If (f x) is a Monoid then
+&gt; acounzip (fa, fb) = fmap Left fa `mappend` fmap Right fb
+
+Thinking about it some more, there is also the dual type
+
+&gt; azip   :: Either (f a) (f b) -&gt; f (a,b)
+&gt; aunzip :: f (a,b) -&gt; Either (f a) (f b)
+
+But I can&#039;t think of any nice function with this type.</description>
+		<content:encoded><![CDATA[<p>An interesting post, I was thinking along a slightly different (and wrong) route myself.</p>
+<p>First of all, shouldn&#8217;t cozip be called counzip and vice-versa? fzip has type &#8220;(f a * f b) -&gt; f (a*b)&#8221; doesn&#8217;t taking the dual give &#8220;(f a + f b)  Either (f a) (f b)&#8221;?</p>
+<p>I was thinking about the type</p>
+<p>&gt; almostcozip :: f (Either a b) -&gt; (f a, f b)</p>
+<p>This function can be implemented unambiguously for [] and Maybe, and is in quite useful in practice. It also has a right inverse,</p>
+<p>&gt; acounzip :: (f a, f b) -&gt; f (Either a b)</p>
+<p>If (f x) is a Monoid then<br />
+&gt; acounzip (fa, fb) = fmap Left fa `mappend` fmap Right fb</p>
+<p>Thinking about it some more, there is also the dual type</p>
+<p>&gt; azip   :: Either (f a) (f b) -&gt; f (a,b)<br />
+&gt; aunzip :: f (a,b) -&gt; Either (f a) (f b)</p>
+<p>But I can&#8217;t think of any nice function with this type.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

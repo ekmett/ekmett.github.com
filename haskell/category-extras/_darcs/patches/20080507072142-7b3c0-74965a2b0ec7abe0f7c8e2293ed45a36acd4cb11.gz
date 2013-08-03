@@ -1,0 +1,177 @@
+[0.44.4
+ekmett@gmail.com**20080507072142
+ 
+ Added Higher Order Adjunctions and Composition
+ 
+ Fixed the definition of shift to include the rank-2 type
+ 
+] {
+adddir ./src/Control/Functor/Adjunction
+adddir ./src/Control/Functor/HigherOrder
+hunk ./Makefile 17
+-	@runhaskell Setup.lhs haddock --hyperlink-source
++	@runhaskell Setup.lhs haddock
+hunk ./category-extras.cabal 3
+-version:                0.44.3
++version:                0.44.4
+hunk ./category-extras.cabal 60
++	Control.Functor.Adjunction.HigherOrder,
+hunk ./category-extras.cabal 71
++	Control.Functor.HigherOrder.Composition,
+hunk ./src/Control/Comonad/HigherOrder.hs 17
++	, hduplicate
+hunk ./src/Control/Comonad/HigherOrder.hs 26
++
++hduplicate :: (HComonad w, Functor (w g), Functor g) => w g a -> w (w g) a
++hduplicate = hextend id
++
+hunk ./src/Control/Functor/Adjunction.hs 44
+--- adjunction-oriented composition
++-- | Adjunction-oriented composition, yields monads and comonads from adjunctions
+addfile ./src/Control/Functor/Adjunction/HigherOrder.hs
+hunk ./src/Control/Functor/Adjunction/HigherOrder.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Functor.Adjunction.HigherOrder
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Higher-Order Adjunctions
++----------------------------------------------------------------------------
++module Control.Functor.Adjunction.HigherOrder 
++	( HAdjunction(..)
++	) where
++
++import Control.Functor.HigherOrder
++import Control.Functor.Extras
++
++class (HFunctor f, HFunctor g) => HAdjunction f g where
++        hunit   :: Natural a (g (f a))
++        hcounit :: Natural (f (g b)) b
++        hleftAdjunct  :: Natural (f a) b -> Natural a (g b)
++        hrightAdjunct :: Natural a (g b) -> Natural (f a) b
++
++        hunit = hleftAdjunct id
++        hcounit = hrightAdjunct id
++        hleftAdjunct f = hfmap f . hunit
++        hrightAdjunct f = hcounit . hfmap f
+hunk ./src/Control/Functor/Composition.hs 27
+-    decompose  :: c f g x -> f (g x)
+-    compose    :: f (g x) -> c f g x
++	decompose  :: c f g x -> f (g x)
++	compose    :: f (g x) -> c f g x
+hunk ./src/Control/Functor/Composition.hs 48
+-associateComp :: (Functor f, Composition c) => (c (c f g) h) a -> (c f (c g h)) a
++associateComp :: (Functor f, Composition c) => c (c f g) h a -> c f (c g h) a
+hunk ./src/Control/Functor/Composition.hs 51
+-coassociateComp :: (Functor f, Composition c) => (c f (c g h)) a -> (c (c f g) h) a
++coassociateComp :: (Functor f, Composition c) => c f (c g h) a -> c (c f g) h a
+hunk ./src/Control/Functor/Composition.hs 54
++
++
+hunk ./src/Control/Functor/HigherOrder.hs 1
++{-# OPTIONS_GHC -fglasgow-exts #-}
+hunk ./src/Control/Functor/HigherOrder.hs 22
++	, LowerH(..)
+hunk ./src/Control/Functor/HigherOrder.hs 25
++import Control.Functor.Pointed
+hunk ./src/Control/Functor/HigherOrder.hs 43
++newtype LowerH 
++	(h :: (* -> *) -> * -> *)
++	(f :: * -> *)
++	(a :: *) = LowerH { liftH :: h f a }
++
++instance (HFunctor h, Functor f) => Functor (LowerH h f) where
++	fmap f = LowerH . ffmap f . liftH 
++
++instance (HPointed h, Pointed f) => Pointed (LowerH h f) where
++	point = LowerH . hreturn . point
++
++instance (HCopointed h, Copointed f) => Copointed (LowerH h f) where
++	extract = extract . hextract . liftH
++
++{-# RULES
++"hextract/hreturn" hextract . hreturn = id
++ #-}
+addfile ./src/Control/Functor/HigherOrder/Composition.hs
+hunk ./src/Control/Functor/HigherOrder/Composition.hs 1
++{-# OPTIONS_GHC -cpp -fglasgow-exts #-}
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.HigherOrder.Composition
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (kind annotations, rank-2 types)
++--
++-- Composition of higher order functors
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.HigherOrder.Composition
++	( CompH(..)
++	, HComposition(..)
++	, hassociateComp
++	, hcoassociateComp
++	) where
++
++import Control.Functor.HigherOrder
++
++class HComposition 
++	(c :: ((* -> *) -> * -> *) -> 
++	      ((* -> *) -> * -> *) -> 
++	      ((* -> *) -> * -> *)) where
++	hcompose :: f (g x) a ->  c f g x a
++	hdecompose :: c f g x a -> f (g x) a
++
++newtype CompH 
++	(f :: ((* -> *) -> * -> *))
++	(g :: ((* -> *) -> * -> *)) 
++	(a :: (* -> *)) (b :: *) = CompH { runCompH :: f (g a) b }
++
++instance HComposition CompH where
++	hcompose = CompH
++	hdecompose = runCompH
++
++instance (HFunctor f, HFunctor g) => HFunctor (CompH f g) where
++	hfmap f = hcompose . hfmap (hfmap f) . hdecompose
++	ffmap f = hcompose . hfmap liftH . ffmap f . hfmap LowerH . hdecompose
++
++hassociateComp :: (HFunctor f, HComposition c) => c (c f g) h a b -> c f (c g h) a b
++hassociateComp = hcompose . hfmap hcompose . hdecompose . hdecompose
++
++hcoassociateComp :: (HFunctor f, HComposition c) => c f (c g h) a b -> c (c f g) h a b
++hcoassociateComp = hcompose . hcompose . hfmap hdecompose . hdecompose
+hunk ./src/Control/Functor/Indexed.hs 32
+-"ireturn/iextract" ireturn . iextract = id
+hunk ./src/Control/Functor/KanExtension.hs 12
+-module Control.Functor.KanExtension where
++module Control.Functor.KanExtension 
++	( Ran(..)
++	, toRan, fromRan
++	, Lan(..)
++	, toLan, fromLan
++	) where
+hunk ./src/Control/Functor/KanExtension.hs 22
+--- Right Kan Extension
++-- | Right Kan Extension
+hunk ./src/Control/Functor/KanExtension.hs 31
+--- Left Kan Extension
++-- | Left Kan Extension
+hunk ./src/Control/Functor/Pointed.hs 29
+-"point/extract" point . extract = id
+hunk ./src/Control/Monad/HigherOrder.hs 29
+-hjoin :: (HMonad m, Functor (m g), Functor g) => Natural (m (m g)) (m g)
++hjoin :: (HMonad m, Functor (m g), Functor g) => m (m g) a -> m g a
+hunk ./src/Control/Monad/Indexed/Cont.hs 10
+--- Portability	: portable
++-- Portability	: Rank-2 Types
+hunk ./src/Control/Monad/Indexed/Cont.hs 21
+-	shift :: ((a -> m i i o) -> m r j j) -> m r o a
++	shift :: (forall i. (a -> m i i o) -> m r j j) -> m r o a
+}

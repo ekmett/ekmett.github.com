@@ -1,0 +1,16 @@
+[literate setup
+ekmett@gmail.com**20090322152330] {
+move ./Setup.hs ./Setup.lhs
+hunk ./Setup.lhs 1
+-module Main (main) where
++#!/usr/bin/runhaskell
++> module Main (main) where
+hunk ./Setup.lhs 4
+-import Distribution.Simple
++> import Distribution.Simple
+hunk ./Setup.lhs 6
+-main :: IO ()
+-main = defaultMain
++> main :: IO ()
++> main = defaultMain
+}

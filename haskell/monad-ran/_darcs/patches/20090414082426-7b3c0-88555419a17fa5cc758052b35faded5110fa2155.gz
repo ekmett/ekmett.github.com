@@ -1,0 +1,27 @@
+[auto
+ekmett@gmail.com**20090414082426
+ Ignore-this: eacfc056d4728ba16fd7b30b6f56865e
+] {
+hunk ./Control/Monad/Ran.hs 41
++runYoneda :: Yoneda f a -> f a 
++runYoneda (Yoneda f) = f id
++
+hunk ./Control/Monad/Ran.hs 110
++-- forall o. (a -> G m o) -> H m ((b -> G m o) -> o) ?
+hunk ./Control/Monad/Ran.hs 115
+-
+hunk ./Control/Monad/Ran.hs 116
+--- forall o. (a -> Identity o) -> f o 
++-- Ran (Yoneda f) forall o. (a -> Identity o) -> f o 
+hunk ./Control/Monad/Ran.hs 136
++    toRan m = Ran (\f -> liftM (runIdentity . f) m)
++    fromRan (Ran f) = f Identity
+hunk ./Control/Monad/Ran.hs 145
++    toRan (Writer w')  = Ran (\f w -> uncurry f (w `mappend` w')
++    fromRan (Ran f)    = Writer (f (,) mempty)
+hunk ./Control/Monad/Ran.hs 155
++    toRan (State g)  = Ran (\f -> uncurry f . g)
++    fromRan (Ran f)  = State (f (,))
+hunk ./Control/Monad/Ran.hs 169
++-- forall o. (a -> G m (w -> o)) -> H m (w -> o) ?
+}

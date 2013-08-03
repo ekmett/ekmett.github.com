@@ -1,0 +1,1218 @@
+[initialized
+ekmett@gmail.com**20080428190221] {
+adddir ./src
+adddir ./src/Control
+adddir ./src/Control/Bifunctor
+adddir ./src/Control/Comonad
+adddir ./src/Control/Comonad/Reader
+adddir ./src/Control/Comonad/State
+adddir ./src/Control/Functor
+adddir ./src/Control/Monad
+adddir ./src/Control/Morphism
+addfile ./src/Control/Bifunctor.hs
+hunk ./src/Control/Bifunctor.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Bifunctor
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD3
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (functional-dependencies)
++--
++-------------------------------------------------------------------------------------------
++module Control.Bifunctor where
++
++import Prelude hiding (id)
++
++class Bifunctor f where
++	bimap :: (a -> c) -> (b -> d) -> f a b -> f c d
+addfile ./src/Control/Bifunctor/Associative.hs
+hunk ./src/Control/Bifunctor/Associative.hs 1
++-- {-# OPTIONS -fglasgow-exts -fallow-undecidable-instances #-}
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Bifunctor.Associative
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-- NB: this contradicts another common meaning for an 'Associative' 'Category', which is one 
++-- where the pentagonal condition does not hold, but for which there is an identity.
++--
++-------------------------------------------------------------------------------------------
++module Control.Bifunctor.Associative where
++
++import Control.Bifunctor
++
++{- | A category with an associative bifunctor satisfying Mac Lane\'s pentagonal coherence identity law:
++
++> second associate . associate . first associate = associate . associate
++-}
++class Bifunctor p => Associative p where
++	associate :: p (p a b) c -> p a (p b c)
++
++{- | A category with a coassociative bifunctor satisyfing the dual of Mac Lane's pentagonal coherence identity law:
++
++> first coassociate . coassociate . second coassociate = coassociate . coassociate
++-}
++class Bifunctor s => Coassociative s where
++	coassociate :: s a (s b c) -> s (s a b) c
++
++{-# RULES
++	"copentagonal coherence"
++		first coassociate . coassociate . second coassociate = coassociate . coassociate
++	"pentagonal coherence"
++		second associate . associate . first associate = associate . associate
++ #-}
+addfile ./src/Control/Bifunctor/Braided.hs
+hunk ./src/Control/Bifunctor/Braided.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Bifunctor.Braided
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: portable
++--
++-------------------------------------------------------------------------------------------
++module Control.Bifunctor.Braided where
++
++import Control.Bifunctor
++
++{- | A braided (co)(monoidal or associative) category can commute the arguments of its bi-endofunctor. Obeys the laws:
++
++> idr . braid = idl 
++> idl . braid = idr 
++> braid . coidr = coidl 
++> braid . coidl = coidr 
++> associate . braid . associate = second braid . associate . first braid 
++> coassociate . braid . coassociate = first braid . coassociate . second braid 
++
++-}
++
++class Bifunctor p => Braided p where
++	braid :: p a b -> p b a
++
++{-# RULES 
++	"idr/braid" 			idr . braid = idl
++	"idl/braid" 			idl . braid = idr
++	"braid/coidr" 			braid . coidr = coidl
++	"braid/coidl" 			braid . coidl = coidr
++	"braid/associate/braid" 	second braid . associate . first braid = associate . braid . associate
++	"braid/coassociate/braid" 	first braid . coassociate . second braid = coassociate . braid . coassociate
++ #-}
++
++{- |
++If we have a symmetric (co)'Monoidal' category, you get the additional law:
++
++> swap . swap = id
++ -}
++class Braided p => Symmetric p
++
++swap :: Symmetric p => p a b -> p b a
++swap = braid
++
++{-# RULES
++	"swap/swap" swap . swap = id
++ #-}
+addfile ./src/Control/Bifunctor/Composition.hs
+hunk ./src/Control/Bifunctor/Composition.hs 1
++module Control.Bifunctor.Composition where
++
++newtype FunctorBT f p a b = FunctorBT { runFunctorBT :: f (p a b) } 
++newtype SwapBT p a b = SwapB { runSwapBT :: p b a } 
++newtype CompBT p f g a b = CompBT { runCompBT :: p (f a b) (g a b) }
++newtype ArrowBT f g a b = ArrowBT { runArrowBT :: f a b -> g a b }
+addfile ./src/Control/Bifunctor/Monoidal.hs
+hunk ./src/Control/Bifunctor/Monoidal.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Bifunctor.Monoidal
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-- A 'Monoidal' category is a category with an associated biendofunctor that has an identity,
++-- which satisfies Mac Lane''s pentagonal and triangular coherence conditions
++-- Technically we usually say that category is 'monoidal', but since
++-- most interesting categories in our world have multiple candidate bifunctors that you can 
++-- use to enrich their structure, we choose here to think of the bifunctor as being 
++-- monoidal. This lets us reuse the same Bifunctor over different categories without 
++-- painful type annotations.
++-------------------------------------------------------------------------------------------
++module Control.Bifunctor.Monoidal where
++
++import Prelude hiding ((.), id, fst, snd)
++import Control.Bifunctor
++import Control.Bifunctor.Associative
++
++-- | Denotes that we have some reasonable notion of 'Identity' for a particular 'Bifunctor' in this 'Category'. This
++-- notion is currently used by both 'Monoidal' and 'Comonoidal'
++class Bifunctor p => HasIdentity p i | p -> i 
++
++{- | A monoidal category. 'idl' and 'idr' are traditionally denoted lambda and rho
++ the triangle identity holds:
++
++> first idr = second idl . associate 
++> second idl = first idr . associate
++-}
++
++class (Associative p, HasIdentity p i) => Monoidal p i | p -> i where
++	idl :: p i a -> a
++	idr :: p a i -> a
++
++{-# RULES
++	"second idl/associate" 	second idl . associate = first idr
++	"first idr/associate" 	first idr . associate = second idl
++ #-}
++
++{- | A comonoidal category satisfies the dual form of the triangle identities
++
++> first idr = coassociate . second idl
++> second idl = coassociate . first idr
++
++This type class is also (ab)used for the inverse operations needed for a strict (co)monoidal category.
++A strict (co)monoidal category is one that is both 'Monoidal' and 'Comonoidal' and satisfies the following laws:
++
++> idr . coidr = id 
++> idl . coidl = id 
++> coidl . idl = id 
++> coidr . idr = id 
++
++-}
++class (Coassociative p, HasIdentity p i) => Comonoidal p i | p -> i where
++	coidl :: a -> p i a
++	coidr :: a -> p a i
++
++{-# RULES
++	"coassociate/second idl"  coassociate . second idl = first idr
++	"coassociate/first idr"   coassociate . first idr = second idl
++ #-}
++
++{-# RULES
++	"idr/coidr" 		idr . coidr = id
++	"idl/coidl"		idl . coidl = id
++	"coidl/idl"		coidl . idl = id
++	"coidr/idr"		coidr . idr = id
++ #-}
+addfile ./src/Control/Comonad.hs
+hunk ./src/Control/Comonad.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad where
++
++import Control.Monad
++import Control.Arrow ((|||), (&&&), (+++), (***))
++
++class Functor w => Comonad w where
++        duplicate :: w a -> w (w a)
++        extend :: (w a -> b) -> w a -> w b
++        extract :: w a -> a
++        extend f = fmap f . duplicate
++        duplicate = extend id
++
++liftW :: Comonad w => (a -> b) -> w a -> w b
++liftW f = extend (f . extract)
+addfile ./src/Control/Comonad/Cofree.hs
+hunk ./src/Control/Comonad/Cofree.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.Cofree
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.Cofree where
++
++import Control.Comonad
++import Control.Arrow ((|||), (&&&), (+++), (***))
++
++-- | The cofree comonad of a functor (aka the branching stream comonad)
++data Cofree f a = Cofree { runCofree :: (a, f (Cofree f a)) }
++
++instance Functor f => Functor (Cofree f) where
++        fmap f = Cofree . (f *** fmap (fmap f)) . runCofree
++
++instance Functor f => Comonad (Cofree f) where
++        extract = fst . runCofree
++        extend f = Cofree . (f &&& (fmap (extend f) . outCofree))
++
++outCofree :: Cofree f a -> f (Cofree f a)
++outCofree = snd . runCofree
++
++anaCofree :: Functor f => (a -> c) -> (a -> f a) -> a -> Cofree f c
++anaCofree h t = Cofree . (h &&& fmap (anaCofree h t) . t)
+addfile ./src/Control/Comonad/Identity.hs
+hunk ./src/Control/Comonad/Identity.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.Identity
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.Identity where
++
++import Control.Monad.Identity
++import Control.Comonad
++
++instance Comonad Identity where
++        extract = runIdentity
++        extend f x = Identity (f x)
++        duplicate = Identity
+addfile ./src/Control/Comonad/Instances.hs
+hunk ./src/Control/Comonad/Instances.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.Instances
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.Instances where
++
++import Control.Comonad
++
++instance Comonad ((,)e) where
++        extract = snd
++        duplicate ~(e,a) = (e,(e,a))
+addfile ./src/Control/Comonad/Reader.hs
+hunk ./src/Control/Comonad/Reader.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.Reader
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.Reader where
++
++import Control.Comonad.Reader.Class
++import Control.Comonad
++import Control.Arrow ((&&&), second)
++
++data ReaderC r a = ReaderC r a 
++runReaderC (ReaderC r a) = (r,a)
++
++instance ComonadReader r (ReaderC r) where
++	askC (ReaderC r _) = r
++
++instance Functor (ReaderC r) where
++	fmap f = uncurry ReaderC . second f . runReaderC
++
++instance Comonad (ReaderC r) where
++	extract (ReaderC _ a) = a
++	duplicate (ReaderC e a) = ReaderC e (ReaderC e a)
++
++
++
++newtype ReaderCT r w a = ReaderCT { runReaderCT :: w (r, a) }
++
++instance Comonad w => ComonadReader r (ReaderCT r w) where
++	askC = fst . extract . runReaderCT
++
++instance Functor f => Functor (ReaderCT b f) where
++        fmap f = ReaderCT . fmap (fmap f) . runReaderCT
++
++instance Comonad w => Comonad (ReaderCT b w) where
++        extract = snd . extract . runReaderCT
++        duplicate = ReaderCT . liftW (fst . extract &&& ReaderCT) . duplicate . runReaderCT
+addfile ./src/Control/Comonad/Reader/Class.hs
+hunk ./src/Control/Comonad/Reader/Class.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.Reader.Class
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.Reader.Class where
++
++import Control.Comonad
++
++class Comonad w => ComonadReader r w | w -> r where
++	askC :: w a -> r
+addfile ./src/Control/Comonad/State.hs
+hunk ./src/Control/Comonad/State.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.State
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTCs)
++--
++----------------------------------------------------------------------------
++module Control.Comonad.State where
++
++import Control.Arrow ((&&&), first)
++import Control.Comonad
++import Control.Comonad.State.Class
++
++data StateC s a = StateC (s -> a) s
++runStateC f s = (a b, b) where
++	StateC a b = f (StateC id s)
++
++instance ComonadState s (StateC s) where
++	getC (StateC f s) = StateC id s
++	putC s (StateC f _) = StateC f s
++
++modifyC :: (s -> s) -> StateC s a -> StateC s a
++modifyC m (StateC f s) = StateC f (m s)
++
++instance Functor (StateC r) where
++	fmap f (StateC f' s) = StateC (f . f') s
++
++instance Comonad (StateC s) where
++	extract (StateC f a) = f a
++	extend k (StateC f v) = StateC (\v -> k (StateC f v)) v
++
++newtype StateCT s w a = StateCT { runStateCT :: w (s -> a, s) }
++
++instance Comonad w => ComonadState s (StateCT s w) where
++	-- getC = uncurry id . extract . runStateCT
++	getC = undefined
++	putC = undefined
++
++instance Functor f => Functor (StateCT b f) where
++        fmap f = StateCT . fmap (first (f .)) . runStateCT
++
++instance Comonad w => Comonad (StateCT b w) where
++        extract = uncurry id . extract . runStateCT
++        duplicate = undefined -- StateCT . liftW (fst . extract &&& StateCT) . duplicate . runStateCT
+addfile ./src/Control/Comonad/State/Class.hs
+hunk ./src/Control/Comonad/State/Class.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Comonad.State.Class
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Comonad.State.Class where
++
++import Control.Comonad
++
++class Comonad w => ComonadState s w | w -> s where
++	getC :: w a -> w s
++	putC :: s -> w a -> w a
++
++-- modifyC :: (s -> s) -> StateC s a -> StateC s a
++-- modifyC m (StateC f s) = StateC f (m s)
+addfile ./src/Control/Functor/Adjunction.hs
+hunk ./src/Control/Functor/Adjunction.hs 1
++{-# OPTIONS -fglasgow-exts -fallow-undecidable-instances #-}
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.Adjunction
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (functional-dependencies)
++--
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.Adjunction where
++
++-- | An 'Adjunction' formed by the 'Functor' f and 'Functor' g. 
++
++-- Minimal definition:
++
++-- 1. @leftAdjunct@ and @rightAdjunct@ 
++
++-- 2. @unit@ and @counit@
++
++class (Functor f, Functor g) => Adjunction f g where
++	unit   :: a -> g (f a)
++	counit :: f (g a) -> a
++	leftAdjunct  :: (f a -> b) -> a -> g b
++	rightAdjunct :: (a -> g b) -> f a -> b
++
++	unit = leftAdjunct id
++	counit = rightAdjunct id
++	leftAdjunct f = fmap f . unit
++	rightAdjunct f = counit . fmap f
+addfile ./src/Control/Functor/Algebra.hs
+hunk ./src/Control/Functor/Algebra.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Functor.Algebra
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++----------------------------------------------------------------------------
++module Control.Functor.Algebra where
++
++import Control.Comonad
++
++type Alg f a = f a -> a
++type CoAlg f a = a -> f a
++type AlgW f w a = f (w a) -> a
++type CoAlgM f m a = a -> f (m a)
++
++liftAlg :: (Functor f, Comonad w) => Alg f a -> AlgW f w a
++liftAlg f = f . fmap extract
++
++liftCoAlg :: (Functor f, Monad m) => CoAlg f a -> CoAlgM f m a
++liftCoAlg f = fmap return . f
++
+addfile ./src/Control/Functor/Composition.hs
+hunk ./src/Control/Functor/Composition.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.Composition
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-- Generalized functor composition.
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.Composition where
++
++import Control.Bifunctor
++import Control.Bifunctor.Instances
++import Control.Functor.Adjunction
++import Control.Functor.Pointed
++import Control.Monad
++import Control.Comonad
++import Control.Functor.Full
++import Control.Arrow ((&&&),(|||))
++
++newtype CompF f g a = CompF { deCompF :: f (g a) }
++
++#ifndef __HADDOCK__
++type (f :.: g) a = CompF f g a
++#endif
++
++instance Adjunction f g => Pointed (CompF g f) where
++        point = CompF . unit
++
++instance Adjunction f g => Copointed (CompF f g) where
++        copoint = counit . deCompF
++
++instance Adjunction f g => Monad (CompF g f) where
++	return = point
++        m >>= f = CompF . fmap (rightAdjunct (deCompF . f)) $ deCompF m
++
++instance Adjunction f g => Comonad (CompF f g) where
++	extract = copoint
++        extend f = CompF . fmap (leftAdjunct (f . CompF)) . deCompF
++
++instance (Functor f, Functor g) => Functor (CompF f g) where
++	fmap f = CompF . fmap (fmap f) . deCompF
++
++instance (Full f, Full g) => Full (CompF f g) where
++        prefmap f = prefmap . prefmap $ deCompF . f . CompF
++
++newtype BifunctorF p f g a = BifunctorF { runBifunctorF :: p (f a) (g a) }
++
++instance (Bifunctor p, Functor f ,Functor g) => Functor (BifunctorF p f g) where
++	fmap f = BifunctorF . bimap (fmap f) (fmap f) . runBifunctorF
++
++#ifndef __HADDOCK__
++type (f :*: g) a = BifunctorF (,) f g a
++#endif
++
++-- this would be a type but that causes the following line to freak out
++-- because (f :*: g) is a partialy applied type synonym even though it immediately gets filled out
++
++#ifndef __HADDOCK__
++runProductF :: (f * g) a -> (f a, g a)
++#else
++runProductF :: Bifunctor (,) f g a -> (f a, g a)
++#endif
++runProductF = runBifunctorF
++
++instance (Pointed f, Pointed g) => Pointed (BifunctorF (,) f g) where
++	point = BifunctorF . (point &&& point)
++
++instance (Faithful f, Faithful g) => Faithful (BifunctorF (,) f g)
++
++#ifndef __HADDOCK__
++type (f :+: g) a = BifunctorF Either f g a
++#endif
++
++#ifndef __HADDOCK__
++runCoproductF :: (f :+: g) a -> Either (f a) (g a)
++#else
++runCoproductF :: Bifunctor Either f g a -> Either (f a) (g a)
++#endif
++runCoproductF = runBifunctorF 
++
++instance (Copointed f, Copointed g) => Copointed (BifunctorF Either f g) where
++	copoint = (copoint ||| copoint) . runCoproductF
+addfile ./src/Control/Functor/Extras.hs
+hunk ./src/Control/Functor/Extras.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Functor.Extras
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++----------------------------------------------------------------------------
++module Control.Functor.Extras where
++
++type Dist f g = forall a. f (g a) -> g (f a)
++type Natural f g = forall a. f a -> g a
++
+addfile ./src/Control/Functor/Fix.hs
+hunk ./src/Control/Functor/Fix.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Functor.Fix
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++----------------------------------------------------------------------------
++module Control.Functor.Fix where
++
++import Control.Monad
++import Control.Comonad
++import Control.Functor.Algebra
++
++newtype Mu f = InF { outF :: f (Mu f) }
++type Nu f = Mu f
++
++outM :: (Functor f, Monad m) => CoAlgM f m (Nu f)
++outM = liftCoAlg outF
++
++inW :: (Functor f, Comonad w) => AlgW f w (Mu f)
++inW = liftAlg InF
++
+addfile ./src/Control/Functor/Full.hs
+hunk ./src/Control/Functor/Full.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.Full
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD-style (see the LICENSE file in the distribution)
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.Full where
++
++{- |
++	A 'Full' 'Functor' @F : C -> D@ provides for every pair of objects @c@, @c'@ in @C@
++	and every morphism @g : F c -> F c'l@ in @D@, a morphism @g' : c -> c'@ in @C@. In short
++	map has a right-inverse under composition.
++
++> fmap . prefmap = id
++-}
++
++class Functor f => Full f where
++	prefmap :: (f a -> f b) -> a -> b
++	
++{-# RULES
++	"fmap/prefmap" 	map . prefmap = id
++ #-}
++
++class Functor f => Faithful f
++
++{- | 
++
++For every pair of objects @a@ and @b@ in @C@ a 'Full' 'Faithful' 'Functor' @F : C -> D@ maps every morphism 
++@f : a -> b@ onto a distinct morphism @f : T a -> T b@ (since it is faithful) and every morphism from 
++@g : T a -> T b@ can be obtained from some @f@. (It maps Hom-sets bijectively, or in short @fmap@ has both
++a left and right inverse under composition.
++
++> unfmap . fmap = id
++-}
++
++unfmap :: (Full f, Faithful f) => (f a -> f b) -> a -> b
++unfmap = prefmap
++
++{-# RULES
++	"unfmap/fmap"	unfmap . fmap = id
++ #-}
+addfile ./src/Control/Functor/Pointed.hs
+hunk ./src/Control/Functor/Pointed.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.Pointed
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (functional-dependencies)
++--
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.Pointed where
++
++-- return
++class Functor f => Pointed f where
++        point :: a -> f a
++
++-- extract
++class Functor f => Copointed f where
++        copoint :: f a -> a
++
++{-# RULES
++        "copoint/point" copoint . point = id
++        "point/copoint" point . copoint = id
++ #-}
+addfile ./src/Control/Functor/Representable.hs
+hunk ./src/Control/Functor/Representable.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Functor.Representable
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++
++module Control.Functor.Representable where
++
++class Functor f => Representable f x where
++	rep :: (x -> a) -> f a
++	unrep :: f a -> (x -> a)
++
++{-# RULES
++  "rep/unrep"       	rep . unrep = id
++  "unrep/rep"   	unrep . rep = id
++ #-}
+addfile ./src/Control/Monad/Either.hs
+hunk ./src/Control/Monad/Either.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Monad.Either
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-- Incompatible with Control.Monad.Error, but removes the Error restriction
++-- that prevents a natural encoding of Apomorphisms
++----------------------------------------------------------------------------
++module Control.Monad.Either where
++
++import Control.Monad
++import Control.Arrow ((|||), (&&&), (+++), (***))
++
++newtype EitherT a m b = EitherT { runEitherT :: m (Either a b) }
++
++instance Monad (Either e) where
++        return = Right
++        Right m >>= k = k m
++        Left e  >>= k = Left e
++
++instance Functor f => Functor (EitherT b f) where
++        fmap f = EitherT . fmap (fmap f) . runEitherT
++
++instance Monad m => Monad (EitherT b m) where
++        return = EitherT . return . return
++        m >>= k  = EitherT $ do
++                a <- runEitherT m
++                case a of
++                    Left  l -> return (Left l)
++                    Right r -> runEitherT (k r)
+addfile ./src/Control/Monad/Free.hs
+hunk ./src/Control/Monad/Free.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Monad.Free
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  portable
++--
++----------------------------------------------------------------------------
++module Control.Monad.Free where
++
++import Control.Monad
++import Control.Arrow ((|||), (&&&), (+++), (***))
++
++-- | The free monad of a functor
++data Free f a = Free { runFree :: Either a (f (Free f a)) }
++
++instance Functor f => Functor (Free f) where
++        fmap f = Free . (f +++ fmap (fmap f)) . runFree
++
++instance Functor f => Monad (Free f) where
++        return = Free . Left
++        m >>= k = (k ||| (inFree . fmap (>>= k))) (runFree m)
++
++inFree :: f (Free f a) -> Free f a
++inFree = Free . Right
++
++cataFree :: Functor f => (c -> a) -> (f a -> a) -> Free f c -> a
++cataFree l r = (l ||| r . fmap (cataFree l r)) . runFree
+addfile ./src/Control/Morphism/Ana.hs
+hunk ./src/Control/Morphism/Ana.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Ana
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++-- Traditional operators, shown here to show how to roll your own
++----------------------------------------------------------------------------
++module Control.Morphism.Ana where
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Monad.Identity
++import Control.Comonad.Identity
++
++-- * Unfold Sugar
++
++ana :: Functor f => CoAlg f a -> a -> Nu f
++-- ana g = g_ana distAna (liftCoAlg g)
++ana g = InF . fmap (ana g) . g
++
++g_ana :: (Functor f, Monad m) => Dist m f -> CoAlgM f m a -> a -> Nu f
++-- g_ana k g = g_hylo distCata k inW id g
++g_ana k g = a . return where a = InF . fmap (a . join) . k . liftM g
++
++distAna :: Functor f => Dist Identity f
++distAna = fmap Identity . runIdentity
++
+addfile ./src/Control/Morphism/Apo.hs
+hunk ./src/Control/Morphism/Apo.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Apo
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++-- Traditional operators, shown here to show how to roll your own
++----------------------------------------------------------------------------
++module Control.Morphism.Apo where
++
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Monad
++import Control.Monad.Either
++import Control.Morphism.Ana
++import Control.Arrow ((|||))
++
++-- * Unfold Sugar
++
++apo :: Functor f => CoAlgM f (Apo f) a -> a -> Nu f
++apo = g_apo outF
++
++g_apo :: Functor f => CoAlg f b -> CoAlgM f (GApo b) a -> a -> Nu f
++g_apo g = g_ana (distGApo g)
++
++type Apo f a 		= Either (Nu f) a
++type ApoT f m a 	= EitherT (Nu f) m a
++
++type GApo b a 		= Either b a
++type GApoT b m a 	= EitherT b m a 
++
++-- * Distributive Law Combinators
++
++distGApo :: Functor f => CoAlg f b -> Dist (Either b) f
++distGApo f = fmap Left . f  ||| fmap Right
++
++distGApoT :: (Functor f, Monad m) => CoAlgM f m b -> Dist m f -> Dist (EitherT b m) f
++distGApoT g k = fmap (EitherT . join) . k  . liftM (fmap (liftM Left) . g ||| fmap (return . Right)) . runEitherT
++
++distApoT :: (Functor f, Monad m) => Dist m f -> Dist (ApoT f m) f
++distApoT = distGApoT (liftCoAlg outF)
++
+addfile ./src/Control/Morphism/Cata.hs
+hunk ./src/Control/Morphism/Cata.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Cata
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++----------------------------------------------------------------------------
++module Control.Morphism.Cata where
++
++import Control.Functor.Algebra 
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Monad.Identity
++import Control.Comonad.Identity
++
++cata :: Functor f => Alg f a -> Mu f -> a
++-- cata f = g_cata distCata (liftAlg f)
++cata f = f . fmap (cata f) . outF
++
++g_cata :: (Functor f, Comonad w) => Dist f w -> AlgW f w a -> Mu f -> a
++-- g_cata k f = g_hylo k distAna f id outM
++g_cata k g = extract . c where c = liftW g . k . fmap (duplicate . c) . outF
++
++distCata :: Functor f => Dist f Identity
++distCata = Identity . fmap runIdentity
+addfile ./src/Control/Morphism/Chrono.hs
+hunk ./src/Control/Morphism/Chrono.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Chrono
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++-- Chronomorphisms from <http://comonad.com/reader/2008/time-for-chronomorphisms/>
++----------------------------------------------------------------------------
++module Control.Morphism.Chrono where
++
++import Control.Comonad.Cofree
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Monad.Free
++import Control.Morphism.Hylo
++import Control.Morphism.Futu
++import Control.Morphism.Histo
++
++chrono :: (Functor f, Functor g) => AlgW g (Cofree g) b -> Natural f g -> CoAlgM f (Free f) a -> a -> b
++chrono = g_hylo (distHisto id) (distFutu id)
++
++g_chrono :: (Functor f, Functor g, Functor h, Functor j) => 
++	    Dist g h -> Dist j f -> AlgW g (Cofree h) b -> Natural f g -> CoAlgM f (Free j) a -> a -> b
++g_chrono h f = g_hylo (distHisto h) (distFutu f)
+addfile ./src/Control/Morphism/Dyna.hs
+hunk ./src/Control/Morphism/Dyna.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Dyna
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++----------------------------------------------------------------------------
++module Control.Morphism.Dyna where
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Comonad.Cofree
++import Control.Morphism.Hylo
++import Control.Morphism.Histo
++import Control.Morphism.Ana
++
++dyna :: (Functor f, Functor g) => AlgW g (Cofree g) b -> Natural f g -> CoAlg f a -> a -> b
++dyna f e g = g_hylo (distHisto id) distAna f e (liftCoAlg g)
+addfile ./src/Control/Morphism/Futu.hs
+hunk ./src/Control/Morphism/Futu.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Futu
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++-- Traditional operators, shown here to show how to roll your own
++----------------------------------------------------------------------------
++module Control.Morphism.Futu where
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Monad.Free
++import Control.Morphism.Ana
++
++futu :: Functor f => CoAlgM f (Free f) a -> a -> Nu f
++futu = g_ana (distFutu id)
++
++g_futu :: (Functor f, Functor h) => Dist h f -> CoAlgM f (Free h) a -> a -> Nu f
++g_futu k = g_ana (distFutu k)
++
++distFutu :: (Functor f, Functor h) => Dist h f -> Dist (Free h) f
++distFutu k = cataFree (fmap return) (fmap inFree . k)
++
+addfile ./src/Control/Morphism/Histo.hs
+hunk ./src/Control/Morphism/Histo.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Histo 
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++-- Traditional operators, shown here to show how to roll your own
++----------------------------------------------------------------------------
++module Control.Morphism.Histo where
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Comonad.Cofree
++import Control.Morphism.Cata
++
++histo :: Functor f => AlgW f (Cofree f) a -> Mu f -> a
++histo = g_cata (distHisto id)
++
++g_histo :: (Functor f, Functor h) => Dist f h -> AlgW f (Cofree h) a -> Mu f -> a
++g_histo k = g_cata (distHisto k)
++
++distHisto :: (Functor f, Functor h) => Dist f h -> Dist f (Cofree h)
++distHisto k = anaCofree (fmap extract) (k . fmap outCofree)
+addfile ./src/Control/Morphism/Hylo.hs
+hunk ./src/Control/Morphism/Hylo.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Hylo
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Generalized hylomorphisms 
++----------------------------------------------------------------------------
++module Control.Morphism.Hylo where
++
++import Control.Comonad
++import Control.Monad
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++
++hylo :: (Functor f, Functor g) => Alg g b -> Natural f g -> CoAlg f a -> a -> b
++hylo f e g = f . e . fmap (hylo f e g). g 
++
++g_hylo :: (Comonad w, Functor f, Monad m) =>
++          Dist g w -> Dist m f -> AlgW g w b -> Natural f g -> CoAlgM f m a -> a -> b
++g_hylo w m f e g = extract . h . return where h = liftW f . w . e . fmap (duplicate . h . join) . m . liftM g
++
+addfile ./src/Control/Morphism/Meta.hs
+hunk ./src/Control/Morphism/Meta.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Meta
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Generalized metamorphisms 
++----------------------------------------------------------------------------
++module Control.Morphism.Meta where
++
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Monad.Identity
++import Control.Morphism.Ana
++import Control.Morphism.Cata
++
++
++meta :: (Functor f, Functor g) => 
++	  CoAlg f b -> (a -> b) -> Alg g a -> Mu g -> Nu f
++meta f e g = ana f . e . cata g
++
++g_meta :: (Monad m, Functor f, Comonad w, Functor g) => 
++	  Dist m f -> Dist g w -> CoAlgM f m b -> (a -> b) -> AlgW g w a -> Mu g -> Nu f
++g_meta m w f e g = g_ana m f . e . g_cata w g
++
+addfile ./src/Control/Morphism/Para.hs
+hunk ./src/Control/Morphism/Para.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Para
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++-- 
++----------------------------------------------------------------------------
++module Control.Morphism.Para where
++
++import Control.Comonad
++import Control.Comonad.Reader
++import Control.Comonad.Instances
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Morphism.Cata
++import Control.Morphism.Zygo
++
++-- * Refold Sugar
++
++para :: Functor f => AlgW f (Para f) a -> Mu f -> a
++para = zygo InF
++
++g_para :: (Functor f, Comonad w) => Dist f w -> AlgW f (ParaT f w) a -> Mu f -> a
++g_para f = g_cata (distParaT f)
++
++type Para f a 		= (Mu f, a)
++type ParaT f w a 	= ReaderCT (Mu f) w a
++
++distParaT :: (Functor f, Comonad w) => Dist f w -> Dist f (ParaT f w)
++distParaT = distZygoT (liftAlg InF)
+addfile ./src/Control/Morphism/Zygo.hs
+hunk ./src/Control/Morphism/Zygo.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Zygo 
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++----------------------------------------------------------------------------
++module Control.Morphism.Zygo where
++
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Functor.Fix
++import Control.Comonad
++import Control.Comonad.Reader
++import Control.Comonad.Instances
++import Control.Morphism.Cata
++import Control.Arrow ((&&&))
++
++type Zygo b a = (b,a)
++
++zygo :: Functor f => Alg f b -> AlgW f (Zygo b) a -> Mu f -> a
++zygo f = g_cata (distZygo f)
++
++g_zygo :: (Functor f, Comonad w) => AlgW f w b -> Dist f w -> AlgW f (ReaderCT b w) a -> Mu f -> a
++g_zygo f w = g_cata (distZygoT f w)
++
++-- * Distributive Law Combinators
++
++distZygo :: Functor f => Alg f b -> Dist f (Zygo b)
++distZygo g = g . fmap fst &&& fmap snd
++
++distZygoT :: (Functor f, Comonad w) => AlgW f w b -> Dist f w -> Dist f (ReaderCT b w)
++distZygoT g k = ReaderCT . liftW (g . fmap (liftW fst) &&& fmap (snd . extract)) . k . fmap (duplicate . runReaderCT)
++
+}

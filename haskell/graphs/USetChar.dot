@@ -1,0 +1,15 @@
+digraph g {
+graph [rankdir=LR, splines=true];
+node [label="\N", shape=none, fontcolor=blue, fontname=courier];
+edge [color=black, style=dotted, fontname=courier, arrowname=onormal];
+
+    "CharBin|0" -> {"CharBin|1","CharBin|2"}
+    "CharBin|1" -> {"CharTip|3","CharBin|4"}
+    "CharBin|2" -> {"CharBin|5","CharBin|6"}
+    "CharTip|3" -> {}
+    "CharBin|4" -> {"CharTip|3","CharTip|3"}
+    "CharBin|5" -> {"CharTip|3","CharBin|7"}
+    "CharBin|6" -> {"CharTip|3","CharTip|3"}
+    "CharBin|7" -> {"CharTip|3","CharTip|3"}
+}
+

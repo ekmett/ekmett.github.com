@@ -1,0 +1,263 @@
+[simplified modes
+ekmett@gmail.com**20090504030339
+ Ignore-this: 828a7f6a24061381b5bf201f7c035d4b
+] {
+hunk ./Text/Parsimony.hs 18
+-    , module Text.Parsimony.Parsec
+hunk ./Text/Parsimony.hs 24
+-import Text.Parsimony.Parsec
+hunk ./Text/Parsimony/Char.hs 1
+-{-# LANGUAGE TypeFamilies #-}
++{-# LANGUAGE TypeFamilies, FlexibleInstances  #-}
+hunk ./Text/Parsimony/Char.hs 5
++
+hunk ./Text/Parsimony/Char.hs 8
++
+hunk ./Text/Parsimony/Char.hs 12
+-char :: (Mode t, Token t ~ Char) => Char -> Parser t Char
++char :: Mode m => Char -> Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 15
+-tab :: (Mode t, Token t ~ Char) => Parser t Char
++tab :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 18
+-space :: (Mode t, Token t ~ Char) => Parser t Char
++space :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 21
+-spaces :: (Mode t, Token t ~ Char) => Parser t ()
++spaces :: Mode m => Parser m Char ()
+hunk ./Text/Parsimony/Char.hs 24
+-lower :: (Mode t, Token t ~ Char) => Parser t Char
++lower :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 27
+-upper :: (Mode t, Token t ~ Char) => Parser t Char
++upper :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 30
+-alphaNum :: (Mode t, Token t ~ Char) => Parser t Char
++alphaNum :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 33
+-letter :: (Mode t, Token t ~ Char) => Parser t Char
++letter :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 36
+-hexDigit :: (Mode t, Token t ~ Char) => Parser t Char
++hexDigit :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 39
+-octDigit :: (Mode t, Token t ~ Char) => Parser t Char
++octDigit :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 42
+-anyChar :: (Mode t, Token t ~ Char) => Parser t Char
++anyChar :: Mode m => Parser m Char Char
+hunk ./Text/Parsimony/Char.hs 45
+-string :: (Mode t, Token t ~ Char) => String -> Parser t String
++string :: Mode m => String -> Parser m Char String
+hunk ./Text/Parsimony/Combinators.hs 12
+-oneOf :: (Eq (Token t), Mode t) => [Token t] -> Parser t (Token t)
++oneOf :: (Mode m, Eq t) => [t] -> Parser m t t
+hunk ./Text/Parsimony/Combinators.hs 15
+-noneOf :: (Eq (Token t), Mode t) => [Token t] -> Parser t (Token t)
++noneOf :: (Mode m, Eq t) => [t] -> Parser m t t
+hunk ./Text/Parsimony/Combinators.hs 18
+-anyToken :: Mode t => Parser t (Token t)
++anyToken :: Mode m => Parser m t t
+hunk ./Text/Parsimony/Combinators.hs 21
+-option :: Mode t => a -> Parser t a -> Parser t a
++option :: Mode m => a -> Parser m t a -> Parser m t a
+hunk ./Text/Parsimony/Mode.hs 10
+-    parseMap :: (Generator c, Alternative f) => (Elem c -> e) -> (m e `Parser` a) -> c -> Either (ParseError file) (f a)
++    parseMap :: (Generator c, Alternative f) => (Elem c -> e) -> Parser m e a -> c -> Either (ParseError file) (f a)
+hunk ./Text/Parsimony/Mode.hs 12
+-    parse :: (Generator c, Alternative f) => (m (Elem c) `Parser` a) -> c -> Either (ParseError file) (f a)
++    parse :: (Generator c, Alternative f) => Parser m (Elem c) a -> c -> Either (ParseError file) (f a)
+hunk ./Text/Parsimony/Mode.hs 16
+-    recognizeMap :: Generator c => (Elem c -> e) -> (m e `Parser` a) -> c -> Bool
++    recognizeMap :: Generator c => (Elem c -> e) -> Parser m e a -> c -> Bool
+hunk ./Text/Parsimony/Mode.hs 18
+-    recognize :: Generator c => (m (Elem c) `Parser` a) -> c -> Bool
++    recognize :: Generator c => Parser m (Elem c) a -> c -> Bool
+hunk ./Text/Parsimony/Mode.hs 20
+-
+hunk ./Text/Parsimony/Parsec.hs 22
+-eval :: Parsec.Stream s m Char => Parser (Parsing Char) e -> Parsec.ParsecT s u m e
++eval :: Parsec.Stream s m Char => Parser Parsing Char e -> Parsec.ParsecT s u m e
+hunk ./Text/Parsimony/Parsec.hs 33
+-eval_ :: Parsec.Stream s m Char => Parser (Recognizing Char) e -> Parsec.ParsecT s u m ()
++eval_ :: Parsec.Stream s m Char => Parser Recognizing Char e -> Parsec.ParsecT s u m ()
+hunk ./Text/Parsimony/Prim.hs 1
+-{-# LANGUAGE KindSignatures, TypeFamilies, GADTs, EmptyDataDecls, FlexibleContexts, FlexibleInstances #-}
++{-# LANGUAGE KindSignatures, TypeFamilies, GADTs, EmptyDataDecls, FlexibleContexts, FlexibleInstances, Rank2Types #-}
+hunk ./Text/Parsimony/Prim.hs 19
+-    , Recognizer
+hunk ./Text/Parsimony/Prim.hs 20
+-    , Mode, Token, Pure, Satisfy
+-    , fmapParser, appParser, satisfy, skip 
++    , Mode, Pure, Fun
++    , fmapParser, pureParser, appParser, satisfy, skip 
+hunk ./Text/Parsimony/Prim.hs 32
++import Control.Arrow (Arrow, arr)
++import Control.Category
++import Prelude hiding ((.),id)
++import Text.Parsimony.Util
+hunk ./Text/Parsimony/Prim.hs 37
+-import Text.Parsimony.Util (Id, runId, Ignore)
++import Data.Traversable
++#ifdef X_OverloadedStrings
++import Data.String
++#endif
+hunk ./Text/Parsimony/Prim.hs 43
+-data Parsing t
+-data Recognizing t
+-
+-type Recognizer t a = Parser (Recognizing (Token t)) a
++data Parsing
++data Recognizing
+hunk ./Text/Parsimony/Prim.hs 59
+-data Parser t a where
+-    App     :: Parser t (a -> b) -> Parser t a -> Parser t b
+-    Pure    :: Pure t a -> Parser t a
+-    Alt     :: [Parser t a] -> Parser t a
+-    Greedy  :: [Parser t a] -> Parser t a
+-    Satisfy :: Satisfy t a -> (Token t -> Bool) -> Parser t a
+-    Skip    :: Recognizer t a -> Parser t ()
+-    Name    :: String -> Parser t a -> Parser t a 
+-    Labels  :: [String] -> Parser t a -> Parser t a
++data Parser m t a where
++    App     :: Parser m t (a -> b) -> Parser m t a -> Parser m t b
++    Pure    :: Pure m a -> Parser m t a
++    Alt     :: [Parser m t a] -> Parser m t a
++    Greedy  :: [Parser m t a] -> Parser m t a
++    Satisfy :: Fun m t a -> (t -> Bool) -> Parser m t a
++    Skip    :: Parser Recognizing t a -> Parser m t ()
++    Name    :: String -> Parser m t a -> Parser m t a 
++    Labels  :: [String] -> Parser m t a -> Parser m t a
+hunk ./Text/Parsimony/Prim.hs 69
+-class (Functor (Satisfy t), Applicative (Pure t)) => Mode t where
+-    type Token t   :: * 
+-    type Pure t    :: * -> *
+-    type Satisfy t :: * -> *
++class (Arrow (Fun m), Applicative (Pure m)) => Mode m where
++    type Pure m :: * -> *
++    type Fun  m :: * -> * -> *
+hunk ./Text/Parsimony/Prim.hs 73
+-    fmapParser :: (a -> b) -> Parser t a -> Parser t b
+-    pureParser :: a -> Parser t a
+-    appParser  :: Parser t (a -> b) -> Parser t a -> Parser t b
+-    satisfy    :: (Token t -> Bool) -> Parser t (Token t)
+-    skip       :: Recognizer t a -> Parser t ()
++    fmapParser :: (a -> b) -> Parser m t a -> Parser m t b
++    pureParser :: a -> Parser m t a
++    appParser  :: Parser m t (a -> b) -> Parser m t a -> Parser m t b
++    skip       :: Parser Recognizing t a -> Parser m t ()
+hunk ./Text/Parsimony/Prim.hs 82
+-    fmapParser g (Satisfy s p) = Satisfy (g <$> s) p
++    fmapParser g (Satisfy s p) = Satisfy (arr g . s) p
+hunk ./Text/Parsimony/Prim.hs 88
++
+hunk ./Text/Parsimony/Prim.hs 91
++satisfy :: Mode m => (t -> Bool) -> Parser m t t
++satisfy = Satisfy id
++
+hunk ./Text/Parsimony/Prim.hs 95
+-instance Mode (Parsing t) where
+-    type Token   (Parsing t) = t
+-    type Pure    (Parsing t) = Id
+-    type Satisfy (Parsing t) = (->) t
++instance Mode Parsing where
++    type Pure Parsing = Id
++    type Fun  Parsing = (->)
+hunk ./Text/Parsimony/Prim.hs 102
+-    satisfy    = Satisfy id
+hunk ./Text/Parsimony/Prim.hs 103
+--- the unsafeCoerces below let us retain sharing in a recognizer that we cannot retain in a general parser
+-instance Mode (Recognizing t) where
+-    type Token   (Recognizing t) = t
+-    type Pure    (Recognizing t) = Ignore
+-    type Satisfy (Recognizing t) = Ignore
++-- the unsafeCoerces below let us retain sharing in a recognizer that we cannot retain in a general parser!
++instance Mode Recognizing where
++    type Pure Recognizing = TrivialApplicative
++    type Fun  Recognizing = TrivialArrow
+hunk ./Text/Parsimony/Prim.hs 108
+-    satisfy      = Satisfy undefined
+hunk ./Text/Parsimony/Prim.hs 117
+-        epsilon :: Parser (Recognizing ()) ()
++        epsilon :: Parser Recognizing Magic ()
+hunk ./Text/Parsimony/Prim.hs 120
+-instance Mode t => Functor (Parser t) where
++instance Mode m => Functor (Parser m t) where
+hunk ./Text/Parsimony/Prim.hs 123
+-instance Mode t => Applicative (Parser t) where
++instance Mode m => Applicative (Parser m t) where
+hunk ./Text/Parsimony/Prim.hs 127
+-instance Mode t => Alternative (Parser t) where
++instance Mode m => Alternative (Parser m t) where
+hunk ./Text/Parsimony/Prim.hs 134
+--- optimized versions of <$, *> and <*
++-- | optimized version of '(<$)'
+hunk ./Text/Parsimony/Prim.hs 136
+-(<<$) :: Mode t => a -> Recognizer t b -> Parser t a 
++(<<$) :: Mode m => a -> Parser Recognizing t b -> Parser m t a 
+hunk ./Text/Parsimony/Prim.hs 139
+-(*>>) :: Mode t => Recognizer t a -> Parser t b -> Parser t b
++-- | optimized version of '(*>)'
++(*>>) :: Mode m => Parser Recognizing t a -> Parser m t b -> Parser m t b
+hunk ./Text/Parsimony/Prim.hs 143
+-(<<*) :: Mode t => Parser t a -> Recognizer t b -> Parser t a
++-- | optimized version of '(<<*)'
++(<<*) :: Mode m => Parser m t a -> Parser Recognizing t b -> Parser m t a
+hunk ./Text/Parsimony/Prim.hs 148
+-name :: String -> Parser t a -> Parser t a
++name :: String -> Parser m t a -> Parser m t a
+hunk ./Text/Parsimony/Prim.hs 152
+-labels :: [String] -> Parser t a -> Parser t a 
++labels :: [String] -> Parser m t a -> Parser m t a 
+hunk ./Text/Parsimony/Prim.hs 156
+-(<?>) :: Parser t a -> String -> Parser t a 
++(<?>) :: Parser m t a -> String -> Parser m t a 
+hunk ./Text/Parsimony/Prim.hs 159
+-choice :: [Parser t a] -> Parser t a 
++choice :: [Parser m t a] -> Parser m t a 
+hunk ./Text/Parsimony/Prim.hs 164
+-(<<|>) :: Parser t a -> Parser t a -> Parser t a 
++(<<|>) :: Parser m t a -> Parser m t a -> Parser m t a 
+hunk ./Text/Parsimony/Prim.hs 170
+-greedyChoice :: [Parser t a] -> Parser t a
++greedyChoice :: [Parser m t a] -> Parser m t a
+hunk ./Text/Parsimony/Prim.hs 174
++
++#ifdef X_OverloadedStrings
++instance Mode m => IsString (Parser m Char String) where
++    fromString = traverse (\x -> satisfy (==x) <?> show [x])
++#endif
++
+hunk ./Text/Parsimony/Util.hs 16
+-    ( Ignore
++    ( TrivialApplicative
++    , TrivialArrow
+hunk ./Text/Parsimony/Util.hs 23
++import Control.Category
++import Control.Arrow
+hunk ./Text/Parsimony/Util.hs 26
+-data Magic
+-
+-data Ignore a 
+-instance Functor Ignore where
++data TrivialApplicative a 
++instance Functor TrivialApplicative where
+hunk ./Text/Parsimony/Util.hs 29
+-instance Applicative Ignore where
++instance Applicative TrivialApplicative where
+hunk ./Text/Parsimony/Util.hs 33
++data TrivialArrow a b
++instance Functor (TrivialArrow a) where
++    fmap = undefined
++instance Category TrivialArrow where
++    (.) = undefined
++    id = undefined
++instance Arrow TrivialArrow where
++    arr = undefined
++    first = undefined
++
+hunk ./Text/Parsimony/Util.hs 51
++
++-- place holder used when we need a typing dodge
++data Magic
+}

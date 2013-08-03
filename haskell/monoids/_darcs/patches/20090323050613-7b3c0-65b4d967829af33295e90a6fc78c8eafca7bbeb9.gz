@@ -1,0 +1,27 @@
+[documentation fixup for Data.Monoid.Ord
+ekmett@gmail.com**20090323050613] {
+hunk ./Data/Monoid/Ord.hs 20
+-    -- * Max w/ added bottom
++    -- * MaxPriority: Max semigroup w/ added bottom
+hunk ./Data/Monoid/Ord.hs 22
+-    -- * Min w/ added bottom
++    -- * MinPriority: Min semigroup w/ added top
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Ord.html 79
+->Max w/ added bottom
++>MaxPriority: Max semigroup w/ added bottom
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Ord.html 84
+->Min w/ added bottom
++>MinPriority: Min semigroup w/ added top
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Ord.html 548
+->Max w/ added bottom
++>MaxPriority: Max semigroup w/ added bottom
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Ord.html 715
+->Min w/ added bottom
++>MinPriority: Min semigroup w/ added top
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Ord.html 28
+-<a name="line-20"></a>    <span class='hs-comment'>-- * Max w/ added bottom</span>
++<a name="line-20"></a>    <span class='hs-comment'>-- * MaxPriority: Max semigroup w/ added bottom</span>
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Ord.html 30
+-<a name="line-22"></a>    <span class='hs-comment'>-- * Min w/ added bottom</span>
++<a name="line-22"></a>    <span class='hs-comment'>-- * MinPriority: Min semigroup w/ added top</span>
+}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Free Modules and Functional Linear Functionals</title>
+	<atom:link href="http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64236</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 14:21:32 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64236</guid>
+		<description>@beroal: i didn&#039;t make them symbolic because they have the problem that what do you name the three different operators for ((N+1)*), (N*) and (Z*) ?
+
+whereas the precedent of log1p at least gives some intuition to the name replicate1p, and the action of replicate on lists if the repetition of a monoidal value. I had, however originally started using (#*) and (*#) for times and may revert. They are mostly provided as reasonable default implementations for the natural number multiplication and integer multiplication requirements placed on you by the module superclasses.
+
+As for the free module, technically I&#039;m permitting the infinite free module. Haskell provides me a largely coinductive universe, I&#039;d be remiss in not taking advantage of it. I&#039;ll throw an (infinite) in there. ;) But unlike the classical case I can&#039;t prove the duality in most cases to begin with and I&#039;m not able to enumerate the set of all e in E such that E -&gt; R is non-zero except when the set E is finitely enumerable itself, because I can&#039;t intensionally inspect the function I&#039;m given. Effectively the constraint moves from requiring the function to have a finite number of non-zeros to requiring that any linear functional can only inspect a finite number of vectors, which being constructive is all it can do anyways.
+
+The invariant in question is linearity. One (potentially conservative) way to enforce that would be to never apply our continuation vector twice and take the product of the results (or add it to some value in the ring), but instead only multiply it by values we have lying around in the ring or add and subtract them. If you think about it, quantifying over the choice of a module then prevents violations of linearity.  \k -&gt; r .*  f k  is well typed, we can plumb in zeroes, etc, but \k -&gt; f k * f k requires our module be strengthened to a semiring, and the unmentioned but also non-linear \k -&gt; f k + r also would fail to type check, since f k :: m, and under quantification over the module all we&#039;re permitted to do is use the (.*) and the (+) from our module. the reason this is a problem is if you want to use the zero from a semigroup-with-zero module, you&#039;d need a new type. 
+
+There is also a performance impact from the fact that we effectively use the LeftModule dictionary as an interpreter, and most damningly it costs us the ability to use representable-tries for cheap memoization.</description>
+		<content:encoded><![CDATA[<p>@beroal: i didn&#8217;t make them symbolic because they have the problem that what do you name the three different operators for ((N+1)*), (N*) and (Z*) ?</p>
+<p>whereas the precedent of log1p at least gives some intuition to the name replicate1p, and the action of replicate on lists if the repetition of a monoidal value. I had, however originally started using (#*) and (*#) for times and may revert. They are mostly provided as reasonable default implementations for the natural number multiplication and integer multiplication requirements placed on you by the module superclasses.</p>
+<p>As for the free module, technically I&#8217;m permitting the infinite free module. Haskell provides me a largely coinductive universe, I&#8217;d be remiss in not taking advantage of it. I&#8217;ll throw an (infinite) in there. ;) But unlike the classical case I can&#8217;t prove the duality in most cases to begin with and I&#8217;m not able to enumerate the set of all e in E such that E -> R is non-zero except when the set E is finitely enumerable itself, because I can&#8217;t intensionally inspect the function I&#8217;m given. Effectively the constraint moves from requiring the function to have a finite number of non-zeros to requiring that any linear functional can only inspect a finite number of vectors, which being constructive is all it can do anyways.</p>
+<p>The invariant in question is linearity. One (potentially conservative) way to enforce that would be to never apply our continuation vector twice and take the product of the results (or add it to some value in the ring), but instead only multiply it by values we have lying around in the ring or add and subtract them. If you think about it, quantifying over the choice of a module then prevents violations of linearity.  \k -> r .*  f k  is well typed, we can plumb in zeroes, etc, but \k -> f k * f k requires our module be strengthened to a semiring, and the unmentioned but also non-linear \k -> f k + r also would fail to type check, since f k :: m, and under quantification over the module all we&#8217;re permitted to do is use the (.*) and the (+) from our module. the reason this is a problem is if you want to use the zero from a semigroup-with-zero module, you&#8217;d need a new type. </p>
+<p>There is also a performance impact from the fact that we effectively use the LeftModule dictionary as an interpreter, and most damningly it costs us the ability to use representable-tries for cheap memoization.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mathnerd314</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64233</link>
+		<dc:creator>Mathnerd314</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 13:57:33 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64233</guid>
+		<description>Oops, sorry. I meant nonassociative rings. But I guess you do have to draw the line somewhere.</description>
+		<content:encoded><![CDATA[<p>Oops, sorry. I meant nonassociative rings. But I guess you do have to draw the line somewhere.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: beroal</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64213</link>
+		<dc:creator>beroal</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 11:49:48 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64213</guid>
+		<description>&lt;em&gt;We could capture this invariant in the type by saying that instead we want&lt;/em&gt;
+Can you please explain what “invariant” you are talking about?</description>
+		<content:encoded><![CDATA[<p><em>We could capture this invariant in the type by saying that instead we want</em><br />
+Can you please explain what “invariant” you are talking about?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: beroal</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64208</link>
+		<dc:creator>beroal</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 11:40:05 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64208</guid>
+		<description>&lt;em&gt;If we limit our discussion to free modules, then M = E -&gt; R&lt;/em&gt;
+And every element of M should be 0 on all but finite set of elements of E. This is the definition of free modules.</description>
+		<content:encoded><![CDATA[<p><em>If we limit our discussion to free modules, then M = E -&gt; R</em><br />
+And every element of M should be 0 on all but finite set of elements of E. This is the definition of free modules.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: beroal</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64199</link>
+		<dc:creator>beroal</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 10:48:18 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64199</guid>
+		<description>I suppose that “replicate1p” and “pow1p” both define repetition. IMHO you can name them with “+” and “*”, adding some symbol to denote repetition, maybe “...”? (And with the right order of arguments in “pow1p”. :) )</description>
+		<content:encoded><![CDATA[<p>I suppose that “replicate1p” and “pow1p” both define repetition. IMHO you can name them with “+” and “*”, adding some symbol to denote repetition, maybe “&#8230;”? (And with the right order of arguments in “pow1p”. :) )</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64180</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 08:46:52 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64180</guid>
+		<description>This is what I get for trying to nod to the fact that different authors use the same words for different things.
+
+The vocabulary I&#039;m working with here is that a semiring is a pair of semigroups with a pair of distributive laws and that a rig adds a 0 and 1 to a semiring. 
+
+Some authors call what I am calling a rig above a semiring, which is somewhat annoying because the semi- just means &#039;not-quite&#039; in this setting, and has no connection to the relationship between group and semigroup. Moreover it leaves the question of what to call the pair-of-semigroups construction that I&#039;m calling semiring above. The name those authors often use is &quot;ringoid&quot;, but that conflicts with the much more useful use of ringoid for referring to Ab-enriched categories, which is likely to wind up in my semigroupoid package. 
+
+If a group is a groupoid with one object then a ringoid is a ringoid with one object.
+
+So in the vocabuary I&#039;m using here, we get:
+
+Semiring &lt;= Rig &lt;= Ring
+
+which parallels
+
+Semigroup &lt;= Monoid &lt;= Group
+
+by adding unit(s) and additive inverses respectively.
+
+I&#039;ll see if I can clear up the verbage to make it clearer.</description>
+		<content:encoded><![CDATA[<p>This is what I get for trying to nod to the fact that different authors use the same words for different things.</p>
+<p>The vocabulary I&#8217;m working with here is that a semiring is a pair of semigroups with a pair of distributive laws and that a rig adds a 0 and 1 to a semiring. </p>
+<p>Some authors call what I am calling a rig above a semiring, which is somewhat annoying because the semi- just means &#8216;not-quite&#8217; in this setting, and has no connection to the relationship between group and semigroup. Moreover it leaves the question of what to call the pair-of-semigroups construction that I&#8217;m calling semiring above. The name those authors often use is &#8220;ringoid&#8221;, but that conflicts with the much more useful use of ringoid for referring to Ab-enriched categories, which is likely to wind up in my semigroupoid package. </p>
+<p>If a group is a groupoid with one object then a ringoid is a ringoid with one object.</p>
+<p>So in the vocabuary I&#8217;m using here, we get:</p>
+<p>Semiring <= Rig <= Ring</p>
+<p>which parallels</p>
+<p>Semigroup <= Monoid <= Group</p>
+<p>by adding unit(s) and additive inverses respectively.</p>
+<p>I&#8217;ll see if I can clear up the verbage to make it clearer.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Paul Keir</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64175</link>
+		<dc:creator>Paul Keir</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 08:07:35 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64175</guid>
+		<description>You say &quot;If we get rid of the additive and multiplicative unit on our Rig we get down to what some authors call a Ringoid, but which we&#039;ll call a Semiring&quot;, but earlier you &quot;...go to a Rig (often called a Semiring)&quot;. Are both of them Semirings?</description>
+		<content:encoded><![CDATA[<p>You say &#8220;If we get rid of the additive and multiplicative unit on our Rig we get down to what some authors call a Ringoid, but which we&#8217;ll call a Semiring&#8221;, but earlier you &#8220;&#8230;go to a Rig (often called a Semiring)&#8221;. Are both of them Semirings?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64100</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 03:19:47 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64100</guid>
+		<description>Without commutative addition, you don&#039;t get many normalization opportunities. So, in the interest of drawing the line somewhere I left that off. ;) I also avoided talking about left-seminnearings and right-seminearrings. =) I do enjoy playing with the individual grains of sand in my sandbox though.</description>
+		<content:encoded><![CDATA[<p>Without commutative addition, you don&#8217;t get many normalization opportunities. So, in the interest of drawing the line somewhere I left that off. ;) I also avoided talking about left-seminnearings and right-seminearrings. =) I do enjoy playing with the individual grains of sand in my sandbox though.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mathnerd314</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/comment-page-1/#comment-64094</link>
+		<dc:creator>Mathnerd314</dc:creator>
+		<pubDate>Tue, 12 Jul 2011 02:48:03 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356#comment-64094</guid>
+		<description>Your Multiplicative class seems to ignore the existence of noncommutative (semi)rings; surely this important area of mathematics shouldn&#039;t be left out?</description>
+		<content:encoded><![CDATA[<p>Your Multiplicative class seems to ignore the existence of noncommutative (semi)rings; surely this important area of mathematics shouldn&#8217;t be left out?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

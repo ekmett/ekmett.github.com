@@ -1,0 +1,60 @@
+[updated bitset to work
+ekmett@gmail.com**20090405005653
+ Ignore-this: e8d6295400bd34aa83e6a580d4d7118
+] {
+hunk ./Data/Ring/Semi/BitSet.hs 1
+-{-# LANGUAGE FlexibleInstances, FlexibleContexts, MultiParamTypeClasses, DeriveDataTypeable, BangPatterns, PatternGuards #-}
++{-# LANGUAGE FlexibleInstances, FlexibleContexts, MultiParamTypeClasses, DeriveDataTypeable, BangPatterns, PatternGuards, TypeFamilies #-}
+hunk ./Data/Ring/Semi/BitSet.hs 26
++import Data.Generator
+hunk ./Data/Ring/Semi/BitSet.hs 33
+-        , exponent      :: {-# UNPACK #-} !Int       -- ^ low water mark
++        , exponent       :: {-# UNPACK #-} !Int       -- ^ low water mark
+hunk ./Data/Ring/Semi/BitSet.hs 35
+-        , mantissa      :: {-# UNPACK #-} !Integer   -- ^ the set of bits. TODO: negative mantissa = complement
++        , mantissa       :: {-# UNPACK #-} !Integer   -- ^ the set of bits. TODO: negative mantissa = complement
+hunk ./Data/Ring/Semi/BitSet.hs 37
+-        } deriving (Data, Typeable)
++        } deriving (Data, Typeable,Show)
++
++debug :: BitSet a -> (Int,Int,Int,Int,Int,Integer)
++debug (BS a b c d e f _) = (a,b,c,d,e,f)
+hunk ./Data/Ring/Semi/BitSet.hs 48
+-instance (Enum a, Show a) => Show (BitSet a) where
+-    show s = "fromDistinctAscList " ++ show (toList s)
++-- instance (Enum a, Show a) => Show (BitSet a) where
++--    show s = "fromDistinctAscList " ++ show (toList s) ++ 
+hunk ./Data/Ring/Semi/BitSet.hs 170
+-    | m' < 0    = pseudoDiff x (recomplement y)                                     -- union with complement, recomplement obligation met by 2s complement
+-    | m < 0     = pseudoDiff y (recomplement x)                                     -- union with complement, recomplement obligation met by 2s complement
+-    | h < l'    = bs (a + a') (b + b') (c + c') l (h' - l) m'' u                    -- disjoint positive ranges
++    | m' < 0    = recomplement (pseudoDiff (recomplement y) x u')                      -- union with complement, recomplement obligation met by 2s complement -- THESE ARE WRONG FIX!
++    | m < 0     = recomplement (pseudoDiff (recomplement x) y u)                      -- union with complement, recomplement obligation met by 2s complement -- THESE ARE WRONG FIX!
++    | h < l'    = bs (a + a') (b + b') (c + c') l h' m'' u                          -- disjoint positive ranges
+hunk ./Data/Ring/Semi/BitSet.hs 178
+-intersection x@(BS a b _ l h m u) y@(BS a' b' _ l' h' m' _)
++intersection x@(BS a b _ l h m u) y@(BS a' b' _ l' h' m' u')
+hunk ./Data/Ring/Semi/BitSet.hs 185
+-    | m' < 0 = pseudoDiff x y
+-    | m < 0 = pseudoDiff y x
++    | m' < 0 = pseudoDiff x (recomplement y) u'
++    | m < 0 = pseudoDiff y (recomplement x) u
+hunk ./Data/Ring/Semi/BitSet.hs 191
+-        m'' = shift m (l'' - l) .|. shift m' (l'' - l')
++        m'' = shift m (l'' - l) .&. shift m' (l'' - l')
+hunk ./Data/Ring/Semi/BitSet.hs 194
+-pseudoDiff :: BitSet a -> BitSet a -> BitSet a 
+-pseudoDiff x@(BS a _ _ l h m _) (BS _ b' _ l' h' m' u') 
++pseudoDiff :: BitSet a -> BitSet a -> (Int,Int) -> BitSet a 
++pseudoDiff x@(BS a _ _ l h m _) (BS _ b' _ l' h' m' _) u''
+hunk ./Data/Ring/Semi/BitSet.hs 198
+-    | otherwise = bs (max (a - b') 0) a (recount m'') l h m'' u'
++    | otherwise = bs (max (a - b') 0) a (recount m'') l h m'' u''
+hunk ./Data/Ring/Semi/BitSet.hs 202
+-x \\ y = x `union` complement y
++x \\ y = x `intersection` complement y
+hunk ./Data/Ring/Semi/BitSet.hs 277
++instance Enum a => Generator (BitSet a) where
++    type Elem (BitSet a) = a
++    mapReduce f = mapReduce f . toList
+}

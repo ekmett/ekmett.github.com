@@ -1,0 +1,142 @@
+[swapped the meaning of return and returnM, and of mzero and mzeroM
+ekmett@gmail.com**20070713073620] {
+hunk ./monad-param.cabal 3
+-version:        0.0.1
++version:        0.0.2
+hunk ./src/Control/Monad/Parameterized.hs 16
+--- so we restore that by defining `returnM` as the unit of the `Identity` monad and `mzeroM` as 
++-- so we restore that by defining `return` as the unit of the `Identity` monad and `mzero` as 
+hunk ./src/Control/Monad/Parameterized.hs 30
+-	  Return	(return) 
++	  Return	(returnM) 
+hunk ./src/Control/Monad/Parameterized.hs 37
+-	, MonadZero	(mzero)
++	, MonadZero	(mzeroM)
++
++	-- * A bottom monad
++	, MZero
+hunk ./src/Control/Monad/Parameterized.hs 46
+-	-- * Restoring type inference
++	-- * Traditional interfaces
+hunk ./src/Control/Monad/Parameterized.hs 48
+-	, returnM	
+-	, mzeroM	
+-	, MZero
++	, return
++	, mzero	
+hunk ./src/Control/Monad/Parameterized.hs 141
+--- | An inferable version of `return`
+-returnM :: a -> Identity a
+-returnM = Old.return
++-- | An inferable version of `Prelude.return`
++return :: a -> Identity a
++return = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 166
+--- | Same trick using with `Identity` to build a canonical `returnM`, here we exploit the `MonadPlus` laws to make a canonical `mzeroM`. Has no members except bottom.
++-- | Same trick using with `Identity` to build a canonical `return`, here we exploit the `MonadPlus` laws to make a canonical `mzero`. Has no members except bottom.
+hunk ./src/Control/Monad/Parameterized.hs 168
+--- | An inferable version of `mzero`
+-mzeroM :: MZero a
+-mzeroM = undefined 
++-- | An inferable version of `Control.Monad.mzero`
++
++mzero :: MZero a
++mzero = undefined 
+hunk ./src/Control/Monad/Parameterized.hs 192
+--- | Traditional `return`, note this probably has lost its type inference where you want to use it. 
+--- You probably want to use `returnM`
++-- | The traditional `return`, note this probably has lost its type inference where you want to use it. 
+hunk ./src/Control/Monad/Parameterized.hs 194
+-	return :: a -> m a 
++	returnM :: a -> m a 
+hunk ./src/Control/Monad/Parameterized.hs 196
+--- | Traditional `mzero`, note this probably has lost its type inference. 
+--- You probably want `mzeroM`.
++-- | Traditional `Control.Monad.mzero`, note this probably has lost its type inference. 
++-- You probably want `mzero`.
+hunk ./src/Control/Monad/Parameterized.hs 199
+-	mzero :: m a
++	mzeroM :: m a
+hunk ./src/Control/Monad/Parameterized.hs 207
+-instance Return a => Go Identity a where 	go = return . runIdentity 
+-instance MonadZero a =>  Go MZero a where 	go _ = mzero
++instance Return a => Go Identity a where 	go = returnM . runIdentity 
++instance MonadZero a =>  Go MZero a where 	go _ = mzeroM
+hunk ./src/Control/Monad/Parameterized.hs 210
+-instance Return Identity where return = returnM
+-instance Return MZero where return _ = undefined
++instance Return Identity where returnM = return
++instance Return MZero where returnM _ = undefined
+hunk ./src/Control/Monad/Parameterized.hs 217
+-instance Return Maybe where return = Old.return
++instance Return Maybe where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 220
+-instance MonadZero Maybe where mzero = Old.mzero
++instance MonadZero Maybe where mzeroM = Old.mzero
+hunk ./src/Control/Monad/Parameterized.hs 223
+-instance Return [] where return = Old.return
++instance Return [] where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 226
+-instance MonadZero [] where mzero = Old.mzero
++instance MonadZero [] where mzeroM = Old.mzero
+hunk ./src/Control/Monad/Parameterized.hs 229
+-instance Return STM where return = Old.return
++instance Return STM where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 233
+-instance Return IO where return = Old.return
++instance Return IO where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 237
+-instance Return (State s) where return = Old.return
++instance Return (State s) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 241
+-instance Return (Reader e) where return = Old.return
++instance Return (Reader e) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 245
+-instance Return (Cont r) where return = Old.return
++instance Return (Cont r) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 249
+-instance Return (StrictST.ST s) where return = Old.return
++instance Return (StrictST.ST s) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 253
+-instance Return (LazyST.ST s) where return = Old.return
++instance Return (LazyST.ST s) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 257
+-instance Monoid w => Return (LazyW.Writer w) where return = Old.return
++instance Monoid w => Return (LazyW.Writer w) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 261
+-instance Monoid w => Return (StrictW.Writer w) where return = Old.return
++instance Monoid w => Return (StrictW.Writer w) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 265
+-instance Old.Monad m => Return (ListT m) where return = Old.return
++instance Old.Monad m => Return (ListT m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 268
+-instance Old.Monad m => MonadZero (ListT m) where mzero = Old.mzero
++instance Old.Monad m => MonadZero (ListT m) where mzeroM = Old.mzero
+hunk ./src/Control/Monad/Parameterized.hs 271
+-instance Old.Monad m => Return (StateT s m) where return = Old.return
++instance Old.Monad m => Return (StateT s m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 275
+-instance Old.Monad m => Return (ReaderT e m) where return = Old.return
++instance Old.Monad m => Return (ReaderT e m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 279
+-instance (Old.Monad m, Monoid w) => Return (LazyW.WriterT w m) where return = Old.return
++instance (Old.Monad m, Monoid w) => Return (LazyW.WriterT w m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 283
+-instance (Old.Monad m, Monoid w) => Return (StrictW.WriterT w m) where return = Old.return
++instance (Old.Monad m, Monoid w) => Return (StrictW.WriterT w m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 287
+-instance (Old.Monad m, Error e) => Return (ErrorT e m) where return = Old.return
++instance (Old.Monad m, Error e) => Return (ErrorT e m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 290
+-instance (Old.Monad m, Error e) => MonadZero (ErrorT e m) where mzero = Old.mzero
++instance (Old.Monad m, Error e) => MonadZero (ErrorT e m) where mzeroM = Old.mzero
+hunk ./src/Control/Monad/Parameterized.hs 293
+-instance Old.Monad m => Return (ContT r m) where return = Old.return
++instance Old.Monad m => Return (ContT r m) where returnM = Old.return
+hunk ./src/Control/Monad/Parameterized.hs 300
+-	Nothing >>= _  = []
++	Nothing >>= _ = []
+hunk ./src/Control/Monad/Parameterized.hs 319
+-	returnM 2 >>= (Just . (*4)) >>= \y -> 
++	return 2 >>= (Just . (*4)) >>= \y -> 
+}

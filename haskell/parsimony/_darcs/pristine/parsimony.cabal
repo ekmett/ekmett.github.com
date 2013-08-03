@@ -1,0 +1,76 @@
+name:		    parsimony
+version:	    0.0.1
+license:	    BSD3
+license-file:   LICENSE
+author:		    Edward A. Kmett
+maintainer:	    Edward A. Kmett <ekmett@gmail.com>
+stability:	    experimental
+homepage:	    http://comonad.com/reader
+category:	    Text, ParserCombinators, Language, Natural Language Processing, Parsing
+synopsis:	    Monoidal parser combinators for parallel parsing of context-free languages
+description:    Monoidal parser combinators for parallel parsing of context-free languages
+copyright:      (c) 2009 Edward A. Kmett
+build-type:     Simple
+cabal-version:  >=1.6
+
+flag QuickCheck
+  description: QuickCheck is available
+
+flag parsec
+  description: Text.Parsec is available (parsec >= 3)
+
+flag overloaded-strings
+  description: The OverloadedStrings extension is available
+
+-- compilation options
+flag optimize
+  description: Enable optimizations 
+  default: False
+
+library
+  build-depends: 
+    base >= 4 && < 4.2, 
+    array >= 0.2 && < 0.3,
+    containers >= 0.2 && < 0.3,
+    reflection >= 0.1 && < 0.2,
+    mtl >= 1.0 && < 1.2,
+    monoids >= 0.1.36 && < 0.2
+
+  extensions:
+    CPP
+
+  exposed-modules:
+    Text.Parsimony
+    Text.Parsimony.Char
+    Text.Parsimony.Combinators
+    Text.Parsimony.Error
+    Text.Parsimony.Mode
+    Text.Parsimony.Prim
+    Text.Parsimony.StableMap
+    Text.Parsimony.Util
+
+  if flag (QuickCheck)
+    build-depends: 
+      QuickCheck >= 2.1 && < 2.2
+    cpp-options: 
+      -DM_QUICKCHECK=1
+
+  if flag (parsec)
+    build-depends: 
+      parsec >= 3.0 && < 3.1
+    exposed-modules: 
+      Text.Parsimony.Parsec
+    cpp-options: 
+      -DM_PARSEC=3
+
+  if flag (overloaded-strings)
+    extensions: 
+      OverloadedStrings
+    cpp-options: 
+      -DX_OverloadedStrings=1
+
+  ghc-options: -Wall
+  cpp-options -DM_ARRAY=1 -DM_CONTAINERS=1 -DM_REFLECTION=1 -DM_MTL=1
+
+  if flag (optimize)
+    ghc-options: -funbox-strict-fields -O2 -fdicts-cheap

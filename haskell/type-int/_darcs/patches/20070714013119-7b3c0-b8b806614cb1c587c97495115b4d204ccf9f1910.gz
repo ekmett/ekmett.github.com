@@ -1,0 +1,9 @@
+[cleanup
+ekmett@gmail.com**20070714013119] {
+hunk ./type-int.cabal 11
+-synopsis:		Type Level 2s- and 16s- Complement Integers (Positive and Negative), Booleans, Ord and Eq
++synopsis:		Type Level 2s- and 16s- Complement Integers
+hunk ./type-int.cabal 13
+-description: 		Type Level 2s- and 16s- Complement Integers (Positive and Negative), Booleans, Ord and Eq
++description: 		Type level 2s- and 16s- complement integers (positive and negative), booleans, ord and eq
+}

@@ -1,0 +1,740 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Comonad</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Comonad</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>(C) 2004 Dave Menendez
+ License     :  BSD-style (see the file LICENSE)
+</P
+><P
+>Maintainer  :  Edward Kmett <A HREF="ekmett@gmail.com"
+>ekmett@gmail.com</A
+>
+ Stability   :  experimental
+ Portability :  portable
+</P
+><P
+>This module declares the <TT
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+></TT
+> class
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Functor-Pointed.html"
+>Control.Functor.Pointed</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> w =&gt; <A HREF="#t%3AComonad"
+>Comonad</A
+> w  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aduplicate"
+>duplicate</A
+> ::  w a -&gt; w (w a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aextend"
+>extend</A
+> ::  (w a -&gt; b) -&gt; w a -&gt; w b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftW"
+>liftW</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (a -&gt; b) -&gt; w a -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3D%3E%3E"
+>(=&gt;&gt;)</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w a -&gt; (w a -&gt; b) -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A.%3E%3E"
+>(.&gt;&gt;)</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w a -&gt; b -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftCtx"
+>liftCtx</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (a -&gt; b) -&gt; w a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapW"
+>mapW</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (w a -&gt; b) -&gt; w [a] -&gt; [b]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AparallelW"
+>parallelW</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w [a] -&gt; [w a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunfoldW"
+>unfoldW</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (w b -&gt; (a, b)) -&gt; w b -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsequenceW"
+>sequenceW</A
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; [w a -&gt; b] -&gt; w a -&gt; [b]</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Functor-Pointed.html"
+>Control.Functor.Pointed</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> w =&gt; <A NAME="t%3AComonad"
+></A
+><B
+>Comonad</B
+> w  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>There are two ways to define a comonad:
+</P
+><P
+>I. Provide definitions for <TT
+>fmap</TT
+>, <TT
+><A HREF="Control-Functor-Pointed.html#v%3Aextract"
+>extract</A
+></TT
+>, and <TT
+><A HREF="Control-Comonad.html#v%3Aduplicate"
+>duplicate</A
+></TT
+>
+satisfying these laws:
+</P
+><PRE
+> extract . duplicate      == id
+ fmap extract . duplicate == id
+ duplicate . duplicate    == fmap duplicate . duplicate
+</PRE
+><P
+>II. Provide definitions for <TT
+><A HREF="Control-Functor-Pointed.html#v%3Aextract"
+>extract</A
+></TT
+> and <TT
+><A HREF="Control-Comonad.html#v%3Aextend"
+>extend</A
+></TT
+>
+satisfying these laws:
+</P
+><PRE
+> extend extract      == id
+ extract . extend f  == f
+ extend f . extend g == extend (f . extend g)
+</PRE
+><P
+>(<TT
+>fmap</TT
+> cannot be defaulted, but a comonad which defines
+<TT
+><A HREF="Control-Comonad.html#v%3Aextend"
+>extend</A
+></TT
+> may simply set <TT
+>fmap</TT
+> equal to <TT
+><A HREF="Control-Comonad.html#v%3AliftW"
+>liftW</A
+></TT
+>.)
+</P
+><P
+>A comonad providing definitions for <TT
+><A HREF="Control-Comonad.html#v%3Aextend"
+>extend</A
+></TT
+> <EM
+>and</EM
+> <TT
+><A HREF="Control-Comonad.html#v%3Aduplicate"
+>duplicate</A
+></TT
+>,
+must also satisfy these laws:
+</P
+><PRE
+> extend f  == fmap f . duplicate
+ duplicate == extend id
+ fmap f    == extend (f . duplicate)
+</PRE
+><P
+>(The first two are the defaults for <TT
+><A HREF="Control-Comonad.html#v%3Aextend"
+>extend</A
+></TT
+> and <TT
+><A HREF="Control-Comonad.html#v%3Aduplicate"
+>duplicate</A
+></TT
+>,
+and the third is the definition of <TT
+><A HREF="Control-Comonad.html#v%3AliftW"
+>liftW</A
+></TT
+>.)
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aduplicate"
+></A
+><B
+>duplicate</B
+> ::  w a -&gt; w (w a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aextend"
+></A
+><B
+>extend</B
+> ::  (w a -&gt; b) -&gt; w a -&gt; w b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Comonad')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Comonad" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Context.html#t%3AContext"
+>Context</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Monoid m =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Exponent.html#t%3AExp"
+>Exp</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Ix i =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Pointer.html#t%3APointer"
+>Pointer</A
+> i)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Reader.html#t%3ACoreader"
+>Coreader</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, <A HREF="Control-Comonad-Parameterized.html#t%3APComonad"
+>PComonad</A
+> f) =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Density.html#t%3ADensity"
+>Density</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad-Coideal.html#t%3AComonadCoideal"
+>ComonadCoideal</A
+> w =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Coideal.html#t%3ACoideal"
+>Coideal</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Yoneda.html#t%3ACoYoneda"
+>CoYoneda</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> f =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Yoneda.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Context.html#t%3AContextT"
+>ContextT</A
+> b w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Comonad-Reader.html#t%3ACoreaderT"
+>CoreaderT</A
+> w b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Functor-Adjunction.html#t%3AAdjunction"
+>Adjunction</A
+> f g =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Adjunction.html#t%3AACompF"
+>ACompF</A
+> f g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w, <A HREF="Control-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> f, <A HREF="Control-Functor-Extras.html#t%3APostUnfold"
+>PostUnfold</A
+> w f) =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Pointed-Composition.html#t%3APostCompF"
+>PostCompF</A
+> w f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w, <A HREF="Control-Functor-Extras.html#t%3APreUnfold"
+>PreUnfold</A
+> f w) =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Pointed-Composition.html#t%3APreCompF"
+>PreCompF</A
+> f w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> g, <A HREF="Control-Functor-Extras.html#t%3ADistributes"
+>Distributes</A
+> f g) =&gt; <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> (<A HREF="Control-Functor-Pointed-Composition.html#t%3ADistCompF"
+>DistCompF</A
+> f g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AliftW"
+></A
+><B
+>liftW</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (a -&gt; b) -&gt; w a -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3D%3E%3E"
+></A
+><B
+>(=&gt;&gt;)</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w a -&gt; (w a -&gt; b) -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Control-Comonad.html#v%3Aextend"
+>extend</A
+></TT
+> with the arguments swapped. Dual to <TT
+>&gt;&gt;=</TT
+> for monads.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A.%3E%3E"
+></A
+><B
+>(.&gt;&gt;)</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w a -&gt; b -&gt; w b</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Injects a value into the comonad.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AliftCtx"
+></A
+><B
+>liftCtx</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (a -&gt; b) -&gt; w a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Transform a function into a comonadic action
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmapW"
+></A
+><B
+>mapW</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (w a -&gt; b) -&gt; w [a] -&gt; [b]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AparallelW"
+></A
+><B
+>parallelW</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; w [a] -&gt; [w a]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AunfoldW"
+></A
+><B
+>unfoldW</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; (w b -&gt; (a, b)) -&gt; w b -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AsequenceW"
+></A
+><B
+>sequenceW</B
+> :: <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w =&gt; [w a -&gt; b] -&gt; w a -&gt; [b]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Converts a list of comonadic functions into a single function
+ returning a list of values
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>
+
+<!-- Localized -->

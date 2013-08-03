@@ -1,0 +1,28 @@
+[bug fixces
+ekmett@gmail.com**20080405062223] {
+hunk ./src/Control/Category/Bifunctor.hs 19
+-	-- | Analogous to '***' or '+++' in "Control.Arrow', but generalized to any covariant bifunctor
++	-- | Analogous to '***' or '+++' in "Control.Arrow", but generalized to any covariant bifunctor
+hunk ./src/Control/Category/Dual.hs 94
++#ifndef __HADDOCK__
+hunk ./src/Control/Category/Dual.hs 96
++#endif
+hunk ./src/Control/Category/Dual.hs 102
++#ifndef __HADDOCK__
+hunk ./src/Control/Category/Dual.hs 104
++#endif
+hunk ./src/Control/Category/Loop.hs 1
+-{-# OPTIONS -fglasgow-exts -fallow-undecidable-instances #-}
+hunk ./src/Control/Category/Loop.hs 11
+--- Defines 'Monad' and 'Comonad' in a way that allows it to represent a (co)monad over 
+--- other categories than just the category of types.
+hunk ./src/Control/Category/Loop.hs 13
+-
+hunk ./src/Control/Category/Loop.hs 15
+-import Prelude hiding (Functor, fmap, (.), id, Monad, return, (>>=),(=<<),(>>))
+-import Control.Category
+-import Control.Category.Bifunctor.Product
++import Control.Category.Cartesian
+hunk ./src/Control/Category/Loop.hs 17
++-- derivative of ArrowLoop, this seems like the wrong abstraction
+}

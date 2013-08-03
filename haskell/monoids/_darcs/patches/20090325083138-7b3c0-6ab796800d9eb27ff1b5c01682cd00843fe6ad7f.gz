@@ -1,0 +1,263 @@
+[extra classes for data.monoid.ord
+ekmett@gmail.com**20090325083138] {
+hunk ./Data/Monoid/Ord.hs 27
++import Control.Functor.Pointed
+hunk ./Data/Monoid/Ord.hs 41
++instance Functor Max where 
++    fmap f (Max a) = Max (f a)
++
++instance Pointed Max where
++    point = Max
++
++instance Copointed Max where
++    extract = getMax
++
+hunk ./Data/Monoid/Ord.hs 60
++instance Functor Min where
++    fmap f (Min a) = Min (f a)
++
++instance Pointed Min where
++    point = Min
++
++instance Copointed Min where
++    extract = getMin
++
+hunk ./Data/Monoid/Ord.hs 79
+-instance Ord a => Reducer a (MaxPriority a) where
+-    unit = MaxPriority . Just
++instance Functor MaxPriority where
++    fmap f (MaxPriority a) = MaxPriority (fmap f a)
++
++instance Pointed MaxPriority where
++    point = MaxPriority . Just
+hunk ./Data/Monoid/Ord.hs 101
+-instance Ord a => Reducer a (MinPriority a) where
+-    unit = MinPriority . Just
++instance Functor MinPriority where
++    fmap f (MinPriority a) = MinPriority (fmap f a)
++
++instance Pointed MinPriority where
++    point = MinPriority . Just
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 335
++><A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
++>Functor</A
++> <A HREF="Data-Monoid-Ord.html#t%3AMax"
++>Max</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMax"
++>Max</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Copointed <A HREF="Data-Monoid-Ord.html#t%3AMax"
++>Max</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 538
++><A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
++>Functor</A
++> <A HREF="Data-Monoid-Ord.html#t%3AMin"
++>Min</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMin"
++>Min</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Copointed <A HREF="Data-Monoid-Ord.html#t%3AMin"
++>Min</A
++></TD
++></TR
++><TR
++><TD CLASS="decl"
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 753
+-><A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+->Ord</A
+-> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+->Reducer</A
+-> a (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
++><A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
++>Functor</A
++> <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 757
+-> a)</TD
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
++>MaxPriority</A
++></TD
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 950
+-><A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+->Ord</A
+-> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+->Reducer</A
+-> a (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
++><A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
++>Functor</A
++> <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+hunk ./dist/doc/html/monoids/Data-Monoid-Ord.html 954
+-> a)</TD
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
++>MinPriority</A
++></TD
+hunk ./dist/doc/html/monoids/Data-Monoid-Reducer.html 442
+-><TD CLASS="decl"
+-><A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+->Ord</A
+-> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+->Reducer</A
+-> a (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+->MinPriority</A
+-> a)</TD
+-></TR
+-><TR
+-><TD CLASS="decl"
+-><A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+->Ord</A
+-> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+->Reducer</A
+-> a (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+->MaxPriority</A
+-> a)</TD
+-></TR
+-><TR
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 35
+-<a name="line-27"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Reducer</span><span class='hs-layout'>,</span> <span class='hs-varid'>unit</span><span class='hs-layout'>,</span> <span class='hs-conid'>Monoid</span><span class='hs-layout'>,</span> <span class='hs-varid'>mappend</span><span class='hs-layout'>,</span> <span class='hs-varid'>mempty</span><span class='hs-layout'>)</span>
+-<a name="line-28"></a>
++<a name="line-27"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Functor</span><span class='hs-varop'>.</span><span class='hs-conid'>Pointed</span>
++<a name="line-28"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Reducer</span><span class='hs-layout'>,</span> <span class='hs-varid'>unit</span><span class='hs-layout'>,</span> <span class='hs-conid'>Monoid</span><span class='hs-layout'>,</span> <span class='hs-varid'>mappend</span><span class='hs-layout'>,</span> <span class='hs-varid'>mempty</span><span class='hs-layout'>)</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 38
+-<a name="line-30"></a><a name="Max"></a><span class='hs-comment'>-- | The 'Monoid' @('max','minBound')@</span>
+-<a name="line-31"></a><a name="Max"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Max</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMax</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Bounded</span><span class='hs-layout'>)</span>
+-<a name="line-32"></a>
+-<a name="line-33"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Max</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-34"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span> <span class='hs-varid'>minBound</span>
+-<a name="line-35"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>max</span>
+-<a name="line-36"></a>
+-<a name="line-37"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>Max</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-38"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span>
+-<a name="line-39"></a>
+-<a name="line-40"></a><a name="Min"></a><span class='hs-comment'>-- | The 'Monoid' given by @('min','maxBound')@</span>
+-<a name="line-41"></a><a name="Min"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Min</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMin</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Bounded</span><span class='hs-layout'>)</span>
+-<a name="line-42"></a>
+-<a name="line-43"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Min</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-44"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span> <span class='hs-varid'>maxBound</span>
+-<a name="line-45"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>min</span>
++<a name="line-30"></a>
++<a name="line-31"></a><a name="Max"></a><span class='hs-comment'>-- | The 'Monoid' @('max','minBound')@</span>
++<a name="line-32"></a><a name="Max"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Max</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMax</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Bounded</span><span class='hs-layout'>)</span>
++<a name="line-33"></a>
++<a name="line-34"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Max</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-35"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span> <span class='hs-varid'>minBound</span>
++<a name="line-36"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>max</span>
++<a name="line-37"></a>
++<a name="line-38"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>Max</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-39"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span>
++<a name="line-40"></a>
++<a name="line-41"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>Max</span> <span class='hs-keyword'>where</span> 
++<a name="line-42"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Max</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span>
++<a name="line-43"></a>
++<a name="line-44"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>Max</span> <span class='hs-keyword'>where</span>
++<a name="line-45"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Max</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 55
+-<a name="line-47"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>Min</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-48"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span>
++<a name="line-47"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Copointed</span> <span class='hs-conid'>Max</span> <span class='hs-keyword'>where</span>
++<a name="line-48"></a>    <span class='hs-varid'>extract</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getMax</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 58
+-<a name="line-50"></a><a name="MaxPriority"></a><span class='hs-comment'>-- | The 'Monoid' @('max','Nothing')@ over @'Maybe' a@ where 'Nothing' is the bottom element</span>
+-<a name="line-51"></a><a name="MaxPriority"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMaxPriority</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>)</span>
++<a name="line-50"></a><a name="Min"></a><span class='hs-comment'>-- | The 'Monoid' given by @('min','maxBound')@</span>
++<a name="line-51"></a><a name="Min"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Min</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMin</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Bounded</span><span class='hs-layout'>)</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 61
+-<a name="line-53"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-54"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-conid'>Nothing</span>
+-<a name="line-55"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>max</span>
++<a name="line-53"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Min</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-54"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span> <span class='hs-varid'>maxBound</span>
++<a name="line-55"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>min</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 65
+-<a name="line-57"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-58"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span>
++<a name="line-57"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span><span class='hs-layout'>,</span> <span class='hs-conid'>Bounded</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>Min</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-58"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 68
+-<a name="line-60"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-61"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-varop'>.</span> <span class='hs-conid'>Just</span>
++<a name="line-60"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>Min</span> <span class='hs-keyword'>where</span>
++<a name="line-61"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Min</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 71
+-<a name="line-63"></a><a name="MinPriority"></a><span class='hs-comment'>-- | The 'Monoid' @('min','Nothing')@ over @'Maybe' a@ where 'Nothing' is the top element</span>
+-<a name="line-64"></a><a name="MinPriority"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMinPriority</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>)</span>
++<a name="line-63"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>Min</span> <span class='hs-keyword'>where</span>
++<a name="line-64"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Min</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 74
+-<a name="line-66"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Ord</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-67"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>EQ</span>
+-<a name="line-68"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-varop'>`compare`</span> <span class='hs-keyword'>_</span>                    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>GT</span>
+-<a name="line-69"></a>    <span class='hs-keyword'>_</span>                    <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>LT</span>
+-<a name="line-70"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`compare`</span> <span class='hs-varid'>b</span>
++<a name="line-66"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Copointed</span> <span class='hs-conid'>Min</span> <span class='hs-keyword'>where</span>
++<a name="line-67"></a>    <span class='hs-varid'>extract</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getMin</span>
++<a name="line-68"></a>
++<a name="line-69"></a><a name="MaxPriority"></a><span class='hs-comment'>-- | The 'Monoid' @('max','Nothing')@ over @'Maybe' a@ where 'Nothing' is the bottom element</span>
++<a name="line-70"></a><a name="MaxPriority"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMaxPriority</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>)</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 80
+-<a name="line-72"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-73"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>
+-<a name="line-74"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>min</span>
++<a name="line-72"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-73"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-conid'>Nothing</span>
++<a name="line-74"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>max</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 84
+-<a name="line-76"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-77"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span>
++<a name="line-76"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-77"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span>
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Ord.html 87
+-<a name="line-79"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>a</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-80"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-varop'>.</span> <span class='hs-conid'>Just</span>
++<a name="line-79"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-keyword'>where</span>
++<a name="line-80"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>MaxPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span>
++<a name="line-81"></a>
++<a name="line-82"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-keyword'>where</span>
++<a name="line-83"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MaxPriority</span> <span class='hs-varop'>.</span> <span class='hs-conid'>Just</span>
++<a name="line-84"></a>
++<a name="line-85"></a><a name="MinPriority"></a><span class='hs-comment'>-- | The 'Monoid' @('min','Nothing')@ over @'Maybe' a@ where 'Nothing' is the top element</span>
++<a name="line-86"></a><a name="MinPriority"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>{</span> <span class='hs-varid'>getMinPriority</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span> <span class='hs-layout'>}</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>)</span>
++<a name="line-87"></a>
++<a name="line-88"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Ord</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-89"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>EQ</span>
++<a name="line-90"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-varop'>`compare`</span> <span class='hs-keyword'>_</span>                    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>GT</span>
++<a name="line-91"></a>    <span class='hs-keyword'>_</span>                    <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>LT</span>
++<a name="line-92"></a>    <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-varop'>`compare`</span> <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`compare`</span> <span class='hs-varid'>b</span>
++<a name="line-93"></a>
++<a name="line-94"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-95"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-conid'>Nothing</span>
++<a name="line-96"></a>    <span class='hs-varid'>mappend</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>min</span>
++<a name="line-97"></a>
++<a name="line-98"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Ord</span> <span class='hs-varid'>a</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-99"></a>    <span class='hs-varid'>unit</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span>
++<a name="line-100"></a>
++<a name="line-101"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>MinPriority</span> <span class='hs-keyword'>where</span>
++<a name="line-102"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>MinPriority</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span>
++<a name="line-103"></a>
++<a name="line-104"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>MinPriority</span> <span class='hs-keyword'>where</span>
++<a name="line-105"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>MinPriority</span> <span class='hs-varop'>.</span> <span class='hs-conid'>Just</span>
+}

@@ -1,0 +1,523 @@
+[reorganized namespaces. new Generator scheme
+ekmett@gmail.com**20090322205657] {
+move ./Data/Monoid/Lexical/Generator.hs ./Data/Monoid/Generator.hs
+move ./Data/Monoid/Lexical/WithLexer.hs ./Data/Monoid/WithReducer.hs
+adddir ./Data/Monoid/Reducer
+hunk ./Data/Monoid/Generator.hs 2
+-module Data.Monoid.Lexical.Generator
+-    ( module Data.Monoid.Lexical
++module Data.Monoid.Generator
++    ( module Data.Monoid
+hunk ./Data/Monoid/Generator.hs 6
+-    , mapReduce
+-    , affixMapReduce
+-    , prefixMapReduce
+-    , lexReduce
++    , mapreduce
++    , mapreducer
++    , mapreducel
+hunk ./Data/Monoid/Generator.hs 14
+-import Data.FingerTree
+hunk ./Data/Monoid/Generator.hs 19
+-import Data.Monoid.Lexical
++import Data.Monoid
++import Data.Monoid.Reducer
+hunk ./Data/Monoid/Generator.hs 22
+--- minimal definition mapReduce or affixMapReduce
++-- minimal definition mapreduce or affixMapReduce
+hunk ./Data/Monoid/Generator.hs 24
+-    type Elem c     :: * 
+-    mapReduce       :: Lexer e m => (Elem c -> e) -> c -> m
+-    affixMapReduce  :: Lexer e m => (Elem c -> e) -> m -> c -> m 
+-    prefixMapReduce :: Lexer e m => (Elem c -> e) -> c -> m -> m
++    type Elem c :: * 
++    mapreduce   :: (e `Reducer` m) => (Elem c -> e) -> c -> m
++    mapreducer  :: (e `Reducer` m) => (Elem c -> e) -> m -> c -> m 
++    mapreducel  :: (e `Reducer` m) => (Elem c -> e) -> c -> m -> m
+hunk ./Data/Monoid/Generator.hs 29
+-    mapReduce f = affixMapReduce f mempty
+-    affixMapReduce f m c = m `mappend` mapReduce f c 
+-    prefixMapReduce f c m = mapReduce f c `mappend` m
+-
+-{-# INLINE lexReduce #-}
+-lexReduce :: (Lexer (Elem c) m, Generator c) => c -> m
+-lexReduce = mapReduce id
++    mapreduce  f = mapreducer f mempty
++    mapreducer f m = mappend m . mapreduce f
++    mapreducel f = mappend . mapreduce f
+hunk ./Data/Monoid/Generator.hs 35
+-    affixMapReduce f = Strict.foldl' (\a -> affix a . f)
++    mapreducer f = Strict.foldl' (\a -> reducer a . f)
+hunk ./Data/Monoid/Generator.hs 39
+-    mapReduce f = fold . parMap rwhnf (mapReduce f) . Lazy.toChunks
++    mapreduce f = fold . parMap rwhnf (mapreduce f) . Lazy.toChunks
+hunk ./Data/Monoid/Generator.hs 43
+-    affixMapReduce f = Text.foldl' (\a -> affix a . f)
++    mapreducer f = Text.foldl' (\a -> reducer a . f)
+hunk ./Data/Monoid/Generator.hs 47
+-    mapReduce f = foldMap (lex . f)
++    mapreduce f = foldMap (reduce . f)
+hunk ./Data/Monoid/Lexical.hs 1
+-{-# LANGUAGE UndecidableInstances, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
+-module Data.Monoid.Lexical
+-    ( module Data.Monoid
+-    , Lexer
+-    , lex, affix, prefix
+-    , CharLexer
+-    , invalid_char
+-    ) where
+-
+-import Prelude hiding (lex)
+-import Data.Monoid (Monoid, mempty, mappend)
+-import Data.Word (Word8)
+-
+--- minimal definition affix or lex
+-class Monoid m => Lexer c m where
+-    lex :: c -> m 
+-    affix :: m -> c -> m
+-    prefix :: c -> m -> m 
+-
+-    lex = affix mempty 
+-    affix m c = m `mappend` lex c
+-    prefix c m = lex c `mappend` m
+-
+-class Lexer Char m => CharLexer m where
+-    -- extra functionality used by the utf8-decoder monoid
+-    invalid_char :: [Word8] -> m
+-    invalid_char = const mempty
+-
+-instance (Lexer c m, Lexer c m') => Lexer c (m,m') where
+-    lex x = (lex x,lex x)
+-    affix (m,m') x = (affix m x, affix m' x)
+-    prefix x (m,m') = (prefix x m, prefix x m')
+-
+-instance (Lexer c m, Lexer c m', Lexer c m'') => Lexer c (m,m',m'') where
+-    lex x = (lex x,lex x, lex x)
+-    affix (m,m',m'') x = (affix m x, affix m' x, affix m'' x)
+-    prefix x (m,m',m'') = (prefix x m, prefix x m', prefix x m'')
+-
+-instance (Lexer c m, Lexer c m', Lexer c m'', Lexer c m''') => Lexer c (m,m',m'',m''') where
+-    lex x = (lex x,lex x, lex x, lex x)
+-    affix (m,m',m'',m''') x = (affix m x, affix m' x, affix m'' x, affix m''' x)
+-    prefix x (m,m',m'',m''') = (prefix x m, prefix x m', prefix x m'', prefix x m''')
+-
+-instance Lexer c [c] where
+-    lex = return
+-    prefix = (:)
+-    affix xs x = xs ++ [x]
+-
+-instance Lexer c () where
+-    lex _ = ()
+-    affix _ _ = ()
+-    prefix _ _ = ()
+-
+-
+-instance (CharLexer m, CharLexer m') =>  CharLexer (m,m') where
+-    invalid_char bs = (invalid_char bs, invalid_char bs)
+-
+-instance (CharLexer m, CharLexer m', CharLexer m'') =>  CharLexer (m,m',m'') where
+-    invalid_char bs = (invalid_char bs, invalid_char bs, invalid_char bs)
+-
+-instance (CharLexer m, CharLexer m', CharLexer m'', CharLexer m''') =>  CharLexer (m,m',m'',m''') where
+-    invalid_char bs = (invalid_char bs, invalid_char bs, invalid_char bs, invalid_char bs)
+-
+-instance CharLexer [Char]
+-
+-instance CharLexer ()
+rmfile ./Data/Monoid/Lexical.hs
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 3
+-    ( module Data.Monoid.Lexical
++    ( module Data.Monoid.Reducer.Char
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 16
+-import Data.Monoid.Lexical
++import Data.Monoid.Reducer.Char
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 61
+-instance Lexer Char (SourcePosition file) where
+-    lex '\n' = Lines 1 1
+-    lex '\t' = Tab 0 0 
+-    lex _    = Columns 1
++instance Reducer Char (SourcePosition file) where
++    reduce '\n' = Lines 1 1
++    reduce '\t' = Tab 0 0 
++    reduce _    = Columns 1
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 66
+-instance CharLexer (SourcePosition file)
++instance CharReducer (SourcePosition file)
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 3
+-    ( module Data.Monoid.Lexical
++    ( module Data.Monoid.Reducer.Char
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 8
+-import Prelude hiding (lex)
+-
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 13
+-import Data.Monoid.Lexical
+-
+-char :: CharLexer m => Char -> m
+-char = lex
++import Data.Monoid.Reducer.Char
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 15
+--- Incrementally lex canonical RFC3629 UTF-8 Characters
++-- Incrementally reduce canonical RFC3629 UTF-8 Characters
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 32
+--- S is a segment that contains a possible tail of a character, the result of lexing some full characters, and the start of another character
++-- S is a segment that contains a possible tail of a character, the result of reduceing some full characters, and the start of another character
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 38
+-flushH :: CharLexer m => H -> m
++flushH :: CharReducer m => H -> m
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 40
+-flushH (H2_1 x) = invalid_char [x]
+-flushH (H3_1 x) = invalid_char [x]
+-flushH (H3_2 x y) = invalid_char [x,y]
+-flushH (H4_1 x) = invalid_char [x]
+-flushH (H4_2 x y) = invalid_char [x,y]
+-flushH (H4_3 x y z) = invalid_char [x,y,z]
++flushH (H2_1 x) = invalidChar [x]
++flushH (H3_1 x) = invalidChar [x]
++flushH (H3_2 x y) = invalidChar [x,y]
++flushH (H4_1 x) = invalidChar [x]
++flushH (H4_2 x y) = invalidChar [x,y]
++flushH (H4_3 x y z) = invalidChar [x,y,z]
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 48
+-flushT :: CharLexer m => [Word8] -> m
+-flushT = invalid_char
++flushT :: CharReducer m => [Word8] -> m
++flushT = invalidChar
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 51
+-affixH :: CharLexer m => H -> Word8 -> (m -> H -> UTF8 m) -> m -> UTF8 m
+-affixH H0 c k m 
++reducerH :: CharReducer m => H -> Word8 -> (m -> H -> UTF8 m) -> m -> UTF8 m
++reducerH H0 c k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 54
+-    | c < 0xc0 = k (m `mappend` invalid_char [c]) H0
++    | c < 0xc0 = k (m `mappend` invalidChar [c]) H0
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 58
+-    | otherwise = k (m `mappend` invalid_char [c]) H0
+-affixH (H2_1 c) d k m
++    | otherwise = k (m `mappend` invalidChar [c]) H0
++reducerH (H2_1 c) d k m
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 61
+-    | otherwise = k (m `mappend` invalid_char [c]) H0
+-affixH (H3_1 c) d k m 
++    | otherwise = k (m `mappend` invalidChar [c]) H0
++reducerH (H3_1 c) d k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 64
+-    | otherwise = k (m `mappend` invalid_char [c]) H0
+-affixH (H3_2 c d) e k m 
++    | otherwise = k (m `mappend` invalidChar [c]) H0
++reducerH (H3_2 c d) e k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 67
+-    | otherwise = k (m `mappend` invalid_char [c,d]) H0
+-affixH (H4_1 c) d k m 
++    | otherwise = k (m `mappend` invalidChar [c,d]) H0
++reducerH (H4_1 c) d k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 70
+-    | otherwise = k (m `mappend` invalid_char [c,d]) H0
+-affixH (H4_2 c d) e k m 
++    | otherwise = k (m `mappend` invalidChar [c,d]) H0
++reducerH (H4_2 c d) e k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 73
+-    | otherwise = k (m `mappend` invalid_char [c,d,e]) H0
+-affixH (H4_3 c d e) f k m 
++    | otherwise = k (m `mappend` invalidChar [c,d,e]) H0
++reducerH (H4_3 c d e) f k m 
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 76
+-    | otherwise = k (m `mappend` invalid_char [c,d,e,f]) H0
++    | otherwise = k (m `mappend` invalidChar [c,d,e,f]) H0
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 84
+-b1 :: CharLexer m => Word8 -> m
+-b1 c | c < 0x80 = char . toEnum $ fromEnum c
+-     | otherwise = invalid_char [c]
++b1 :: CharReducer m => Word8 -> m
++b1 c | c < 0x80 = reduceChar . toEnum $ fromEnum c
++     | otherwise = invalidChar [c]
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 88
+-b2 :: CharLexer m => Word8 -> Word8 -> m
+-b2 c d | valid_b2 c d = char (toEnum (combine (mask c 0x1f) d))
+-       | otherwise = invalid_char [c,d]
++b2 :: CharReducer m => Word8 -> Word8 -> m
++b2 c d | valid_b2 c d = reduceChar (toEnum (combine (mask c 0x1f) d))
++       | otherwise = invalidChar [c,d]
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 92
+-b3 :: CharLexer m => Word8 -> Word8 -> Word8 -> m
+-b3 c d e | valid_b3 c d e = char (toEnum (combine (combine (mask c 0x0f) d) e))
+-         | otherwise = invalid_char [c,d,e]
++b3 :: CharReducer m => Word8 -> Word8 -> Word8 -> m
++b3 c d e | valid_b3 c d e = reduceChar (toEnum (combine (combine (mask c 0x0f) d) e))
++         | otherwise = invalidChar [c,d,e]
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 97
+-b4 :: CharLexer m => Word8 -> Word8 -> Word8 -> Word8 -> m
+-b4 c d e f | valid_b4 c d e f = char (toEnum (combine (combine (combine (mask c 0x07) d) e) f))
+-           | otherwise = invalid_char [c,d,e,f]
++b4 :: CharReducer m => Word8 -> Word8 -> Word8 -> Word8 -> m
++b4 c d e f | valid_b4 c d e f = reduceChar (toEnum (combine (combine (combine (mask c 0x07) d) e) f))
++           | otherwise = invalidChar [c,d,e,f]
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 113
+-prefixT :: CharLexer m => Word8 -> T -> (H -> UTF8 m) -> (m -> UTF8 m) -> (T -> UTF8 m) -> UTF8 m
+-prefixT c cs h m t
+-             | c < 0x80 = m $ b1 c `mappend` invalid_chars cs
++reducelT :: CharReducer m => Word8 -> T -> (H -> UTF8 m) -> (m -> UTF8 m) -> (T -> UTF8 m) -> UTF8 m
++reducelT c cs h m t
++             | c < 0x80 = m $ b1 c `mappend` invalidChars cs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 119
+-                        (d:ds) -> m $ b2 c d `mappend` invalid_chars ds
++                        (d:ds) -> m $ b2 c d `mappend` invalidChars ds
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 123
+-                        (d:e:es) -> m $ b3 c d e `mappend` invalid_chars es
++                        (d:e:es) -> m $ b3 c d e `mappend` invalidChars es
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 128
+-                        (d:e:f:fs) -> m $ b4 c d e f `mappend` invalid_chars fs
++                        (d:e:f:fs) -> m $ b4 c d e f `mappend` invalidChars fs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 131
+-invalid_chars :: CharLexer m => [Word8] -> m
+-invalid_chars (x:xs) = invalid_char [x] `mappend` invalid_chars xs
+-invalid_chars [] = mempty
++invalidChars :: CharReducer m => [Word8] -> m
++invalidChars = foldr (mappend . invalidChar . return) mempty
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 134
+-merge :: CharLexer m => H -> T -> (m -> a) -> (H -> a) -> a
+-merge H0 cs k _               = k $ invalid_chars cs
++merge :: CharReducer m => H -> T -> (m -> a) -> (H -> a) -> a
++merge H0 cs k _               = k $ invalidChars cs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 137
+-merge (H2_1 c) (d:ds) k _     = k $ b2 c d `mappend` invalid_chars ds
++merge (H2_1 c) (d:ds) k _     = k $ b2 c d `mappend` invalidChars ds
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 140
+-merge (H3_1 c) (d:e:es) k _   = k $ b3 c d e `mappend` invalid_chars es
++merge (H3_1 c) (d:e:es) k _   = k $ b3 c d e `mappend` invalidChars es
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 142
+-merge (H3_2 c d) (e:es) k _   = k $ b3 c d e `mappend` invalid_chars es
++merge (H3_2 c d) (e:es) k _   = k $ b3 c d e `mappend` invalidChars es
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 146
+-merge (H4_1 c) (d:e:f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++merge (H4_1 c) (d:e:f:fs) k _ = k $ b4 c d e f `mappend` invalidChars fs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 149
+-merge (H4_2 c d) (e:f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++merge (H4_2 c d) (e:f:fs) k _ = k $ b4 c d e f `mappend` invalidChars fs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 151
+-merge (H4_3 c d e) (f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++merge (H4_3 c d e) (f:fs) k _ = k $ b4 c d e f `mappend` invalidChars fs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 153
+-instance CharLexer m => Monoid (UTF8 m) where
++instance CharReducer m => Monoid (UTF8 m) where
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 162
+-instance CharLexer m => Lexer Word8 (UTF8 m) where
+-    prefix c (T cs) = prefixT c cs (S [] mempty) (flip (S []) H0) T
+-    prefix c (S cs m h) = prefixT c cs 
+-        (\h' -> S [] (flushH h' `mappend` m) h)
+-        (\m' -> S [] (m' `mappend` m) h)
+-        (\t' -> S t' m h)
+-    affix (S t m h) c = affixH h c (S t) m
+-    affix (T t) c | c >= 0x80 && c < 0xc0 = T (t ++ [c])
+-                  | otherwise = affixH H0 c (S t) mempty
++instance CharReducer m => Reducer Word8 (UTF8 m) where
++    S t m h `reducer` c        = reducerH h c (S t) m
++    T t     `reducer` c        | c >= 0x80 && c < 0xc0 = T (t ++ [c])
++                               | otherwise = reducerH H0 c (S t) mempty
++
++    c       `reducel` T cs     = reducelT c cs (S [] mempty) (flip (S []) H0) T
++    c       `reducel` S cs m h = reducelT c cs k1 k2 k3 where
++        k1 h' = S [] (flushH h' `mappend` m) h
++        k2 m' = S [] (m' `mappend` m) h
++        k3 t' = S t' m h
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 180
+-runUTF8 :: CharLexer m => UTF8 m -> m 
++runUTF8 :: CharReducer m => UTF8 m -> m 
+hunk ./Data/Monoid/Lexical/Words.hs 3
+-    ( module Data.Monoid.Lexical
++    ( module Data.Monoid.Reducer.Char
+hunk ./Data/Monoid/Lexical/Words.hs 14
+-import Prelude hiding (lex)
+hunk ./Data/Monoid/Lexical/Words.hs 16
+-import Data.Monoid.Lexical
+-import Data.Monoid.Lexical.Generator
++import Data.Monoid.Reducer.Char
++import Data.Monoid.Generator
+hunk ./Data/Monoid/Lexical/Words.hs 35
+-instance Lexer Char m => Lexer Char (Words m) where
+-    lex c | isSpace c = Segment (Just (lex c)) [] mempty
+-          | otherwise = Chunk (Just (lex c))
++instance Reducer Char m => Reducer Char (Words m) where
++    reduce c | isSpace c = Segment (Just (reduce c)) [] mempty
++          | otherwise = Chunk (Just (reduce c))
+hunk ./Data/Monoid/Lexical/Words.hs 47
+-instance Lexer Char m => Lexer Char (Lines m) where
+-    lex '\n' = Lines $ Segment (Just (lex '\n')) [] mempty
+-    lex c = Lines $ Chunk (Just (lex c))
++instance Reducer Char m => Reducer Char (Lines m) where
++    reduce '\n' = Lines $ Segment (Just (reduce '\n')) [] mempty
++    reduce c = Lines $ Chunk (Just (reduce c))
+hunk ./Data/Monoid/Lexical/Words.hs 56
+-instance Lexer Char m => Lexer Char (Unspaced m) where
+-    lex c | isSpace c = mempty
+-          | otherwise = Unspaced (lex c)
++instance Reducer Char m => Reducer Char (Unspaced m) where
++    reduce c | isSpace c = mempty
++          | otherwise = Unspaced (reduce c)
+hunk ./Data/Monoid/Lexical/Words.hs 60
+-instance CharLexer m => CharLexer (Unspaced m) where
+-    invalid_char = Unspaced . invalid_char
++instance CharReducer m => CharReducer (Unspaced m) where
++    invalidChar = Unspaced . invalidChar
+hunk ./Data/Monoid/Lexical/Words.hs 74
+-instance Lexer Char m => Lexer Char (Unlined m) where
+-    lex '\n' = mempty
+-    lex c = Unlined (lex c)
++instance Reducer Char m => Reducer Char (Unlined m) where
++    reduce '\n' = mempty
++    reduce c = Unlined (reduce c)
+hunk ./Data/Monoid/Lexical/Words.hs 78
+-instance CharLexer m => CharLexer (Unlined m) where
+-    invalid_char = Unlined . invalid_char
++instance CharReducer m => CharReducer (Unlined m) where
++    invalidChar = Unlined . invalidChar
+hunk ./Data/Monoid/Lexical/Words.hs 91
+-wordsFrom :: (Generator c, Elem c ~ Char, Char `Lexer` m, Char `Lexer` n, Char `Lexer` o) => m -> c -> [(m,n,o)]
++wordsFrom :: (Generator c, Elem c ~ Char, Char `Reducer` m, Char `Reducer` n, Char `Reducer` o) => m -> c -> [(m,n,o)]
+hunk ./Data/Monoid/Lexical/Words.hs 93
+-    (ls,rs) = unzip (runWords (lexReduce c))
++    (ls,rs) = unzip (runWords (mapreduce id c))
+hunk ./Data/Monoid/Lexical/Words.hs 96
+-linesFrom :: (Generator c, Elem c ~ Char, Char `Lexer` m, Char `Lexer` n, Char `Lexer` o) => m -> c -> [(m,n,o)]
++linesFrom :: (Generator c, Elem c ~ Char, Char `Reducer` m, Char `Reducer` n, Char `Reducer` o) => m -> c -> [(m,n,o)]
+hunk ./Data/Monoid/Lexical/Words.hs 98
+-    (ls,rs) = unzip (runLines (lexReduce c))
++    (ls,rs) = unzip (runLines (mapreduce id c))
+addfile ./Data/Monoid/Reducer.hs
+hunk ./Data/Monoid/Reducer.hs 1
++{-# LANGUAGE UndecidableInstances, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
++module Data.Monoid.Reducer
++    ( module Data.Monoid
++    , Reducer
++    , reduce, reducer, reducel
++    ) where
++
++import Data.Monoid (Monoid, mempty, mappend)
++
++-- minimal definition reduce or reducer
++class Monoid m => Reducer c m where
++    reduce :: c -> m 
++    reducer :: m -> c -> m
++    reducel :: c -> m -> m 
++
++    reduce = reducer mempty 
++    reducer m = mappend m . reduce
++    reducel = mappend . reduce
++
++instance (Reducer c m, Reducer c m') => Reducer c (m,m') where
++    reduce x = (reduce x,reduce x)
++    reducer (m,m') x = (reducer m x, reducer m' x)
++    reducel x (m,m') = (reducel x m, reducel x m')
++
++instance (Reducer c m, Reducer c m', Reducer c m'') => Reducer c (m,m',m'') where
++    reduce x = (reduce x,reduce x, reduce x)
++    reducer (m,m',m'') x = (reducer m x, reducer m' x, reducer m'' x)
++    reducel x (m,m',m'') = (reducel x m, reducel x m', reducel x m'')
++
++instance (Reducer c m, Reducer c m', Reducer c m'', Reducer c m''') => Reducer c (m,m',m'',m''') where
++    reduce x = (reduce x,reduce x, reduce x, reduce x)
++    reducer (m,m',m'',m''') x = (reducer m x, reducer m' x, reducer m'' x, reducer m''' x)
++    reducel x (m,m',m'',m''') = (reducel x m, reducel x m', reducel x m'', reducel x m''')
++
++instance Reducer c [c] where
++    reduce = return
++    reducel = (:)
++    reducer xs x = xs ++ [x]
++
++instance Reducer c () where
++    reduce _ = ()
++    reducer _ _ = ()
++    reducel _ _ = ()
+addfile ./Data/Monoid/Reducer/Char.hs
+hunk ./Data/Monoid/Reducer/Char.hs 1
++{-# LANGUAGE UndecidableInstances, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
++module Data.Monoid.Reducer.Char
++    ( module Data.Monoid.Reducer
++    , CharReducer
++    , invalidChar
++    , reduceChar
++    ) where
++
++import Data.Monoid.Reducer
++import Data.Word (Word8)
++
++class Reducer Char m => CharReducer m where
++    reduceChar :: Char -> m 
++    reduceChar = reduce
++
++    invalidChar :: [Word8] -> m
++    invalidChar = const mempty
++
++instance (CharReducer m, CharReducer m') =>  CharReducer (m,m') where
++    invalidChar bs = (invalidChar bs, invalidChar bs)
++
++instance (CharReducer m, CharReducer m', CharReducer m'') =>  CharReducer (m,m',m'') where
++    invalidChar bs = (invalidChar bs, invalidChar bs, invalidChar bs)
++
++instance (CharReducer m, CharReducer m', CharReducer m'', CharReducer m''') =>  CharReducer (m,m',m'',m''') where
++    invalidChar bs = (invalidChar bs, invalidChar bs, invalidChar bs, invalidChar bs)
++
++instance CharReducer [Char]
++
++instance CharReducer ()
+addfile ./Data/Monoid/Reducer/With.hs
+hunk ./Data/Monoid/Reducer/With.hs 1
++{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
++module Data.Monoid.Reducer.With
++    ( module Data.Monoid.Reducer
++    , WithReducer(runWithReducer)
++    , withReducer
++    , withoutReducer
++    ) where
++
++import Data.Monoid.Reducer
++import Data.FingerTree
++
++newtype WithReducer c m = WithReducer { runWithReducer :: (m,c) } 
++
++withReducer :: (c `Reducer` m) => c -> c `WithReducer` m
++withReducer x = d `seq` WithReducer (d, x) where d = reduce x
++
++withoutReducer :: c `WithReducer` m -> c
++withoutReducer = snd . runWithReducer
++
++instance (c `Reducer` m) => Reducer (c `WithReducer` m) m where
++    reduce = fst . runWithReducer 
++
++instance (c `Reducer` m) => Measured m (c `WithReducer` m) where
++    measure = fst . runWithReducer
+hunk ./Data/Monoid/WithReducer.hs 1
+-{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
+-module Data.Monoid.Lexical.WithLexer
+-    ( module Data.Monoid.Lexical
+-    , WithLexer(WithLexer, runWithLexer)
+-    , prelex
+-    , unlex
+-    ) where
+-
+-import Prelude hiding (lex)
+-import Data.Monoid.Lexical
+-import Data.FingerTree
+-
+-newtype WithLexer c m = WithLexer { runWithLexer :: (m,c) } 
+-
+-prelex :: Lexer c m => c -> WithLexer c m
+-prelex x = d `seq` WithLexer (d, x) where d = lex x
+-
+-unlex :: WithLexer c m -> c
+-unlex = snd . runWithLexer
+-
+-instance Lexer c m => Lexer (WithLexer c m) m where
+-    lex = fst . runWithLexer 
+-
+-instance Lexer c m => Measured m (WithLexer c m) where
+-    measure = fst . runWithLexer
+rmfile ./Data/Monoid/WithReducer.hs
+hunk ./lexical-monoids.cabal 19
+-    Data.Monoid.Lexical
+-    Data.Monoid.Lexical.Generator
+-    Data.Monoid.Lexical.WithLexer
++    Data.Monoid.Generator
++    Data.Monoid.Reducer
++    Data.Monoid.Reducer.Char
++    Data.Monoid.Reducer.With
+}

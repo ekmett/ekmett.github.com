@@ -1,0 +1,17 @@
+[bring up to date with 6.6, fix dependencies
+ekmett@gmail.com**20070714012135] {
+hunk ./src/Data/Hashable.hs 19
+-import Char (ord)
++import Data.Char (ord)
+hunk ./src/Data/THash/THT.hs 37
+-    ( Show(..), Ord(..), Eq, Bool(..), Maybe(..),
++    ( Show(..), Ord(..), Eq, Bool(..), Maybe(..)
+hunk ./thash.cabal 2
+-version:		0.1
++version:		0.2
+hunk ./thash.cabal 5
++build-depends:		base -any, stm -any
+hunk ./thash.cabal 18
+-ghc-options:		-Wall -O -funbox-strict-fields
++ghc-options:		-O2 -funbox-strict-fields
+}

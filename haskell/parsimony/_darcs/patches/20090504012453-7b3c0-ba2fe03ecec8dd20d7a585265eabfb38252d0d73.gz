@@ -1,0 +1,722 @@
+[repository initialized
+ekmett@gmail.com**20090504012453
+ Ignore-this: 4ac0c5638d5628b785b46e1cf603d94e
+] {
+addfile ./LICENSE
+hunk ./LICENSE 1
++Copyright (c) 2009 Edward Kmett
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are
++met:
++
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++
++    * Redistributions in binary form must reproduce the above
++      copyright notice, this list of conditions and the following
++      disclaimer in the documentation and/or other materials provided
++      with the distribution.
++
++    * Neither the name of Isaac Jones nor the names of other
++      contributors may be used to endorse or promote products derived
++      from this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+adddir ./Text
+adddir ./Text/Parsimony
+addfile ./Text/Parsimony.hs
+hunk ./Text/Parsimony.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Text.Parsimony
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families, GADTs)
++--
++-- Parallel parser combinators
++--
++-----------------------------------------------------------------------------
++
++module Text.Parsimony
++    ( module Text.Parsimony.Char
++    , module Text.Parsimony.Error
++    , module Text.Parsimony.Mode
++    , module Text.Parsimony.Parsec
++    , module Text.Parsimony.Prim
++    ) where
++
++import Text.Parsimony.Char
++import Text.Parsimony.Error
++import Text.Parsimony.Mode
++import Text.Parsimony.Parsec
++import Text.Parsimony.Prim
+addfile ./Text/Parsimony/Char.hs
+hunk ./Text/Parsimony/Char.hs 1
++{-# LANGUAGE TypeFamilies #-}
++module Text.Parsimony.Char where
++
++import Control.Applicative
++import Data.Char
++import Data.Traversable
++import Text.Parsimony.Prim
++import Text.Parsimony.Combinators
++
++char :: (Mode t, Token t ~ Char) => Char -> Parser t Char
++char x = satisfy (==x) <?> show [x]
++
++tab :: (Mode t, Token t ~ Char) => Parser t Char
++tab = char '\t' <?> "tab"
++
++space :: (Mode t, Token t ~ Char) => Parser t Char
++space = satisfy isSpace <?> "space"
++
++spaces :: (Mode t, Token t ~ Char) => Parser t ()
++spaces = skip (many space) <?> "white space"
++
++lower :: (Mode t, Token t ~ Char) => Parser t Char
++lower = satisfy isLower <?> "lowercase letter"
++
++upper :: (Mode t, Token t ~ Char) => Parser t Char
++upper = satisfy isUpper <?> "uppercase letter"
++
++alphaNum :: (Mode t, Token t ~ Char) => Parser t Char
++alphaNum = satisfy isAlphaNum <?> "letter or digit"
++
++letter :: (Mode t, Token t ~ Char) => Parser t Char
++letter = satisfy isAlpha <?> "letter"
++
++hexDigit :: (Mode t, Token t ~ Char) => Parser t Char
++hexDigit = satisfy isHexDigit <?> "hexadecimal digit"
++
++octDigit :: (Mode t, Token t ~ Char) => Parser t Char
++octDigit = satisfy isOctDigit <?> "octal digit"
++
++anyChar :: (Mode t, Token t ~ Char) => Parser t Char
++anyChar = anyToken
++
++string :: (Mode t, Token t ~ Char) => String -> Parser t String
++string = traverse char
+addfile ./Text/Parsimony/Combinators.hs
+hunk ./Text/Parsimony/Combinators.hs 1
++{-# LANGUAGE TypeFamilies, FlexibleContexts  #-}
++module Text.Parsimony.Combinators 
++    ( oneOf
++    , noneOf
++    , anyToken
++    , option
++    ) where
++
++import Control.Applicative
++import Text.Parsimony.Prim
++
++oneOf :: (Eq (Token t), Mode t) => [Token t] -> Parser t (Token t)
++oneOf cs = satisfy (\c -> Prelude.elem c cs)
++
++noneOf :: (Eq (Token t), Mode t) => [Token t] -> Parser t (Token t)
++noneOf cs = satisfy (\c -> not (Prelude.elem c cs))
++
++anyToken :: Mode t => Parser t (Token t)
++anyToken = satisfy (const True) <?> "anything"
++
++option :: Mode t => a -> Parser t a -> Parser t a
++option a p = p <|> pure a 
+addfile ./Text/Parsimony/Error.hs
+hunk ./Text/Parsimony/Error.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Text.Parsimony.Error
++-- Copyright   :  (c) Edward Kmett 2009 
++--                (c) Paolo Martini 2007 
++--                (c) Daan Leijen 1999-2001
++-- License     :  BSD-style (see the LICENSE file)
++-- 
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  provisional
++-- Portability :  portable
++-- 
++-- As per "Text.Parsec.Errors" except with monoidal source position information
++-- 
++-----------------------------------------------------------------------------
++
++module Text.Parsimony.Error
++    ( Message ( SysUnExpect, UnExpect, Expect, Message )
++    , messageString
++    , ParseError, errorPosition, errorMessages, errorIsUnknown
++    , showErrorMessages
++    , newErrorMessage, newErrorUnknown
++    , addErrorMessage, setErrorPosition, setErrorMessage
++    , prependErrorPosition
++    , mergeError
++    ) where
++
++import Data.List ( nub, sort )
++import Data.Monoid.Lexical.SourcePosition
++
++-- | This abstract data type represents parse error messages. There are
++-- four kinds of messages:
++--
++-- >  data Message = SysUnExpect String
++-- >               | UnExpect String
++-- >               | Expect String
++-- >               | Message String
++-- 
++-- The fine distinction between different kinds of parse errors allows
++-- the system to generate quite good error messages for the user. It
++-- also allows error messages that are formatted in different
++-- languages. Each kind of message is generated by different combinators:
++--
++--     * A 'SysUnExpect' message is automatically generated by the
++--       'Text.Parsec.Combinator.satisfy' combinator. The argument is the
++--       unexpected input.
++--
++--     * A 'UnExpect' message is generated by the 'Text.Parsec.Prim.unexpected'
++--       combinator. The argument describes the
++--       unexpected item.
++--
++--     * A 'Expect' message is generated by the 'Text.Parsec.Prim.<?>'
++--       combinator. The argument describes the expected item.
++--
++--     * A 'Message' message is generated by the 'fail'
++--       combinator. The argument is some general parser message. 
++
++data Message = SysUnExpect !String -- @ library generated unexpect
++             | UnExpect    !String -- @ unexpected something
++             | Expect      !String -- @ expecting something
++             | Message     !String -- @ raw message
++
++instance Enum Message where
++    fromEnum (SysUnExpect _) = 0
++    fromEnum (UnExpect    _) = 1
++    fromEnum (Expect      _) = 2
++    fromEnum (Message     _) = 3
++    toEnum _ = error "toEnum is undefined for Message"
++
++-- < Return 'True' only when 'compare' would return 'EQ'.
++
++instance Eq Message where
++    m1 == m2 = fromEnum m1 == fromEnum m2
++
++-- < Compares two error messages without looking at their content. Only
++-- the constructors are compared where:
++-- 
++-- > 'SysUnExpect' < 'UnExpect' < 'Expect' < 'Message'
++
++instance Ord Message where
++    compare msg1 msg2 = compare (fromEnum msg1) (fromEnum msg2)
++
++-- | Extract the message string from an error message 
++
++messageString :: Message -> String
++messageString (SysUnExpect s) = s
++messageString (UnExpect    s) = s
++messageString (Expect      s) = s
++messageString (Message     s) = s
++
++-- | The abstract data type @ParseError@ represents parse errors. It
++-- provides the source position ('SourcePosition') of the error
++-- and a list of error messages ('Message'). A @ParseError@
++-- can be returned by the function 'Text.Parsimony.Mode.parse'. @ParseError@ is an
++-- instance of the 'Show' class, but does not comply with the Haskell convention
++-- that Show should yield a valid source code representation.
++
++data ParseError f = ParseError !(SourcePosition f) [Message]
++
++-- | Extracts the source position from the parse error
++
++errorPosition :: ParseError f -> SourcePosition f
++errorPosition (ParseError pos _msgs) = pos
++
++errorMessages :: ParseError f -> [Message]
++errorMessages (ParseError _pos msgs) = sort msgs
++
++errorIsUnknown :: ParseError f -> Bool
++errorIsUnknown (ParseError _pos msgs) = null msgs
++
++-- < Create parse errors
++
++newErrorUnknown :: SourcePosition f -> ParseError f 
++newErrorUnknown pos = ParseError pos []
++
++newErrorMessage :: Message -> SourcePosition f -> ParseError f
++newErrorMessage msg pos
++    = ParseError pos [msg]
++
++addErrorMessage :: Message -> ParseError f -> ParseError f 
++addErrorMessage msg (ParseError pos msgs)
++    = ParseError pos (msg:msgs)
++
++setErrorPosition :: SourcePosition f -> ParseError f -> ParseError f
++setErrorPosition pos (ParseError _ msgs)
++    = ParseError pos msgs
++
++prependErrorPosition :: SourcePosition f -> ParseError f -> ParseError f
++prependErrorPosition pos1 (ParseError pos2 msgs) = ParseError (pos1 `mappend` pos2) msgs
++
++setErrorMessage :: Message -> ParseError f -> ParseError f 
++setErrorMessage msg (ParseError pos msgs) = ParseError pos (msg : filter (msg /=) msgs)
++
++mergeError :: ParseError f -> ParseError f -> ParseError f
++mergeError (ParseError pos msgs1) (ParseError _ msgs2)
++    = ParseError pos (msgs1 ++ msgs2)
++
++instance Show f => Show (ParseError f) where
++    show err
++        = show (errorPosition err) ++ ":" ++
++          showErrorMessages "or" "unknown parse error"
++                            "expecting" "unexpected" "end of input"
++                           (errorMessages err)
++
++instance Monoid (ParseError f) where
++    mempty = ParseError mempty []
++    mappend = mergeError
++
++
++-- Language independent show function
++
++--  TODO
++-- < The standard function for showing error messages. Formats a list of
++--    error messages in English. This function is used in the |Show|
++--    instance of |ParseError <#ParseError>|. The resulting string will be
++--    formatted like:
++--
++--    |unexpected /{The first UnExpect or a SysUnExpect message}/;
++--    expecting /{comma separated list of Expect messages}/;
++--    /{comma separated list of Message messages}/
++
++showErrorMessages ::
++    String -> String -> String -> String -> String -> [Message] -> String
++showErrorMessages msgOr msgUnknown msgExpecting msgUnExpected msgEndOfInput msgs
++    | null msgs = msgUnknown
++    | otherwise = concat $ map ("\n"++) $ clean $
++                 [showSysUnExpect,showUnExpect,showExpect,showMessages]
++    where
++      (sysUnExpect,msgs1) = span ((SysUnExpect "") ==) msgs
++      (unExpect,msgs2)    = span ((UnExpect    "") ==) msgs1
++      (expect,messages)   = span ((Expect      "") ==) msgs2
++
++      showExpect      = showMany msgExpecting expect
++      showUnExpect    = showMany msgUnExpected unExpect
++      showSysUnExpect | not (null unExpect) ||
++                        null sysUnExpect = ""
++                      | null firstMsg    = msgUnExpected ++ " " ++ msgEndOfInput
++                      | otherwise        = msgUnExpected ++ " " ++ firstMsg
++          where
++              firstMsg  = messageString (head sysUnExpect)
++
++      showMessages      = showMany "" messages
++
++      -- helpers
++      showMany pre msgs' = case clean (map messageString msgs') of
++                            [] -> ""
++                            ms | null pre  -> commasOr ms
++                               | otherwise -> pre ++ " " ++ commasOr ms
++
++      commasOr []       = ""
++      commasOr [m]      = m
++      commasOr ms       = commaSep (init ms) ++ " " ++ msgOr ++ " " ++ last ms
++
++      commaSep          = seperate ", " . clean
++
++      seperate   _ []     = ""
++      seperate   _ [m]    = m
++      seperate sep (m:ms) = m ++ sep ++ seperate sep ms
++
++      clean             = nub . filter (not . null)
+addfile ./Text/Parsimony/Mode.hs
+hunk ./Text/Parsimony/Mode.hs 1
++module Text.Parsimony.Mode where
++
++class ParseMode m where
++    parseMap :: (Generator c, Alternative f) => (Elem c -> e) -> (m e `Parser` a) -> c -> Either ParseError (f a)
++
++    parse :: (Generator c, Alternative f) => (m (Elem c) `Parser` a) -> c -> Either ParseError (f a)
++    parse = parseMap id
++
++class RecognizeMode m where
++    recognizeMap :: Generator c => (Elem c -> e) -> (m e `Parser` a) -> c -> Bool
++
++    recognize :: Generator c => (m (Elem c) `Parser` a) -> c -> Bool
++    recognize = recognizeMap id
++
+addfile ./Text/Parsimony/Parsec.hs
+hunk ./Text/Parsimony/Parsec.hs 1
++{-# LANGUAGE FlexibleContexts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Text.Parsimony.Parsec
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families)
++--
++-- A minimalist interpreter that evaluates a Parsimony parser with Parsec
++--
++-----------------------------------------------------------------------------
++
++module Text.Parsimony.Parsec where
++
++import Control.Applicative
++import Text.Parsimony.Prim
++import Text.Parsimony.Util
++import Text.Parsec as Parsec
++
++eval :: Parsec.Stream s m Char => Parser (Parsing Char) e -> Parsec.ParsecT s u m e
++eval expr = case expr of 
++    App f x     -> eval f <*> eval x
++    Pure (Id a) -> pure a
++    Alt as      -> Parsec.choice (Parsec.try . eval <$> as)
++    Greedy as   -> Parsec.choice (eval <$> as)
++    Satisfy f p -> f <$> Parsec.satisfy p 
++    Name _ n    -> eval n
++    Labels ls l -> Parsec.labels (eval l) ls
++    Skip s      -> recognize s
++
++recognize :: Parsec.Stream s m Char => Parser (Recognizing Char) e -> Parsec.ParsecT s u m ()
++recognize expr = case expr of 
++    App f x     -> recognize f *> recognize x
++    Pure _      -> pure ()
++    Alt as      -> Parsec.choice (Parsec.try . recognize <$> as) 
++    Greedy as   -> Parsec.choice (recognize <$> as)
++    Satisfy _ p -> () <$ Parsec.satisfy p
++    Name _ n    -> recognize n
++    Labels ls l -> Parsec.labels (recognize l) ls
++    Skip s      -> recognize s -- unexpected Skip in Skip
+addfile ./Text/Parsimony/Prim.hs
+hunk ./Text/Parsimony/Prim.hs 1
++{-# LANGUAGE KindSignatures, TypeFamilies, GADTs, EmptyDataDecls, FlexibleContexts, FlexibleInstances #-}
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Text.Parsimony.Prim
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families, GADTs)
++--
++-- Parallel parser combinators
++--
++-----------------------------------------------------------------------------
++
++module Text.Parsimony.Prim 
++    ( Parsing
++    , Recognizing
++    , Recognizer
++    , Parser(..)
++    , Mode, Token, Pure, Satisfy
++    , fmapParser, appParser, satisfy, skip 
++    , (<<$), (*>>), (<<*)
++    , name
++    , labels
++    , (<?>)
++    , choice 
++    , (<<|>)
++    , greedyChoice
++    ) where
++
++import Control.Applicative
++import Unsafe.Coerce (unsafeCoerce)
++import Text.Parsimony.Util (Id, runId, Ignore)
++
++-- parsing modes
++data Parsing t
++data Recognizing t
++
++type Recognizer t a = Parser (Recognizing (Token t)) a
++
++-- Parser t a requires Mode t
++
++-- invariants enforced by smart constructors:
++
++-- a Name never contains a Name directly
++-- a Labels never contain Labels directly
++-- an Alt never contains an Alt directly
++-- a Greedy never contains a Greedy directly
++-- a Skip never contains a Skip transitively
++
++-- unenforceable invariants required for the parallel parser
++-- The parse tree is finite
++
++data Parser t a where
++    App     :: Parser t (a -> b) -> Parser t a -> Parser t b
++    Pure    :: Pure t a -> Parser t a
++    Alt     :: [Parser t a] -> Parser t a
++    Greedy  :: [Parser t a] -> Parser t a
++    Satisfy :: Satisfy t a -> (Token t -> Bool) -> Parser t a
++    Skip    :: Recognizer t a -> Parser t ()
++    Name    :: String -> Parser t a -> Parser t a 
++    Labels  :: [String] -> Parser t a -> Parser t a
++
++class (Functor (Satisfy t), Applicative (Pure t)) => Mode t where
++    type Token t   :: * 
++    type Pure t    :: * -> *
++    type Satisfy t :: * -> *
++
++    fmapParser :: (a -> b) -> Parser t a -> Parser t b
++    pureParser :: a -> Parser t a
++    appParser  :: Parser t (a -> b) -> Parser t a -> Parser t b
++    satisfy    :: (Token t -> Bool) -> Parser t (Token t)
++    skip       :: Recognizer t a -> Parser t ()
++
++    fmapParser g (App f x)     = App (fmap g <$> f) x
++    fmapParser g (Pure a)      = Pure (g <$> a)
++    fmapParser g (Alt as)      = Alt (fmap g <$> as)
++    fmapParser g (Greedy as)   = Greedy (fmap g <$> as)
++    fmapParser g (Satisfy s p) = Satisfy (g <$> s) p
++    fmapParser _ s@(Skip _)    = unsafeCoerce s
++    fmapParser g (Name s p)    = Name s (g <$> p)
++    fmapParser g (Labels s p)  = Labels s (g <$> p)
++
++    pureParser = Pure . pure
++    skip       = Skip
++
++-- a parser mode that actually parses and retains intermediate results
++instance Mode (Parsing t) where
++    type Token   (Parsing t) = t
++    type Pure    (Parsing t) = Id
++    type Satisfy (Parsing t) = (->) t
++
++    appParser (Pure f) (Pure x)      = Pure (f <*> x)
++    appParser (Pure f) (Satisfy s p) = Satisfy (runId f <$> s) p
++    appParser f x                    = App f x
++    satisfy    = Satisfy id
++
++-- the unsafeCoerces below let us retain sharing in a recognizer that we cannot retain in a general parser
++instance Mode (Recognizing t) where
++    type Token   (Recognizing t) = t
++    type Pure    (Recognizing t) = Ignore
++    type Satisfy (Recognizing t) = Ignore
++
++    satisfy      = Satisfy undefined
++    skip         = unsafeCoerce
++    fmapParser _ = unsafeCoerce
++
++    appParser Pure{} x      = unsafeCoerce x
++    appParser f      Pure{} = unsafeCoerce f
++    appParser f      x      = App f x 
++
++    pureParser _ = unsafeCoerce epsilon where
++        -- force sharing of all epsilon 
++        epsilon :: Parser (Recognizing ()) ()
++        epsilon = Pure undefined
++
++instance Mode t => Functor (Parser t) where
++    fmap = fmapParser
++
++instance Mode t => Applicative (Parser t) where
++    pure  = pureParser
++    (<*>) = appParser
++
++instance Mode t => Alternative (Parser t) where
++    empty             = Alt []
++    Alt as <|> Alt bs = Alt (as ++ bs)
++    Alt as <|> b      = Alt (as ++ [b])
++    a      <|> Alt bs = Alt (a : bs)
++    a      <|> b      = Alt [a,b]
++
++-- optimized versions of <$, *> and <*
++
++(<<$) :: Mode t => a -> Recognizer t b -> Parser t a 
++a <<$ p = const a <$> skip p
++
++(*>>) :: Mode t => Recognizer t a -> Parser t b -> Parser t b
++a *>> b = const id <$> skip a <*> b
++
++(<<*) :: Mode t => Parser t a -> Recognizer t b -> Parser t a
++a <<* b = const <$> a <*> skip b
++
++-- smart constructors fuse away trivial local optimizations
++name :: String -> Parser t a -> Parser t a
++name s (Name _ p) = Name s p
++name s p = Name s p
++
++labels :: [String] -> Parser t a -> Parser t a 
++labels s (Labels _ p) = Labels s p
++labels s p = Labels s p 
++
++(<?>) :: Parser t a -> String -> Parser t a 
++p <?> s = labels [s] p
++
++choice :: [Parser t a] -> Parser t a 
++choice = Alt . foldr flatten [] where
++    flatten (Alt bs) as = bs ++ as
++    flatten a as        = a : as
++
++(<<|>) :: Parser t a -> Parser t a -> Parser t a 
++Greedy as <<|> Greedy bs = Greedy (as ++ bs)
++Greedy as <<|> a         = Greedy (as ++ [a])
++a         <<|> Greedy as = Greedy (a : as)
++a         <<|> b         = Greedy [a,b]
++
++greedyChoice :: [Parser t a] -> Parser t a
++greedyChoice = Greedy . foldr flatten [] where
++    flatten (Greedy bs) as = bs ++ as
++    flatten a as = a : as
+addfile ./Text/Parsimony/StableMap.hs
+hunk ./Text/Parsimony/StableMap.hs 1
++{-# LANGUAGE EmptyDataDecls #-}
++module Text.Parsimony.StableMap
++    ( StableMap
++    , empty
++    , insert
++    , Text.Parsimony.StableMap.lookup
++    ) where
++
++-- map a StableName of an object to a functor of information about that value
++
++import Prelude
++
++import qualified Data.IntMap as IntMap
++import Data.IntMap (IntMap) 
++
++import System.Mem.StableName
++import Unsafe.Coerce
++
++import Text.Parsimony.Util (Magic)
++
++newtype StableMap f = StableMap { getStableMap :: IntMap [(StableName Magic, f Magic)] } 
++
++empty :: StableMap f
++empty = StableMap IntMap.empty
++
++insert :: StableName a -> f a -> StableMap f -> StableMap f
++insert k v = StableMap . IntMap.insertWith (++) (hashStableName k) [unsafeCoerce (k, v)] . getStableMap
++
++lookup :: StableName a -> StableMap f -> Maybe (f a)
++lookup k (StableMap m) = do
++    x <- IntMap.lookup (hashStableName k) m
++    unsafeCoerce $ Prelude.lookup (unsafeCoerce k) x
+addfile ./Text/Parsimony/Util.hs
+hunk ./Text/Parsimony/Util.hs 1
++{-# LANGUAGE EmptyDataDecls #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Text.Parsimony.Util
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families, GADTs)
++--
++-- Miscellaneous data types used by the rest of Parsimony.
++--
++-----------------------------------------------------------------------------
++
++module Text.Parsimony.Util
++    ( Ignore
++    , Id(..)
++    , Magic
++    ) where
++
++import Control.Applicative
++
++data Magic
++
++data Ignore a 
++instance Functor Ignore where
++    fmap = undefined
++instance Applicative Ignore where
++    pure = undefined
++    (<*>) = undefined
++
++-- Control.Monad.Identity may lacks an Applicative definition by default
++newtype Id a = Id { runId :: a } 
++instance Functor Id where
++    fmap f (Id a) = Id (f a) 
++
++instance Applicative Id where
++    pure = Id
++    Id f <*> Id x = Id (f x)
+addfile ./parsimony.cabal
+hunk ./parsimony.cabal 1
++name:		    parsimony
++version:	    0.0.1
++license:	    BSD3
++license-file:   LICENSE
++author:		    Edward A. Kmett
++maintainer:	    Edward A. Kmett <ekmett@gmail.com>
++stability:	    experimental
++homepage:	    http://comonad.com/reader
++category:	    Text, ParserCombinators, Language, Natural Language Processing, Parsing
++synopsis:	    Monoidal parser combinators for parallel parsing of context-free languages
++description:    Monoidal parser combinators for parallel parsing of context-free languages
++copyright:      (c) 2009 Edward A. Kmett
++build-type:     Simple
++cabal-version:  >=1.6
++
++flag QuickCheck
++  description: QuickCheck is available
++
++flag parsec
++  description: Text.Parsec is available (parsec >= 3)
++
++flag overloaded-strings
++  description: The OverloadedStrings extension is available
++
++-- compilation options
++flag optimize
++  description: Enable optimizations 
++  default: False
++
++library
++  build-depends: 
++    base >= 4 && < 4.2, 
++    array >= 0.2 && < 0.3,
++    containers >= 0.2 && < 0.3,
++    reflection >= 0.1 && < 0.2,
++    mtl >= 1.0 && < 1.2,
++    monoids >= 0.1.36 && < 0.2
++
++  extensions:
++    CPP
++
++  exposed-modules:
++    Text.Parsimony
++    Text.Parsimony.Char
++    Text.Parsimony.Combinators
++    Text.Parsimony.Error
++    Text.Parsimony.Prim
++    Text.Parsimony.StableMap
++    Text.Parsimony.Util
++
++  if flag (QuickCheck)
++    build-depends: 
++      QuickCheck >= 2.1 && < 2.2
++    cpp-options: 
++      -DM_QUICKCHECK=1
++
++  if flag (parsec)
++    build-depends: 
++      parsec >= 3.0 && < 3.1
++    exposed-modules: 
++      Text.Parsimony.Parsec
++    cpp-options: 
++      -DM_PARSEC=3
++
++  if flag (overloaded-strings)
++    extensions: 
++      OverloadedStrings
++    cpp-options: 
++      -DX_OverloadedStrings=1
++
++  ghc-options: -Wall
++  cpp-options -DM_ARRAY=1 -DM_CONTAINERS=1 -DM_REFLECTION=1 -DM_MTL=1
++
++  if flag (optimize)
++    ghc-options: -funbox-strict-fields -O2 -fdicts-cheap
+}

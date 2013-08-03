@@ -1,0 +1,226 @@
+[renamed Elidable to Annotation, subsubmed most of the Reducers in the public API
+ekmett@gmail.com**20100322025832
+ Ignore-this: dcb9870ec9db8b67bc4c7407aa49e93f
+] hunk ./Data/Rope.hs 10
+-    , Elidable
+-    , elide     -- :: Elidable m => Int -> Int -> Rope m -> Rope m
+-    , splitAt   -- :: Elidable m => Int -> Rope m -> (Rope m, Rope m)
+-    , take      -- :: Elidable m => Int -> Rope m -> Rope m
+-    , drop      -- :: Elidable m => Int -> Rope m -> Rope m
++    , Annotation(..)
++    , elide     -- :: Annotation m => Int -> Int -> Rope m -> Rope m
++    , splitAt   -- :: Annotation m => Int -> Rope m -> (Rope m, Rope m)
++    , take      -- :: Annotation m => Int -> Rope m -> Rope m
++    , drop      -- :: Annotation m => Int -> Rope m -> Rope m
+hunk ./Data/Rope.hs 22
+-    , fromByteString     -- :: ByteString `Reducer` m => ByteString -> Rope m
+-    , fromChunks         -- :: ByteString `Reducer` m => [ByteString] -> Rope m
+-    , fromLazyByteString -- :: ByteString `Reducer` m => L.ByteString -> Rope m
+-    , fromWords          -- :: ByteString `Reducer` m => [Word8] -> Rope m
+-    , fromChar           -- :: ByteString `Reducer` m => Char -> Rope m
+-    , fromWord8          -- :: ByteString `Reducer` m => Word8 -> Rope m
+-    , fromString         -- :: ByteString `Reducer` m => String -> Rope m
++    , fromByteString     -- :: Annotation m => ByteString -> Rope m
++    , fromChunks         -- :: Annotation m => [ByteString] -> Rope m
++    , fromLazyByteString -- :: Annotation m => L.ByteString -> Rope m
++    , fromWords          -- :: Annotation m => [Word8] -> Rope m
++    , fromChar           -- :: Annotation m => Char -> Rope m
++    , fromWord8          -- :: Annotation m => Word8 -> Rope m
++    , fromString         -- :: Annotation m => String -> Rope m
+hunk ./Data/Rope.hs 49
+-    , Packable, pack, packl, packr
+-    , Elidable, elide, splitAt, take, drop)
+-import Data.Rope.Unpackable (Unpackable, unpack, head, last, uncons, unsnoc)
+-import Data.Rope.Util.Reducer (Reducer, cons, snoc, unit)
++    , Packable(..)
++    , Annotation(..)
++    , elide, splitAt, take, drop)
++import Data.Rope.Unpackable (Unpackable(..))
++import Data.Rope.Util.Reducer (Reducer(..))
+hunk ./Data/Rope/Body.hs 1
+-{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveDataTypeable, MultiParamTypeClasses, FlexibleContexts #-}
++{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveDataTypeable, MultiParamTypeClasses, FlexibleContexts, TypeSynonymInstances #-}
+hunk ./Data/Rope/Body.hs 12
+-import Data.FingerTree (FingerTree,(<|),(|>),Measured,measure,)
++import Data.FingerTree (FingerTree,(<|),(|>),Measured,measure,empty, singleton)
+hunk ./Data/Rope/Body.hs 16
++import Data.Rope.Util.Reducer
+hunk ./Data/Rope/Body.hs 43
++instance Reducer ByteString Body where
++    unit b | null b = empty
++           | otherwise = singleton (Chunk b)
++    cons = cons'
++    snoc = snoc'
+hunk ./Data/Rope/Internal.hs 1
+-{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances, MultiParamTypeClasses, UndecidableInstances #-}
++{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances, MultiParamTypeClasses, UndecidableInstances, TypeOperators #-}
+hunk ./Data/Rope/Internal.hs 22
+-    , Elidable(..)
++    , Annotation(..)
+hunk ./Data/Rope/Internal.hs 84
+--- we should enforce this through Data.Data by abstracting over bytewise cons in gunfoldl
+hunk ./Data/Rope/Internal.hs 197
+-instance (Elidable a, Data a, ByteString `Reducer` a) => Data (Rope a) where
++instance (Annotation a, Data a) => Data (Rope a) where
+hunk ./Data/Rope/Internal.hs 231
+-class Monoid a => Elidable a where
++class (ByteString `Reducer` a) => Annotation a where
+hunk ./Data/Rope/Internal.hs 245
+-elide :: Elidable a => Int -> Int -> Rope a -> Rope a
++elide :: Annotation a => Int -> Int -> Rope a -> Rope a
+hunk ./Data/Rope/Internal.hs 248
+-splitAt :: Elidable a => Int -> Rope a -> (Rope a, Rope a)
++splitAt :: Annotation a => Int -> Rope a -> (Rope a, Rope a)
+hunk ./Data/Rope/Internal.hs 251
+-take :: Elidable a => Int -> Rope a -> Rope a
++take :: Annotation a => Int -> Rope a -> Rope a
+hunk ./Data/Rope/Internal.hs 254
+-drop :: Elidable a => Int -> Rope a -> Rope a
++drop :: Annotation a => Int -> Rope a -> Rope a
+hunk ./Data/Rope/Internal.hs 257
+-
+-instance Elidable () where
++instance Annotation () where
+hunk ./Data/Rope/Internal.hs 263
+-{-
+-
+--- relies on the fact that ropes are cozippable having only one 'hole'
+-eitherC :: Coproduct s => (Rope a -> b) -> (Rope c -> d) -> Rope (s a c) -> s b d
+-eitherC f g (Rope t sab) = bimap (f . Rope t) (g . Rope t) sab
+-
+--- TODO
+-instance (Elidable a, Elidable b) => Elidable (a, b) where
++-- Int -> Int -> Rope (a,b) -> (a,b))
++-- Int -> Int -> Rope (a,b) -> ((a,a),(b,b))
++instance (Annotation a, Annotation b) => Annotation (a, b) where
+hunk ./Data/Rope/Internal.hs 267
+-    splitAt' x = bothC (splitAt' x) (splitAt' x)
++    splitAt' x (Rope t (a,b)) = ((a',b'),(a'',b'')) where
++        (a',a'') = splitAt' x (Rope t a)
++        (b',b'') = splitAt' x (Rope t b)
+hunk ./Data/Rope/Internal.hs 273
+-instance (Elidable a, Elidable b) => Elidable (a :*: b) where
++instance (Annotation a, Annotation b) => Annotation (a :*: b) where
+hunk ./Data/Rope/Internal.hs 275
+-    splitAt' x = bothC (splitAt' x) (splitAt' x)
++    splitAt' x (Rope t (a :*: b)) = ((a' :*: b'),(a'' :*: b'')) where
++        (a',a'') = splitAt' x (Rope t a)
++        (b',b'') = splitAt' x (Rope t b)
+hunk ./Data/Rope/Internal.hs 280
++{-
++-- relies on the fact that ropes are cozippable having only one 'hole'
++eitherC :: Coproduct s => (Rope a -> b) -> (Rope c -> d) -> Rope (s a c) -> s b d
++eitherC f g (Rope t sab) = bimap (f . Rope t) (g . Rope t) sab
++
++-- TODO
++
+hunk ./Data/Rope/Internal.hs 288
+-instance (Elidable a, Elidable b) => Elidable (Either a b) where
++instance (Annotation a, Annotation b) => Annotation (Either a b) where
+hunk ./Data/Rope/Internal.hs 294
+-instance (Elidable a, Elidable b) => Elidable (a :+ b) where
++instance (Annotation a, Annotation b) => Annotation (a :+ b) where
+hunk ./Data/Rope/Internal.hs 300
+-instance (Elidable a, Elidable b) => Elidable (a :+: b) where
++instance (Annotation a, Annotation b) => Annotation (a :+: b) where
+hunk ./Data/Rope/Internal.hs 307
+-instance Elidable ByteString where
++instance Annotation ByteString where
+hunk ./Data/Rope/Internal.hs 313
+-instance Elidable L.ByteString where
++instance Annotation L.ByteString where
+hunk ./Data/Rope/Internal.hs 319
+-instance Elidable Body where
++instance Annotation Body where
+hunk ./Data/Rope/Internal.hs 331
+-instance Elidable a => Elidable (Rope a) where
++instance Annotation a => Annotation (Rope a) where
+hunk ./Data/Rope/Internal.hs 339
+-instance Ord k => Elidable (Map Int v) where
++instance Ord k => Annotation (Map Int v) where
+hunk ./Data/Rope/Internal.hs 343
+-instance Ord k => Elidable (Set Int) where
++instance Ord k => Annotation (Set Int) where
+hunk ./Data/Rope/Internal.hs 348
+-break8 :: Elidable m => (Word8 -> Bool) -> Rope m -> (Rope m, Rope m)
++break8 :: Annotation m => (Word8 -> Bool) -> Rope m -> (Rope m, Rope m)
+hunk ./Data/Rope/Internal.hs 372
+-uncons8 :: Elidable m => Rope m -> Maybe (Word8, Rope m)
++uncons8 :: Annotation m => Rope m -> Maybe (Word8, Rope m)
+hunk ./Data/Rope/Internal.hs 377
+-unsnoc8 :: Elidable m => Rope m -> Maybe (Rope m, Word8)
++unsnoc8 :: Annotation m => Rope m -> Maybe (Rope m, Word8)
+hunk ./Data/Rope/Internal.hs 384
+-instance (Elidable m, ByteString `Reducer` m) => UTF8Bytes (Rope m) Int where
++instance Annotation m => UTF8Bytes (Rope m) Int where
+hunk ./Data/Rope/Internal.hs 402
+-instance (Elidable m, ByteString `Reducer` m) => BufferType (Rope m) where
++instance Annotation m => BufferType (Rope m) where
+hunk ./Data/Rope/Internal.hs 422
+-    pack  :: (ByteString `Reducer` m) => a -> Rope m
+-    packl :: (ByteString `Reducer` m) => a -> Rope m -> Rope m
+-    packr :: (ByteString `Reducer` m) => Rope m -> a -> Rope m
++    pack  :: Annotation m => a -> Rope m
++    packl :: Annotation m => a -> Rope m -> Rope m
++    packr :: Annotation m => Rope m -> a -> Rope m
+hunk ./Data/Rope/Internal.hs 451
+-instance (ByteString `Reducer` n) => Packable (Rope n) where
++instance Annotation n => Packable (Rope n) where
+hunk ./Data/Rope/Internal.hs 469
+-instance (Packable a, ByteString `Reducer` m) => Reducer a (Rope m) where
++instance (Packable a, Annotation m) => Reducer a (Rope m) where
+hunk ./Data/Rope/Unpackable.hs 23
+-import Data.Rope.Internal (Elidable, drop, drop', take', Rope(..), body, toLazyByteString, uncons8, unsnoc8) -- Rope, etc.
++import Data.Rope.Internal (Annotation(..), drop, Rope(..), body, toLazyByteString, uncons8, unsnoc8) -- Rope, etc.
+hunk ./Data/Rope/Unpackable.hs 35
+-    uncons :: Elidable m => Rope m -> Maybe (a, Rope m)
+-    unsnoc :: Elidable m => Rope m -> Maybe (Rope m, a)
++    uncons :: Annotation m => Rope m -> Maybe (a, Rope m)
++    unsnoc :: Annotation m => Rope m -> Maybe (Rope m, a)
+hunk ./Data/Rope/Util/Coproduct.hs 5
+-    , Coproduct, left, right, (|||), codiag
++    , Coproduct(..)
+hunk ./Data/Rope/Util/Product.hs 1
+-{-# LANGUAGE TypeOperators #-}
++{-# LANGUAGE TypeOperators, FlexibleInstances, MultiParamTypeClasses #-}
+hunk ./Data/Rope/Util/Product.hs 8
++import Data.Monoid hiding (Product(..))
+hunk ./Data/Rope/Util/Product.hs 11
++import Data.Rope.Util.Reducer
+hunk ./Data/Rope/Util/Product.hs 31
++instance (Monoid a, Monoid b) => Monoid (a :*: b) where
++    mempty = mempty :*: mempty
++    (a :*: b) `mappend` (c :*: d) = mappend a c :*: mappend b d
++
++instance (Reducer c a, Reducer c b) => Reducer c (a :*: b) where
++    unit c = unit c :*: unit c
++    cons c (a :*: b) = cons c a :*: cons c b
++    snoc (a :*: b) c = snoc a c :*: snoc b c 
++
+hunk ./Data/Rope/Util/Reducer.hs 14
++import qualified Data.FingerTree as FingerTree
++import Data.FingerTree (FingerTree, Measured, (><))
++import Data.ByteString (ByteString)
++import qualified Data.ByteString.Lazy as Lazy
+hunk ./Data/Rope/Util/Reducer.hs 97
++instance Reducer ByteString ByteString where
++    unit = id
++    snoc = mappend
++    cons = mappend
++
++instance Reducer ByteString Lazy.ByteString where
++    unit = Lazy.fromChunks . return
++
+hunk ./Data/Rope/Util/Reducer.hs 145
++-- instance Measured v a => Monoid (FingerTree v a) where
++--    mempty = FingerTree.empty
++--    mappend = (><)
++
++instance Measured v a => Reducer a (FingerTree v a) where
++    unit = FingerTree.singleton
++
+hunk ./rope.cabal 15
++Tested-With:    GHC==6.10.4
+hunk ./rope.cabal 21
+-    fingertree >= 0.0.1 && < 0.2,
++    fingertree >= 0.0.1 && < 0.1,

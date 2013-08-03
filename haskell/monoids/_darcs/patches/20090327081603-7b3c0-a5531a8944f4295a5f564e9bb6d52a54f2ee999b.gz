@@ -1,0 +1,26 @@
+[started towards Data.BitSet
+ekmett@gmail.com**20090327081603] {
+hunk ./Data/Monoid/Reducer.hs 24
++--import qualified Data.BitSet as BitSet
++--import Data.BitSet (BitSet)
+hunk ./Data/Monoid/Reducer.hs 135
++{-
++instance Enum a => Monoid (BitSet a) where
++    mempty = BitSet.empty
++    mappend = BitSet.union -- not yet present, contacted library author
++
++instance Enum a => Reducer a (BitSet a) where
++    unit m = BitSet.insert m BitSet.empty
++-}
++
+hunk ./monoids.cabal 2
+-version:	    0.1.1
++version:	    0.1.2
+hunk ./monoids.cabal 17
+-  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm
++  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm, bitset
+hunk ./monoids.cabal 59
+-    Data.Ring.Bool
+-    Data.Ring.Number
++    Data.Ring.FromNum
+}

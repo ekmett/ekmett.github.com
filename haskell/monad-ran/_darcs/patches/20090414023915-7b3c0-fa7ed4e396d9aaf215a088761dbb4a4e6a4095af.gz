@@ -1,0 +1,7 @@
+[auto
+ekmett@gmail.com**20090414023915
+ Ignore-this: e619a81c035984a27b4f2fb8c1c4bf48
+] hunk ./Control/Monad/Ran.hs 105
++    toRan (Right x) = Ran (\k -> ErrorH (\_ -> runIdentity (k x)))
++    toRan (Left x) = Ran (\_ -> ErrorH (\k -> k x))
++    fromRan (Ran f) = getErrorH (f (Identity . Right)) Left

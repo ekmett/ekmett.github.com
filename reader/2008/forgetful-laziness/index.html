@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Forgetful Laziness</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Forgetful Laziness Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Generatingfunctorology' href='../generatingfunctorology/index.html' />
+<link rel='next' title='Elgot (Co)Algebras' href='../elgot-coalgebras/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Fri 16 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Forgetful Laziness">Forgetful Laziness</a></h2>
+Posted by Edward Kmett under <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="index.html#comments" title="Comment on Forgetful Laziness">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Does anyone know of any work on "forgetful laziness?"</p>
+<p><span id="more-59"></span></p>
+<p>The basic idea being that for each thunk instead of overwriting it with the answer as usual in call-by-need, you'd just write a forwarding pointer, and allow GC to collect the answers over time. </p>
+<p>This results in recalculation and may be subject to thrashing, so the obvious fix would be either</p>
+<ol>
+<li> a 'forget at most once' policy, which would only mitigate the kind of memory leaks you get from laziness under limited conditions, but which has a worst case payout of doubling the workload or
+</li>
+<li> an exponential backoff on how often you'll try to recollect a given value, which should preserve for practical purposes the asymptotic behavior of any algorithm, but with a much larger constant for pathological access patterns. [Edit: it may affect asymptotic behavior, because you could lose sharing]
+</li>
+</ol>
+<p>This would allow the recollection of large CAFs, etc. eventually once they had bitrotted long enough. </p>
+<p>Not sure if its worth the cost of recalculating and of storing any backoff counter, but most of the horror stories you hear about Haskell center around its occasional horrific memory usage profile.</p>
+<p>Tuning points might include studying average thunk lifetimes to construct thunk access profiles rather than use a naive exponential backoff.</p>
+<p>It also may exascerbate the opposite problem where naive code often builds up a tower of thunks it needs to evaluate all at once in order to provide an answer (i.e. when working with a lazy accumulating parameter).</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">6 Responses to &#8220;Forgetful Laziness&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1348">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=dfb787deecd0e9d5393d2a4f56b9975f&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://mikeburrell.wordpress.com' rel='external nofollow' class='url'>Mike</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1348" title="">May 16th, 2008 at 6:37 pm</a> </small>
+			<br clear="all"/>
+
+			<p>This is basically weak references, yes? I looked once upon a time at combining automatic memoization with weak references (useful for dynamic programming), but I never got around to completing it.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1352">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1352" title="">May 16th, 2008 at 9:37 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Its a little bit different. The goal is much the same, but with a thunk you have a delayed computation that you may need the result of along with a closure of the values you need to actually generate the result.</p>
+<p>When you force the thunk, you usually (in call-by-need) update it in place to be the result, unless you know that you only need the result once.</p>
+<p>Here the idea is to allow the thunk to &#8216;unforce&#8217; itself over time, but to remember that it was unforced by tagging the thunk (or ticking a counter in it similar to a mark cost) to cause it to become harder to &#8216;unforce&#8217; in the future.</p>
+<p>Weak references don&#8217;t keep their values alive at all. Here a thunk would slowly bitrot. Once you &#8216;forget&#8217; a value, the weak reference to it never becomes valid again. Here if you look at the same thunk again and you regenerate the value it becomes valid again, but of course thunks themselves are subject to garbage collection.</p>
+<p>In some senses there is conceptual overlap between memoization and thunking, but a memo-table gives you some control over bounding the amount of stuff you hold on to, while the only time you get benefit from a thunk is when two computations reference the same thunk.</p>
+<p>If you are interested in automatic memoization you might find some of Umut Acar&#8217;s papers interesting starting with something like: <a href="http://ttic.uchicago.edu/~umut/papers/ml05.pdf" rel="nofollow">http://ttic.uchicago.edu/~umut/papers/ml05.pdf</a></p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-5400">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=4e8ad820677ac156ea9142f2077327b7&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Michael Winking</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-5400" title="">January 7th, 2009 at 4:19 pm</a> </small>
+			<br clear="all"/>
+
+			<p>&gt; &#8230;and allow GC to collect the answers over time.<br />
+&gt; &#8230;but most of the horror stories you hear about Haskell center around its occasional horrific memory usage profile.</p>
+<p>Isn&#8217;t the common complaint about lazy evaluation that together with the unevaluated thunks you have to keep their environment around, thus preventing its constituent variables from being GC&#8217;ed even if they are not referenced from anywhere else. The answers/results aren&#8217;t so much a cause for surprise since you also have keep them around in a strictly evaluated language which is what most people are used to. So wouldn&#8217;t your solution actually in many cases aggravate the problem, since even if you have already evaluated a thunk you have to keep the variables from its environment around just in case it needs to be reevaluated.</p>
+<p>To be sure I can think of a few cases where &#8220;forgetful laziness&#8221; or even call-by-name instead of call-by-need would reduce memory usage, the trouble is that a good compiler or GC heuristic for deciding when it might be appropriate seems not so obvious to me.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-5401">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-5401" title="">January 7th, 2009 at 5:45 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Well, there are two scenarios. In one you can get huge chains of unevaluated thunks in code that isn&#8217;t sufficiently strict for simple accumulated (+1) type modifications. That is pretty much what you describe. One potential remedy is to gamble on optimistic evaluation techniques like from Robert Ennals&#8217; dissertation. Though, I seem to recall hearing that he himself seems to think lazy semantics isn&#8217;t a good default. Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC? </p>
+<p>Another leak happens in CAFs. This is the one I sought in a fairly poorly thought out manner to resolve here. </p>
+<p>Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.</p>
+<p>If I still thought it to be a viable idea the answer would probably be to only forget stuff that was bigger than the environment contained in the thunk according to some measure, but then that leads to the question of what constitutes a robust metric for size in the presence of cycles, etc. </p>
+<p>Alternately I suppose you could consider all references from an evaluated thunk to be weak references. That would let the garbage collector have its way with them, and you would only get to forget evaluations that still had fully intact environments.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-5412">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=4e8ad820677ac156ea9142f2077327b7&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Michael Winking</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-5412" title="">January 8th, 2009 at 9:05 am</a> </small>
+			<br clear="all"/>
+
+			<p>&gt; &#8230;he himself seems to think lazy semantics isn’t a good default<br />
+For me it works quite well so far and doesn&#8217;t get in the way too often. I can&#8217;t complain. Is there really such a thing as a good default evaluation semantic, or are we just so used to the workarounds we employ in conjunction with eager evaluation that we no longer notice them anymore? Take forward iterators for iterating through the results from a query on some container. Instead of a forward iterator we could just return a list with all the result values. With strict evaluation this might be a bit of a problem since keeping the entire list in memory takes a bit of space, whereas with lazy semantics we no longer need any iterators and we can work with all those wonderful list functions like foldr instead of duplicating them for iterators. Thus, seen from this angle forward iterators are just a workaround for the lack of lazy lists, albeit we usually don&#8217;t think of them in this way. (In the iterator example call-by-name as well as your &#8220;forgetful-laziness&#8221; scheme might be even more of an improvement, just in case we want to keep a reference to an earlier entry whilst traversing. Lazy evaluation might keep too much of the spine in this case).</p>
+<p>&gt; &#8230;Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC?<br />
+Can&#8217;t comment on it, never took a look at the GHC source nor at his optimistic evaluation papers (although I always wanted to take a look at GHC to see if I could figure out a way to try some of my ideas).</p>
+<p>&gt; &#8230;huge chains of unevaluated &#8230; That is pretty much what you describe<br />
+Mostly, but I also had thunks like &#8220;a ! 1&#8243; in mind, where &#8220;a&#8221; would be some huge array that isn&#8217;t referenced from anywhere else. Once the thunk is evaluated the GC could usuallly free the array. However with forgetful evaluation we have to keep the array around since the thunk might be reevaluated.</p>
+<p>&gt; Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.<br />
+It depends, doesn&#8217;t it? Consider a list of naturals instead of a list of primes according to the following (otherwise maybe somewhat unusual) code fragments<br />
+nats1 = 1 : map (+1) nats1<br />
+nats100 = drop 99 nats where nats = 1 : map (+1) nats<br />
+print (nats1 !! 99)<br />
+print (nats100 !! 0)<br />
+As it is written every list entry in nats1 and nats100 depends directly on the previous entries result (which is somewhat simpler than for a prime sieve where each entry directly depends on many previous ones). Now forcing (nats1 !! 99) and (nats100 !! 0) basically do the same, return the 100&#8242;th entry from a list of naturals. Except of course in the case of nats1 we keep the evaluated spine with the first 100 entries around for later reuse whereas with &#8220;forgetful laziness&#8221; we could blissfully discard the spine and only keep the first thunk. However for nats100 we might get somewhat the opposite problem. With lazy evaluation, after forcing (nats100 !! 0) there is no reference left to &#8220;nats&#8221; (the &#8220;where&#8221; part in nats100), the head of nats100 contains the evaluated value and the tail consists of a thunk that references the value in the head, but no other previous values, thus the gc could discard the entire front of the spine from nats up to the head from nats100, keeping only the head of nats100 itself. With &#8220;forgetful laziness&#8221;, if the GC starts to traverse the root pointers, first encounters nats100, it might discard the result in the head, thereby being obliged to keep the thunk which references the previous element, the gc follows this reference, discards the result and again needs to keep the reference to the next previous element in order to be able to recompute the result and so on until the first thunk for the head of &#8220;nats&#8221;. So here we would end with a cascading chain of thunks when using &#8220;forgetful laziness&#8221; whereas normal &#8220;laziness&#8221; could collect most of the spine only keeping the head. Given how similar &#8220;nats1 !! 99&#8243; and &#8220;nats100 !! 0&#8243; appear to us otherwise, their different behaviour under the two evaluation schemes might come to us as a a bit of surprise. </p>
+<p>&gt; Alternately I suppose you could consider all references from an evaluated thunk to be weak references. &#8230;you would only get to forget evaluations that still had fully intact environments.<br />
+This is interesting, if we had &#8220;nats100&#8242; = drop 99 nats1&#8243; and force &#8220;nats1 !! 99&#8243; and &#8220;nats100&#8242; !! 0&#8243;, then might the space usage depend on the order in which the gc encounters the roots of nats1 and nats100&#8242; ? Might we get a cascading chain in one case and keep the evaluated spine in the other? I might have to think through it.</p>
+<p>&gt; &#8230; an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.<br />
+It just occured to me, that you might have the same problem with the &#8216;forget at most once&#8217; policy but in an indeterministic way. Suppose again a list of naturals as above instead of primes and you are evaluating &#8216;nats !! 999999&#8242;. If the gc starts collecting after the evaluation, then indeed the entire spine gets collected and only the head of nats is left. However imagine the gc starts collecting during the evaluation of &#8216;nats !! 999999&#8242;, say when already the next to last value has been computed, then the gc would collect all those elements and mark them as &#8216;collected once&#8217;. When the gc has finished, the computation for the last element would start, triggering recomputation of all the previous elements. However the next time the gc starts, it can&#8217;t recycle anything of the spine except for the last element since all the others have already been &#8216;forgotten once&#8217;. Now if we had a program that has a hundred such lists and cases and let each fully evaluated list take up 100MB, then depending on when the gc starts in the best case the program won&#8217;t take up more than around 100MB and in the worst case it might take 100*100MB if the gc collects at the most inopportune moment thereby preventing all those spines from getting collected. So sometimes the program would trash the memory and in other cases it would run just fine, you might not notice the problem until many runs latter. This could be fun, think of the outcry: &#8220;My program just runs fine most of the time, but sometimes it completely trashes the memory on the same input. I have now already spent weeks on debugging it but I just can&#8217;t figure out the reason. Help!&#8221; I guess there are less surprises with lazy-eval.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-5420">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-5420" title="">January 8th, 2009 at 7:52 pm</a> </small>
+			<br clear="all"/>
+
+			<p>The non-deterministic problem with any forgetful laziness policy is the bit I had posted the [Edit:] block in the original post for, commenting on with the possible loss of sharing. If you had relied on shared thunks for your asymptotic bounds as in, say, dynamic programming then the forgetful laziness thing can be really bad. ;)</p>
+<p>The problem I was alluding to with the CAF list was a little bit simpler than the environment problem you describe. If you have a CAF, it is always considered referenced and is hence uncollectable.</p>
+<p>So something as simple as:</p>
+<p>nats = [1..]</p>
+<p>when used at the module level, will never get collected. This is mostly so things like global MVars can be created using unsafePerformIO, etc.</p>
+<p>The only way I was able to redeem the idea of forgetful laziness was to execute it in a setting that is fully hash consed ala linear lisp, but there are even issues with that, mostly when it comes to trying to find a good hash function that can work recursively, since you _can_ get cycles in a lazy setting &#8211; unlike linear lisp &#8211; due to the presence of thunk evaluation.</p>
+<p>It can work if you do something like modify GRIN or the STG to perform hash-consing lookup on let binding, but that also has corner cases, Interestingly, in a GRIN setting, using hash consed thunk construction is effectively memoizing every function application that isn&#8217;t inlined.</p>
+<p>Mixed with speculative evaluation to avoid explicit construction of small thunks, it has always struck me as an amusing toy.</p>
+<p>It all runs into theoretical results w.r.t. optimal lambda calculus reduction strategies that prove that in the general case you can&#8217;t get it right all the time, but it is fun trying to get it close.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="59" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Friday, May 16th, 2008 at 5:25 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

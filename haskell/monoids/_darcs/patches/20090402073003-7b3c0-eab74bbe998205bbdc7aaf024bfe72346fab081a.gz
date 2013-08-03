@@ -1,0 +1,9 @@
+[algebra patches
+ekmett@gmail.com**20090402073003] {
+hunk ./Data/Ring/Algebra.hs 9
+--- |  r *. (x * y) = (r *. x) * y = x * (r *. y)
++-- |  
++-- @r *. (x * y) = (r *. x) * y = x * (r *. y)@
++--
++-- @(x * y) .* r = y * (x .* r) = (y .* r) * x@
+}

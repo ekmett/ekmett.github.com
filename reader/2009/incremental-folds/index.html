@@ -1,0 +1,661 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Reflecting On Incremental Folds</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../09/index.html' />
+	<link rel='archives' title='August 2009' href='../08/index.html' />
+	<link rel='archives' title='July 2009' href='../07/index.html' />
+	<link rel='archives' title='June 2009' href='../06/index.html' />
+	<link rel='archives' title='March 2009' href='../03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Reflecting On Incremental Folds Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='The Pointed-Set Comonad' href='../../2008/the-pointed-set-comonad/index.html' />
+<link rel='next' title='Recursion Schemes: A Field Guide (Redux)' href='../recursion-schemes/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Tue 31 Mar 2009</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Reflecting On Incremental Folds">Reflecting On Incremental Folds</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/squiggol/index.html" title="View all posts in Squiggol" rel="category tag">Squiggol</a> <br/><a href="index.html#comments" title="Comment on Reflecting On Incremental Folds">[3] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Recently, Sean Leather took up the idea of incremental folds. <a href="http://splonderzoek.blogspot.com/2009/02/incremental-fold-design-pattern.html">[1]</a> <a href="http://splonderzoek.blogspot.com/2009/03/incremental-attributes.html">[2]</a>. At the end of his first article on the topic he made a comment on how this was a useful design pattern and sagely noted the advice of Jeremy Gibbons that design patterns are more effective as programs, while complaining of cut and paste coding issues. </p>
+<p>The following attempts to address these concerns. </p>
+<p><span id="more-83"></span></p>
+<p>Below, I'm going to be using two libraries which I haven't mentioned on here before:</p>
+<ul>
+<li>
+My <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/monoids">monoids</a> library which contains among other things a large supply of monoids and the concept of a <a href="../../../haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html">Reducer</a>. A 'Reducer' is a monoid that knows how to inject values from another type. It also supports efficient left-to-right and right-to-left reduction, but we will be availing ourselves of neither of those extra faculties at the moment.
+</li>
+<li>
+The other library is <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/reflection">reflection</a>, which is a transcoding of Oleg Kiselyov and Chung-chieh Shan's incredibly elegant approach from <a href="http://www.cs.rutgers.edu/~ccshan/prepose/prepose.pdf">"Functional Pearl: Implicit Configurations"</a> updated slightly to work with the changes in GHC's implementation of ScopedTypeVariables since the article was written.
+ </li>
+</ul>
+<p>The source code for this post is available as <a href="../../../haskell/Incremental.hs">Incremental.hs</a>.</p>
+<p>The 'monoids' and 'reflection' libraries are available from hackage.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# LANGUAGE
+   TypeOperators
+ , MultiParamTypeClasses
+ , FlexibleInstances
+ , FlexibleContexts
+ , UndecidableInstances
+ , ScopedTypeVariables
+ , GeneralizedNewtypeDeriving
+ #-}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">module</span> Incremental <span style="color: #06c; font-weight: bold;">where</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">import</span> Text.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+<span style="color: #06c; font-weight: bold;">import</span> Text.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a>
+<span style="color: #06c; font-weight: bold;">import</span> Data.Reflection
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid.Reducer <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Sum,getSum,cons,ReducedBy<span style="color: green;">&#40;</span>Reduction,getReduction<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>[Edit: updated to hide a few more things from Data.Monoid.Reducer which now contains a 'ReducedBy' constructor, which serves a different purpose.]</p>
+<p>I want to take a bit of a different tack than I did with 'category-extras' and define algebras and coalgebras as type classes.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Algebra f m <span style="color: #06c; font-weight: bold;">where</span>
+    phi :: f m -&gt; m
+&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Coalgebra f m <span style="color: #06c; font-weight: bold;">where</span>
+    psi :: m -&gt; f m
+&nbsp;</pre>
+<p>This means that if you need to use a different Algebra, apply a newtype wrapper to the value m. We'll fix this requirement to some degree later on in this post.</p>
+<p>Now, for every Functor, we can reduce it to ().</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Algebra f <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi _ = <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>And we can define the idea of an F-Algebra product</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- F-Algebra product</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Algebra f m, Algebra f n<span style="color: green;">&#41;</span> =&gt; Algebra f <span style="color: green;">&#40;</span>m,n<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi a = <span style="color: green;">&#40;</span>phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a> a<span style="color: green;">&#41;</span>, phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a> a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Algebra f m, Algebra f n, Algebra f o<span style="color: green;">&#41;</span>
+  =&gt; Algebra f <span style="color: green;">&#40;</span>m,n,o<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi a = <span style="color: green;">&#40;</span>phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f a<span style="color: green;">&#41;</span>,phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g a<span style="color: green;">&#41;</span>,phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> h a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        f <span style="color: green;">&#40;</span>x,_,_<span style="color: green;">&#41;</span> = x
+        g <span style="color: green;">&#40;</span>_,y,_<span style="color: green;">&#41;</span> = y
+        h <span style="color: green;">&#40;</span>_,_,z<span style="color: green;">&#41;</span> = z
+&nbsp;</pre>
+<p>and so on for larger tuples.</p>
+<p>From there, the usual direction would be to define a fixpoint operator in one of several ways, so not to disappoint:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Mu f = In <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    In f == In g = f == g
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    In f `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:compare"><span style="font-weight: bold;">compare</span></a>` In g = f `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:compare"><span style="font-weight: bold;">compare</span></a>` g
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    showsPrec d <span style="color: green;">&#40;</span>In f<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:showParen"><span style="font-weight: bold;">showParen</span></a> <span style="color: green;">&#40;</span>d &gt; <span style="color: red;">10</span><span style="color: green;">&#41;</span> $
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:showString"><span style="font-weight: bold;">showString</span></a> <span style="color: #3c7331;">&quot;In &quot;</span> . showsPrec <span style="color: red;">11</span> f
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    readPrec = parens . prec <span style="color: red;">10</span> $ <span style="color: #06c; font-weight: bold;">do</span>
+        Ident <span style="color: #3c7331;">&quot;In &quot;</span> &lt; - lexP
+        f &lt;- step readPrec
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: green;">&#40;</span>In f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now, we can define an Algebra and Coalgebra for getting into and out of this fixed point.</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Algebra f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi = In
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Coalgebra f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    psi <span style="color: green;">&#40;</span>In x<span style="color: green;">&#41;</span> = x
+&nbsp;</pre>
+<p>But our goal is an incremental fold without boilerplate. So I'd rather than the fixed point operator did the heavy lifting for me.</p>
+<p>So lets define an alternative fixedpoint, in which we'll carry around an extra term for the result of applying the incremental Algebra so far.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> = f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> :&gt; m
+&nbsp;</pre>
+<p>The much more categorically inclined members of the audience may recognize that immediately as the 'cofree' comonad of f from category-extras, and in fact we could continue on adding that definition, and turn it into a comonad for any Functor. I leave that as an exercise for the interested reader, but what we are interested in is the 'extract' operation of that comonad, which we'll just call value for now.</p>
+<pre class="haskell">&nbsp;
+value :: <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> -&gt; m
+value <span style="color: green;">&#40;</span>_ :&gt; m<span style="color: green;">&#41;</span> = m
+&nbsp;</pre>
+<p>The particularly observant may further note that value itself is an (f :>)-algebra, since the 'extract' operation of any copointed functor f is just an f-algebra.</p>
+<p>First, we add some boilerplate in the fashion of Mu f above.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> m, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    f :&gt; m == g :&gt; n = f == g &amp;&amp; m == n
+    f :&gt; m /= g :&gt; n = f /= g || m /= n
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> m, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:compare"><span style="font-weight: bold;">compare</span></a>` <span style="color: green;">&#40;</span>g :&gt; n<span style="color: green;">&#41;</span> | a == EQ = m `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:compare"><span style="font-weight: bold;">compare</span></a>` n
+                                | <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:otherwise"><span style="font-weight: bold;">otherwise</span></a> = a
+        <span style="color: #06c; font-weight: bold;">where</span> a = f `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:compare"><span style="font-weight: bold;">compare</span></a>` g
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> m, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    showsPrec d <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:showParen"><span style="font-weight: bold;">showParen</span></a> <span style="color: green;">&#40;</span>d &gt; <span style="color: red;">9</span><span style="color: green;">&#41;</span> $
+        showsPrec <span style="color: red;">10</span> f .
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:showString"><span style="font-weight: bold;">showString</span></a> <span style="color: #3c7331;">&quot; :&gt; &quot;</span> .
+        showsPrec <span style="color: red;">10</span> m
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> m, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    readPrec = parens $ prec <span style="color: red;">9</span> $ <span style="color: #06c; font-weight: bold;">do</span>
+            f &lt; - step readPrec
+            Symbol <span style="color: #3c7331;">&quot;:&gt;&quot;</span> &lt; - lexP
+            m &lt;- step readPrec
+            <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and then we note that we can ask for the 'tail' of any cofree comonad as well, which gives us a more immediately useful coalgebra.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Coalgebra f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    psi <span style="color: green;">&#40;</span>x :&gt; _<span style="color: green;">&#41;</span> = x
+&nbsp;</pre>
+<p>And now, we come back to why we made algebras and coalgebras into a typeclass in the first place. We can define an algebra for how we propagate the information from another algebra that we want to incrementally apply to our functor f. </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Algebra f m =&gt; Algebra f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi x = x :&gt; phi <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> value x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can give these convenient names so we don't get our phi's and psi's confused.</p>
+<pre class="haskell">&nbsp;
+forget :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span>
+forget = psi
+&nbsp;
+remember :: Algebra f m =&gt; f <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> -&gt; f :&gt; m
+remember = phi
+&nbsp;</pre>
+<p>'forget' discards the wrapper which contains the result of having applied our algebra.</p>
+<p>'remember' takes an f (f :> m) and adds a wrapper, which remembers the result of having applied our selected f-algebra with carrier m.</p>
+<p>With these convenient aliases, we can define catamorphisms and anamorphisms over (f :> m).</p>
+<pre class="haskell">&nbsp;
+cata :: Algebra f a =&gt; <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> -&gt; a
+cata = phi . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> cata . forget
+&nbsp;
+ana :: <span style="color: green;">&#40;</span>Algebra f m, Coalgebra f a<span style="color: green;">&#41;</span> =&gt; a -&gt; <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span>
+ana = remember . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> ana . psi
+&nbsp;</pre>
+<p>cata just forgets the wrapper, and applies an algebra recursively as usual.</p>
+<p>On the other hand, our anamorphism now needs to know the algebra for the incremental fold, so that it can apply it as it builds up our new structure.</p>
+<p>We can easily go back and forth between our two fixed point representations.</p>
+<pre class="haskell">&nbsp;
+tag :: Algebra f m =&gt; Mu f -&gt; <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span>
+tag = remember . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> tag . psi
+&nbsp;
+untag :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>f :&gt; m<span style="color: green;">&#41;</span> -&gt; Mu f
+untag = phi . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> untag . forget
+&nbsp;</pre>
+<p>Now, with that machinery in hand, lets try to build a couple of examples, and then see if we can push the envelope a little further.</p>
+<p>So lets define the binary tree that Sean has been using, except now as a base functor that we'll fold.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Tree a r = Bin r a r | Tip
+    <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Bin x a y<span style="color: green;">&#41;</span> = Bin <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span> a <span style="color: green;">&#40;</span>f y<span style="color: green;">&#41;</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ Tip = Tip
+&nbsp;</pre>
+<p>As with Sean's code, we'll use a pair of smart constructors to build our tree, but note, we no longer have the unsightly and easily mistaken explicit algebra arguments. You can no longer mistakenly apply the wrong algebra!</p>
+<pre class="haskell">&nbsp;
+bin :: Algebra <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> m =&gt;
+    <span style="color: green;">&#40;</span>Tree a :&gt; m<span style="color: green;">&#41;</span> -&gt; a -&gt; <span style="color: green;">&#40;</span>Tree a :&gt; m<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>Tree a :&gt; m<span style="color: green;">&#41;</span>
+bin a v b = remember <span style="color: green;">&#40;</span>Bin a v b<span style="color: green;">&#41;</span>
+&nbsp;
+tip :: Algebra <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> m =&gt; <span style="color: green;">&#40;</span>Tree a :&gt; m<span style="color: green;">&#41;</span>
+tip = remember Tip
+&nbsp;</pre>
+<p>And, we'll need some data to play with, so lets define a nice generic looking tree.</p>
+<pre class="haskell">&nbsp;
+testTree :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a, Algebra <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> m<span style="color: green;">&#41;</span> =&gt; Tree a :&gt; m
+testTree = bin tip <span style="color: red;">2</span> <span style="color: green;">&#40;</span>bin <span style="color: green;">&#40;</span>bin tip <span style="color: red;">3</span> tip<span style="color: green;">&#41;</span> <span style="color: red;">4</span> tip<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>And while we're at it lets define a couple of algebras to try things out.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Size = Size <span style="color: green;">&#123;</span> getSize :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: green;">&#125;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Algebra <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> Size <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Bin x _ y<span style="color: green;">&#41;</span> = x + <span style="color: red;">1</span> + y
+    phi Tip = <span style="color: red;">0</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Sum = Sum <span style="color: green;">&#123;</span> getSum :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: green;">&#125;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Algebra <span style="color: green;">&#40;</span>Tree <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#41;</span> Sum <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Bin x y z<span style="color: green;">&#41;</span> = x + Sum y + z
+    phi Tip = <span style="color: red;">0</span>
+&nbsp;</pre>
+<p>With those we can now rush off to ghci and give it a whirl.</p>
+<pre class="haskell">&nbsp;
+*Incremental&gt; testTree :: Tree <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> :&gt; Sum
+Bin
+    <span style="color: green;">&#40;</span>Tip :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">0</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+    <span style="color: red;">2</span>
+    <span style="color: green;">&#40;</span>Bin
+        <span style="color: green;">&#40;</span>Bin
+            <span style="color: green;">&#40;</span>Tip :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">0</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+            <span style="color: red;">3</span>
+            <span style="color: green;">&#40;</span>Tip :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">0</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+            :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">3</span><span style="color: green;">&#125;</span>
+        <span style="color: green;">&#41;</span>
+        <span style="color: red;">4</span>
+        <span style="color: green;">&#40;</span>Tip :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">0</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+        :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">7</span><span style="color: green;">&#125;</span>
+    <span style="color: green;">&#41;</span> :&gt; Sum <span style="color: green;">&#123;</span>getSum = <span style="color: red;">9</span><span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>Note that each node in the tree is tagged with the accumulated result of our algebra.</p>
+<p>Of course, since we also have an f-algebra with carrier Mu f, we can ask for that to be computed incrementally as well. </p>
+<pre class="haskell">&nbsp;
+*Incremental&gt; testTree :: Tree <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> :&gt; Mu <span style="color: green;">&#40;</span>Tree <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#41;</span>
+Bin <span style="color: green;">&#40;</span>Tip :&gt; In Tip<span style="color: green;">&#41;</span> <span style="color: red;">2</span> <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>Tip :&gt; In Tip<span style="color: green;">&#41;</span> <span style="color: red;">3</span> <span style="color: green;">&#40;</span>Tip :&gt; In Tip<span style="color: green;">&#41;</span>
+:&gt; In <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span> <span style="color: red;">3</span> <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: red;">4</span> <span style="color: green;">&#40;</span>Tip :&gt; In Tip<span style="color: green;">&#41;</span> :&gt; In <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In
+<span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span> <span style="color: red;">3</span> <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: red;">4</span> <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> :&gt; In <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span> <span style="color: red;">2</span> <span style="color: green;">&#40;</span>In
+<span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In <span style="color: green;">&#40;</span>Bin <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span> <span style="color: red;">3</span> <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: red;">4</span> <span style="color: green;">&#40;</span>In Tip<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Of course, this prints very poorly, but shares heavily as you can see below thanks to <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/vacuum">vacuum</a> by Matt Morrow. </p>
+<p><img src="../../../haskell/tree.gif"/></p>
+<p>Now, defining Sum, and Size manually may be all well and good, and its sure a lot less work than it was before, but we can also just decide to lift almost any Monoid into an f-Algebra. Here is where we need the 'Reducer' concept from 'monoids' that was mentioned earlier.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Mon m = Mon <span style="color: green;">&#123;</span> getMon :: m <span style="color: green;">&#125;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a>,Monoid<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>a `Reducer` m<span style="color: green;">&#41;</span> =&gt; Algebra <span style="color: green;">&#40;</span>Tree a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Mon m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Bin x v y<span style="color: green;">&#41;</span> = x `mappend` Mon <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> v<span style="color: green;">&#41;</span> `mappend` y
+    phi Tip = mempty
+    <span style="color: #5d478b; font-style: italic;">-- where unit :: (a `Reducer`m) =&gt; a -&gt; m</span>
+&nbsp;</pre>
+<p>Of course, we're not limited to trees.</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> List a r = Cons a r | Nil
+    <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Cons a x<span style="color: green;">&#41;</span> = Cons a <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ Nil = Nil
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> Size <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Cons _ xs<span style="color: green;">&#41;</span> = <span style="color: red;">1</span> + xs
+    phi Nil = <span style="color: red;">0</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Algebra <span style="color: green;">&#40;</span>List <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#41;</span> Sum <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Cons x xs<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fromIntegral"><span style="font-weight: bold;">fromIntegral</span></a> x + xs
+    phi Nil = <span style="color: red;">0</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>a `Reducer` m<span style="color: green;">&#41;</span> =&gt; Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Mon m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi <span style="color: green;">&#40;</span>Cons x xs<span style="color: green;">&#41;</span> = Mon <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> x<span style="color: green;">&#41;</span> `mappend` xs
+    phi Nil = mempty
+&nbsp;
+cons :: Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> m =&gt; a -&gt; <span style="color: green;">&#40;</span>List a :&gt; m<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>List a :&gt; m<span style="color: green;">&#41;</span>
+cons a b = remember <span style="color: green;">&#40;</span>Cons a b<span style="color: green;">&#41;</span>
+&nbsp;
+nil :: Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> m =&gt; List a :&gt; m
+nil = remember Nil
+&nbsp;
+testList :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a, Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> m<span style="color: green;">&#41;</span> =&gt; List a :&gt; m
+testList = cons <span style="color: red;">2</span> . cons <span style="color: red;">5</span> . cons <span style="color: red;">8</span> $ cons <span style="color: red;">27</span> nil
+&nbsp;</pre>
+<p>But now we're at a bit of an impasse. How do you deal with f-algebras that use some environment? When writing these out by hand, if a particular algebra uses a variable that is in scope it just closes over it in its environment. Giving a reference to the carrier for the algebra permits the abstraction to leak, and most likely requires you to regress to a smart constructor approach in which you package up that extra information by hand.</p>
+<p>Since we package up the algebra in a type class, we seem, at first glance to have lost the ability to access an environment. After all a 'benefit' of the looser types permitted by Sean's post was that he could build values using an arbitrary algebra, just using any old pair of functions.</p>
+<p>One useful example that would seem at first glance to be ruled out is the following. Every different filter function would have to be a different algebra!</p>
+<pre class="haskell">&nbsp;
+filter_phi ::
+    Algebra <span style="color: green;">&#40;</span>List a<span style="color: green;">&#41;</span> m =&gt;
+    <span style="color: green;">&#40;</span>a -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a><span style="color: green;">&#41;</span> -&gt;
+    List a <span style="color: green;">&#40;</span>List a :&gt; m<span style="color: green;">&#41;</span> -&gt; List a :&gt; m
+filter_phi p Nil = nil
+filter_phi p <span style="color: green;">&#40;</span>Cons a <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span>
+    | p a = cons a <span style="color: #06c; font-weight: bold;">as</span>
+    | <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:otherwise"><span style="font-weight: bold;">otherwise</span></a> = <span style="color: #06c; font-weight: bold;">as</span>
+&nbsp;</pre>
+<p>So, lets do just that. We need to be able to reify an arbitrary function from a term into a type and we can do this with Data.Reflection! For the technical details, please read Oleg and Chung-chieh's very elegant functional pearl, but the idea is that by carefully abusing the ability to convert a list of integers into a type, we can convert a stable pointer into a type and share it in a limited context. In this case, that stable pointer can point to our particular algebra, environment and all, and yet we can be sure that the user doesn't try to mix incremental folds that use different environments.</p>
+<p>To do this, we need a phantom type parameter in the carrier for our f-algebra.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> <span style="color: green;">&#40;</span>a `ReducedBy` s<span style="color: green;">&#41;</span> = Reduction <span style="color: green;">&#123;</span> getReduction :: a <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>and to reflect the function back down from the type level in our f-algebra.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, s `Reflects` <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt;
+  Algebra f <span style="color: green;">&#40;</span>a `ReducedBy` s<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    phi = Reduction . reflect <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:undefined"><span style="font-weight: bold;">undefined</span></a> :: s<span style="color: green;">&#41;</span> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> getReduction
+&nbsp;</pre>
+<p>With that we can define any f-algebra that needs context, by reflecting it into the type system. The rank-2 type protects us from trying to put together data structures that were constructed using different algebras.</p>
+<p>So now we can now apply this particular algebra to filter a list incrementally build up a list which incrementally builds itself in the [Int] monoid and tracks its length. Here we'll filter the list from earlier for even numbers and apply these other incremental operations all in one go. It reads a little more naturally if broken into parts, but we can write this all in one go.</p>
+<pre class="haskell">&nbsp;
+test :: List <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> :&gt; <span style="color: green;">&#40;</span>Mon <span style="color: green;">&#91;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#93;</span>,Size<span style="color: green;">&#41;</span>
+test = reify
+    <span style="color: green;">&#40;</span>filter_phi <span style="color: green;">&#40;</span>\\x -&gt; x `<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:mod"><span style="font-weight: bold;">mod</span></a>` <span style="color: red;">2</span> == <span style="color: red;">0</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>\\<span style="color: green;">&#40;</span>_ :: s<span style="color: green;">&#41;</span> -&gt;
+      getReduction <span style="color: green;">&#40;</span>
+        value <span style="color: green;">&#40;</span>
+          testList :: List <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> :&gt;
+            <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>List <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> :&gt; <span style="color: green;">&#40;</span>Mon <span style="color: green;">&#91;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#93;</span>,Size<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> `ReducedBy` s<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Which we can test out:</p>
+<pre class="haskell">&nbsp;
+*Incremental&gt; test
+Cons <span style="color: red;">2</span> <span style="color: green;">&#40;</span>
+    Cons <span style="color: red;">8</span> <span style="color: green;">&#40;</span>
+        Nil :&gt; <span style="color: green;">&#40;</span>Mon <span style="color: green;">&#123;</span>getMon = <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span><span style="color: green;">&#125;</span>,Size <span style="color: green;">&#123;</span>getSize = <span style="color: red;">0</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+    <span style="color: green;">&#41;</span> :&gt; <span style="color: green;">&#40;</span>Mon <span style="color: green;">&#123;</span>getMon = <span style="color: green;">&#91;</span><span style="color: red;">8</span><span style="color: green;">&#93;</span><span style="color: green;">&#125;</span>,Size <span style="color: green;">&#123;</span>getSize = <span style="color: red;">1</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#41;</span> :&gt; <span style="color: green;">&#40;</span>Mon <span style="color: green;">&#123;</span>getMon = <span style="color: green;">&#91;</span><span style="color: red;">2</span>,<span style="color: red;">8</span><span style="color: green;">&#93;</span><span style="color: green;">&#125;</span>,Size <span style="color: green;">&#123;</span>getSize = <span style="color: red;">2</span><span style="color: green;">&#125;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>And there you have an incremental fold upon reflection.</p>
+<p>[<a href="../../../haskell/Incremental.hs">Incremental.hs</a>]<br />
+[<a href="../../../haskell/reflection/Data/Reflection.hs">Data/Reflection.hs</a>]<br />
+[<a href="../../../haskell/monoids/dist/doc/html/monoids/src/Data-Monoid-Reducer.html">Data/Monoid/Reducer.hs</a>]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">3 Responses to &#8220;Reflecting On Incremental Folds&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-6937">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=1e5e7054da4e9c4ef0274c4d5409b763&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://splonderzoek.blogspot.com/' rel='external nofollow' class='url'>Sean</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6937" title="">April 1st, 2009 at 11:20 am</a> </small>
+			<br clear="all"/>
+
+			<p>Very nice! Thanks for the write-up.</p>
+<p>Your fixed-point extended by the result type is very similar to how I implemented this using <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/multirec" rel="nofollow">multirec</a>.</p>
+<p>I still need to absorb the latter part.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-6943">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=e62561db40e46118628b31cba87840d6&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://blog.melding-monads.com' rel='external nofollow' class='url'>Leon P Smith</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6943" title="">April 1st, 2009 at 9:04 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Interesting,  I&#8217;m going to read this in little pieces and try to digest it throughly.</p>
+<p>By the way, there is some (limited) discussion of incremental folds in a draft paper on my blog,  which I think you&#8217;ll be amused by.   I was impressed enough with your old blog to blogroll it!</p>
+<p>Take care!</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-6944">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=e62561db40e46118628b31cba87840d6&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://blog.melding-monads.com' rel='external nofollow' class='url'>Leon P Smith</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6944" title="">April 1st, 2009 at 9:54 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Oh wait,  different definition of incremental.  I&#8217;m now recalling Sean&#8217;s blog post from before.   In any case,  everything else I said is correct.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="83" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Tuesday, Mar 31st, 2009 at 11:12 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/squiggol/index.html" title="View all posts in Squiggol" rel="category tag">Squiggol</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

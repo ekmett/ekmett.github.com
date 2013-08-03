@@ -1,0 +1,1392 @@
+[massive restructuring
+ekmett@gmail.com**20090328062217] {
+adddir ./Data/Ring/Semi/Near
+adddir ./Data/Ring/Semi/Near/Monad
+hunk ./Data/Group.hs 9
+-import Data.Monoid.Monad.Identity
++import Data.Monoid.Self
+hunk ./Data/Group.hs 33
+-instance Group a => Group (Identity a) where
+-    gnegate = Identity . gnegate . runIdentity
+-    Identity a `minus` Identity b = Identity (a `minus` b)
++instance Group a => Group (Self a) where
++    gnegate = Self . gnegate . getSelf
++    Self a `minus` Self b = Self (a `minus` b)
+hunk ./Data/Monoid/Applicative.hs 3
+-    ( module Control.Applicative
+-    , module Data.Monoid.Reducer
++    ( module Data.Monoid.Reducer
++    , module Data.Ring.Semi.Near
+hunk ./Data/Monoid/Applicative.hs 6
+-    , Alternate(Alternate,getAlternate)
+-    , TraversalWith(TraversalWith,getTraversalWith)
++    , WrappedApplicative(WrappedApplicative,getWrappedApplicative)
+hunk ./Data/Monoid/Applicative.hs 9
+-import Control.Functor.Pointed (Pointed, point)
+-import Control.Applicative (Applicative, (*>), pure, Alternative, empty, (<|>), liftA2)
++import Control.Applicative
+hunk ./Data/Monoid/Applicative.hs 11
++import Data.Ring.Semi.Near
++import Control.Functor.Pointed
+hunk ./Data/Monoid/Applicative.hs 25
+-
+hunk ./Data/Monoid/Applicative.hs 30
+-newtype Alternate f a = Alternate { getAlternate :: f a } 
+-    deriving (Eq,Ord,Show,Read,Functor,Applicative,Alternative)
+-
+-instance Alternative f => Monoid (Alternate f a) where
+-    mempty = empty 
+-    Alternate a `mappend` Alternate b = Alternate (a <|> b) 
+-
+-instance Alternative f => Reducer (f a) (Alternate f a) where
+-    unit = Alternate
+-    a `cons` Alternate b = Alternate (a <|> b) 
+-    Alternate a `snoc` b = Alternate (a <|> b)
+-
+-instance Pointed f => Pointed (Alternate f) where
+-    point = Alternate . point
+hunk ./Data/Monoid/Applicative.hs 31
+-newtype TraversalWith f n = TraversalWith { getTraversalWith :: f n }
++newtype WrappedApplicative f a = WrappedApplicative { getWrappedApplicative :: f a } 
++    deriving (Eq,Ord,Show,Read,Functor,Pointed,Applicative,Alternative,Copointed)
+hunk ./Data/Monoid/Applicative.hs 34
+-instance (Applicative f, Monoid n) => Monoid (TraversalWith f n) where
+-    mempty = TraversalWith (pure mempty)
+-    TraversalWith a `mappend` TraversalWith b = TraversalWith (liftA2 mappend a b)
++instance Alternative f => Monoid (WrappedApplicative f a) where
++    mempty = empty 
++    WrappedApplicative a `mappend` WrappedApplicative b = WrappedApplicative (a <|> b) 
+hunk ./Data/Monoid/Applicative.hs 38
+-instance (Applicative f, Monoid n) => Reducer (f n) (TraversalWith f n) where
+-    unit = TraversalWith
++instance (Alternative f, Monoid a) => Multiplicative (WrappedApplicative f a) where
++    one = pure mempty
++    times = liftA2 mappend
+hunk ./Data/Monoid/Applicative.hs 42
+-instance Functor f => Functor (TraversalWith f) where
+-    fmap f = TraversalWith . fmap f . getTraversalWith
++instance (Alternative f, c `Reducer` a) => Reducer c (WrappedApplicative f a) where
++    unit = WrappedApplicative . pure . unit
+hunk ./Data/Monoid/Applicative.hs 45
+-instance Pointed f => Pointed (TraversalWith f) where
+-    point = TraversalWith . point
++instance (Alternative f, Monoid a) => LeftSemiNearRing (WrappedApplicative f a)
+hunk ./Data/Monoid/Categorical.hs 1
+-{-# LANGUAGE GADTs #-}
++{-# LANGUAGE GADTs, FlexibleInstances, MultiParamTypeClasses #-}
+hunk ./Data/Monoid/Categorical.hs 3
+-    ( module Data.Monoid
+-    , Endo(Endo, getEndo)
++    ( module Data.Monoid.Reducer
++    , module Control.Category
++    , GEndo(GEndo, getGEndo)
+hunk ./Data/Monoid/Categorical.hs 7
+-    , runMon
++    , getMon
+hunk ./Data/Monoid/Categorical.hs 11
+-import Data.Monoid (Monoid, mempty, mappend) 
++import Data.Monoid.Reducer
+hunk ./Data/Monoid/Categorical.hs 15
+-data Endo k a = Endo { getEndo :: k a a } 
++data GEndo k a = GEndo { getGEndo :: k a a } 
+hunk ./Data/Monoid/Categorical.hs 17
+-instance Category k =>  Monoid (Endo k a) where
+-    mempty = Endo id
+-    Endo f `mappend` Endo g = Endo (f . g)
++instance Category k =>  Monoid (GEndo k a) where
++    mempty = GEndo id
++    GEndo f `mappend` GEndo g = GEndo (f . g)
+hunk ./Data/Monoid/Categorical.hs 25
+-runMon :: Mon m m m -> m 
+-runMon (Mon m) = m
++getMon :: Mon m m m -> m 
++getMon (Mon m) = m
+hunk ./Data/Monoid/Categorical.hs 32
++instance Monoid m => Monoid (Mon m m m) where
++    mempty = id
++    mappend = (.)
++
++instance (c `Reducer` m) => Reducer c (Mon m m m) where
++    unit = Mon . unit
++
+hunk ./Data/Monoid/Combinators.hs 4
+-    , traverse_
+-    , for_
+-    , mapM_
+-    , forM_
+-    , foldMap'
+-    , concatMap
++    , all
+hunk ./Data/Monoid/Combinators.hs 6
+-    , or
+hunk ./Data/Monoid/Combinators.hs 7
+-    , all
+-    , sum
+-    , product
++    , concatMap
++    , cycle
+hunk ./Data/Monoid/Combinators.hs 10
+-    , notElem
+hunk ./Data/Monoid/Combinators.hs 12
+-    , replicate
+-    , cycle
++    , foldMap'
++    , for_
++    , forM_
++    , mapM_
++    , notElem
++    , or
++    , product
+hunk ./Data/Monoid/Combinators.hs 20
++    , replicate
++    , sum
++    , traverse_
+hunk ./Data/Monoid/Combinators.hs 26
++import Control.Applicative
+hunk ./Data/Monoid/Combinators.hs 29
++import Data.Monoid.Self
+hunk ./Data/Monoid/Combinators.hs 31
+-import Data.Monoid.Monad.Identity hiding (mapM_, forM_)
+hunk ./Data/Monoid/Combinators.hs 45
+-foldMap' f = runIdentity . mapReduce f
++foldMap' f = getSelf . mapReduce f
+hunk ./Data/Monoid/Combinators.hs 82
+--- shamelessly stolen from Lennart Augustsson's post: 
++-- Shamelessly stolen from Lennart Augustsson's post on optimizing (^) in haskell
+hunk ./Data/Monoid/FromString.hs 3
+-    ( FromString(FromString,getFromString)
++    ( module Data.Monoid.Reducer
++    , FromString(FromString,getFromString)
+hunk ./Data/Monoid/FromString.hs 18
+-instance Reducer Char m => Reducer Char (FromString m) where
++instance (Char `Reducer` m) => Reducer Char (FromString m) where
+hunk ./Data/Monoid/FromString.hs 21
+-instance Reducer Char m => IsString (FromString m) where
++instance (Char `Reducer` m) => IsString (FromString m) where
+hunk ./Data/Monoid/Generator.hs 39
+--- minimal definition mapReduce or affixMapReduce
++-- | minimal definition 'mapReduce' or 'mapTo'
+hunk ./Data/Monoid/Generator.hs 58
+-newtype Char8 c = Char8 { getChar8 :: c } 
+-
+-instance Generator (Char8 Strict.ByteString) where
+-    type Elem (Char8 Strict.ByteString) = Char
+-    mapTo f m = Strict8.foldl' (\a -> snoc a . f) m . getChar8
+-
+-instance Generator (Char8 Lazy.ByteString) where
+-    type Elem (Char8 Lazy.ByteString) = Char
+-    mapReduce f = fold . parMap rwhnf (mapReduce f . Char8) . Lazy8.toChunks . getChar8
+-
+hunk ./Data/Monoid/Generator.hs 94
++-- | a 'Generator' transformer that asks only for the keys of an indexed container
+hunk ./Data/Monoid/Generator.hs 109
++-- | a 'Generator' transformer that asks only for the values contained in an indexed container
+hunk ./Data/Monoid/Generator.hs 124
++-- | a 'Generator' transformer that treats 'Word8' as 'Char'
++-- This lets you use a 'ByteString' as a 'Char' source without going through a 'Monoid' transformer like 'UTF8'
++newtype Char8 c = Char8 { getChar8 :: c } 
++
++instance Generator (Char8 Strict.ByteString) where
++    type Elem (Char8 Strict.ByteString) = Char
++    mapTo f m = Strict8.foldl' (\a -> snoc a . f) m . getChar8
++
++instance Generator (Char8 Lazy.ByteString) where
++    type Elem (Char8 Lazy.ByteString) = Char
++    mapReduce f = fold . parMap rwhnf (mapReduce f . Char8) . Lazy8.toChunks . getChar8
++
+hunk ./Data/Monoid/Generator.hs 152
++-- apply a reducer that accepts the contents of this generator directly
+addfile ./Data/Monoid/Instances.hs
+hunk ./Data/Monoid/Instances.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
++{-# OPTIONS_GHC -fno-warn-orphans #-}
++
++module Data.Monoid.Instances where
++
++import Control.Monad.Reader
++
++
++
++import qualified Control.Monad.RWS.Lazy as LRWS
++import qualified Control.Monad.RWS.Strict as SRWS
++
++import qualified Control.Monad.State.Lazy as LState
++import qualified Control.Monad.State.Strict as SState
++
++import Control.Monad.Writer
++import qualified Control.Monad.Writer.Strict as SWriter
++
++import Data.FingerTree
++
++import Text.Parsec.Prim
++
++-- orphan Monoid instances for Monad Transformers
++instance (MonadPlus m, Monoid w) => Monoid (SWriter.WriterT w m n) where
++    mempty = mzero
++    mappend = mplus
++
++instance (MonadPlus m, Monoid w) => Monoid (WriterT w m n) where
++    mempty = mzero
++    mappend = mplus
++
++instance (MonadPlus m, Monoid w) => Monoid (SRWS.RWST r w s m n) where 
++    mempty = mzero
++    mappend = mplus
++
++instance (MonadPlus m, Monoid w) => Monoid (LRWS.RWST r w s m n) where 
++    mempty = mzero
++    mappend = mplus
++
++instance MonadPlus m => Monoid (ReaderT e m n) where
++    mempty = mzero
++    mappend = mplus
++
++instance MonadPlus m => Monoid (SState.StateT s m n) where
++    mempty = mzero
++    mappend = mplus
++
++instance MonadPlus m => Monoid (LState.StateT s m n) where
++    mempty = mzero
++    mappend = mplus
++
++-- orphan, which should be in Data.FingerTree
++instance Measured v a => Monoid (FingerTree v a) where
++    mempty = empty
++    mappend = (><)
++
++-- orphan, which should be in Parsec
++instance Stream s m t => Monoid (ParsecT s u m a) where
++    mempty = mzero
++    a `mappend` b = try a <|> b
++
+hunk ./Data/Monoid/IntMap.hs 1
+-{-# LANGUAGE MultiParamTypeClasses #-}
+-module Data.Monoid.IntMap 
+-    ( module Data.Monoid.Reducer
+-    , UnionWith(getUnionWith)
+-    ) where
+-
+-import Data.Monoid.Reducer (Reducer, unit, cons, snoc, Monoid, mappend, mempty)
+-import Data.IntMap
+-
+-newtype UnionWith m = UnionWith { getUnionWith :: IntMap m } 
+-
+-instance Monoid m => Monoid (UnionWith m) where
+-    mempty = UnionWith empty
+-    UnionWith a `mappend` UnionWith b = UnionWith (unionWith mappend a b)
+-
+-instance Monoid m => Reducer (IntMap m) (UnionWith m) where
+-    unit = UnionWith
+rmfile ./Data/Monoid/IntMap.hs
+hunk ./Data/Monoid/Lexical/Parser/Simple.hs 1
+-module Data.Monoid.Lexical.Parser.Simple
+-    ( module Data.Monoid.Multiplicative
+-    , Parser(Parser, getParser) 
+-    , State (Parsing, Success, Failure)
+-    ) where
+-
+-import Data.Monoid.Multiplicative
+-
+-data State g s 
+-    = Parsing g s 
+-    | Success s
+-    | Failure
+-
+-newtype Parser g s = Parser { getParser :: State g s -> State g s } 
+-
+-instance Monoid (Parser g s) where
+-    mempty = Parser (const Failure)
+-    a `mappend` b = Parser $ \s -> case getParser a s of 
+-         Failure -> getParser b s
+-         s' -> s'
+-
+-instance Monoid s => MultiplicativeMonoid (Parser g s) where
+-    one = Parser id
+-    a `times` b = Parser $ \s -> case getParser a s of
+-         p@(Parsing _ _) -> getParser b p
+-         _ -> Failure
+rmfile ./Data/Monoid/Lexical/Parser/Simple.hs
+rmdir ./Data/Monoid/Lexical/Parser
+hunk ./Data/Monoid/Lexical/RunLengthEncoding.hs 16
+-
+--- instance (Integral n, Reducer c m) => Reducer c (RLE n m) where
+---    unit = getRLE . unit
+hunk ./Data/Monoid/Map.hs 1
+-{-# LANGUAGE MultiParamTypeClasses #-}
+-module Data.Monoid.Map 
+-    ( module Data.Monoid.Reducer
+-    , UnionWith(getUnionWith)
+-    ) where
+-
+-import Prelude (Ord)
+-import Data.Monoid.Reducer (Reducer, unit, cons, snoc, Monoid, mempty, mappend)
+-import Data.Map
+-
+--- only needs m to be a semigroup, but Haskell doesn't have a semigroup class
+-
+-newtype UnionWith k m = UnionWith { getUnionWith :: Map k m } 
+-
+-instance (Ord k, Monoid m) => Monoid (UnionWith k m) where
+-    mempty = UnionWith empty
+-    UnionWith a `mappend` UnionWith b = UnionWith (unionWith mappend a b)
+-
+-instance (Ord k, Monoid m) => Reducer (Map k m) (UnionWith k m) where
+-    unit = UnionWith
+rmfile ./Data/Monoid/Map.hs
+hunk ./Data/Monoid/Monad/Cont.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Cont
+-    ( module Control.Monad.Cont
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Cont
+-import Data.Monoid.Reducer
+-
+-instance (Monoid m) => Monoid (Cont r m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid n) => Monoid (ContT r m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (Cont r m) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer n (ContT r m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (ContT r m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/Cont.hs
+hunk ./Data/Monoid/Monad/Either.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Either
+-    ( module Control.Monad.Either -- from category extras
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Either
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (Either e m) where
+-    mempty = return mempty
+-    x `mappend` y = do 
+-        x' <- x
+-        y' <- y
+-        return (x' `mappend` y')
+-
+-instance Monoid m => Reducer m (Either e m) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Monoid (EitherT e m n) where
+-    mempty = return mempty 
+-    x `mappend` y = do
+-        x' <- x
+-        y' <- y
+-        return (x' `mappend` y')
+-
+-instance (Monad m, Monoid n) => Reducer n (EitherT e m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (EitherT e m n) where
+-    unit = EitherT . liftM return
+-
+-liftM :: Monad m => (a -> b) -> m a -> m b
+-liftM f x = do x' <- x; return (f x')
+rmfile ./Data/Monoid/Monad/Either.hs
+hunk ./Data/Monoid/Monad/Error.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-module Data.Monoid.Monad.Error
+-    ( module Control.Monad.Error
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Error
+-import Data.Monoid.Reducer
+-
+-instance (Error e, Monoid m) => Monoid (Either e m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Error e, Monad m, Monoid n) => Monoid (ErrorT e m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance (Error e, Monoid m) => Reducer m (Either e m) where
+-    unit = return
+-
+-instance (Error e, Monad m, Monoid n) => Monoid (ErrorT e m n) where
+-    unit = return
+-
+-instance (Error e, Monad m, Monoid n) => Monoid (ErrorT e m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/Error.hs
+hunk ./Data/Monoid/Monad/IO.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-
+-module Data.Monoid.Monad.IO
+-    ( module System.IO
+-    , module Data.Monoid.Reducer
+-    , module Control.Monad
+-    )  where
+-
+-import System.IO
+-import Data.Monoid.Reducer
+-import Control.Monad
+-import Control.Monad.ST
+-import Control.Concurrent.STM
+-
+-instance Monoid m => Monoid (IO m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (IO m) where
+-    unit = return
+-
+-instance Monoid m => Reducer (ST RealWorld m) (IO m) where
+-    unit = stToIO
+-
+-instance Monoid m => Reducer (STM m) (IO m) where
+-    unit = atomically
+rmfile ./Data/Monoid/Monad/IO.hs
+hunk ./Data/Monoid/Monad/Identity.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Identity
+-    ( module Control.Monad.Identity
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Identity
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (Identity m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (Identity m) where
+-    unit = Identity
+rmfile ./Data/Monoid/Monad/Identity.hs
+hunk ./Data/Monoid/Monad/RWS/Lazy.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.RWS.Lazy
+-    ( module Control.Monad.RWS.Lazy
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.RWS.Lazy
+-import Data.Monoid.Reducer
+-
+-instance (Monoid w, Monoid m) => Monoid (RWS r w s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid w, Monoid n) => Monoid (RWST r w s m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance (Monoid w, Monoid m) => Reducer m (RWS r w s m) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer n (RWST r w s m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer (m n) (RWST r w s m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/RWS/Lazy.hs
+hunk ./Data/Monoid/Monad/RWS/Strict.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-
+-module Data.Monoid.Monad.RWS.Strict
+-    ( module Control.Monad.RWS.Strict
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.RWS.Strict
+-import Data.Monoid.Reducer
+-
+-instance (Monoid w, Monoid m) => Monoid (RWS r w s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid w, Monoid n) => Monoid (RWST r w s m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance (Monoid w, Monoid m) => Reducer m (RWS r w s m) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer n (RWST r w s m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer (m n) (RWST r w s m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/RWS/Strict.hs
+rmdir ./Data/Monoid/Monad/RWS
+hunk ./Data/Monoid/Monad/Reader.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Reader
+-    ( module Control.Monad.Reader
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Reader
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (Reader e m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (Reader e m) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Monoid (ReaderT e m n) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid n) => Reducer n (ReaderT e m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (ReaderT e m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/Reader.hs
+hunk ./Data/Monoid/Monad/ST/Lazy.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.ST.Lazy
+-    ( module Control.Monad.ST.Lazy
+-    , module Control.Monad
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad
+-import Control.Monad.ST.Lazy
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (ST s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (ST s m) where
+-    unit = return
+-
+-
+rmfile ./Data/Monoid/Monad/ST/Lazy.hs
+hunk ./Data/Monoid/Monad/ST/Strict.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.ST.Strict
+-    ( module Control.Monad.ST.Strict
+-    , module Control.Monad
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad
+-import Control.Monad.ST.Strict
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (ST s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (ST s m) where
+-    unit = return
+-
+-
+rmfile ./Data/Monoid/Monad/ST/Strict.hs
+rmdir ./Data/Monoid/Monad/ST
+hunk ./Data/Monoid/Monad/State/Lazy.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.State.Lazy
+-    ( module Control.Monad.State.Lazy
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.State.Lazy
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (State s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid n) => Monoid (StateT s m n) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (State s m) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer n (StateT s m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (StateT s m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/State/Lazy.hs
+hunk ./Data/Monoid/Monad/State/Strict.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.State.Strict
+-    ( module Control.Monad.State.Strict
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.State.Strict
+-import Data.Monoid.Reducer
+-
+-instance Monoid m => Monoid (State s m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid n) => Monoid (StateT s m n) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance Monoid m => Reducer m (State s m) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer n (StateT s m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (StateT s m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/State/Strict.hs
+rmdir ./Data/Monoid/Monad/State
+hunk ./Data/Monoid/Monad/Writer/Lazy.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Writer.Lazy
+-    ( module Control.Monad.Writer.Lazy
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Writer.Lazy
+-import Data.Monoid.Reducer
+-
+-instance (Monoid w, Monoid m) => Monoid (Writer w m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid w, Monoid n) => Monoid (WriterT w m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance (Monoid w, Monoid m) => Reducer m (Writer w m) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer n (WriterT w m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer (m n) (WriterT w m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/Writer/Lazy.hs
+hunk ./Data/Monoid/Monad/Writer/Strict.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
+-
+-module Data.Monoid.Monad.Writer.Strict
+-    ( module Control.Monad.Writer.Strict
+-    , module Data.Monoid.Reducer
+-    )  where
+-
+-import Control.Monad.Writer.Strict
+-import Data.Monoid.Reducer
+-
+-instance (Monoid w, Monoid m) => Monoid (Writer w m) where
+-    mempty = return mempty
+-    mappend = liftM2 mappend
+-
+-instance (Monad m, Monoid w, Monoid n) => Monoid (WriterT w m n) where
+-    mempty = return mempty 
+-    mappend = liftM2 mappend
+-
+-instance (Monoid w, Monoid m) => Reducer m (Writer w m) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer n (WriterT w m n) where
+-    unit = return
+-
+-instance (Monad m, Monoid w, Monoid n) => Reducer (m n) (WriterT w m n) where
+-    unit = lift
+rmfile ./Data/Monoid/Monad/Writer/Strict.hs
+rmdir ./Data/Monoid/Monad/Writer
+rmdir ./Data/Monoid/Monad
+hunk ./Data/Monoid/Monad.hs 3
+-    ( module Control.Monad
+-    , module Data.Monoid.Reducer
++    ( module Data.Monoid.Reducer
++    , module Data.Ring.Semi.Near
+hunk ./Data/Monoid/Monad.hs 6
+-    , MonadSum(MonadSum,getMonadSum)
+-    , ActionWith(ActionWith,getActionWith)
++    , WrappedMonad(WrappedMonad, getWrappedMonad)
+hunk ./Data/Monoid/Monad.hs 9
++import Control.Functor.Pointed
+hunk ./Data/Monoid/Monad.hs 11
+-import Control.Monad (MonadPlus, mplus, mzero, (>=>), liftM2)
++import Data.Ring.Semi.Near
++import Control.Monad
+hunk ./Data/Monoid/Monad.hs 30
+-newtype MonadSum m a = MonadSum { getMonadSum :: m a } 
+-    deriving (Eq,Ord,Show,Read,Functor,Monad,MonadPlus)
+hunk ./Data/Monoid/Monad.hs 31
+-instance MonadPlus m => Monoid (MonadSum m a) where
+-    mempty = MonadSum mzero
+-    MonadSum a `mappend` MonadSum b = MonadSum (a `mplus` b)
++newtype WrappedMonad m a = WrappedMonad { getWrappedMonad :: m a } 
++    deriving (Eq,Ord,Show,Read,Functor,Pointed, Monad,MonadPlus)
+hunk ./Data/Monoid/Monad.hs 34
+-instance MonadPlus m => Reducer (m a) (MonadSum m a) where
+-    unit = MonadSum
++instance (Monad m, Monoid a) => Multiplicative (WrappedMonad m a) where
++    one = WrappedMonad (return mempty)
++    WrappedMonad m `times` WrappedMonad n = WrappedMonad (liftM2 mappend m n)
++    
++instance (MonadPlus m) => Monoid (WrappedMonad m a) where
++    mempty = mzero
++    mappend = mplus
+hunk ./Data/Monoid/Monad.hs 42
+-newtype ActionWith m n = ActionWith { getActionWith :: m n }
++instance (MonadPlus m, c `Reducer` a) => Reducer c (WrappedMonad m a) where
++    unit = WrappedMonad . return . unit
+hunk ./Data/Monoid/Monad.hs 45
+-instance (Monad m, Monoid n) => Monoid (ActionWith m n) where
+-    mempty = ActionWith (return mempty)
+-    ActionWith a `mappend` ActionWith b = ActionWith (liftM2 mappend a b)
+-
+-instance (Monad m, Monoid n) => Reducer (m n) (ActionWith m n) where
+-    unit = ActionWith
++instance (MonadPlus m, Monoid a) => LeftSemiNearRing (WrappedMonad m a)
+hunk ./Data/Monoid/Multiplicative.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
++
+hunk ./Data/Monoid/Multiplicative.hs 5
+-    , MultiplicativeMonoid
++    , Multiplicative
+hunk ./Data/Monoid/Multiplicative.hs 9
+-import Data.Monoid.Additive
++import Control.Applicative
++
++import Control.Concurrent.STM
++
++import Control.Monad.Cont
++import Control.Monad.Identity
++
++import Control.Monad.Reader
++
++import qualified Control.Monad.RWS.Lazy as LRWS
++import qualified Control.Monad.RWS.Strict as SRWS
++
++import qualified Control.Monad.State.Lazy as LState
++import qualified Control.Monad.State.Strict as SState
++
++import qualified Control.Monad.Writer.Lazy as LWriter
++import qualified Control.Monad.Writer.Strict as SWriter
++
++import qualified Control.Monad.ST.Lazy as LST
++import qualified Control.Monad.ST.Strict as SST
++
+hunk ./Data/Monoid/Multiplicative.hs 31
++
++import Data.Monoid.Additive
+hunk ./Data/Monoid/Multiplicative.hs 34
+-import Data.Monoid.Monad.Identity
+hunk ./Data/Monoid/Multiplicative.hs 35
++import Data.Monoid.Instances ()
++import Data.Monoid.Self
++
+hunk ./Data/Monoid/Multiplicative.hs 41
+-class MultiplicativeMonoid m where
++import Text.Parsec.Prim
++
++class Multiplicative m where
+hunk ./Data/Monoid/Multiplicative.hs 47
+-instance Monoid m => MultiplicativeMonoid [m] where
+-    one = [mempty]
+-    xss `times` yss = [ xs `mappend` ys | xs <- xss, ys <- yss ]
++-- simple monoid transformer instances
++
++instance Multiplicative m => Multiplicative (Self m) where
++    one = Self one  
++    Self a `times` Self b = Self (a `times` b)
++
++instance Multiplicative m => Multiplicative (FromString m) where
++    one = FromString one
++    FromString a `times` FromString b = FromString (a `times` b)
++
++-- the goal of this is that I can make left seminearrings out of any 'Alternative' wrapped around a monoid
++-- in particular its useful for containers
++
++instance Monoid m => Multiplicative [m] where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid m => Multiplicative (Seq m) where
++    one = return mempty
++    times = liftM2 mappend
+hunk ./Data/Monoid/Multiplicative.hs 68
+-instance (Measured v m, Monoid m) => MultiplicativeMonoid (FingerTree v m) where
++-- and things that can't quite be a Monad in Haskell
++instance (Measured v m, Monoid m) => Multiplicative (FingerTree v m) where
+hunk ./Data/Monoid/Multiplicative.hs 71
+-    xss `times` yss = runIdentity $ mapReduce (flip fmap' yss . mappend) xss
++    xss `times` yss = getSelf $ mapReduce (flip fmap' yss . mappend) xss
+hunk ./Data/Monoid/Multiplicative.hs 73
+-instance (Monoid m) => MultiplicativeMonoid (Seq m) where
+-    one = Seq.singleton mempty
+-    xss `times` yss = runIdentity $ mapReduce (flip fmap yss . mappend) xss
++-- but it can at least serve as a canonical multiplication for any monad. 
++instance Monoid m => Multiplicative (Maybe m) where
++    one = return mempty
++    times = liftM2 mappend
+hunk ./Data/Monoid/Multiplicative.hs 78
+-instance MultiplicativeMonoid m => MultiplicativeMonoid (Identity m) where
+-    one = Identity one
+-    Identity a `times` Identity b = Identity (a `times` b)
++instance Monoid m => Multiplicative (Identity m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monoid m) => Multiplicative (Cont r m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monoid w, Monoid m) => Multiplicative (SRWS.RWS r w s m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monoid w, Monoid m) => Multiplicative (LRWS.RWS r w s m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid m => Multiplicative (SState.State s m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid m => Multiplicative (LState.State s m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid m => Multiplicative (Reader e m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monoid w, Monoid m) => Multiplicative (SWriter.Writer w m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monoid w, Monoid m) => Multiplicative (LWriter.Writer w m) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monad m, Monoid n) => Multiplicative (ContT r m n) where
++    one = return mempty 
++    times = liftM2 mappend
++
++instance (Monad m, Monoid w, Monoid n) => Multiplicative (SRWS.RWST r w s m n) where 
++    one = return mempty 
++    times = liftM2 mappend
++
++instance (Monad m, Monoid w, Monoid n) => Multiplicative (LRWS.RWST r w s m n) where 
++    one = return mempty 
++    times = liftM2 mappend
++
++instance (Monad m, Monoid n) => Multiplicative (SState.StateT s m n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monad m, Monoid n) => Multiplicative (LState.StateT s m n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monad m, Monoid n) => Multiplicative (ReaderT e m n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Monad m, Monoid w, Monoid n) => Multiplicative (SWriter.WriterT w m n) where
++    one = return mempty 
++    times = liftM2 mappend
++
++instance (Monad m, Monoid w, Monoid n) => Multiplicative (LWriter.WriterT w m n) where
++    one = return mempty 
++    times = liftM2 mappend
++
++instance Monoid n => Multiplicative (IO n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid n => Multiplicative (SST.ST s n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid n => Multiplicative (LST.ST s n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance Monoid n => Multiplicative (STM n) where
++    one = return mempty
++    times = liftM2 mappend
++
++instance (Stream s m t, Monoid n) => Multiplicative (ParsecT s u m n) where
++    one = return mempty
++    times = liftM2 mappend
++
++-- Applicative instances
++
++instance Monoid n => Multiplicative (ZipList n) where
++    one = pure mempty
++    times = liftA2 mappend
++
++instance Monoid m => Multiplicative (Const m a) where
++    one = pure undefined
++    times = liftA2 undefined
+hunk ./Data/Monoid/Multiplicative.hs 176
+-instance MultiplicativeMonoid m => MultiplicativeMonoid (FromString m) where
+-    one = FromString one
+-    FromString a `times` FromString b = FromString (a `times` b)
+hunk ./Data/Monoid/Multiplicative/Sugar.hs 13
+-(*) :: MultiplicativeMonoid r => r -> r -> r
++(*) :: Multiplicative r => r -> r -> r
+hunk ./Data/Monoid/Multiplicative/Transformer.hs 11
+-instance MultiplicativeMonoid m => Monoid (Log m) where
++instance Multiplicative m => Monoid (Log m) where
+hunk ./Data/Monoid/Multiplicative/Transformer.hs 17
+-instance Monoid m => MultiplicativeMonoid (Exp m) where
++instance Monoid m => Multiplicative (Exp m) where
+hunk ./Data/Monoid/Reducer.hs 2
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+hunk ./Data/Monoid/Reducer.hs 11
++import Data.Monoid.Instances ()
+hunk ./Data/Monoid/Reducer.hs 24
++import Text.Parsec.Prim
++import Control.Monad 
+hunk ./Data/Monoid/Reducer.hs 100
+--- orphan, which should be in Data.FingerTree
+-instance Measured v a => Monoid (FingerTree v a) where
+-    mempty = empty
+-    mappend = (><)
+-
+hunk ./Data/Monoid/Reducer.hs 105
++instance (Stream s m t, c `Reducer` a) => Reducer c (ParsecT s u m a) where
++    unit = return . unit
++
+hunk ./Data/Monoid/Reducer.hs 121
+-    -- pedantic in case Eq doesn't implement structural equality
++    -- pedantic about order in case 'Eq' doesn't implement structural equality
+hunk ./Data/Monoid/Reducer.hs 136
+-instance Enum a => Monoid (BitSet a) where
+-    mempty = BitSet.empty
+-    mappend = BitSet.union -- not yet present, contacted library author
+-
+addfile ./Data/Monoid/Self.hs
+hunk ./Data/Monoid/Self.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, GeneralizedNewtypeDeriving #-}
++module Data.Monoid.Self
++    ( module Data.Monoid.Reducer
++    , Self(Self, getSelf)
++    )  where
++
++import Control.Functor.Pointed
++import Data.Monoid.Reducer
++
++newtype Self m = Self { getSelf :: m } deriving (Monoid)
++
++instance Monoid m => Reducer m (Self m) where
++    unit = Self
++
++instance Functor Self where
++    fmap f (Self x) = Self (f x)
++
++instance Pointed Self where
++    point = Self
++
++instance Copointed Self where
++    extract = getSelf
+addfile ./Data/Monoid/Union.hs
+hunk ./Data/Monoid/Union.hs 1
++{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances, GeneralizedNewtypeDeriving #-}
++module Data.Monoid.Union
++    ( module Data.Monoid.Reducer
++    , HasUnion
++    , empty
++    , union
++    , HasUnionWith
++    , emptyWith
++    , unionWith
++    , UnionWith(UnionWith,getUnionWith)
++    , Union(Union,getUnion)
++    ) where
++
++import qualified Data.IntMap as IntMap
++import Data.IntMap (IntMap)
++
++import qualified Data.IntSet as IntSet
++import Data.IntSet (IntSet)
++
++import qualified Data.Map as Map
++import Data.Map (Map)
++
++import qualified Data.Set as Set
++import Data.Set (Set)
++
++import qualified Data.List as List
++
++import Control.Functor.Pointed
++
++import Data.Monoid.Reducer (Reducer, unit, cons, snoc, Monoid, mappend, mempty)
++
++class HasUnion f where
++    empty :: f
++    {-# SPECIALIZE union :: IntMap a -> IntMap a -> IntMap a #-}
++    {-# SPECIALIZE union :: Ord k => Map k a -> Map k a -> Map k a #-}
++    {-# SPECIALIZE union :: Eq a => [a] -> [a] -> [a] #-}
++    {-# SPECIALIZE union :: Ord a => Set a -> Set a -> Set a #-}
++    {-# SPECIALIZE union :: IntSet -> IntSet -> IntSet #-}
++    union :: f -> f -> f
++
++instance HasUnion (IntMap a) where
++    empty = IntMap.empty
++    union = IntMap.union
++
++instance Ord k => HasUnion (Map k a) where
++    empty = Map.empty
++    union = Map.union
++
++instance Eq a => HasUnion [a] where
++    empty = []
++    union = List.union
++
++instance Ord a => HasUnion (Set a) where
++    empty = Set.empty
++    union = Set.union
++
++instance HasUnion IntSet where
++    empty = IntSet.empty
++    union = IntSet.union
++
++
++
++
++newtype Union f = Union { getUnion :: f } 
++    deriving (Eq,Ord,Show,Read)
++
++instance (HasUnion f) => Monoid (Union f) where
++    mempty = Union empty
++    Union a `mappend` Union b = Union (a `union` b)
++
++instance (HasUnion f) => Reducer f (Union f) where
++    unit = Union
++
++instance Functor Union where
++    fmap f (Union a) = Union (f a)
++
++instance Pointed Union where 
++    point = Union
++
++instance Copointed Union where
++    extract = getUnion
++
++
++class HasUnionWith f where
++    {-# SPECIALIZE unionWith :: (a -> a -> a) -> IntMap a -> IntMap a -> IntMap a #-}
++    {-# SPECIALIZE unionWith :: Ord k => (a -> a -> a) -> Map k a -> Map k a -> Map k a #-}
++    unionWith :: (a -> a -> a) -> f a -> f a -> f a
++    emptyWith :: f a 
++
++instance HasUnionWith IntMap where 
++    emptyWith = IntMap.empty
++    unionWith = IntMap.unionWith
++
++instance Ord k => HasUnionWith (Map k) where 
++    emptyWith = Map.empty
++    unionWith = Map.unionWith
++
++
++
++newtype UnionWith f m = UnionWith { getUnionWith :: f m } 
++    deriving (Eq,Ord,Show,Read,Functor,Pointed,Monad)
++
++instance (HasUnionWith f, Monoid m) => Monoid (UnionWith f m) where
++    mempty = UnionWith emptyWith
++    UnionWith a `mappend` UnionWith b = UnionWith (unionWith mappend a b)
++
++instance (HasUnionWith f, Monoid m) => Reducer (f m) (UnionWith f m) where
++    unit = UnionWith
++
+addfile ./Data/Ring.hs
+hunk ./Data/Ring.hs 1
++{-# OPTIONS_GHC -fno-warn-orphans #-}
++module Data.Ring
++    ( module Data.Group
++    , module Data.Ring.Semi
++    , Ring
++    ) where
++
++import Data.Group
++import Data.Ring.Semi
++
++class (Group a, SemiRing a) => Ring a
+hunk ./Data/Ring/Boolean.hs 10
+--- | use @'Data.Ring.Semi.Ord.Order' 'Bool'@ to get the '&&'/'||' based distributive lattice 'Semiring'
++-- | use @'Data.Ring.Semi.Ord.Order' 'Bool'@ to get the '&&'/'||' based distributive lattice 'SemiRing'
+hunk ./Data/Ring/Boolean.hs 20
+-instance MultiplicativeMonoid BooleanRing where
++instance Multiplicative BooleanRing where
+hunk ./Data/Ring/Boolean.hs 24
+-instance Seminearring BooleanRing
+-instance Semiring BooleanRing
++instance LeftSemiNearRing BooleanRing
++instance RightSemiNearRing BooleanRing
++instance SemiRing BooleanRing
+hunk ./Data/Ring/FromNum.hs 20
+-instance Num a => MultiplicativeMonoid (FromNum a) where
++instance Num a => Multiplicative (FromNum a) where
+hunk ./Data/Ring/FromNum.hs 24
+-instance Num a => Seminearring (FromNum a)
++-- you can assume these, but you're probably lying to yourself
++instance Num a => LeftSemiNearRing (FromNum a)
++instance Num a => RightSemiNearRing (FromNum a)
++instance Num a => SemiRing (FromNum a)
++instance Num a => Ring (FromNum a)
+hunk ./Data/Ring/Semi.hs 3
+-    , Semiring
++    , SemiRing
+hunk ./Data/Ring/Semi.hs 8
+-class Seminearring a => Semiring a
++class (RightSemiNearRing a, LeftSemiNearRing a) => SemiRing a
+hunk ./Data/Ring/Semi/Near.hs 1
++{-# OPTIONS_GHC -fno-warn-orphans #-}
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
++
+hunk ./Data/Ring/Semi/Near.hs 6
+-    , Seminearring
++    , LeftSemiNearRing
++    , RightSemiNearRing
+hunk ./Data/Ring/Semi/Near.hs 10
++import Control.Applicative
++
++import Control.Monad.Cont
++import Control.Monad.Identity
++import Control.Monad (liftM2)
++import Control.Monad.Reader
++
++import qualified Control.Monad.RWS.Lazy as LRWS
++import qualified Control.Monad.RWS.Strict as SRWS
++
++import qualified Control.Monad.State.Lazy as LState
++import qualified Control.Monad.State.Strict as SState
++
++import qualified Control.Monad.Writer.Lazy as LWriter
++import qualified Control.Monad.Writer.Strict as SWriter
++
+hunk ./Data/Ring/Semi/Near.hs 29
+-import Data.Monoid.Monad.Identity
++import Data.Monoid.Self
+hunk ./Data/Ring/Semi/Near.hs 31
++
+hunk ./Data/Ring/Semi/Near.hs 35
+-class (MultiplicativeMonoid m, Monoid m) => Seminearring m 
+-instance Monoid m => Seminearring [m]
+-instance Monoid m => Seminearring (Seq m)
+-instance (Measured v m, Monoid m) => Seminearring (FingerTree v m)
+-instance Seminearring m => Seminearring (Identity m)
+-instance Seminearring m => Seminearring (FromString m)
++import Text.Parsec.Prim
++
++-- | @(a `plus b) `times` c = (a `times` c) `plus` (b `times` c)@
++class (Multiplicative m, Monoid m) => RightSemiNearRing m 
++
++-- 'Monoid' transformers
++instance RightSemiNearRing m => RightSemiNearRing (Self m)
++instance RightSemiNearRing m => RightSemiNearRing (FromString m)
++
++-- | @a `times` (b `plus` c) = (a `times` b) `plus` (a `times` c)@
++class (Multiplicative m, Monoid m) => LeftSemiNearRing m 
++
++-- 'Monoid' transformers
++instance LeftSemiNearRing m => LeftSemiNearRing (Self m)
++instance LeftSemiNearRing m => LeftSemiNearRing (FromString m)
++
++-- non-'Monad' instances
++instance (Measured v m, Monoid m) => LeftSemiNearRing (FingerTree v m)
++
++-- 'Monad' instances
++-- Every 'MonadPlus' over a 'Monoid' with an appropriate 'Multiplicative' instance
++-- for 'liftM2 mappend' is a 'LeftSemiNearRing' by 'MonadPlus' left-distributivity
++
++instance Monoid m => LeftSemiNearRing [m]
++
++instance Monoid m => LeftSemiNearRing (Maybe m)
++
++instance Monoid m => LeftSemiNearRing (Seq m)
++
++instance (Stream s m t, Monoid a) => LeftSemiNearRing (ParsecT s u m a)
++
++instance (MonadPlus m, Monoid n) => LeftSemiNearRing (SState.StateT s m n)
++
++instance (MonadPlus m, Monoid n) => LeftSemiNearRing (LState.StateT s m n)
++
++instance (MonadPlus m, Monoid n) => LeftSemiNearRing (ReaderT e m n)
++
++instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (SRWS.RWST r w s m n)
++
++instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (LRWS.RWST r w s m n)
++
++instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (SWriter.WriterT w m n)
++
++instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (LWriter.WriterT w m n)
+addfile ./Data/Ring/Semi/Near/Applicative.hs
+hunk ./Data/Ring/Semi/Near/Applicative.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, GeneralizedNewtypeDeriving, FlexibleContexts #-}
++module Data.Ring.Semi.Near.Applicative 
++    ( module Control.Applicative
++    , module Data.Monoid.Reducer
++    , WrappedApplicative(WrappedApplicative,getWrappedApplicative)
++    ) where
++
++import Control.Functor.Pointed
++import Control.Applicative (Applicative, (*>), pure, Alternative, empty, (<|>), liftA2)
++import Data.Ring.Semi.Near
++import Data.Monoid.Reducer
++
++newtype WrappedApplicative f a = WrappedApplicative { getWrappedApplicative :: f a } 
++    deriving (Eq,Ord,Show,Read,Functor,Pointed,Applicative,Alternative,Copointed)
++
++instance Alternative f => Monoid (WrappedApplicative f a) where
++    mempty = empty 
++    WrappedApplicative a `mappend` WrappedApplicative b = WrappedApplicative (a <|> b) 
++
++instance (Alternative f, Monoid a) => Multiplicative (WrappedApplicative f a) where
++    one = pure mempty
++    times = liftA2 mappend
++
++instance (Alternative f, c `Reducer` a) => Reducer c (WrappedApplicative f a) where
++    unit = WrappedApplicative . pure . unit
++
++instance (Alternative f, Monoid a) => LeftSemiNearRing (WrappedApplicative f a)
+addfile ./Data/Ring/Semi/Near/Monad.hs
+hunk ./Data/Ring/Semi/Near/Monad.hs 1
++{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
++module Data.Ring.Semi.Near.Monad
++    ( module Data.Ring.Semi.Near
++    , WrappedMonad(WrappedMonad, getWrappedMonad)
++    ) where
++
++import Control.Functor.Pointed
++import Data.Ring.Semi.Near
++import Control.Monad
++import Data.Monoid.Reducer
++
++newtype WrappedMonad m a = WrappedMonad { getWrappedMonad :: m a } 
++    deriving (Eq,Ord,Show,Read,Functor,Pointed, Monad,MonadPlus)
++
++instance (Monad m, Monoid a) => Multiplicative (WrappedMonad m a) where
++    one = WrappedMonad (return mempty)
++    WrappedMonad m `times` WrappedMonad n = WrappedMonad (liftM2 mappend m n)
++    
++instance (MonadPlus m) => Monoid (WrappedMonad m a) where
++    mempty = mzero
++    mappend = mplus
++
++instance (MonadPlus m, c `Reducer` a) => Reducer c (WrappedMonad m a) where
++    unit = WrappedMonad . return . unit
++
++instance (MonadPlus m, Monoid a) => LeftSemiNearRing (WrappedMonad m a)
+addfile ./Data/Ring/Semi/Near/Monad/Parsec.hs
+hunk ./Data/Ring/Semi/Near/Monad/Parsec.hs 1
++{-# OPTIONS_GHC -fno-warn-orphans #-}
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++module Data.Ring.Semi.Near.Parsec
++    ( module Data.Ring.Semi.Near
++    , module Data.Monoid.Reducer
++    , module Text.Parsec.Prim
++    ) where
++
++import Data.Ring.Semi.Near
++import Data.Monoid.Reducer
++import Control.Monad (liftM2) 
++import Text.Parsec.Prim
++
++instance Monad m => Monoid (ParsecT s u m a) where
++    mempty = mzero
++    a `mappend` b = try a <|> b
++
++instance (Monoid m, c `Reducer` a) => Reducer c (ParsecT s u m a) where
++    unit = return . unit
++
++instance Monoid a => LeftSemiNearRing (ParsecT s u m a)
+hunk ./Data/Ring/Semi/Ord.hs 33
+-instance (Bounded a, Ord a) => MultiplicativeMonoid (Order a) where
++instance (Bounded a, Ord a) => Multiplicative (Order a) where
+hunk ./Data/Ring/Semi/Ord.hs 37
+-instance (Bounded a, Ord a) => Seminearring (Order a)
+-instance (Bounded a, Ord a) => Semiring (Order a)
++instance (Bounded a, Ord a) => RightSemiNearRing (Order a)
++instance (Bounded a, Ord a) => LeftSemiNearRing (Order a)
++instance (Bounded a, Ord a) => SemiRing (Order a)
+hunk ./Data/Ring/Semi/Ord.hs 52
+-
+-
+-
+-
+-
+-
+hunk ./Data/Ring/Semi/Ord.hs 90
+-instance Ord a => MultiplicativeMonoid (Priority a) where
++instance Ord a => Multiplicative (Priority a) where
+hunk ./Data/Ring/Semi/Ord.hs 94
+-instance Ord a => Seminearring (Priority a)
+-instance Ord a => Semiring (Priority a)
++instance Ord a => LeftSemiNearRing (Priority a)
++instance Ord a => RightSemiNearRing (Priority a)
++instance Ord a => SemiRing (Priority a)
+hunk ./monoids.cabal 2
+-version:	    0.1.4
++version:	    0.1.5
+hunk ./monoids.cabal 17
+-  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm, bitset, QuickCheck, array
++  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel, containers, mtl, stm, bitset, QuickCheck, array, parsec >= 3
+hunk ./monoids.cabal 29
+-    Data.Monoid.IntMap
+-    Data.Monoid.Lexical.Parser.Simple
+hunk ./monoids.cabal 33
+-    Data.Monoid.Map
+hunk ./monoids.cabal 34
+-    Data.Monoid.Monad.Cont
+-    Data.Monoid.Monad.Either
+---  Data.Monoid.Monad.Error
+-    Data.Monoid.Monad.Identity
+-    Data.Monoid.Monad.IO
+-    Data.Monoid.Monad.Reader
+-    Data.Monoid.Monad.RWS.Lazy
+-    Data.Monoid.Monad.RWS.Strict
+-    Data.Monoid.Monad.State.Lazy
+-    Data.Monoid.Monad.State.Strict
+-    Data.Monoid.Monad.ST.Lazy
+-    Data.Monoid.Monad.STM
+-    Data.Monoid.Monad.ST.Strict
+-    Data.Monoid.Monad.Writer.Lazy
+-    Data.Monoid.Monad.Writer.Strict
+hunk ./monoids.cabal 41
++    Data.Monoid.Union
+}

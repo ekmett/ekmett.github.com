@@ -1,0 +1,24 @@
+[0.1.10
+ekmett@gmail.com**20090329073516] {
+hunk ./monoids.cabal 2
+-version:	    0.1.9
++version:	    0.1.10
+hunk ./monoids.cabal 44
++    Data.Monoid.Instances
+hunk ./monoids.cabal 52
+-    Data.Monoid.Self
+hunk ./monoids.cabal 55
++    Data.Monoid.Self
+hunk ./monoids.cabal 59
+-    Data.Ring.Semi
+-    Data.Ring.Semi.Tropical
+-    Data.Ring.Semi.Near
+-    Data.Ring.Semi.Ord
+hunk ./monoids.cabal 62
++    Data.Ring.Semi
++    Data.Ring.Semi.Near
++    Data.Ring.Semi.Ord
++    Data.Ring.Semi.Tropical
+hunk ./monoids.cabal 67
++    
+}

@@ -1,0 +1,615 @@
+[moved Generator out of Monoid to avoid confusion with generators of monoids
+ekmett@gmail.com**20090403030428] {
+move ./Data/Monoid/Generator ./Data/Generator
+move ./Data/Monoid/Generator.hs ./Data/Generator.hs
+adddir ./Data/Generator/Compressive
+move ./Data/Generator/LZ78.hs ./Data/Generator/Compressive/LZ78.hs
+move ./Data/Generator/RLE.hs ./Data/Generator/Compressive/RLE.hs
+hunk ./Data/Field.hs 20
++import Data.Monoid.Self
++import Data.Monoid.FromString
++import Data.Monoid.Reducer
+hunk ./Data/Field.hs 26
++instance Field f => Field (Dual f)
++instance Field f => Field (Self f)
++instance Field f => Field (FromString f)
++instance Field f => Field (ReducedBy f s)
++
+addfile ./Data/Generator/Combinators.hs
+hunk ./Data/Generator/Combinators.hs 1
++{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeFamilies #-}
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Generator.Combinators
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families, MPTCs)
++--
++-- Utilities for working with Monoids that conflict with names from the "Prelude",
++-- "Data.Foldable", "Control.Monad" or elsewhere. Intended to be imported qualified.
++--
++-- > import Data.Generator.Combinators as Generator
++--
++-----------------------------------------------------------------------------
++
++module Data.Generator.Combinators
++    ( module Data.Generator
++    -- * Monadic Reduction
++    , mapM_
++    , forM_
++    , msum
++    -- * Applicative Reduction
++    , traverse_
++    , for_
++    , asum
++    -- * Logical Reduction
++    , and
++    , or
++    , any
++    , all
++    -- * Monoidal Reduction
++    , foldMap
++    , fold
++    , toList 
++    -- * List-Like Reduction
++    , concatMap
++    , elem
++    , filter
++    , filterWith
++    , find
++    , sum
++    , product
++    , notElem
++    ) where
++
++import Prelude hiding (mapM_, any, elem, filter, concatMap, and, or, all, sum, product, notElem, replicate, cycle, repeat)
++import Control.Applicative
++import Control.Monad (MonadPlus)
++import Data.Generator
++import Data.Monoid.Applicative
++import Data.Monoid.Self
++import Data.Monoid.Monad
++
++-- | Efficiently 'mapReduce' a 'Generator' using the 'Traversal' monoid. A specialized version of its namesake from "Data.Foldable"
++--
++-- @
++--     'mapReduce' 'getTraversal'
++-- @
++traverse_ :: (Generator c, Applicative f) => (Elem c -> f b) -> c -> f ()
++traverse_ = mapReduceWith getTraversal
++{-# INLINE traverse_ #-}
++    
++-- | Convenience function as found in "Data.Foldable"
++--
++-- @
++--     'flip' 'traverse_'
++-- @
++for_ :: (Generator c, Applicative f) => c -> (Elem c -> f b) -> f ()
++for_ = flip traverse_
++{-# INLINE for_ #-}
++
++-- | The sum of a collection of actions, generalizing 'concat'
++--
++-- @
++--    'reduceWith' 'getAlt'
++-- @ 
++asum :: (Generator c, Alternative f, f a ~ Elem c) => c -> f a
++asum = reduceWith getAlt
++{-# INLINE asum #-}
++
++-- | Efficiently 'mapReduce' a 'Generator' using the 'Action' monoid. A specialized version of its namesake from "Data.Foldable" and "Control.Monad"
++-- 
++-- @
++--    'mapReduceWith' 'getAction'
++-- @ 
++mapM_ :: (Generator c, Monad m) => (Elem c -> m b) -> c -> m ()
++mapM_ = mapReduceWith getAction
++{-# INLINE mapM_ #-}
++
++-- | Convenience function as found in "Data.Foldable" and "Control.Monad"
++--
++-- @
++--     'flip' 'mapM_'
++-- @
++forM_ :: (Generator c, Monad m) => c -> (Elem c -> m b) -> m ()
++forM_ = flip mapM_
++{-# INLINE forM_ #-}
++
++-- | The sum of a collection of actions, generalizing 'concat'
++--
++-- @
++--     'reduceWith' 'getMonadSum'
++-- @
++msum :: (Generator c, MonadPlus m, m a ~ Elem c) => c -> m a
++msum = reduceWith getMonadSum
++{-# INLINE msum #-}
++
++-- | Efficiently 'mapReduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
++--
++-- @
++--     'mapReduceWith' 'getSelf'
++-- @
++foldMap :: (Monoid m, Generator c) => (Elem c -> m) -> c -> m
++foldMap = mapReduceWith getSelf
++{-# INLINE foldMap #-}
++
++-- | Type specialization of "foldMap" above
++concatMap :: Generator c => (Elem c -> [b]) -> c -> [b]
++concatMap = foldMap
++{-# INLINE concatMap #-}
++
++-- | Efficiently 'reduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
++--
++-- @
++--     'reduceWith' 'getSelf'
++-- @
++fold :: (Monoid m, Generator c, Elem c ~ m) => c -> m
++fold = reduceWith getSelf
++{-# INLINE fold #-}
++
++-- | Convert any 'Generator' to a list of its contents. Specialization of 'reduce'
++toList :: Generator c => c -> [Elem c]
++toList = reduce
++{-# INLINE toList #-}
++
++-- | Efficiently 'reduce' a 'Generator' that contains values of type 'Bool'
++--
++-- @
++--     'reduceWith' 'getAll'
++-- @
++and :: (Generator c, Elem c ~ Bool) => c -> Bool
++and = reduceWith getAll
++{-# INLINE and #-}
++
++-- | Efficiently 'reduce' a 'Generator' that contains values of type 'Bool'
++--
++-- @
++--     'reduceWith' 'getAny'
++-- @
++or :: (Generator c, Elem c ~ Bool) => c -> Bool
++or = reduceWith getAny
++{-# INLINE or #-}
++
++-- | Efficiently 'mapReduce' any 'Generator' checking to see if any of its values match the supplied predicate
++--
++-- @
++--     'mapReduceWith' 'getAny'
++-- @
++any :: Generator c => (Elem c -> Bool) -> c -> Bool
++any = mapReduceWith getAny
++{-# INLINE any #-}
++
++-- | Efficiently 'mapReduce' any 'Generator' checking to see if all of its values match the supplied predicate
++--
++-- @
++--     'mapReduceWith' 'getAll'
++-- @
++all :: Generator c => (Elem c -> Bool) -> c -> Bool
++all = mapReduceWith getAll
++{-# INLINE all #-}
++
++-- | Efficiently sum over the members of any 'Generator'
++--
++-- @
++--     'reduceWith' 'getSum'
++-- @
++sum :: (Generator c, Num (Elem c)) => c -> Elem c
++sum = reduceWith getSum
++{-# INLINE sum #-}
++
++-- | Efficiently take the product of every member of a 'Generator'
++--
++-- @
++--     'reduceWith' 'getProduct'
++-- @
++product :: (Generator c, Num (Elem c)) => c -> Elem c
++product = reduceWith getProduct
++{-# INLINE product #-}
++
++-- | Check to see if 'any' member of the 'Generator' matches the supplied value
++elem :: (Generator c, Eq (Elem c)) => Elem c -> c -> Bool
++elem = any . (==)
++{-# INLINE elem #-}
++
++-- | Check to make sure that the supplied value is not a member of the 'Generator'
++notElem :: (Generator c, Eq (Elem c)) => Elem c -> c -> Bool
++notElem x = not . elem x
++{-# INLINE notElem #-}
++
++-- | Efficiently 'mapReduce' a subset of the elements in a 'Generator'
++filter :: (Generator c, Elem c `Reducer` m) => (Elem c -> Bool) -> c -> m
++filter p = foldMap f where
++    f x | p x = unit x
++        | otherwise = mempty
++{-# INLINE filter #-}
++
++-- | Allows idiomatic specialization of filter by proving a function that will be used to transform the output
++filterWith :: (Generator c, Elem c `Reducer` m) => (m -> n) -> (Elem c -> Bool) -> c -> n 
++filterWith f p = f . filter p
++{-# INLINE filterWith #-}
++
++-- | A specialization of 'filter' using the 'First' 'Monoid', analogous to 'Data.List.find'
++--
++-- @
++--     'filterWith' 'getFirst'
++-- @
++find :: Generator c => (Elem c -> Bool) -> c -> Maybe (Elem c)
++find = filterWith getFirst
++{-# INLINE find #-}
++
+hunk ./Data/Generator/Compressive/RLE.hs 59
+--- | naive left to right encoder
++-- | naive left to right encoder, which can handle infinite data
+hunk ./Data/Generator/Compressive/RLE.hs 75
++-- However, this monoid cannot be used to handle infinite sources.
+hunk ./Data/Generator/Free.hs 26
+-import qualified Data.Monoid.Combinators as M
++import qualified Data.Generator.Combinators as Generator
+hunk ./Data/Generator/Free.hs 38
+-    a == b = M.toList a == M.toList b
+-    a /= b = M.toList a == M.toList b
++    a == b = Generator.toList a == Generator.toList b
++    a /= b = Generator.toList a == Generator.toList b
+hunk ./Data/Generator/Free.hs 42
+-    a <= b = M.toList a <= M.toList b
+-    a >= b = M.toList a >= M.toList b
+-    a < b  = M.toList a <  M.toList b
+-    a > b  = M.toList a >  M.toList b
+-    a `compare` b = M.toList a `compare` M.toList b
++    a <= b = Generator.toList a <= Generator.toList b
++    a >= b = Generator.toList a >= Generator.toList b
++    a < b  = Generator.toList a <  Generator.toList b
++    a > b  = Generator.toList a >  Generator.toList b
++    a `compare` b = Generator.toList a `compare` Generator.toList b
+hunk ./Data/Generator/Free.hs 91
+-    foldMap f (AnyGenerator c) = M.foldMap f c
++    foldMap f (AnyGenerator c) = Generator.foldMap f c
+hunk ./Data/Group.hs 25
++import Data.Monoid.Reducer
+hunk ./Data/Group.hs 59
++instance Group a => Group (ReducedBy a s) where
++    gnegate = Reduction . gnegate . getReduction
++    Reduction a `minus` Reduction b = Reduction (a `minus` b)
++
++
+hunk ./Data/Group/Multiplicative.hs 14
++    , module Data.Group
+hunk ./Data/Group/Multiplicative.hs 22
++import Data.Group
++import Data.Monoid.Self
++import Data.Monoid.FromString
++import Data.Monoid.Reducer
++
+hunk ./Data/Group/Multiplicative.hs 40
++instance MultiplicativeGroup g => MultiplicativeGroup (Self g) where
++    Self x `over` Self y = Self (x `over` y)
++    Self x `under` Self y = Self (x `under` y)
++    grecip (Self x) = Self (grecip x)
++
++instance MultiplicativeGroup g => MultiplicativeGroup (FromString g) where
++    FromString x `over` FromString y = FromString (x `over` y)
++    FromString x `under` FromString y = FromString (x `under` y)
++    grecip (FromString x) = FromString (grecip x)
++
++instance MultiplicativeGroup g => MultiplicativeGroup (ReducedBy g s) where
++    Reduction x `over` Reduction y = Reduction (x `over` y)
++    Reduction x `under` Reduction y = Reduction (x `under` y)
++    grecip (Reduction x) = Reduction (grecip x)
++
++instance MultiplicativeGroup a => MultiplicativeGroup (Dual a) where
++    grecip = Dual . grecip . getDual
++
+hunk ./Data/Monoid/Combinators.hs 15
+--- > import Data.Group.Combinators as Monoid 
++-- > import Data.Monoid.Combinators as Monoid 
+hunk ./Data/Monoid/Combinators.hs 20
+-    ( module Data.Generator
+-    -- * Monadic Reduction
+-    , mapM_
+-    , forM_
+-    , msum
+-    -- * Applicative Reduction
+-    , traverse_
+-    , for_
+-    , asum
+-    -- * Logical Reduction
+-    , and
+-    , or
+-    , any
+-    , all
+-    -- * Monoidal Reduction
+-    , foldMap
+-    , fold
+-    , toList 
+-    -- * List-Like Reduction
+-    , concatMap
+-    , elem
+-    , filter
+-    , filterWith
+-    , find
+-    , sum
+-    , product
+-    , notElem
++    ( 
+hunk ./Data/Monoid/Combinators.hs 22
+-    , repeat
++      repeat
+hunk ./Data/Monoid/Combinators.hs 29
+-import Prelude hiding (mapM_, any, elem, filter, concatMap, and, or, all, sum, product, notElem, replicate, cycle, repeat)
+-import Control.Applicative
++import Prelude hiding (replicate, cycle, repeat)
+hunk ./Data/Monoid/Combinators.hs 31
+-import Data.Generator
+-import Data.Monoid.Applicative
+-import Data.Monoid.Self
+-import Data.Monoid.Monad
++import Data.Monoid.Reducer
+hunk ./Data/Monoid/Combinators.hs 34
+--- | Efficiently 'mapReduce' a 'Generator' using the 'Traversal' monoid. A specialized version of its namesake from "Data.Foldable"
+---
+--- @
+---     'mapReduce' 'getTraversal'
+--- @
+-traverse_ :: (Generator c, Applicative f) => (Elem c -> f b) -> c -> f ()
+-traverse_ = mapReduceWith getTraversal
+-{-# INLINE traverse_ #-}
+-    
+--- | Convenience function as found in "Data.Foldable"
+---
+--- @
+---     'flip' 'traverse_'
+--- @
+-for_ :: (Generator c, Applicative f) => c -> (Elem c -> f b) -> f ()
+-for_ = flip traverse_
+-{-# INLINE for_ #-}
+-
+--- | The sum of a collection of actions, generalizing 'concat'
+---
+--- @
+---    'reduceWith' 'getAlt'
+--- @ 
+-asum :: (Generator c, Alternative f, f a ~ Elem c) => c -> f a
+-asum = reduceWith getAlt
+-{-# INLINE asum #-}
+-
+--- | Efficiently 'mapReduce' a 'Generator' using the 'Action' monoid. A specialized version of its namesake from "Data.Foldable" and "Control.Monad"
+--- 
+--- @
+---    'mapReduceWith' 'getAction'
+--- @ 
+-mapM_ :: (Generator c, Monad m) => (Elem c -> m b) -> c -> m ()
+-mapM_ = mapReduceWith getAction
+-{-# INLINE mapM_ #-}
+-
+--- | Convenience function as found in "Data.Foldable" and "Control.Monad"
+---
+--- @
+---     'flip' 'mapM_'
+--- @
+-forM_ :: (Generator c, Monad m) => c -> (Elem c -> m b) -> m ()
+-forM_ = flip mapM_
+-{-# INLINE forM_ #-}
+-
+--- | The sum of a collection of actions, generalizing 'concat'
+---
+--- @
+---     'reduceWith' 'getMonadSum'
+--- @
+-msum :: (Generator c, MonadPlus m, m a ~ Elem c) => c -> m a
+-msum = reduceWith getMonadSum
+-{-# INLINE msum #-}
+-
+--- | Efficiently 'mapReduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
+---
+--- @
+---     'mapReduceWith' 'getSelf'
+--- @
+-foldMap :: (Monoid m, Generator c) => (Elem c -> m) -> c -> m
+-foldMap = mapReduceWith getSelf
+-{-# INLINE foldMap #-}
+-
+--- | Type specialization of "foldMap" above
+-concatMap :: Generator c => (Elem c -> [b]) -> c -> [b]
+-concatMap = foldMap
+-{-# INLINE concatMap #-}
+-
+--- | Efficiently 'reduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
+---
+--- @
+---     'reduceWith' 'getSelf'
+--- @
+-fold :: (Monoid m, Generator c, Elem c ~ m) => c -> m
+-fold = reduceWith getSelf
+-{-# INLINE fold #-}
+-
+--- | Convert any 'Generator' to a list of its contents. Specialization of 'reduce'
+-toList :: Generator c => c -> [Elem c]
+-toList = reduce
+-{-# INLINE toList #-}
+-
+--- | Efficiently 'reduce' a 'Generator' that contains values of type 'Bool'
+---
+--- @
+---     'reduceWith' 'getAll'
+--- @
+-and :: (Generator c, Elem c ~ Bool) => c -> Bool
+-and = reduceWith getAll
+-{-# INLINE and #-}
+-
+--- | Efficiently 'reduce' a 'Generator' that contains values of type 'Bool'
+---
+--- @
+---     'reduceWith' 'getAny'
+--- @
+-or :: (Generator c, Elem c ~ Bool) => c -> Bool
+-or = reduceWith getAny
+-{-# INLINE or #-}
+-
+--- | Efficiently 'mapReduce' any 'Generator' checking to see if any of its values match the supplied predicate
+---
+--- @
+---     'mapReduceWith' 'getAny'
+--- @
+-any :: Generator c => (Elem c -> Bool) -> c -> Bool
+-any = mapReduceWith getAny
+-{-# INLINE any #-}
+-
+--- | Efficiently 'mapReduce' any 'Generator' checking to see if all of its values match the supplied predicate
+---
+--- @
+---     'mapReduceWith' 'getAll'
+--- @
+-all :: Generator c => (Elem c -> Bool) -> c -> Bool
+-all = mapReduceWith getAll
+-{-# INLINE all #-}
+hunk ./Data/Monoid/Combinators.hs 35
+--- | Efficiently sum over the members of any 'Generator'
+---
+--- @
+---     'reduceWith' 'getSum'
+--- @
+-sum :: (Generator c, Num (Elem c)) => c -> Elem c
+-sum = reduceWith getSum
+-{-# INLINE sum #-}
+-
+--- | Efficiently take the product of every member of a 'Generator'
+---
+--- @
+---     'reduceWith' 'getProduct'
+--- @
+-product :: (Generator c, Num (Elem c)) => c -> Elem c
+-product = reduceWith getProduct
+-{-# INLINE product #-}
+-
+--- | Check to see if 'any' member of the 'Generator' matches the supplied value
+-elem :: (Generator c, Eq (Elem c)) => Elem c -> c -> Bool
+-elem = any . (==)
+-{-# INLINE elem #-}
+-
+--- | Check to make sure that the supplied value is not a member of the 'Generator'
+-notElem :: (Generator c, Eq (Elem c)) => Elem c -> c -> Bool
+-notElem x = not . elem x
+-{-# INLINE notElem #-}
+-
+--- | Efficiently 'mapReduce' a subset of the elements in a 'Generator'
+-filter :: (Generator c, Elem c `Reducer` m) => (Elem c -> Bool) -> c -> m
+-filter p = foldMap f where
+-    f x | p x = unit x
+-        | otherwise = mempty
+-{-# INLINE filter #-}
+-
+--- | Allows idiomatic specialization of filter by proving a function that will be used to transform the output
+-filterWith :: (Generator c, Elem c `Reducer` m) => (m -> n) -> (Elem c -> Bool) -> c -> n 
+-filterWith f p = f . filter p
+-{-# INLINE filterWith #-}
++-- | A generalization of 'Data.List.cycle' to an arbitrary 'Monoid'. May fail to terminate for some values in some monoids.
++cycle :: Monoid m => m -> m
++cycle xs = xs' where xs' = xs `mappend` xs'
+hunk ./Data/Monoid/Combinators.hs 39
+--- | A specialization of 'filter' using the 'First' 'Monoid', analogous to 'Data.List.find'
+---
+--- @
+---     'filterWith' 'getFirst'
+--- @
+-find :: Generator c => (Elem c -> Bool) -> c -> Maybe (Elem c)
+-find = filterWith getFirst
+-{-# INLINE find #-}
++-- | A generalization of 'Data.List.repeat' to an arbitrary 'Monoid'. May fail to terminate for some values in some monoids.
++repeat :: (e `Reducer` m) => e -> m 
++repeat x = xs where xs = cons x xs 
+hunk ./Data/Monoid/Combinators.hs 61
+--- | A generalization of 'Data.List.cycle' to an arbitrary 'Monoid'. May fail to terminate for some values in some monoids.
+-cycle :: Monoid m => m -> m
+-cycle xs = xs' where xs' = xs `mappend` xs'
+-
+--- | A generalization of 'Data.List.repeat' to an arbitrary 'Monoid'. May fail to terminate for some values in some monoids.
+-repeat :: (e `Reducer` m) => e -> m 
+-repeat x = xs where xs = cons x xs 
+-
+hunk ./Data/Monoid/Multiplicative.hs 1
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances, TypeOperators #-}
+hunk ./Data/Monoid/Multiplicative.hs 83
++instance Multiplicative m => Multiplicative (Dual m) where
++    one = Dual one
++    Dual x `times` Dual y = Dual (y `times` x)
++
++instance Multiplicative m => Multiplicative (m `ReducedBy` s) where
++    one = Reduction one
++    Reduction x `times` Reduction y = Reduction (x `times` y)
++
+hunk ./Data/Monoid/Reducer.hs 1
+-{-# LANGUAGE UndecidableInstances , FlexibleContexts , MultiParamTypeClasses , FlexibleInstances , GeneralizedNewtypeDeriving #-}
++{-# LANGUAGE UndecidableInstances , FlexibleContexts , MultiParamTypeClasses , FlexibleInstances , GeneralizedNewtypeDeriving, TypeOperators, ScopedTypeVariables #-}
+hunk ./Data/Monoid/Reducer.hs 26
++    , ReducedBy(Reduction,getReduction)
+hunk ./Data/Monoid/Reducer.hs 50
++import Data.Reflection
++
+hunk ./Data/Monoid/Reducer.hs 198
++data (m `ReducedBy` s) = Reduction { getReduction :: m } 
++
++instance Monoid m => Monoid (m `ReducedBy` s) where
++    mempty = Reduction mempty
++    Reduction a `mappend` Reduction b = Reduction (a `mappend` b)
++
++instance (s `Reflects` (a -> m), Monoid m) => Reducer a (m `ReducedBy` s) where
++    unit = Reduction . reflect (undefined :: s)
++
+hunk ./Data/Ring.hs 20
++import Data.Monoid.Self
++import Data.Monoid.FromString
+hunk ./Data/Ring.hs 25
++instance Ring r => Ring (Self r)
++instance Ring r => Ring (FromString r)
++instance Ring r => Ring (ReducedBy r s)
++instance Ring r => Ring (Dual r)
++
+hunk ./Data/Ring/Semi.hs 1
++{-# LANGUAGE MultiParamTypeClasses #-}
+hunk ./Data/Ring/Semi.hs 20
++import Data.Monoid.Self
++import Data.Monoid.FromString
+hunk ./Data/Ring/Semi.hs 27
++instance SemiRing r => SemiRing (Self r)
++instance SemiRing r => SemiRing (FromString r)
++instance SemiRing r => SemiRing (ReducedBy r s)
++instance SemiRing r => SemiRing (Dual r)
++
+hunk ./Data/Ring/Semi/Near.hs 48
+--- | @(a + b) * c = (a * c) + (b * c)@
+-class (Multiplicative m, Monoid m) => RightSemiNearRing m 
+-
+--- 'Monoid' transformers
+-instance RightSemiNearRing m => RightSemiNearRing (Self m)
+-instance RightSemiNearRing m => RightSemiNearRing (FromString m)
+-
+hunk ./Data/Ring/Semi/Near.hs 54
++instance LeftSemiNearRing m => LeftSemiNearRing (ReducedBy m s)
++instance RightSemiNearRing m => LeftSemiNearRing (Dual m)
++
++-- | @(a + b) * c = (a * c) + (b * c)@
++class (Multiplicative m, Monoid m) => RightSemiNearRing m 
++
++-- 'Monoid' transformers
++instance RightSemiNearRing m => RightSemiNearRing (Self m)
++instance RightSemiNearRing m => RightSemiNearRing (FromString m)
++instance RightSemiNearRing m => RightSemiNearRing (ReducedBy m s)
++instance LeftSemiNearRing m => RightSemiNearRing (Dual m)
+hunk ./monoids.cabal 2
+-version:	    0.1.23
++version:	    0.1.25
+hunk ./monoids.cabal 46
+-    Data.Monoid.Generator
+-    Data.Monoid.Generator.Free
+-    Data.Monoid.Generator.LZ78
+-    Data.Monoid.Generator.RLE
++    Data.Generator
++    Data.Generator.Combinators
++    Data.Generator.Compressive.LZ78
++    Data.Generator.Compressive.RLE
++    Data.Generator.Free
+}

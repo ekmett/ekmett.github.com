@@ -1,0 +1,196 @@
+[Initial import.
+Matt Morrow <mjm2002@gmail.com>**20081117223010] {
+addfile ./LICENSE
+hunk ./LICENSE 1
++Copyright (c) Matt Morrow.
++BSD3
+addfile ./Setup.lhs
+hunk ./Setup.lhs 1
+-
++> import Distribution.Simple
++> main :: IO ()
++> main = defaultMain
+addfile ./StateCPS.hs
+hunk ./StateCPS.hs 1
++{-# OPTIONS_GHC -O2 -fglasgow-exts #-}
++
++module StateCPS (
++  module StateCPS
++) where
++
++
++
++
++
++import Data.Monoid (Monoid(..))
++
++
++
++
++
++
++newtype C r a = C {unC :: forall o. (a -> r) -> (r -> o) -> o}
++
++
++newtype R r a = R {unR :: forall o. r -> (a -> o) -> o}
++runR :: R r a -> r -> a
++runR (R g) = flip g id
++ask :: R r r
++ask = R (\r k -> k r)
++asks :: (r -> a) -> R r a
++asks f = R (\r k -> (k . f) r)
++local :: (r -> r) -> R r a -> R r a
++local f (R g) = R (\r k -> g (f r) k)
++instance Functor (R r) where
++  fmap f (R g) = R (\r k -> g r (\a -> k (f a)))
++instance Monad (R r) where
++  return a = R (\_ k -> k a)
++  R g >>= f = R (\r k -> g r (\a -> unR (f a) r k))
++
++
++
++newtype W w a = W {unW :: forall o. (a -> w -> o) -> o}
++runW :: W w a -> (a, w)
++runW (W g) = g (,)
++tell :: w -> W w ()
++tell w = W (\k -> k () w)
++
++instance Functor (W w) where
++  fmap f (W g) = W (\k -> g (\a w -> k (f a) w))
++instance (Monoid w) => Monad (W w) where
++  return a = W (\k -> k a mempty)
++  W g >>= f = W (\k -> g (\a w -> unW (f a) (\a w' -> k a (w`mappend`w'))))
++
++
++
++newtype S s a = S {unS :: forall o. s -> (s -> a -> o) -> o}
++runS :: S s a -> s -> (a, s)
++runS (S g) = flip g (flip (,))
++get :: S s s
++get = S (\s k -> k s s)
++gets :: (s -> a) -> S s a
++gets f = S (\s k -> k s (f s))
++put :: s -> S s ()
++put s = S (\_ k -> k s ())
++modify :: (s -> s) -> S s ()
++modify f = S (\s k -> k (f s) ())
++instance Functor (S s) where
++  fmap f (S g) = S (\s k -> g s (\s a -> k s (f a)))
++instance Monad (S s) where
++  return a = S (\s k -> k s a)
++  S g >>= f = S (\s k -> g s (\s a -> unS (f a) s k))
++
++
++
++
++
++
++
++
++
++{-
++newtype S s a = S {unS :: forall o. s -> (s -> a -> o) -> o}
++
++instance Functor (S s) where
++  fmap f (S g) = S (\s k -> g s (\s a -> k s (f a)))
++
++instance Monad (S s) where
++  return a = S (\s k -> k s a)
++  S g >>= f = S (\s k -> g s (\s a -> unS (f a) s k))
++
++get :: S s s
++get = S (\s k -> k s s)
++
++gets :: (s -> a) -> S s a
++gets f = S (\s k -> k s (f s))
++
++put :: s -> S s ()
++put s = S (\_ k -> k s ())
++
++modify :: (s -> s) -> S s ()
++modify f = S (\s k -> k (f s) ())
++
++runS :: S s a -> s -> (a, s)
++runS (S g) = flip g (flip (,))
++-}
++
++
++
++
++
+addfile ./monad-cps.cabal
+hunk ./monad-cps.cabal 1
++name:               luna
++version:            0.1.0
++cabal-version:      >= 1.6
++build-type:         Simple
++license:            GPL
++license-file:       LICENSE
++category:           Interpreter, GHC
++author:             Matt Morrow
++copyright:          (c) Matt Morrow 2008
++maintainer:         Matt Morrow <mjm2002@gmail.com>
++stability:          experimental
++synopsis:           An interface to ghc.
++description:        .
++
++executable luna
++  executable:       luna
++  main-is:          luna.hs
++  hs-source-dirs:   tools, src
++  build-depends:    base == 4.*, readline
++  ghc-options:      -fglasgow-exts -O2
++
++
++library
++  build-tools:      happy
++  includes:         MyHsVersions.h, ghcplatform.h, luna_imports.h
++  hs-source-dirs:   src
++  ghc-options:      -O2 -fglasgow-exts
++  extensions:       CPP, ForeignFunctionInterface
++
++  build-depends:    base == 4.*, ghc == 6.10.1, ghc-paths,
++                    Cabal, unix, ghc-prim,
++                    packedstring, syb, pretty, containers,
++                    template-haskell, haskell-src-exts,
++                    array, haskell98, filepath, directory,
++                    old-time, process
++
++  exposed-modules:  Luna.Config,
++                    Luna.Util,
++
++                    Luna.Env,
++                    Luna.Eval,
++                    Luna.Run,
++                    Luna.Load,
++                    Luna.Interactive,
++                    Luna.Parser,
++
++                    Luna.Syntax.Hs,
++
++                    Luna.Internal.DriverPipeline,
++                    Luna.Internal.Parser,
++
++                    Luna.TH.Meta,
++                    Luna.TH.Utils,
++                    Luna.TH.Meta2,
++                    Luna.TH.Instances
++
++
++
++
++
++
++
++
++
+adddir ./src
+adddir ./src/Control
+adddir ./src/Control/Monad
+adddir ./src/Control/Monad/CPS
+addfile ./src/Control/Monad/CPS.hs
+addfile ./src/Control/Monad/CPS/C.hs
+addfile ./src/Control/Monad/CPS/R.hs
+addfile ./src/Control/Monad/CPS/S.hs
+addfile ./src/Control/Monad/CPS/W.hs
+}

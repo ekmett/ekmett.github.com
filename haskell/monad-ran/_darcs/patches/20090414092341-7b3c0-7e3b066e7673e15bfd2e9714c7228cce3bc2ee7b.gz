@@ -1,0 +1,11 @@
+[auto
+ekmett@gmail.com**20090414092341
+ Ignore-this: 14ac86fedfffd201ddd7e03abebb6af2
+] {
+hunk ./Control/Monad/Ran.hs 121
+-    mempty = Ran (\_ -> Endo id)
++    mzero = Ran (\_ -> Endo id)
+hunk ./Control/Monad/Ran.hs 142
+-    mempty = throwError noMsg
++    mzero = throwError noMsg
+}

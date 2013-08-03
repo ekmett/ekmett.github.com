@@ -1,0 +1,108 @@
+[lz78, automatic differentiation
+ekmett@gmail.com**20090329043839] {
+adddir ./Data/Monoid/Combinators
+adddir ./Data/Monoid/Generator
+adddir ./Data/Ring/Module
+addfile ./Data/Monoid/Generator/LZ78.hs
+hunk ./Data/Monoid/Generator/LZ78.hs 1
++{-# LANGUAGE TypeFamilies, MultiParamTypeClasses #-}
++module Data.Monoid.Generator.LZ78 
++    ( module Data.Monoid.Generator
++    , LZ78(LZ78, getLZ78)
++    , decode
++    , encode
++    ) where
++
++import qualified Data.Sequence as Seq
++import Data.Sequence (Seq,(|>))
++import qualified Data.Map as Map
++import Data.Map (Map)
++import Data.Monoid.Generator
++import Data.Monoid.Self
++
++newtype LZ78 a = LZ78 { getLZ78 :: [(Int,a)] } 
++
++emptyDict :: Monoid m => Seq m
++emptyDict = Seq.singleton mempty
++
++instance Generator (LZ78 a) where
++    type Elem (LZ78 a) = a
++    mapTo f m (LZ78 xs) = mapTo' f m emptyDict xs
++
++mapTo' :: (e `Reducer` m) => (a -> e) -> m -> Seq m -> [(Int,a)] -> m
++mapTo' _ m _   []         = m
++mapTo' f m s ((w,c):ws) = mapTo' f (m `mappend` v) (s |> v) ws 
++    where 
++        v = Seq.index s w `mappend` unit (f c)
++    
++decode :: LZ78 a -> [a]
++decode = reduce
++
++encode :: Ord a => [a] -> LZ78 a
++encode = LZ78 . encode' Map.empty 1 0
++
++encode' :: Ord a => Map (Int,a) Int -> Int -> Int -> [a] -> [(Int,a)]
++encode' _ _ p [c] = [(p,c)]
++encode' d f p (c:cs) = case Map.lookup (p,c) d of
++    Just p' -> encode' d f p' cs
++    Nothing -> (p,c):encode' (Map.insert (p,c) f d) (succ f) 0 cs
++encode' _ _ _ [] = []
++
++
++-- QuickCheck properties, this holds as long as Eq is structural
++prop_DecodeEncode :: Ord a => [a] -> Bool
++prop_DecodeEncode xs = decode (encode xs) == xs
+addfile ./Data/Ring/Module/AutomaticDifferentiation.hs
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++module Data.Ring.Module.AutomaticDifferentiation 
++    ( module Data.Ring.Module
++    , D
++    ) where
++
++import Prelude hiding ((*),(+),(-),subtract,negate)
++import Data.Ring.Sugar
++import Data.Ring.Module
++import Data.Monoid.Reducer
++
++data D r m = D r m
++
++instance (Monoid r, Monoid m) => Monoid (D r m) where
++    mempty = D mempty mempty
++    D x m `mappend` D y n = D (x + y) (m + n)
++
++instance (Module r m) => Multiplicative (D r m) where
++    one = D one zero
++    D x m `times` D y n = D (x * y) (x *. n + m .* y)
++
++instance (Group r, Module r m, Group m) => Group (D r m) where
++    gnegate (D x m) = D (gnegate x) (gnegate m)
++    D x m `minus` D y n = D (x `minus` y) (m `minus` n)
++    D x m `gsubtract` D y n = D (x `gsubtract` y) (m `gsubtract` n)
++
++instance (LeftSemiNearRing r, Module r m) => LeftSemiNearRing (D r m)
++instance (RightSemiNearRing r, Module r m) => RightSemiNearRing (D r m)
++instance (SemiRing r, Module r m) => SemiRing (D r m)
++instance (Ring r, Module r m, Group m) => Ring (D r m)
++
++instance (c `Reducer` r, c `Reducer` m) => Reducer c (D r m) where
++    unit c = D (unit c) (unit c)
++    c `cons` D x m = D (c `cons` x) (c `cons` m)
++    D x m `snoc` c = D (x `snoc` c) (m `snoc` c)
++
++{--
++infix 0 ><
++
++(><) :: Multiplicatve a => (a -> a) -> (AD a -> AD a) -> AD a -> AD a
++(f >< f') a@(AD a0 a') = D (f a0) (a' * f' a)
++
++data AD r = AD r (Maybe (AD r))
++
++instance (Monoid r) => Monoid (AD r) where
++    mempty = K mempty
++    AD x m + AD y n = D (x + y) (m + n)
++
++instance (c `Reducer` r) => Reducer c (AD r) where
++    unit c = c' where c' = AD (unit c) c'
++--}
+}

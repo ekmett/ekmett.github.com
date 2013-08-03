@@ -1,0 +1,30 @@
+[auto
+ekmett@gmail.com**20090406060745
+ Ignore-this: e8389f80b6233ca742c448038f251823
+] {
+hunk ./doc/html/monoids/Data-Monoid-Reducer.html 1071
+->(<A HREF="Data-Monoid-Reducer.html#t%3AReducer"
++>(<A HREF="Data-Ring-Module.html#t%3AModule"
++>Module</A
++> r m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+hunk ./doc/html/monoids/Data-Ring-Module-AutomaticDifferentiation.html 145
+->(<A HREF="Data-Monoid-Reducer.html#t%3AReducer"
++>(<A HREF="Data-Ring-Module.html#t%3AModule"
++>Module</A
++> r m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+hunk ./doc/html/monoids/Data-Ring-Module-AutomaticDifferentiation.html 223
+->(<A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+->Monoid</A
+-> r, <A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+->Monoid</A
+-> m) =&gt; <A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
++><A HREF="Data-Ring-Module.html#t%3AModule"
++>Module</A
++> r m =&gt; <A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+hunk ./doc/html/monoids/src/Data-Ring-Module-AutomaticDifferentiation.html 49
+-<a name="line-41"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Monoid</span> <span class='hs-varid'>r</span><span class='hs-layout'>,</span> <span class='hs-conid'>Monoid</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>D</span> <span class='hs-varid'>s</span> <span class='hs-varid'>r</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-41"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-varid'>r</span> <span class='hs-varop'>`Module`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>D</span> <span class='hs-varid'>s</span> <span class='hs-varid'>r</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+hunk ./doc/html/monoids/src/Data-Ring-Module-AutomaticDifferentiation.html 81
+-<a name="line-73"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>r</span><span class='hs-layout'>,</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-conid'>D</span> <span class='hs-varid'>s</span> <span class='hs-varid'>r</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-73"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-varid'>r</span> <span class='hs-varop'>`Module`</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>r</span><span class='hs-layout'>,</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-conid'>D</span> <span class='hs-varid'>s</span> <span class='hs-varid'>r</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+}

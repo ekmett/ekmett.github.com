@@ -1,0 +1,4 @@
+[stripping dist
+ekmett@gmail.com**20090329043451] {
+rmdir ./dist
+}

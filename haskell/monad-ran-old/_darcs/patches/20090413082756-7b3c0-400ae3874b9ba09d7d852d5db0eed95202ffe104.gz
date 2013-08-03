@@ -1,0 +1,198 @@
+[Ranification
+ekmett@gmail.com**20090413082756
+ Ignore-this: b3fde850399cb5ad2a0865fb361e2d8e
+] {
+move ./monad-cps.cabal ./monad-ran.cabal
+move ./src/Control/Monad/CPS ./src/Control/Monad/Ran
+move ./src/Control/Monad/CPS.hs ./src/Control/Monad/Ran.hs
+hunk ./monad-ran.cabal 1
+-name:               monad-cps
+-version:            0.0.3
++name:               monad-ran
++version:            0.0.4
+hunk ./monad-ran.cabal 12
+-synopsis:           CPS implementations of common monads.
++synopsis:           Ran implementations of common monads.
+hunk ./monad-ran.cabal 23
++                    FunctionalDependencies,
+hunk ./monad-ran.cabal 26
+-  exposed-modules:  Control.Monad.CPS,
+-                    Control.Monad.CPS.Codensity,
+-                    Control.Monad.CPS.Cont,
+-                    Control.Monad.CPS.Identity,
+-                    Control.Monad.CPS.Maybe,
+-                    Control.Monad.CPS.Ran,
+-                    Control.Monad.CPS.Reader,
+-                    Control.Monad.CPS.RWS,
+-                    Control.Monad.CPS.State,
+-                    Control.Monad.CPS.Writer
++  exposed-modules:  Control.Monad.Ran,
++                    Control.Monad.Ran.Codensity,
++                    Control.Monad.Ran.Cont,
++                    Control.Monad.Ran.Identity,
++                    Control.Monad.Ran.Maybe,
++                    Control.Monad.Ran.Reader,
++                    Control.Monad.Ran.RWS,
++                    Control.Monad.Ran.State,
++                    Control.Monad.Ran.Writer
+hunk ./src/Control/Monad/Ran.hs 1
+-module Control.Monad.CPS 
+-    ( module Control.Monad.CPS.Codensity
+-    , module Control.Monad.CPS.Cont
+-    , module Control.Monad.CPS.Identity
+-    , module Control.Monad.CPS.Maybe
+-    , module Control.Monad.CPS.Ran
+-    , module Control.Monad.CPS.Reader
+-    , module Control.Monad.CPS.State
+-    , module Control.Monad.CPS.Writer
++module Control.Monad.Ran
++    ( Ran(Ran,getRan)
++    , RanIso, toRan, fromRan
+hunk ./src/Control/Monad/Ran.hs 6
+-import Control.Monad.CPS.Codensity
+-import Control.Monad.CPS.Cont
+-import Control.Monad.CPS.Identity
+-import Control.Monad.CPS.Maybe
+-import Control.Monad.CPS.Ran
+-import Control.Monad.CPS.Reader
+-import Control.Monad.CPS.State
+-import Control.Monad.CPS.Writer
++-- | the right Kan extension of @h@ along @g@
++newtype Ran g h a = Ran { getRan :: forall b. (a -> g b) -> h b } 
++
++-- A right Kan extension is always a haskell Functor, even if @g@ and @h@ are not, by parametricity
++instance Functor (Ran g h) where
++    fmap f m = Ran (\k -> getRan m (k . f))
++
++-- | @m@ is isomorphic to a right Kan extension of @h@ along @g@
++class RanIso m where
++    type G m :: *
++    type H m :: *
++    toRan :: m a -> Ran (G m) (H m) a
++    fromRan :: Ran (G m) (H m) a -> m a
++
++runRan :: Ran g h a -> (a -> g b) -> h b
++runRan = getRan
++
++newtype (g `O` f) a = Compose { decompose :: g (f a) }
++
++instance (Functor g, Functor f) => Functor (g `O` f) where
++    fmap f = Compose . fmap (fmap f) . decompose
++
++inO :: (g (f a) -> g' (f' a')) -> ((g `O` f) a -> (g' `O` f') a')
++inO = (Compose .).(. decompose)
++
++inO2 :: (g (f a) -> g' (f' a') -> g'' (f'' a'')) -> ((g `O` f) a -> (g' `O` f') a' -> (g'' `O` f'') a'')
++inO2 h = inO . h . decompose
++
++instance (Applicative f, Applicative g) => Applicative (f `O` g) where
++    pure = Compose . pure . pure
++    (<*>) = inO2 (liftA2 (<*>)) 
++
++instance (Monad m, RanIso m) => Monad (Ran (G m) (H m)
++
++newtype RanT g h m a = RanT { getRanT :: Ran (g `O` G m) (h `O` H m) a } 
++
++class RanTrans g h where
++    liftRan :: RanIso m => m a -> RanT g h m a
++
++instance RanIso m => RanIso (RanT g h m) where
++    type G (RanT g h m) = g `O` G m
++    type H (RanT g h m) = h `O` H m
++    toRan = getRanT
++    fromRan = RanT
++
++instance (Monad m, RanTrans g h) => Monad (RanT g h m) where
++    return = liftRan . return
++    m >>= k = close (open m >>= \x -> open (k x)
+hunk ./src/Control/Monad/Ran/Codensity.hs 1
+-module Control.Monad.CPS.Codensity
++module Control.Monad.Ran.Codensity
+hunk ./src/Control/Monad/Ran/Codensity.hs 8
++import Control.Monad.Ran
+hunk ./src/Control/Monad/Ran/Codensity.hs 32
++
++instance RanIso f f (Codensity f) where
++    toRan x = Ran (getCodensity x)
++    fromRan x = Codensity (getRan x)
+hunk ./src/Control/Monad/Ran/Cont.hs 1
+-module Control.Monad.CPS.Cont 
++module Control.Monad.Ran.Cont 
+hunk ./src/Control/Monad/Ran/Cont.hs 16
+-import Control.Monad.CPS.Codensity
++import Control.Monad.Ran.Codensity
+hunk ./src/Control/Monad/Ran/Identity.hs 1
+-module Control.Monad.CPS.Identity 
+-    ( Identity(Identity, getIdentity)
+-    , runIdentity
++module Control.Monad.Ran.Identity 
++    ( Identity'(Identity', getIdentity')
++    , runIdentity'
+hunk ./src/Control/Monad/Ran/Identity.hs 7
++import Control.Monad.Identity
+hunk ./src/Control/Monad/Ran/Identity.hs 9
++import Control.Monad.Ran
+hunk ./src/Control/Monad/Ran/Identity.hs 11
+-newtype Identity a = Identity {getIdentity :: forall o. (a -> o) -> o}
++newtype Identity' a = Identity' {getIdentity' :: forall o. (a -> o) -> o}
+hunk ./src/Control/Monad/Ran/Identity.hs 13
+-instance Functor Identity where
+---  fmap f (Identity g) = Identity (\k -> g (\a -> k (f a)))
+-    fmap f (Identity g) = Identity (\k -> g (k . f))
++instance Functor Identity' where
++    fmap f (Identity' g) = Identity' (\k -> g (k . f))
+hunk ./src/Control/Monad/Ran/Identity.hs 16
+-instance Applicative Identity where
++instance Applicative Identity' where
+hunk ./src/Control/Monad/Ran/Identity.hs 20
+-instance Monad Identity where
+-    return a = Identity (\k -> k a)
+-    Identity g >>= f = Identity (\k -> g (\a -> getIdentity (f a) k))
++instance Monad Identity' where
++    return a = Identity' (\k -> k a)
++    Identity' g >>= f = Identity' (\k -> g (\a -> getIdentity' (f a) k))
+hunk ./src/Control/Monad/Ran/Identity.hs 24
+-runIdentity :: Identity a -> a
+-runIdentity (Identity f) = f id
++runIdentity' :: Identity' a -> a
++runIdentity' (Identity' f) = f id
++
++-- Identity' is Ran Identity Identity
++instance RanIso Identity Identity Identity' where
++    toRan (Identity' f) = Ran (\b -> Identity (f (runIdentity . b)))
++    fromRan (Ran f) = Identity' (\b -> runIdentity (f (Identity . b)))
+hunk ./src/Control/Monad/Ran/Maybe.hs 1
+-module Control.Monad.CPS.Maybe
++module Control.Monad.Ran.Maybe
+hunk ./src/Control/Monad/Ran/RWS.hs 2
+-module Control.Monad.CPS.RWS 
++module Control.Monad.Ran.RWS 
+hunk ./src/Control/Monad/Ran/Ran.hs 1
+-module Control.Monad.CPS.Ran
+-    ( Ran(Ran,getRan)
+-    ) where
+-
+-newtype Ran g h a = Ran { getRan :: forall b. (a -> g b) -> h b } 
+-
+-instance Functor (Ran g h) where
+-    fmap f m = Ran (\k -> getRan m (k . f))
+rmfile ./src/Control/Monad/Ran/Ran.hs
+hunk ./src/Control/Monad/Ran/Reader.hs 1
+-module Control.Monad.CPS.Reader 
++module Control.Monad.Ran.Reader 
+hunk ./src/Control/Monad/Ran/State.hs 2
+-module Control.Monad.CPS.State 
++module Control.Monad.Ran.State 
+hunk ./src/Control/Monad/Ran/State.hs 11
+-import Control.Monad.CPS.Codensity
++import Control.Monad.Ran.Codensity
+hunk ./src/Control/Monad/Ran/Writer.hs 2
+-module Control.Monad.CPS.Writer 
++module Control.Monad.Ran.Writer 
+hunk ./src/Control/Monad/Ran/Writer.hs 15
+--- CPS transformed writer, with all of the traditional mempty mappend baggage
++-- Ran transformed writer, with all of the traditional mempty mappend baggage
+hunk ./src/Control/Monad/Ran/Writer.hs 37
+--- writer as CPS transformed state, only pays for mappend when actually writing
++-- writer as Ran transformed state, only pays for mappend when actually writing
+}

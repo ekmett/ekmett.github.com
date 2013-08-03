@@ -1,0 +1,20 @@
+[RWS patched to have Applicative instance and MonadRWS instance
+ekmett@gmail.com**20090412081358
+ Ignore-this: 56fc50270ebfc33a9a783ed4f88d77a5
+] {
+hunk ./src/Control/Monad/CPS/RWS.hs 4
++    , module Control.Monad.RWS.Class
+hunk ./src/Control/Monad/CPS/RWS.hs 9
++import Control.Applicative
++import Control.Monad
+hunk ./src/Control/Monad/CPS/RWS.hs 18
+---instance Monoid w => Applicative (RWS r w s) where
+---    pure a = RWS (\k _ -> k a mempty)
+---    RwS f <*> RWS x = RWS (\k r -> f (\f' s' w -> x (\x' s'' w' -> k (f' x') s'' (w `mappend` w')) r s'))
++instance Monoid w => Applicative (RWS r w s) where
++    pure = return
++    (<*>) = ap
+hunk ./src/Control/Monad/CPS/RWS.hs 41
++
++instance Monoid w => MonadRWS r w s (RWS r w s)
+}

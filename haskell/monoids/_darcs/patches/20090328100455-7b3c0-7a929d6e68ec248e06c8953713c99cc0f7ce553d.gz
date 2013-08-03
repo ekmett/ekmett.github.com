@@ -1,0 +1,209 @@
+[added fold. documentation clean
+ekmett@gmail.com**20090328100455] {
+hunk ./Data/Monoid/Combinators.hs 34
++    , fold
+hunk ./Data/Monoid/Combinators.hs 64
+--- | Efficiently 'mapReduce' a 'Generator' using the 'Action' monoid. A specialized version of its namespace from "Data.Foldable" and "Control.Monad"
++-- | Efficiently 'mapReduce' a 'Generator' using the 'Action' monoid. A specialized version of its namesake from "Data.Foldable" and "Control.Monad"
+hunk ./Data/Monoid/Combinators.hs 72
+--- | Efficiently 'mapReduce' a 'Generator' using the 'Self' monoid. A specialized version of its namespace from "Data.Foldable"
++-- | Efficiently 'mapReduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
+hunk ./Data/Monoid/Combinators.hs 76
++-- | Efficiently 'reduce' a 'Generator' using the 'Self' monoid. A specialized version of its namesake from "Data.Foldable"
++fold :: (Monoid m, Generator c, Elem c ~ m) => c -> m
++fold = getSelf . reduce
++
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 10
+--- Portability :  portable
++-- Portability :  non-portable (MPTCs)
+hunk ./Data/Monoid/Multiplicative/Sugar.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Monoid.Multiplicative.Sugar
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  libraries@haskell.org
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-- Syntactic sugar for working with a 'Multiplicative' monoids that conflicts with names from the "Prelude".
++--
++-- > import Prelude hiding ((+),(*))
++-- > import Data.Monoid.Multiplicative.Sugar
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Monoid/Multiplicative/Transformer.hs 1
+-module Data.Monoid.Multiplicative.Transformer
+-    ( module Data.Monoid.Multiplicative
+-    , Log(Log, getLog)
+-    , Exp(Exp, getExp) 
+-    ) where
+-
+-import Data.Monoid.Multiplicative
+-
+-data Log m = Log { getLog :: m }
+-
+-instance Multiplicative m => Monoid (Log m) where
+-    mempty = Log one
+-    Log a `mappend` Log b = Log (a `times` b)
+-
+-data Exp m = Exp { getExp :: m }
+-
+-instance Monoid m => Multiplicative (Exp m) where
+-    one = Exp mempty
+-    Exp a `times` Exp b = Exp (a `mappend` b)
+rmfile ./Data/Monoid/Multiplicative/Transformer.hs
+hunk ./Data/Monoid/Multiplicative.hs 10
+--- Portability :  portable
++-- Portability :  portable (but instances use MPTCs)
+hunk ./Data/Monoid/Multiplicative.hs 32
+-
+hunk ./Data/Monoid/Multiplicative.hs 34
++    -- * Multiplicative Monoids
+hunk ./Data/Monoid/Multiplicative.hs 37
++    -- * Multiplicative to Monoid
++    , Log(Log, getLog)
++    -- * Monoid to Multiplicative
++    , Exp(Exp, getExp)
+hunk ./Data/Monoid/Multiplicative.hs 81
+--- simple monoid transformer instances
++-- | Convert a 'Multiplicative' into a 'Monoid'. Mnemonic: @Log a + Log b = Log (a * b)@
++data Log m = Log { getLog :: m }
++
++instance Multiplicative m => Monoid (Log m) where
++    mempty = Log one
++    Log a `mappend` Log b = Log (a `times` b)
+hunk ./Data/Monoid/Multiplicative.hs 88
++-- | Convert a 'Monoid' into a 'Multiplicative'. Mnemonic: @Exp a * Exp b = Exp (a + b)@
++data Exp m = Exp { getExp :: m }
++
++instance Monoid m => Multiplicative (Exp m) where
++    one = Exp mempty
++    Exp a `times` Exp b = Exp (a `mappend` b)
++
++-- simple monoid transformer instances
+hunk ./Data/Monoid/Reducer/Char.hs 2
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Monoid.Reducer.Char
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  libraries@haskell.org
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTCs)
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Monoid/Reducer/Char.hs 24
++-- | Provides a mechanism for the UTF8 'Monoid' to report invalid characters to one or more monoids.
++
+hunk ./Data/Monoid/Reducer/With.hs 2
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Monoid.Reducer.With
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  libraries@haskell.org
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTCs)
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Monoid/Reducer/With.hs 16
+-    , WithReducer(WithReducer,runWithReducer)
+-    , withoutReducer
++    , WithReducer(WithReducer,withoutReducer)
+hunk ./Data/Monoid/Reducer/With.hs 19
++import Control.Functor.Pointed
+hunk ./Data/Monoid/Reducer/With.hs 23
+-newtype WithReducer c m = WithReducer { runWithReducer :: (m,c) } 
+hunk ./Data/Monoid/Reducer/With.hs 24
+-withoutReducer :: c `WithReducer` m -> c
+-withoutReducer = snd . runWithReducer
++-- | If @m@ is a @c@-"Reducer", then m is @(c `WithReducer` m)@-"Reducer"
++--   This can be used to quickly select a "Reducer" for use as a 'FingerTree'
++--   'measure'.
++
++newtype WithReducer c m = WithReducer { withoutReducer :: c } 
+hunk ./Data/Monoid/Reducer/With.hs 31
+-    unit = fst . runWithReducer 
++    unit = unit . withoutReducer 
+hunk ./Data/Monoid/Reducer/With.hs 34
+-    measure = fst . runWithReducer
++    measure = unit . withoutReducer
+hunk ./Data/Monoid/Reducer.hs 1
+-{-# LANGUAGE UndecidableInstances , FlexibleContexts , MultiParamTypeClasses , FlexibleInstances , GeneralizedNewtypeDeriving , FunctionalDependencies #-}
++{-# LANGUAGE UndecidableInstances , FlexibleContexts , MultiParamTypeClasses , FlexibleInstances , GeneralizedNewtypeDeriving #-}
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Monoid.Reducer
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  libraries@haskell.org
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTCs)
++--
++-- A @c@-'Reducer' is a 'Monoid' with a canonical mapping from @c@ to the Monoid.
++-- This 'unit' acts in many ways like 'return' for a 'Monad' but is limited
++-- to a single type.
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Monoid/Reducer.hs 45
+--- minimal definition unit or snoc
++
++-- | This type may be best read infix. A @c `Reducer` m@ is a 'Monoid' @m@ that maps
++-- values of type @c@ through @unit@ to values of type @m@. A @c@-'Reducer' may also
++-- supply operations which tack-on another @c@ to an existing 'Monoid' @m@ on the left
++-- or right. These specialized reductions may be more efficient in some scenarios
++-- and are used when appropriate by a 'Generator'. The names 'cons' and 'snoc' work
++-- by analogy to the synonymous operations in the list monoid.
++--
++-- This class deliberately avoids functional-dependencies, so that () can be a @c@-Reducer
++-- for all @c@, and so many common reducers can work over multiple types, for instance,
++-- First and Last may reduce both @a@ and 'Maybe' @a@. Since a 'Generator' has a fixed element
++-- type, the input to the reducer is generally known and extracting from the monoid usually
++-- is sufficient to fix the result type. Combinators are available for most scenarios where
++-- this is not the case, and the few remaining cases can be handled by using an explicit 
++-- type annotation.
++--
++-- Minimal definition: 'unit' or 'snoc'
+hunk ./Data/Monoid/Reducer.hs 63
++    -- | Convert a value into a 'Monoid'
+hunk ./Data/Monoid/Reducer.hs 65
++    -- | Append a value to a 'Monoid' for use in left-to-right reduction
+hunk ./Data/Monoid/Reducer.hs 67
++    -- | Prepend a value onto a 'Monoid' for use during right-to-left reduction
+hunk ./Data/Monoid/Reducer.hs 74
++-- | Apply a 'Reducer' to a 'Foldable' container, after mapping the contents into a suitable form for reduction.
+hunk ./Data/Monoid/Reducer.hs 78
++-- | Apply a 'Reducer' to a 'Foldable' mapping each element through 'unit'
+hunk ./Data/Monoid/Self.hs 2
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Monoid.Self
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  libraries@haskell.org
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-- A simple 'Monoid' transformer that takes a 'Monoid' m and produces a new @m@-Reducer named 'Self' @m@
++-- 
++-- This is useful when you have a generator that already contains monoidal values or someone supplies
++-- the map to the monoid in the form of a function rather than as a "Reducer" instance. You can just
++-- @'getSelf' . `reduce`@ or @'getSelf' . 'mapReduce' f@ in those scenarios. These behaviors are encapsulated 
++-- into the 'fold' and 'foldMap' combinators in "Data.Monoid.Combinators" respectively.
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Monoid/Self.hs 28
++import Data.Monoid.Generator
+hunk ./monoids.cabal 36
+-    Data.Monoid.Multiplicative.Transformer
+}

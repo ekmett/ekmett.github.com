@@ -1,0 +1,19 @@
+name:			thash
+version:		0.3
+license:		BSD3
+license-file:		LICENSE
+build-depends:		base -any, stm -any
+author:			Edward Kmett
+maintainer:		ekmett@gmail.com
+stability:		alpha
+homepage:		http://slipwave.info/
+synopsis:		An STM-based hash
+copyright:		Copyright (C) 2006 Edward Kmett. 
+description: 		An STM-based hash
+extensions:		MultiParamTypeClasses, FunctionalDependencies
+exposed-modules:	
+	Data.Hashable,
+	Data.THash,
+	Data.THash.THT
+ghc-options:		-O2 -funbox-strict-fields
+hs-source-dirs:		src

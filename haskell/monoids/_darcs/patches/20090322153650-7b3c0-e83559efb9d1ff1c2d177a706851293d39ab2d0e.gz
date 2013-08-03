@@ -1,0 +1,6 @@
+[lines start at character 1, not 0
+ekmett@gmail.com**20090322153650] {
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 61
+-    lex '\n' = Lines 1 0
++    lex '\n' = Lines 1 1
+}

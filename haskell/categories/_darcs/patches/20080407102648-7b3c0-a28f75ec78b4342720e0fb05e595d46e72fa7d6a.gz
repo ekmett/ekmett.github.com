@@ -1,0 +1,544 @@
+[final draft for the night
+ekmett@gmail.com**20080407102648] {
+adddir ./src/Control/Category/Cartesian
+hunk ./categories.cabal 43
++	Control.Category.Cartesian.Closed,
++	Control.Category.Distributive,
+hunk ./categories.cabal 52
++	Control.Category.Functor.Native,
+hunk ./categories.cabal 54
++	Control.Category.Functor.Representable,
+hunk ./src/Control/Category/Arrow.hs 1
+--------------------------------------------------------------------------------------------
+--- |
++------------------------------------------------------------------------------------------- -- |
+hunk ./src/Control/Category/Arrow.hs 20
+-	HasProducts k
++	Cartesian k
+hunk ./src/Control/Category/Arrow/Dual.hs 21
+-	HasCoproducts k
++	CoCartesian k
+hunk ./src/Control/Category/Bifunctor/Associative.hs 13
+--- a 'near-monoidal' category that lacks an identity (since there can be no initial object in
+--- the category Hask, but it also has a near-coproduct in the form of 'Either'.
++-- a category with a bifunctor that acts as a semigroup (that is to say 'is associative') 
++-- but which unlike a monoidal category, lacks an identity (since there can be no initial 
++-- object in the category Hask, but it also has a near-coproduct in the form of 'Either'.
+hunk ./src/Control/Category/Cartesian.hs 14
+-	-- * Products
+-	  HasProducts(..)
+-	, bimapProduct, braidProduct, associateProduct, coassociateProduct
+-	-- * Coproducts 
+-	, HasCoproducts(..)
+-	, bimapCoproduct, braidCoproduct, associateCoproduct, coassociateCoproduct
+-	-- * Distributive Categories
+-	, factor	-- the canonical factoring morphism
+-	, Distributive(..)
+-	-- * Cartesian Closed Category
+-	, CCC(..)
+-	, unitCCC, counitCCC
+-	-- * Co-(Cartesian Closed Category)
+-	, CoCCC(..)
+-	, unitCoCCC, counitCoCCC
++	-- * Cartesian categories
++	  Cartesian(..)
++	, bimapCartesian, braidCartesian, associateCartesian, coassociateCartesian
++	-- * Co-Cartesian categories
++	, CoCartesian(..)
++	, bimapCoCartesian, braidCoCartesian, associateCoCartesian, coassociateCoCartesian
+hunk ./src/Control/Category/Cartesian.hs 35
+-@class (Monoidal k (Prod k), Braided k (Prod k)) => HasProducts k where ...@
++@class (Monoidal k (Prod k), Braided k (Prod k)) => Cartesian k where ...@
+hunk ./src/Control/Category/Cartesian.hs 47
+-class (Associative (Prod k) k, Coassociative (Prod k) k, Braided (Prod k) k) => HasProducts k where
++class (Associative (Prod k) k, Coassociative (Prod k) k, Braided (Prod k) k) => Cartesian k where
+hunk ./src/Control/Category/Cartesian.hs 67
+-bimapProduct :: HasProducts k => k a c -> k b d -> k (Prod k a b) (Prod k c d)
+-bimapProduct f g = (f . fst) &&& (g . snd)
++bimapCartesian :: Cartesian k => k a c -> k b d -> k (Prod k a b) (Prod k c d)
++bimapCartesian f g = (f . fst) &&& (g . snd)
+hunk ./src/Control/Category/Cartesian.hs 71
+-braidProduct :: HasProducts k => k (Prod k a b) (Prod k b a)
+-braidProduct = snd &&& fst
++braidCartesian :: Cartesian k => k (Prod k a b) (Prod k b a)
++braidCartesian = snd &&& fst
+hunk ./src/Control/Category/Cartesian.hs 75
+-associateProduct :: HasProducts k => k (Prod k (Prod k a b) c) (Prod k a (Prod k b c))
+-associateProduct = (fst . fst) &&& first snd
++associateCartesian :: Cartesian k => k (Prod k (Prod k a b) c) (Prod k a (Prod k b c))
++associateCartesian = (fst . fst) &&& first snd
+hunk ./src/Control/Category/Cartesian.hs 79
+-coassociateProduct :: HasProducts k => k (Prod k a (Prod k b c)) (Prod k (Prod k a b) c)
+-coassociateProduct = braid . second braid . associateProduct . first braid . braid 
++coassociateCartesian :: Cartesian k => k (Prod k a (Prod k b c)) (Prod k (Prod k a b) c)
++coassociateCartesian = braid . second braid . associateCartesian . first braid . braid 
+hunk ./src/Control/Category/Cartesian.hs 82
+--- * Coproducts
++-- * Co-Cartesian categories
+hunk ./src/Control/Category/Cartesian.hs 84
+--- a category that has finite coproducts, weakened the same way as HasProducts above was weakened
+-class (Associative (Sum k) k, Coassociative (Sum k) k, Braided (Sum k) k) => HasCoproducts k where
++-- a category that has finite coproducts, weakened the same way as Cartesian above was weakened
++class (Associative (Sum k) k, Coassociative (Sum k) k, Braided (Sum k) k) => CoCartesian k where
+hunk ./src/Control/Category/Cartesian.hs 105
+-bimapCoproduct :: HasCoproducts k => k a c -> k b d -> k (Sum k a b) (Sum k c d)
+-bimapCoproduct f g = (inl . f) ||| (inr . g)
++bimapCoCartesian :: CoCartesian k => k a c -> k b d -> k (Sum k a b) (Sum k c d)
++bimapCoCartesian f g = (inl . f) ||| (inr . g)
+hunk ./src/Control/Category/Cartesian.hs 109
+-braidCoproduct :: HasCoproducts k => k (Sum k a b) (Sum k b a)
+-braidCoproduct = inr ||| inl
++braidCoCartesian :: CoCartesian k => k (Sum k a b) (Sum k b a)
++braidCoCartesian = inr ||| inl
+hunk ./src/Control/Category/Cartesian.hs 113
+-associateCoproduct :: HasCoproducts k => k (Sum k (Sum k a b) c) (Sum k a (Sum k b c))
+-associateCoproduct = braid . first braid . coassociateCoproduct . second braid . braid
++associateCoCartesian :: CoCartesian k => k (Sum k (Sum k a b) c) (Sum k a (Sum k b c))
++associateCoCartesian = braid . first braid . coassociateCoCartesian . second braid . braid
+hunk ./src/Control/Category/Cartesian.hs 117
+-coassociateCoproduct :: HasCoproducts k => k (Sum k a (Sum k b c)) (Sum k (Sum k a b) c)
+-coassociateCoproduct = (inl . inl) ||| first inr
+-
+--- | the canonical morphism usually known as delta
+-factor :: (HasProducts k, HasCoproducts k) => k (Sum k (Prod k a b) (Prod k a c)) (Prod k a (Sum k b c))
+-factor = second inl ||| second inr
+-
+-class (HasProducts k, HasCoproducts k) => Distributive k where
+-	distribute :: k (Prod k a (Sum k b c)) (Sum k (Prod k a b) (Prod k a c))
+-
+-{-# RULES
+-	"factor . distribute"	 factor . distribute = id
+-	"distribute . factor"    distribute . factor = id
+- #-}
+-
+--- * Closed Cartesian Category 
+-
+--- | A 'CCC' has full-fledged monoidal finite products and exponentials
+-
+--- Ideally you also want an instance for @'Bifunctor' ('Exp' k) ('Dual' k) k k@.
+--- or at least @'Functor' ('Exp' k a) k k@, which cannot be expressed in the constraints here.
+-
+-class (Monoidal (Prod k) k, HasProducts k) => CCC k where
+-#ifndef __HADDOCK__
+-	type Exp k :: * -> * -> *
+-#endif
+-	apply :: k (Prod k (Exp k a b) a) b
+-	curry :: k (Prod k a b) c -> k a (Exp k b c)
+-	uncurry :: k a (Exp k b c) -> k (Prod k a b) c
+-
+-{-# RULES
+-	"curry apply" 		curry apply = id
+-	"curry . uncurry" 	curry . uncurry = id
+-	"uncurry . curry" 	uncurry . curry = id
+- #-}
+-
+--- * Free 'Adjunction' (Prod k a) (Exp k a) k k 
+-
+-unitCCC :: CCC k => k a (Exp k b (Prod k b a))
+-unitCCC = curry braid
+-
+-counitCCC :: CCC k => k (Prod k b (Exp k b a)) a
+-counitCCC = apply . braid
+-
+--- * A Co-(Closed Cartesian Category) 
+-
+--- | A Co-CCC has full-fledged comonoidal finite coproducts and coexponentials
+-
+--- You probably also want an instance for @'Bifunctor' ('Coexp' k) ('Dual' k) k k@.
+-
+-class (Comonoidal (Sum k) k, HasCoproducts k) => CoCCC k where
+-#ifndef __HADDOCK__
+-	type Coexp k :: * -> * -> *
+-#endif
+-	coapply :: k b (Sum k (Coexp k a b) a)
+-	cocurry :: k c (Sum k a b) -> k (Coexp k b c) a
+-	uncocurry :: k (Coexp k b c) a -> k c (Sum k a b)
+-
+-{-# RULES
+-	"cocurry coapply" 	cocurry coapply = id
+-	"cocurry . uncocurry"	cocurry . uncocurry = id
+-	"uncocurry . cocurry"   uncocurry . cocurry = id
+- #-}
+-
+--- * Free 'Adjunction' (Coexp k a) (Sum k a) k k 
+-
+-unitCoCCC :: CoCCC k => k a (Sum k b (Coexp k b a))
+-unitCoCCC = braid . coapply
+-
+-counitCoCCC :: CoCCC k => k (Coexp k b (Sum k b a)) a
+-counitCoCCC = cocurry braid
+-
++coassociateCoCartesian :: CoCartesian k => k (Sum k a (Sum k b c)) (Sum k (Sum k a b) c)
++coassociateCoCartesian = (inl . inl) ||| first inr
+addfile ./src/Control/Category/Cartesian/Closed.hs
+hunk ./src/Control/Category/Cartesian/Closed.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Category.Cartesian.Closed
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++module Control.Category.Cartesian.Closed
++	( 
++	-- * Cartesian Closed Category
++	  CCC(..)
++	, unitCCC, counitCCC
++	-- * Co-(Cartesian Closed Category)
++	, CoCCC(..)
++	, unitCoCCC, counitCoCCC
++	) where
++
++import Prelude hiding (Functor, map, (.), id, fst, snd, curry, uncurry)
++
++import Control.Category
++import Control.Category.Functor
++import Control.Category.Functor.Adjunction
++import Control.Category.Distributive
++import Control.Category.Cartesian
++
++import Control.Category.Bifunctor
++import Control.Category.Bifunctor.Associative
++import Control.Category.Bifunctor.Braided
++import Control.Category.Bifunctor.Monoidal
++
++-- * Closed Cartesian Category 
++
++-- | A 'CCC' has full-fledged monoidal finite products and exponentials
++
++-- Ideally you also want an instance for @'Bifunctor' ('Exp' k) ('Dual' k) k k@.
++-- or at least @'Functor' ('Exp' k a) k k@, which cannot be expressed in the constraints here.
++
++class (Monoidal (Prod k) k, Cartesian k) => CCC k where
++#ifndef __HADDOCK__
++	type Exp k :: * -> * -> *
++#endif
++	apply :: k (Prod k (Exp k a b) a) b
++	curry :: k (Prod k a b) c -> k a (Exp k b c)
++	uncurry :: k a (Exp k b c) -> k (Prod k a b) c
++
++{-# RULES
++	"curry apply" 		curry apply = id
++	"curry . uncurry" 	curry . uncurry = id
++	"uncurry . curry" 	uncurry . curry = id
++ #-}
++
++-- * Free 'Adjunction' (Prod k a) (Exp k a) k k 
++
++unitCCC :: CCC k => k a (Exp k b (Prod k b a))
++unitCCC = curry braid
++
++counitCCC :: CCC k => k (Prod k b (Exp k b a)) a
++counitCCC = apply . braid
++
++-- * A Co-(Closed Cartesian Category) 
++
++-- | A Co-CCC has full-fledged comonoidal finite coproducts and coexponentials
++
++-- You probably also want an instance for @'Bifunctor' ('Coexp' k) ('Dual' k) k k@.
++
++class (Comonoidal (Sum k) k, CoCartesian k) => CoCCC k where
++#ifndef __HADDOCK__
++	type Coexp k :: * -> * -> *
++#endif
++	coapply :: k b (Sum k (Coexp k a b) a)
++	cocurry :: k c (Sum k a b) -> k (Coexp k b c) a
++	uncocurry :: k (Coexp k b c) a -> k c (Sum k a b)
++
++{-# RULES
++	"cocurry coapply" 	cocurry coapply = id
++	"cocurry . uncocurry"	cocurry . uncocurry = id
++	"uncocurry . cocurry"   uncocurry . cocurry = id
++ #-}
++
++-- * Free 'Adjunction' (Coexp k a) (Sum k a) k k 
++
++unitCoCCC :: CoCCC k => k a (Sum k b (Coexp k b a))
++unitCoCCC = braid . coapply
++
++counitCoCCC :: CoCCC k => k (Coexp k b (Sum k b a)) a
++counitCoCCC = cocurry braid
++
++
+hunk ./src/Control/Category/Classes.hs 24
++	, module Control.Category.Cartesian.Closed
++	, module Control.Category.Distributive
+hunk ./src/Control/Category/Classes.hs 33
++	, module Control.Category.Functor.Representable
+hunk ./src/Control/Category/Classes.hs 52
++import Control.Category.Cartesian.Closed
++import Control.Category.Distributive
+hunk ./src/Control/Category/Classes.hs 61
++import Control.Category.Functor.Representable
+hunk ./src/Control/Category/Comonad/Reader.hs 24
++import Control.Category.Hask
+hunk ./src/Control/Category/Comonad/Reader.hs 28
+---instance (Canonical k (ReaderW e k a) (Prod k a e), HasProducts k) => Functor (ReaderW e k) k k where
++class Cartesian k => HasReaderW k where
++	readerW :: k (Prod k a e) (ReaderW e k a)
++	unreaderW :: k (ReaderW e k a) (Prod k a e)
++	
++instance HasReaderW (->) where
++	readerW = ReaderW
++	unreaderW (ReaderW x) = x
++
++--instance HasReaderW k => Functor (ReaderW e k) k k where
+hunk ./src/Control/Category/Comonad/Reader.hs 38
+---
+---instance (Canonical k (ReaderW e k a) (Prod k a e), HasProducts k) => Copointed (ReaderW e k) k where
+---	extract = fst . iso
+---
+---instance (Canonical k (ReaderW e k a) (Prod k a e), HasProducts k) => Comonad (ReaderW e k) k where
+---	extend k = uniso . (k &&& snd) . iso
+---	duplicate = uniso .  coassociate . second diag . iso
++
++--instance HasReaderW k => Copointed (ReaderW e k) k where
++--	extract = fst . unreaderW
++
++--instance HasReaderW k => Comonad (ReaderW e k) k where
++--	extend k = readerW . (k &&& snd) . unreaderW
++--	duplicate = readerW .  coassociate . second diag . unreaderW
+addfile ./src/Control/Category/Distributive.hs
+hunk ./src/Control/Category/Distributive.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Category.Distributive
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++module Control.Category.Distributive
++	( 
++	-- * Distributive Categories
++	  factor	-- the canonical factoring morphism
++	, Distributive(..)
++	) where
++
++import Prelude hiding (Functor, map, (.), id, fst, snd, curry, uncurry)
++
++import Control.Category
++import Control.Category.Functor
++import Control.Category.Functor.Adjunction
++import Control.Category.Cartesian
++
++import Control.Category.Bifunctor
++import Control.Category.Bifunctor.Associative
++import Control.Category.Bifunctor.Braided
++import Control.Category.Bifunctor.Monoidal
++
++-- | the canonical morphism usually known as delta
++factor :: (Cartesian k, CoCartesian k) => k (Sum k (Prod k a b) (Prod k a c)) (Prod k a (Sum k b c))
++factor = second inl ||| second inr
++
++-- | A category in which 'factor' is an isomorphism
++class (Cartesian k, CoCartesian k) => Distributive k where
++	distribute :: k (Prod k a (Sum k b c)) (Sum k (Prod k a b) (Prod k a c))
++
++{-# RULES
++	"factor . distribute"	 factor . distribute = id
++	"distribute . factor"    distribute . factor = id
++ #-}
+hunk ./src/Control/Category/Dual.hs 11
+--- The dual of a category is another category
++-- The dual of a category is another category. 
++-- 
++-- This notion appears to be fundamentally flawed because the instances here seem to actively
++-- get in the way of other instances. TODO: wrap functors 
+hunk ./src/Control/Category/Dual.hs 42
+-instance HasProducts k => HasCoproducts (Dual k) where
++instance Cartesian k => CoCartesian (Dual k) where
+hunk ./src/Control/Category/Dual.hs 51
+-instance HasCoproducts k => HasProducts (Dual k) where
++instance CoCartesian k => Cartesian (Dual k) where
+hunk ./src/Control/Category/Functor/Applicative.hs 20
++import Control.Category.Cartesian.Closed
+hunk ./src/Control/Category/Functor/Applicative.hs 22
+-class (CCC c, HasProducts d, Functor f c d) => Applicative f c d where
++class (CCC c, Cartesian d, Functor f c d) => Applicative f c d where
+hunk ./src/Control/Category/Functor/Applicative.hs 28
+-class (CoCCC c, HasCoproducts d, Functor f c d) => Coapplicative f c d where
++class (CoCCC c, CoCartesian d, Functor f c d) => Coapplicative f c d where
+addfile ./src/Control/Category/Functor/Identity.hs
+hunk ./src/Control/Category/Functor/Identity.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Category.Functor.Identity
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++
++module Control.Category.Functor.Identity where
++
++import Prelude hiding (Functor, map, id, (.), return, Monad)
++import qualified Prelude
++
++import Control.Category
++import Control.Category.Functor.Full
++import Control.Category.Functor.Pointed
++import Control.Category.Functor.Applicative
++import Control.Category.Functor
++import Control.Category.Monad
++import Control.Category.Comonad
++import Control.Category.Hask
++
++newtype Identity a = Identity { runIdentity :: a }
++
++instance Functor Identity (->) (->) where
++	map f = return . f . extract 
++
++instance Full Identity (->) (->) where
++	premap f = extract . f . return
++
++instance Faithful Identity (->) (->)
++
++instance Pointed Identity (->) where
++	return = Identity
++
++instance Copointed Identity (->) where
++	extract = runIdentity
++
++instance Applicative Identity (->) (->) where
++	ap (Identity f, Identity x) = Identity (f x)
++	
++instance Monad Identity (->) where
++	join = extract
++
++instance Comonad Identity (->) where
++	duplicate = return
+hunk ./src/Control/Category/Functor/Instances.hs 21
++import Control.Category.Bifunctor
+hunk ./src/Control/Category/Functor/Instances.hs 23
++import Control.Category.Cartesian.Closed
++import Control.Category.Comonad
+hunk ./src/Control/Category/Functor/Instances.hs 30
+-import Control.Category.Bifunctor
++import Control.Category.Functor.Representable
+hunk ./src/Control/Category/Functor/Instances.hs 32
+-import Control.Category.Comonad
++import Control.Category.Hask
+hunk ./src/Control/Category/Functor/Instances.hs 34
+-instance Bifunctor f k1 k2 k3 => Functor (f a) k2 k3 where
+-	map = second
+hunk ./src/Control/Category/Functor/Instances.hs 35
+-#ifndef __HADDOCK__
+hunk ./src/Control/Category/Functor/Instances.hs 36
++{- |
+hunk ./src/Control/Category/Functor/Instances.hs 39
++instance Bifunctor f k1 k2 k3 => Functor (f a) k2 k3 where
++	map = second
++
+hunk ./src/Control/Category/Functor/Instances.hs 67
+-instance (HasProducts c, HasBitransform (Prod c) c c c, Pointed f c, Pointed g c) => Pointed (Bitransform (Prod c) f g) c where
++instance (Cartesian c, HasBitransform (Prod c) c c c, Pointed f c, Pointed g c) => Pointed (Bitransform (Prod c) f g) c where
+hunk ./src/Control/Category/Functor/Instances.hs 70
+-instance (HasCoproducts c, HasBitransform (Sum c) c c c, Copointed f c, Copointed g c) => Copointed (Bitransform (Sum c) f g) c where
++instance (CoCartesian c, HasBitransform (Sum c) c c c, Copointed f c, Copointed g c) => Copointed (Bitransform (Sum c) f g) c where
+hunk ./src/Control/Category/Functor/Instances.hs 75
+-#endif
++-}
++
++{-
++data Rep a b c = Rep (a -> c) (b -> c) 
++
++class Functor (Rep a b) (->) (->) where
++	map f (Rep l r) = Rep (f . l) (f . r)
++
++instance Representable (Rep a b) (Either a b) (->) where
++	rep f = Rep (f . inl) (f . inr)
++	unrep (Rep l r) = either l r
++-}
+hunk ./src/Control/Category/Hask.hs 38
+-	associate = associateProduct
++	associate = associateCartesian
+hunk ./src/Control/Category/Hask.hs 40
+-	coassociate = coassociateProduct
++	coassociate = coassociateCartesian
+hunk ./src/Control/Category/Hask.hs 53
+-instance HasProducts (->) where
++instance Cartesian (->) where
+hunk ./src/Control/Category/Hask.hs 66
+-	coassociate = coassociateCoproduct
++	coassociate = coassociateCoCartesian
+hunk ./src/Control/Category/Hask.hs 68
+-	associate = associateCoproduct
++	associate = associateCoCartesian
+hunk ./src/Control/Category/Hask.hs 72
+-instance HasCoproducts (->) where
++instance CoCartesian (->) where
+hunk ./src/Control/Category/Hask.hs 122
++
+hunk ./src/Control/Category/Loop.hs 18
+-class HasProducts k => Loop k where
++class Cartesian k => Loop k where
+hunk ./src/Control/Category/Transformer/Reader.hs 1
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Control.Category.Transformer.Reader
++-- Copyright 	: 2008 Edward Kmett
++-- License	: BSD
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (class-associated types)
++--
++-------------------------------------------------------------------------------------------
++
+hunk ./src/Control/Category/Transformer/Reader.hs 26
+-instance HasProducts k => Category (Reader e k) where
++instance Cartesian k => Category (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 30
+-instance HasProducts k => CategoryTransformer (Reader e) k where
++instance Cartesian k => CategoryTransformer (Reader e) k where
+hunk ./src/Control/Category/Transformer/Reader.hs 33
+-instance HasProducts k => CategoryReader e (Reader e k) where
++instance Cartesian k => CategoryReader e (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 36
+-instance (HasProducts k, HasTerminalObject k) => HasTerminalObject (Reader e k) where
++instance (Cartesian k, HasTerminalObject k) => HasTerminalObject (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 42
+-instance (HasProducts k, HasInitialObject k) => HasInitialObject (Reader e k) where
++instance (Cartesian k, HasInitialObject k) => HasInitialObject (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 48
+---instance (Functor f k k, HasProducts k) => Functor f (Reader e k) (Reader e k) where
++--instance (Functor f k k, Cartesian k) => Functor f (Reader e k) (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 51
+-instance (HasProducts k) => Bifunctor (Prod k) (Reader e k) (Reader e k) (Reader e k) where
++instance (Cartesian k) => Bifunctor (Prod k) (Reader e k) (Reader e k) (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 56
+-instance (HasProducts k, HasCoproducts k) => Bifunctor (Sum k) (Reader e k) (Reader e k) (Reader e k) where
++instance (Cartesian k, CoCartesian k) => Bifunctor (Sum k) (Reader e k) (Reader e k) (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 60
+-instance (HasProducts k, Bifunctor f (Reader e k) (Reader e k) (Reader e k), Associative f k) => Associative f (Reader e k) where
++instance (Cartesian k, Bifunctor f (Reader e k) (Reader e k) (Reader e k), Associative f k) => Associative f (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 63
+-instance (HasProducts k, Bifunctor f (Reader e k) (Reader e k) (Reader e k), Coassociative f k) => Coassociative f (Reader e k) where
++instance (Cartesian k, Bifunctor f (Reader e k) (Reader e k) (Reader e k), Coassociative f k) => Coassociative f (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 71
+-instance (Bifunctor f (Reader e k) (Reader e k) (Reader e k), Monoidal f k, HasProducts k) => Monoidal f (Reader e k) where
++instance (Bifunctor f (Reader e k) (Reader e k) (Reader e k), Monoidal f k, Cartesian k) => Monoidal f (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 75
+-instance (Bifunctor f (Reader e k) (Reader e k) (Reader e k), Comonoidal f k, HasProducts k) => Comonoidal f (Reader e k) where
++instance (Bifunctor f (Reader e k) (Reader e k) (Reader e k), Comonoidal f k, Cartesian k) => Comonoidal f (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 79
+-instance HasProducts k => HasProducts (Reader e k) where
++instance Cartesian k => Cartesian (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 87
+-instance (HasProducts k, HasCoproducts k) => HasCoproducts (Reader e k) where
++instance (Cartesian k, CoCartesian k) => CoCartesian (Reader e k) where
+hunk ./src/Control/Category/Transformer/Reader.hs 95
+-instance (Bifunctor p (Reader e k) (Reader e k) (Reader e k), HasProducts k, Braided p k) => Braided p (Reader e k) where
++instance (Bifunctor p (Reader e k) (Reader e k) (Reader e k), Cartesian k, Braided p k) => Braided p (Reader e k) where
+}

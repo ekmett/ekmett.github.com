@@ -1,0 +1,6 @@
+[auto
+ekmett@gmail.com**20090414092329
+ Ignore-this: 7ce79ed659f0f693eccea88d22d7802
+] hunk ./Control/Monad/Ran.hs 122
+-    Ran m `mplus` n = Ran (\k -> Endo (\z -> appEndo (getRan m k) (appEndo (getRan n k) z)) 
++    Ran m `mplus` n = Ran (\k -> Endo (\z -> appEndo (getRan m k) (appEndo (getRan n k) z)))

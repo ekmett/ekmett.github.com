@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: What Constraints Entail: Part 2</title>
+	<atom:link href="http://comonad.com/reader/2011/what-constraints-entail-part-2/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: zzo38</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-105341</link>
+		<dc:creator>zzo38</dc:creator>
+		<pubDate>Tue, 26 Jun 2012 19:08:42 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-105341</guid>
+		<description>I like this! Nevertheless they are not perfect, not like real superclass, it is why I wanted to define my own programming language to correct these things, but at least Haskell has been improved by these thing so that much works OK.</description>
+		<content:encoded><![CDATA[<p>I like this! Nevertheless they are not perfect, not like real superclass, it is why I wanted to define my own programming language to correct these things, but at least Haskell has been improved by these thing so that much works OK.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Philip J-F</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-103013</link>
+		<dc:creator>Philip J-F</dc:creator>
+		<pubDate>Thu, 01 Mar 2012 07:04:59 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-103013</guid>
+		<description>Inspired by this discussion I wrote a post showing how to get multiple, passable, effectively first-class, instances.  I borrowed your applicative example: http://joyoftypes.blogspot.com/2012/02/haskell-supports-first-class-instances.html</description>
+		<content:encoded><![CDATA[<p>Inspired by this discussion I wrote a post showing how to get multiple, passable, effectively first-class, instances.  I borrowed your applicative example: <a href="http://joyoftypes.blogspot.com/2012/02/haskell-supports-first-class-instances.html" rel="nofollow">http://joyoftypes.blogspot.com/2012/02/haskell-supports-first-class-instances.html</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-85122</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 19:57:21 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-85122</guid>
+		<description>I raised the issue to Max. Not sure there is a good way for it to be defined in user land, because
+
+() =&gt; q and q are interchangeable, so it would require compiler support.
+
+The most compelling use case is to make code like 
+
+on :: (p a, p b) =&gt; (c -&gt; c -&gt; d) -&gt; (forall x. p x =&gt; x -&gt; c) -&gt; a -&gt; b -&gt; d
+
+inhabitable for
+
+((++) `on` show)
+
+but it impacts all sorts of unrelated areas in the compiler.</description>
+		<content:encoded><![CDATA[<p>I raised the issue to Max. Not sure there is a good way for it to be defined in user land, because</p>
+<p>() => q and q are interchangeable, so it would require compiler support.</p>
+<p>The most compelling use case is to make code like </p>
+<p>on :: (p a, p b) => (c -> c -> d) -> (forall x. p x => x -> c) -> a -> b -> d</p>
+<p>inhabitable for</p>
+<p>((++) `on` show)</p>
+<p>but it impacts all sorts of unrelated areas in the compiler.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Doug McClean</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-85119</link>
+		<dc:creator>Doug McClean</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 19:43:53 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-85119</guid>
+		<description>Yeah, I was thinking of that definition and the corresponding
+
+type family Unqualified t :: *
+type instance Unqualified (p =&gt; q) = q
+
+Alas there is a logical reason why it doesn&#039;t make sense.
+
+{-# LANGUAGE CommunistTypeSynonyms #-}?</description>
+		<content:encoded><![CDATA[<p>Yeah, I was thinking of that definition and the corresponding</p>
+<p>type family Unqualified t :: *<br />
+type instance Unqualified (p =&gt; q) = q</p>
+<p>Alas there is a logical reason why it doesn&#8217;t make sense.</p>
+<p>{-# LANGUAGE CommunistTypeSynonyms #-}?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-85115</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 19:13:11 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-85115</guid>
+		<description>As an aside, you can _write_
+
+type family Constraints t :: Constraints
+type instance Constraints (p =&gt; q) = p
+
+you just can&#039;t use it anywhere. =/
+
+The compiler complains when you go to use it that you need LiberalTypeSynonyms even if you have LiberalTypeSynonyms turned on. ;)</description>
+		<content:encoded><![CDATA[<p>As an aside, you can _write_</p>
+<p>type family Constraints t :: Constraints<br />
+type instance Constraints (p => q) = p</p>
+<p>you just can&#8217;t use it anywhere. =/</p>
+<p>The compiler complains when you go to use it that you need LiberalTypeSynonyms even if you have LiberalTypeSynonyms turned on. ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Doug McClean</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-85094</link>
+		<dc:creator>Doug McClean</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 16:39:00 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-85094</guid>
+		<description>Ah, ok, I&#039;m on the right page now. This can&#039;t work because context reduction/constraint simplification is such a mess.
+
+Probably a good thing, too, because for something like this you wouldn&#039;t want any context reduction in the first place, you&#039;d want the naively inferred context that is based solely on what class functions are actually mentioned in a definition.
+
+This is because you might want to occasionally use an ordering on, say, lists other than the lexical one in the prelude (say, by sum or whatever). If the context gets reduced from Ord ([Salary]) to Ord Salary then you&#039;ve already lost your chance.
+
+Proxies it is.</description>
+		<content:encoded><![CDATA[<p>Ah, ok, I&#8217;m on the right page now. This can&#8217;t work because context reduction/constraint simplification is such a mess.</p>
+<p>Probably a good thing, too, because for something like this you wouldn&#8217;t want any context reduction in the first place, you&#8217;d want the naively inferred context that is based solely on what class functions are actually mentioned in a definition.</p>
+<p>This is because you might want to occasionally use an ordering on, say, lists other than the lexical one in the prelude (say, by sum or whatever). If the context gets reduced from Ord ([Salary]) to Ord Salary then you&#8217;ve already lost your chance.</p>
+<p>Proxies it is.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-84953</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 00:23:20 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-84953</guid>
+		<description>Dan Peebles has some nice examples for things like a more polymorphic &#039;on&#039; that could benefit, but in the meantime, one can use explicit proxies to work around the inability to name the constraint implicitly.</description>
+		<content:encoded><![CDATA[<p>Dan Peebles has some nice examples for things like a more polymorphic &#8216;on&#8217; that could benefit, but in the meantime, one can use explicit proxies to work around the inability to name the constraint implicitly.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-84952</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 17 Nov 2011 00:20:46 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-84952</guid>
+		<description>discharge :: (c =&gt; t) -&gt; Dict c -&gt; t
+discharge t Dict = t
+
+works fine.
+
+as for whether the type checker has the machinery, that is somewhat harder to answer, becuase it would depend on the details of the largely underspecified constraint simplifier.</description>
+		<content:encoded><![CDATA[<p>discharge :: (c => t) -> Dict c -> t<br />
+discharge t Dict = t</p>
+<p>works fine.</p>
+<p>as for whether the type checker has the machinery, that is somewhat harder to answer, becuase it would depend on the details of the largely underspecified constraint simplifier.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Doug McClean</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-84938</link>
+		<dc:creator>Doug McClean</dc:creator>
+		<pubDate>Wed, 16 Nov 2011 22:51:10 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-84938</guid>
+		<description>That explains why you can&#039;t define them in Haskell, but I don&#039;t think it bars you from adding them as primitives, does it? And the type checker already has the implementation that would back the primitive?
+
+I don&#039;t have access to a machine with bleeding edge GHC on it at the moment, but is (c =&gt; t) -&gt; Dict c -&gt; t a syntactically valid type? If not, why not?</description>
+		<content:encoded><![CDATA[<p>That explains why you can&#8217;t define them in Haskell, but I don&#8217;t think it bars you from adding them as primitives, does it? And the type checker already has the implementation that would back the primitive?</p>
+<p>I don&#8217;t have access to a machine with bleeding edge GHC on it at the moment, but is (c =&gt; t) -&gt; Dict c -&gt; t a syntactically valid type? If not, why not?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2011/what-constraints-entail-part-2/comment-page-1/#comment-84931</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 16 Nov 2011 22:28:07 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=461#comment-84931</guid>
+		<description>The problem with Qualifier and Unqualified is that unification of types involving =&gt; isn&#039;t done by simple unification, but instead by bi-implication for constraints, so while you can write some types with them, you typically can&#039;t build inhabitants.</description>
+		<content:encoded><![CDATA[<p>The problem with Qualifier and Unqualified is that unification of types involving =&gt; isn&#8217;t done by simple unification, but instead by bi-implication for constraints, so while you can write some types with them, you typically can&#8217;t build inhabitants.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

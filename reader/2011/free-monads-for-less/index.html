@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Free Monads for Less (Part 1 of 3): Codensity</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../12/index.html' />
+	<link rel='archives' title='November 2011' href='../11/index.html' />
+	<link rel='archives' title='October 2011' href='../10/index.html' />
+	<link rel='archives' title='September 2011' href='../09/index.html' />
+	<link rel='archives' title='July 2011' href='../07/index.html' />
+	<link rel='archives' title='June 2011' href='../06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Free Monads for Less (Part 1 of 3): Codensity Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Introducing Speculation' href='../../2010/introducing-speculation/index.html' />
+<link rel='next' title='Free Monads for Less (Part 2 of 3): Yoneda' href='../free-monads-for-less-2/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 23 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Free Monads for Less (Part 1 of 3): Codensity">Free Monads for Less (Part 1 of 3): Codensity</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="index.html#comments" title="Comment on Free Monads for Less (Part 1 of 3): Codensity">[5] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>A couple of years back <a href="http://www.iai.uni-bonn.de/~jv/">Janis Voigtländer</a> wrote <a href="http://www.iai.uni-bonn.de/~jv/mpc08.pdf">a nice paper</a> on how one can use the codensity monad to improve the asymptotic complexity of algorithms using the free monads. He didn't use the name <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Control-Monad-Codensity.html">Codensity</a> in the paper, but this is essentially the meaning of his type <code>C</code>. </p>
+<p>I just returned from <a href="http://www.cas.mcmaster.ca/~anand/DSL2011.html">running a workshop on domain-specific languages at McMaster University</a> with the more than able assistance of <a href="http://llama.freegeek.org/~wren/thornton_cv.pdf">Wren Ng Thornton</a>. Among the many topics covered, I spent a lot of time talking about how to use free monads to build up term languages for various DSLs with simple evaluators, and then made them efficient by using <code>Codensity</code>.</p>
+<p>This has been shown to be a sufficient tool for this task, but is it necessary?</p>
+<p><span id="more-218"></span></p>
+<p>First, some context:</p>
+<p><strong>Monads for Free</strong></p>
+<p>Given that <em>f</em> is a <code>Functor</code>, we get that </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Free f a = Pure a | Free <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Free f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>is a <code>Monad</code> for free:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Pure a<span style="color: green;">&#41;</span> = Pure <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Free <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = Free <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> = Pure
+   Pure a &gt;&gt;= f = f a <span style="color: #5d478b; font-style: italic;">-- the first monad law!</span>
+   Free <span style="color: #06c; font-weight: bold;">as</span> &gt;&gt;= f = Free <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>&gt;&gt;= f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>The definition is also free in a particular categorical sense, that if <em>f</em> is a monad, then, and you have a forgetful functor that forgets that it is a monad and just yields the functor, then the the free construction above is left adjoint to it.</p>
+<p>This type and much of the code below is actually provided by <a href="http://hackage.haskell.org/packages/archive/comonad-transformers/1.7/doc/html/Control-Monad-Trans-Free.html">Control.Monad.Trans.Free</a> in the <a href="http://hackage.haskell.org/package/comonad-transformers">comonad-transformers</a> package on hackage. </p>
+<p>For a while, Free lived in a separate, now defunct, package named <code>free</code> with its dual <a href="http://hackage.haskell.org/packages/archive/comonad-transformers/1.7/doc/html/Control-Comonad-Trans-Cofree.html">Cofree</a>, but it was merged into comonad-transformers due to complications involving <a href="http://hackage.haskell.org/package/comonads-fd">comonads-fd</a>, the comonadic equivalent of the mtl.  Arguably, a better home would be transformers, to keep symmetry.</p>
+<p><strong>Free is a Monad Transformer</strong></p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadTrans Free <span style="color: #06c; font-weight: bold;">where</span>
+    lift = Free . liftM Pure
+&nbsp;</pre>
+<p>and there exists a <a href="http://en.wikipedia.org/wiki/Retract_(category_theory)">retraction</a> for lift</p>
+<pre class="haskell">&nbsp;
+retract :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> f =&gt; Free f a -&gt; f a
+retract <span style="color: green;">&#40;</span>Pure a<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a
+retract <span style="color: green;">&#40;</span>Free <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = <span style="color: #06c; font-weight: bold;">as</span> &gt;&gt;= retract
+&nbsp;</pre>
+<p>such that <code>retract . lift = id</code>. I've <a href="http://stackoverflow.com/questions/6221531/how-to-convert-a-free-monad-into-a-functor/6231795#6231795">spoken about this on Stack Overflow</a>, including the rather trivial proof, previously.</p>
+<p>This lets us work in <code>Free m a</code>, then flatten back down to a single layer of <em>m</em>. </p>
+<p>This digression will be useful in a subsequent post.</p>
+<p><strong>MonadFree</strong></p>
+<p>What Janis encapsulated in his paper is the notion that we can abstract out the extra power granted by a free monad to add layers of <em>f</em> to some monad <em>m</em>, and then use a better representation to improve the asymptotic performance of the monad. </p>
+<p>The names below have been changed slightly from his presentation.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; MonadFree f m | m -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+    wrap :: f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span> -&gt; m a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; MonadFree f <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    wrap = Free
+&nbsp;</pre>
+<p>instances can easily be supplied to lift <code>MonadFree</code> over the common monad transformers. For instance:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, MonadFree f m<span style="color: green;">&#41;</span> =&gt; MonadFree f <span style="color: green;">&#40;</span>ReaderT e m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    wrap fs = ReaderT $ \e -&gt; wrap $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>`runReaderT` e<span style="color: green;">&#41;</span> fs
+&nbsp;</pre>
+<p>This functionality is provided by <a href="http://hackage.haskell.org/packages/archive/comonads-fd/1.7/doc/html/Control-Monad-Free-Class.html">Control.Monad.Free.Class</a>.</p>
+<p>Janis then proceeded to define the aforementioned type <code>C</code>, which is effectively identical to</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Codensity f a = Codensity <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> r. <span style="color: green;">&#40;</span>a -&gt; f r<span style="color: green;">&#41;</span> -&gt; f r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>This type is supplied by <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Control-Monad-Codensity.html">Control.Monad.Codensity</a> from my <a href="http://hackage.haskell.org/package/kan-extensions">kan-extensions</a> package on hackage.</p>
+<p>I have spoken about this type (and another that will arise in a subsequent post) on this blog previously, in a series of posts on Kan Extensions.  [ <a href="../../2008/kan-extensions/index.html">1</a>, <a href="../../2008/kan-extensions-ii/index.html">2</a>, <a href="../../2008/kan-extension-iii/index.html">3</a>]</p>
+<p><code>Codensity f</code> is a <code>Monad</code>, <strong>regardless</strong> of what <em>f</em> is!</p>
+<p>In fact, you can quite literally cut and paste much of the definitions for <code>return</code>, <code>fmap</code>, and <code>(>>=)</code> from the code for the <code>ContT</code> monad transformer! Compare</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Codensity k<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Codensity m<span style="color: green;">&#41;</span> = Codensity <span style="color: green;">&#40;</span>\k -&gt; m <span style="color: green;">&#40;</span>k . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Codensity f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> x = Codensity <span style="color: green;">&#40;</span>\k -&gt; k x<span style="color: green;">&#41;</span>
+  m &gt;&gt;= k = Codensity <span style="color: green;">&#40;</span>\c -&gt; runCodensity m <span style="color: green;">&#40;</span>\a -&gt; runCodensity <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> c<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadTrans Codensity <span style="color: #06c; font-weight: bold;">where</span>
+   lift m = Codensity <span style="color: green;">&#40;</span>m &gt;&gt;=<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>from <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/src/Control-Monad-Codensity.html">Control.Monad.Codensity</a> in <a href="http://hackage.haskell.org/package/kan-extensions">kan-extensions</a> with</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>ContT r m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f m = ContT $ \c -&gt; runContT m <span style="color: green;">&#40;</span>c . f<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>ContT r m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = ContT <span style="color: green;">&#40;</span>$ a<span style="color: green;">&#41;</span>
+    m &gt;&gt;= k  = ContT $ \c -&gt; runContT m <span style="color: green;">&#40;</span>\a -&gt; runContT <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> c<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadTrans <span style="color: green;">&#40;</span>ContT r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    lift m = ContT <span style="color: green;">&#40;</span>m &gt;&gt;=<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>from the <a href="http://hackage.haskell.org/packages/archive/transformers/0.2.2.0/doc/html/src/Control-Monad-Trans-Cont.html">Control.Monad.Trans.Cont</a> in <a href="http://hackage.haskell.org/package/transformers-0.2.2.0">transformers</a>.</p>
+<p><code>Codensity m a</code> is effectively <code>forall r. ContT r m a</code>. This turns out to be just enough of a restriction to rule out the use of <a href="http://hackage.haskell.org/packages/archive/transformers/0.2.2.0/doc/html/Control-Monad-Trans-Cont.html#v:callCC">callCC</a>, while leaving the very powerful fact that when you lower them back down using</p>
+<pre class="haskell">&nbsp;
+lowerCodensity :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; Codensity m a -&gt; m a
+lowerCodensity <span style="color: green;">&#40;</span>Codensity m<span style="color: green;">&#41;</span> = m <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a>
+&nbsp;</pre>
+<p>or</p>
+<pre class="haskell">&nbsp;
+runContT :: ContT r m a -&gt; m r
+runContT <span style="color: green;">&#40;</span>ContT m<span style="color: green;">&#41;</span> = m <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a>
+&nbsp;</pre>
+<p><code>ContT</code> and <code>Codensity</code> both yield a result in which all of the uses of the underlying monad's <code>(>>=)</code> are right associated.</p>
+<p>This can be convenient for two reasons:</p>
+<p>First, some almost-monads are not associative, and converting to ContT or Codensity can be used to fix this fact. </p>
+<p>Second, in many monads, when you build a big structure using left associated binds, like:</p>
+<pre class="haskell">&nbsp;
+    <span style="color: green;">&#40;</span>f &gt;&gt;= g<span style="color: green;">&#41;</span> &gt;&gt;= h
+&nbsp;</pre>
+<p>rather than use right associated binds like</p>
+<pre class="haskell">&nbsp;
+   f &gt;&gt;= \x -&gt; g x &gt;&gt;= h
+&nbsp;</pre>
+<p>then you wind up building a structure, then tearing it down and building up a whole new structure. This can compromise the productivity of the result, and it can also affect the asymptotic performance of your code. </p>
+<p>Even though the monad laws say these two yield the same answer.</p>
+<p><strong>The dual of substitution is redecoration</strong></p>
+<p>To see that, first, it is worth noting that about ten years back, Tarmo Uustalu and Varmo Vene wrote "<a href="http://www.ioc.ee/~tarmo/papers/sfp01-book.pdf">The dual of substitition is redecoration</a>", which among other things quite eloquently described how monads are effectively about substituting new tree-like structures, and then renormalizing.</p>
+<p>This can be seen in terms of the more categorical viewpoint, where we define a monad in terms of <code>return</code>, <code>fmap</code> and <code>join</code>, rather than <code>return</code> and <code>(>>=)</code>. In that presentation:</p>
+<pre class="haskell">&nbsp;
+m &gt;&gt;= f = join <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f m<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p><code>fmap</code> is performing substitution. and <code>join</code> is dealing with any renormalization.</p>
+<p>Done this way, <code>(m >>= f)</code> on the <code>Maybe</code> monad would first <code>fmap</code> to obtain <code>Just (Just a)</code>, <code>Just Nothing</code> or <code>Nothing</code> before flattening.</p>
+<p>In the Maybe a case, the association of your binds is largely immaterial, the normalization pass fixes things up to basically the same size, but in the special case of a free monad the monad is <strong>purely defined in terms of substitution</strong>, since:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- join :: Functor f =&gt; Free f (Free f a) -&gt; Free f a</span>
+<span style="color: #5d478b; font-style: italic;">-- join (Pure a) = a</span>
+<span style="color: #5d478b; font-style: italic;">-- join (Free as) = Free (fmap join as)</span>
+&nbsp;</pre>
+<p>This means that every time you <code>>>=</code> a free monad you are accumulating structure -- structure that you have traverse past to deal with subsequent left-associated invocations of <code>>>=</code>! Free monads never shrink after a bind and the main body of the tree never changes.</p>
+<p>More concretely, you could build a binary tree with</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- data Tree a = Tip a | Bin (Tree a) (Tree a)</span>
+&nbsp;</pre>
+<p>and make a monad out of it, writing out your <code>return</code> and <code>(>>=)</code>, etc. by hand</p>
+<p>The same monad could be had 'for free' by taking the free monad of</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Bin a = Bin a a
+    <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>, Foldable, Traversable<span style="color: green;">&#41;</span>
+    <span style="color: #5d478b; font-style: italic;">-- using LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable</span>
+&nbsp;</pre>
+<p>yielding the admittedly slightly less convenient type signature</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Tree = Free Bin
+&nbsp;</pre>
+<p>Now you can use <code>return</code> for <code>Tip</code>, and </p>
+<pre class="haskell">&nbsp;
+bin :: MonadFree Bin m =&gt; m a -&gt; m a -&gt; m a
+bin l r = wrap <span style="color: green;">&#40;</span>Bin l r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>to construct a binary tree node, using any free monad representation.</p>
+<p>Now, if that representation is <code>Free Bin</code> (or the original more direct <code>Tree</code> type above) then code that looks like <code>f >>= \x -> g x >>= h</code> performs fine, but <code>(f >>= g) >>= h</code> will retraverse the unchanging 'trunk' of the tree structure twice. That isn't so bad, but given n uses of >>= we'll traverse an ever-growing trunk over and over <em>n</em> times!</p>
+<p><strong>Putting Codensity to Work</strong></p>
+<p>But, we have a tool that can fix this, <code>Codensity</code>! </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadFree f m =&gt; MonadFree f <span style="color: green;">&#40;</span>Codensity m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  wrap t = Codensity <span style="color: green;">&#40;</span>\h -&gt; wrap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>\p -&gt; runCodensity p h<span style="color: green;">&#41;</span> t<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Janis packaged up the use of <code>Codensity</code> into a nice combinator that you can sprinkle through your code, so that your users never need know it exists. Moreover, it prevents them from accidentally using any of the extra power of the intermediate representation. If your code typechecks before you use improve somewhere within it, and it type checks after, then it will yield the same answer.</p>
+<pre class="haskell">&nbsp;
+improve :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> m. MonadFree f m =&gt; m a<span style="color: green;">&#41;</span> -&gt; Free f a
+improve m = lowerCodensity m
+&nbsp;</pre>
+<p>By now, it should be clear that the power of <code>Codensity</code> is sufficient to the task, but is it necessary?</p>
+<p>More Soon.</p>
+<p>[Edit; Fixed minor typographical errors pointed out by ShinNoNoir, ivanm, and Josef Svenningsson, including a whole bunch of them found by Noah Easterly]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">5 Responses to &#8220;Free Monads for Less (Part 1 of 3): Codensity&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-61213">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../free-monads-for-less-2/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Free Monads for Less (Part 2 of 3): Yoneda</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61213" title="">June 23rd, 2011 at 11:49 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Last time, I started exploring whether or not Codensity was necessary to improve the asymptotic performance of free monads. [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-105455">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=e7f82a9e0f7b6960981058f7afec2b64&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Yo Eight</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-105455" title="">July 5th, 2012 at 6:52 am</a> </small>
+			<br clear="all"/>
+
+			<p>Hi,</p>
+<p>Thank you for this very informative post. </p>
+<p>You&#8217;ve just forgotten to declare f to be a functor when defining MonadFree f (Codensity m) instance.</p>
+<p>Regards</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-105460">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Edward Kmett</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-105460" title="">July 5th, 2012 at 11:41 am</a> </small>
+			<br clear="all"/>
+
+			<p>Fixed. I updated it by constraining MonadFree instead. It works correctly in the library I referenced. =)</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-106387">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=4c7cfbfaf33789fbea36bc5507c05c36&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Tac-Tics</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-106387" title="">October 26th, 2012 at 6:59 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I&#8217;m really fascinated by the idea of correct-by-construction monads. One question, though. Control.Monad.Free seems very similar to the Control.Monad.Prompt module. What is the relationship between the two?</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-106591">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Edward Kmett</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-106591" title="">November 18th, 2012 at 12:21 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Tac-Tics: They are more or less identical.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="218" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Jun 23rd, 2011 at 10:59 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> and  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

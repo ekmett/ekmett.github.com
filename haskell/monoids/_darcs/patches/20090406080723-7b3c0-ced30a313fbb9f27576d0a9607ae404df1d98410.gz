@@ -1,0 +1,14 @@
+[ownership clarification
+ekmett@gmail.com**20090406080723
+ Ignore-this: f199d2bbbb90064ee93918f4da5b37ed
+] {
+hunk ./Data/Set/Unboxed.hs 2
++
+hunk ./Data/Set/Unboxed.hs 9
+--- Maintainer  :  libraries@haskell.org
+--- Stability   :  provisional
+--- Portability :  portable
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  non-portable (type families, view patterns)
+}

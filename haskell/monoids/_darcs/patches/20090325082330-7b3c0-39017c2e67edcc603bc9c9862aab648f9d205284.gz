@@ -1,0 +1,558 @@
+[doc fixup
+ekmett@gmail.com**20090325082330] {
+addfile ./dist/doc/html/monoids/Data-Monoid-Generator-Methods.html
+hunk ./dist/doc/html/monoids/Data-Monoid-Generator-Methods.html 1
++<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
++<!--Rendered using the Haskell Html Library v0.2-->
++<HTML
++><HEAD
++><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
++><TITLE
++>Data.Monoid.Generator.Methods</TITLE
++><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
++><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
++></SCRIPT
++></HEAD
++><BODY
++><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
++><TR
++><TD CLASS="topbar"
++><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
++><TR
++><TD
++><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
++></TD
++><TD CLASS="title"
++>monoids-0.1.1: Lots of Monoids</TD
++><TD CLASS="topbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
++><A HREF="index.html"
++>Contents</A
++></TD
++><TD CLASS="topbut"
++><A HREF="doc-index.html"
++>Index</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="modulebar"
++><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
++><TR
++><TD
++><FONT SIZE="6"
++>Data.Monoid.Generator.Methods</FONT
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="section1"
++>Documentation</TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="decl"
++>module <A HREF="Data-Monoid-Generator.html"
++>Data.Monoid.Generator</A
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Atraverse_"
++></A
++><B
++>traverse_</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
++>Applicative</A
++> f) =&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; f b) -&gt; c -&gt; f ()</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#traverse_"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Afor_"
++></A
++><B
++>for_</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
++>Applicative</A
++> f) =&gt; c -&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; f b) -&gt; f ()</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#for_"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3AmapM_"
++></A
++><B
++>mapM_</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
++>Monad</A
++> m) =&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; m b) -&gt; c -&gt; m ()</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#mapM_"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3AforM_"
++></A
++><B
++>forM_</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
++>Monad</A
++> m) =&gt; c -&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; m b) -&gt; m ()</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#forM_"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3AconcatMap"
++></A
++><B
++>concatMap</B
++> :: <A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c =&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; [b]) -&gt; c -&gt; [b]</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#concatMap"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aand"
++></A
++><B
++>and</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c ~ <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++>) =&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#and"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aor"
++></A
++><B
++>or</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c ~ <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++>) =&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#or"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aany"
++></A
++><B
++>any</B
++> :: <A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c =&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++>) -&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#any"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aall"
++></A
++><B
++>all</B
++> :: <A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c =&gt; (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++>) -&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#all"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Asum"
++></A
++><B
++>sum</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
++>Num</A
++> (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c)) =&gt; c -&gt; <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#sum"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aproduct"
++></A
++><B
++>product</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
++>Num</A
++> (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c)) =&gt; c -&gt; <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c</TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#product"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3Aelem"
++></A
++><B
++>elem</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
++>Eq</A
++> (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c)) =&gt; <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#elem"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
++><A NAME="v%3AnotElem"
++></A
++><B
++>notElem</B
++> :: (<A HREF="Data-Monoid-Generator.html#t%3AGenerator"
++>Generator</A
++> c, <A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
++>Eq</A
++> (<A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c)) =&gt; <A HREF="Data-Monoid-Generator.html#t%3AElem"
++>Elem</A
++> c -&gt; c -&gt; <A HREF="/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
++>Bool</A
++></TD
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator-Methods.html#notElem"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
++></TR
++><TR
++><TD CLASS="s15"
++></TD
++></TR
++><TR
++><TD CLASS="botbar"
++>Produced by <A HREF="http://www.haskell.org/haddock/"
++>Haddock</A
++> version 2.3.0</TD
++></TR
++></TABLE
++></BODY
++></HTML
++>
+addfile ./dist/doc/html/monoids/src/Data-Monoid-Generator-Methods.html
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Generator-Methods.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Generator/Methods.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeFamilies, ScopedTypeVariables #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span><span class='hs-varop'>.</span><span class='hs-conid'>Methods</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>traverse_</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>for_</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>mapM_</span>
++<a name="line-7"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>forM_</span>
++<a name="line-8"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>concatMap</span>
++<a name="line-9"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>and</span>
++<a name="line-10"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>or</span>
++<a name="line-11"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>any</span>
++<a name="line-12"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>all</span>
++<a name="line-13"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>sum</span>
++<a name="line-14"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>product</span>
++<a name="line-15"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>elem</span>
++<a name="line-16"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>notElem</span>
++<a name="line-17"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-18"></a>
++<a name="line-19"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Prelude</span> <span class='hs-varid'>hiding</span> <span class='hs-layout'>(</span><span class='hs-varid'>mapM_</span><span class='hs-layout'>,</span> <span class='hs-varid'>any</span><span class='hs-layout'>,</span> <span class='hs-varid'>elem</span><span class='hs-layout'>,</span> <span class='hs-varid'>filter</span><span class='hs-layout'>,</span> <span class='hs-varid'>concatMap</span><span class='hs-layout'>,</span> <span class='hs-varid'>and</span><span class='hs-layout'>,</span> <span class='hs-varid'>or</span><span class='hs-layout'>,</span> <span class='hs-varid'>all</span><span class='hs-layout'>,</span> <span class='hs-varid'>sum</span><span class='hs-layout'>,</span> <span class='hs-varid'>product</span><span class='hs-layout'>,</span> <span class='hs-varid'>notElem</span><span class='hs-layout'>)</span>
++<a name="line-20"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span>
++<a name="line-21"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Applicative</span>
++<a name="line-22"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Monad</span>
++<a name="line-23"></a>
++<a name="line-24"></a><a name="traverse_"></a><span class='hs-definition'>traverse_</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Applicative</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>f</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>f</span> <span class='hs-conid'>()</span>
++<a name="line-25"></a><span class='hs-definition'>traverse_</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getTraversal</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapReduce</span> <span class='hs-varid'>f</span>
++<a name="line-26"></a>    
++<a name="line-27"></a><a name="for_"></a><span class='hs-definition'>for_</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Applicative</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>f</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>f</span> <span class='hs-conid'>()</span>
++<a name="line-28"></a><span class='hs-definition'>for_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>flip</span> <span class='hs-varid'>traverse_</span>
++<a name="line-29"></a>
++<a name="line-30"></a><a name="mapM_"></a><span class='hs-definition'>mapM_</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Monad</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-conid'>()</span>
++<a name="line-31"></a><span class='hs-definition'>mapM_</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getAction</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapReduce</span> <span class='hs-varid'>f</span>
++<a name="line-32"></a>
++<a name="line-33"></a><a name="forM_"></a><span class='hs-definition'>forM_</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Monad</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-conid'>()</span>
++<a name="line-34"></a><span class='hs-definition'>forM_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>flip</span> <span class='hs-varid'>mapM_</span>
++<a name="line-35"></a>
++<a name="line-36"></a><a name="concatMap"></a><span class='hs-definition'>concatMap</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>b</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>b</span><span class='hs-keyglyph'>]</span>
++<a name="line-37"></a><span class='hs-definition'>concatMap</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mapReduce</span>
++<a name="line-38"></a>
++<a name="line-39"></a><a name="and"></a><span class='hs-definition'>and</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>~</span> <span class='hs-conid'>Bool</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-40"></a><span class='hs-definition'>and</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getAll</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-41"></a>
++<a name="line-42"></a><a name="or"></a><span class='hs-definition'>or</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>~</span> <span class='hs-conid'>Bool</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-43"></a><span class='hs-definition'>or</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getAny</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-44"></a>
++<a name="line-45"></a><a name="any"></a><span class='hs-definition'>any</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-46"></a><span class='hs-definition'>any</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getAny</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapReduce</span> <span class='hs-varid'>f</span>
++<a name="line-47"></a>
++<a name="line-48"></a><a name="all"></a><span class='hs-definition'>all</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-49"></a><span class='hs-definition'>all</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getAll</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapReduce</span> <span class='hs-varid'>f</span>
++<a name="line-50"></a>
++<a name="line-51"></a><a name="sum"></a><span class='hs-definition'>sum</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Num</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span>
++<a name="line-52"></a><span class='hs-definition'>sum</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getSum</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-53"></a>
++<a name="line-54"></a><a name="product"></a><span class='hs-definition'>product</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Num</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span>
++<a name="line-55"></a><span class='hs-definition'>product</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>getProduct</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-56"></a>
++<a name="line-57"></a><a name="elem"></a><span class='hs-definition'>elem</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-58"></a><span class='hs-definition'>elem</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>any</span> <span class='hs-varop'>.</span> <span class='hs-layout'>(</span><span class='hs-varop'>==</span><span class='hs-layout'>)</span>
++<a name="line-59"></a>
++<a name="line-60"></a><a name="notElem"></a><span class='hs-definition'>notElem</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Eq</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-61"></a><span class='hs-definition'>notElem</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>not</span> <span class='hs-varop'>.</span> <span class='hs-varid'>elem</span> <span class='hs-varid'>x</span>
++<a name="line-62"></a>
++<a name="line-63"></a><span class='hs-comment'>-- foldMap :: Generator c =&gt; (Elem c -&gt; m) -&gt; c -&gt; m</span>
++<a name="line-64"></a>
++<a name="line-65"></a><span class='hs-comment'>-- filter :: (Generator c, Elem c `Reducer` m, m `Reducer` m) =&gt; (Elem c -&gt; Bool) -&gt; c -&gt; m</span>
++<a name="line-66"></a><span class='hs-comment'>-- filter p = mapReduce (\x -&gt; if p x then unit x else mempty)</span>
++<a name="line-67"></a>
++<a name="line-68"></a><span class='hs-comment'>-- find :: Generator c =&gt; (Elem c -&gt; Bool) -&gt; c -&gt; Maybe (Elem c)</span>
++<a name="line-69"></a><span class='hs-comment'>-- find p = getFirst . filter p</span>
++</pre></body>
++</html>
+}

@@ -1,0 +1,9 @@
+[added foldReduce to Data.Monoid.Reducer
+ekmett@gmail.com**20090327001218] {
+hunk ./Data/Monoid/Reducer.hs 8
++    , foldReduce
+hunk ./Data/Monoid/Reducer.hs 28
++foldReduce :: (Foldable f, e `Reducer` m) => f e -> m
++foldReduce = foldMap unit
++
+}

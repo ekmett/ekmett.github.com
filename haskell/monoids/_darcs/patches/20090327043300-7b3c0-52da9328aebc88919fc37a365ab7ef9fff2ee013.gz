@@ -1,0 +1,30 @@
+[Data.IntMap and Data.Map
+ekmett@gmail.com**20090327043300] {
+hunk ./Data/Monoid/Reducer.hs 20
++import qualified Data.IntMap as IntMap
++import Data.IntMap (IntMap)
++import qualified Data.Map as Map
++import Data.Map (Map)
+hunk ./Data/Monoid/Reducer.hs 111
++instance Reducer Int IntSet where
++    unit = IntSet.singleton
++    cons = IntSet.insert
++    snoc = flip IntSet.insert -- left bias irrelevant
++
+hunk ./Data/Monoid/Reducer.hs 119
++    -- pedantic in case Eq doesn't implement structural equality
+hunk ./Data/Monoid/Reducer.hs 123
+-instance Reducer Int IntSet where
+-    unit = IntSet.singleton
+-    cons = IntSet.insert
+-    snoc = flip IntSet.insert -- left bias irrelevant
++instance Reducer (Int,v) (IntMap v) where
++    unit = uncurry IntMap.singleton
++    cons = uncurry IntMap.insert
++    snoc = flip . uncurry . IntMap.insertWith $ const id
++
++instance Ord k => Reducer (k,v) (Map k v) where
++    unit = uncurry Map.singleton
++    cons = uncurry Map.insert
++    snoc = flip . uncurry . Map.insertWith $ const id
+}

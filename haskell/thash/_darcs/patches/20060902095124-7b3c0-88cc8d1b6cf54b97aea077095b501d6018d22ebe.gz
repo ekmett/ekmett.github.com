@@ -1,0 +1,8 @@
+[fixing cabal
+ekmett@gmail.com**20060902095124] {
+hunk ./thash.cabal 12
+-build-depends:		plugins>=1.0
+hunk ./thash.cabal 16
+-	Data.THash.THT,
++	Data.THash.THT
+}

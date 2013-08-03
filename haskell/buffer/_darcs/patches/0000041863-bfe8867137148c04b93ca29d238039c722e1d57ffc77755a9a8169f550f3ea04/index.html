@@ -1,0 +1,1111 @@
+[Added preliminary take on Data.Buffer.Rope. Implementing Data.Buffer.Rope.Word8.
+ekmett@gmail.com**20100319080138
+ Ignore-this: 21c2d3c1a1d217bcd460b54ce603ad40
+] move ./Data/Buffer/Char8.hs ./Data/Buffer/Char.hs
+hunk ./Data/Buffer/Internal/FingerTree.hs 52
++    last,         -- :: Measured a => FingerTree a -> a
+hunk ./Data/Buffer/Internal/FingerTree.hs 56
++    -- * Partial functions
++    head,         -- :: FingerTree a -> a
++    last,         -- :: FingerTree a -> a
++    any,          -- :: (a -> Bool) -> FingerTree a -> Bool
++    all,          -- :: (a -> Bool) -> FingerTree a -> Bool
++
+hunk ./Data/Buffer/Internal/FingerTree.hs 70
+-    reverse)
++    reverse, head, last)
+hunk ./Data/Buffer/Internal/FingerTree.hs 155
++-- any and all are both commutative monoids, try to shortcut using digits first on both sides
++
++{-# SPECIALIZE any :: (Buffer -> Bool) -> FingerTree Buffer -> Bool #-}
++{-# SPECIALIZE any :: (Node a -> Bool) -> FingerTree (Node a) -> Bool #-}
++any :: (a -> Bool) -> FingerTree a -> Bool
++any _ Empty = False
++any f (Single x) = f x
++any f (Deep _ _ pr m sf) = anyDigit f pr || anyDigit f sf || any (any f) m where
++    anyDigit f (One a) = f a
++    anyDigit f (Two a b) = f a && f b
++    anyDigit f (Three a b c) = f a && f b && f c
++    anyDigit f (Four a b c d) = f a && f b && f c && f d
++
++{-# SPECIALIZE all :: (Buffer -> Bool) -> FingerTree Buffer -> Bool #-}
++{-# SPECIALIZE all :: (Node a -> Bool) -> FingerTree (Node a) -> Bool #-}
++all :: (a -> Bool) -> FingerTree a -> Bool
++all _ Empty = True
++all f (Single x) = f x
++all f (Deep _ _ pr m sf) = allDigit f pr && allDigit f sf && all (all f) m where
++    allDigit f (One a) = f a
++    allDigit f (Two a b) = f a && f b
++    allDigit f (Three a b c) = f a && f b && f c
++    allDigit f (Four a b c d) = f a && f b && f c && f d
++
+hunk ./Data/Buffer/Internal/FingerTree.hs 205
+-deep        :: Measured a => Digit a -> FingerTree (Node a) -> Digit a -> FingerTree a
++deep :: Measured a => Digit a -> FingerTree (Node a) -> Digit a -> FingerTree a
+hunk ./Data/Buffer/Internal/FingerTree.hs 263
+-    measureU (Two a b) = PAIR(sa + sb + sc + sd, ea + eb + ec + ed)
++    measureU (Two a b) = PACK(sa + sb + sc + sd, ea + eb + ec + ed)
+hunk ./Data/Buffer/Internal/FingerTree.hs 302
+-    measureU (Node2 v e _ _) = PAIR(v, e)
+-    measureU (Node3 v e _ _) = PAIR(v, e)
++    measureU (Node2 v e _ _) = PACK(v, e)
++    measureU (Node3 v e _ _) = PACK(v, e)
+hunk ./Data/Buffer/Internal/FingerTree.hs 634
++head :: FingerTree a -> a
++head Empty = errorEmptyList "head"
++head (Single a) = a 
++head (Deep _ _ pr _ _) = case pr of 
++        One a -> a
++        Two a _ -> a
++        Three a _ _ -> a
++        Four a _ _ _ -> a
++
++last :: FingerTree a -> a
++last Empty = errorEmptyList "last"
++last (Single a) = a 
++last (Deep _ _ _ _ sf) = case sf of 
++        One a -> a
++        Two _ b -> b
++        Three _ _ c -> c
++        Four _ _ _ d -> d
++
+addfile ./Data/Buffer/Rope.hs
+hunk ./Data/Buffer/Rope.hs 1
++-- We cannot actually specify all the language pragmas, see ghc ticket #
++-- If we could, these are what they would be:
++{- LANGUAGE MagicHash, UnboxedTuples,
++            NamedFieldPuns, BangPatterns, RecordWildCards -}
++{- OPTIONS_HADDOCK prune -}
++
++-- |
++-- Module      : Data.Buffer.Rope
++-- Copyright   : (c) Edward Kmett 2010
++-- License     : BSD-style
++-- Maintainer  : ekmett@gmail.com
++-- Stability   : experimental
++-- Portability : portable
++-- 
++-- Excludes a number of methods that change meaning based on contents. 
++-- Look in "Data.Buffer.Rope.Word8" or "Data.Buffer.Rope.Char" for:
++-- 
++-- > sort      :: Rope -> Rope
++-- > null      :: Rope -> Bool
++-- > tail      :: Rope -> Rope
++-- > init      :: Rope -> Rope
++-- > length    :: Rope -> Int
++-- > take      :: Int -> Rope -> Rope
++-- > drop      :: Int -> Rope -> Rope
++-- > group     :: Rope -> [Rope]
++-- > inits     :: Rope -> [Rope]
++-- > tails     :: Rope -> [Rope]
++-- > lines     :: Rope -> Rope
++-- > reverse   :: Rope -> Rope
++-- > words     :: Rope -> Rope
++-- > transpose :: [Rope] -> [Rope]
++-- > take      :: Int -> Rope -> Rope 
++-- > drop      :: Int -> Rope -> Rope
++-- > splitAt   :: Int -> Rope -> (Rope, Rope)
++
++module Data.Buffer.Rope (
++    -- * Unambiguous methods
++    null,               -- :: Rope -> Bool
++    empty,              -- :: Rope
++
++    concat,             -- :: [Rope] -> Rope
++
++    unlines,            -- :: [Rope] -> Rope
++    unwords,            -- :: [Rope] -> Rope
++
++    intercalate,        -- :: Rope -> [Rope] -> Rope
++{-
++    -- * Reading from @Rope@s
++    readInt,                -- :: Rope -> Maybe (Int, Rope)     -- ViewL Rope Int
++    readInteger,            -- :: Rope -> Maybe (Integer, Rope) -- ViewL Rope Integer
++
++    -- ** Searching for substrings
++    isPrefixOf,             -- :: Rope -> Rope -> Bool
++    isSuffixOf,             -- :: Rope -> Rope -> Bool
++    isSubstringOf,          -- :: Rope -> Rope -> Bool
++
++    -- * Copying Ropes
++    copy,                   -- :: Rope -> Rope
++
++    -- * I\/O with @Rope@s
++
++    -- ** Standard input and output
++    getLine,                -- :: IO Rope
++    getContents,            -- :: IO Rope
++    putStr,                 -- :: Rope -> IO ()
++    putStrLn,               -- :: Rope -> IO ()
++    interact,               -- :: (Rope -> Rope) -> IO ()
++
++    -- ** Files
++    readFile,               -- :: FilePath -> IO Rope
++    writeFile,              -- :: FilePath -> Rope -> IO ()
++    appendFile,             -- :: FilePath -> Rope -> IO ()
++
++    -- ** I\/O with Handles
++    hGetLine,               -- :: Handle -> IO Rope
++    hGetNonBlocking,        -- :: Handle -> Int -> IO Rope
++    hGetContents,           -- :: Handle -> IO Rope   
++    hGet,                   -- :: Handle -> Int -> IO Rope
++    hPut,                   -- :: Handle -> Rope -> IO () 
++    hPutStr,                -- :: Handle -> Rope -> IO ()
++    hPutStrLn,              -- :: Handle -> Rope -> IO () 
++-}
++
++
++    singleton,      -- :: Roped e => e -> Rope
++
++    viewl,          -- :: Roped e => Rope -> ViewL Rope e
++    viewr,          -- :: Roped e => Rope -> ViewR Rope e
++
++    uncons,         -- :: Roped e => Rope -> Maybe (e, Rope)
++    unsnoc,         -- :: Roped e => Rope -> Maybe (Rope, e)
++    
++    pack,           -- :: Roped e => [e] -> Rope
++    unpack,         -- :: Roped e => Rope -> [e]
++
++    cons,           -- :: Roped e => e -> Rope -> Rope
++    snoc,           -- :: Roped e => Rope -> e -> Rope
++
++    head,           -- :: Roped e => Rope -> e
++    last,           -- :: Roped e => Rope -> e
++
++{-
++    foldl,          -- :: Roped e => (a -> e -> a) -> a -> Rope -> a
++    foldl',         -- :: Roped e => (a -> e -> a) -> a -> Rope -> a
++    foldl1,         -- :: Roped e => (e -> e -> e) -> Rope -> e
++    foldl1',        -- :: Roped e => (e -> e -> e) -> Rope -> e
++
++    foldr,          -- :: Roped e => (e -> a -> e) -> a -> Rope -> a
++    foldr',         -- :: Roped e => (e -> a -> a) -> a -> Rope -> a
++    foldr1,         -- :: Roped e => (e -> e -> e) -> Rope -> e
++    foldr1',        -- :: Roped e => (e -> e -> e) -> Rope -> e
++
++    concatMap,      -- :: Roped e => (e -> Rope) -> Rope -> Rope
++
++    any,            -- :: Roped e => (e -> Bool) -> Rope -> Rope
++    all,            -- :: Roped e => (e -> Bool) -> Rope -> BUffer
++
++    maximum,        -- :: Roped e => Rope -> e
++    minimum,        -- :: Roped e => Rope -> e
++
++    scanl,          -- :: Roped e =>(e -> e -> e) -> e -> Rope -> Rope
++    scanl1,         -- :: Roped e => (e -> e -> e) -> Rope -> Rope
++    scanr,          -- :: Roped e => (e -> e -> e) -> e -> Rope -> Rope
++    scanr1,         -- :: Roped e => (e -> e -> e) -> Rope -> Rope
++
++    mapAccumL,      -- :: Roped e => (acc -> e -> (acc, e)) -> acc -> Rope -> (acc, Rope)
++    mapAccumR,      -- :: Roped e => (acc -> e -> (acc, e)) -> acc -> Rope -> (acc, Rope)
++
++    mapIndexed,     -- :: Roped e => (Int -> e -> e) -> Rope -> Rope
++
++    replicate,      -- :: Roped e => Int -> e -> Rope
++
++    unfoldr,        -- :: Roped e => (a -> Maybe (e, a)) -> a -> Rope
++    unfoldrN,       -- :: Roped e => Int -> (a -> Maybe (e, a)) -> a -> (Rope, Maybe a)
++
++    takeWhile,      -- :: Roped e => (e -> Bool) -> Rope -> Rope
++    dropWhile,      -- :: Roped e => (e -> Bool) -> Rope -> Rope
++
++    span,           -- :: Roped e => (e -> Bool) -> Rope -> (Rope, Rope)
++    spanEnd,        -- :: Roped e => (e -> Bool) -> Rope -> (Rope, Rope)
++
++    break,          -- :: Roped e => (e -> Bool) -> Rope -> (Rope, Rope)
++    breakEnd,       -- :: Roped e => (e -> Bool) -> Rope -> (Rope, Rope)
++
++    groupBy,        -- :: Roped e => (e -> e -> Bool) -> Rope -> [Rope]
++
++    split,          -- :: Roped e => e -> Rope -> Rope
++    splitWith,      -- :: Roped e => (e -> Bool) -> Rope -> Rope
++    intersperse,    -- :: Roped e => e -> Rope -> Rope
++
++    elem,           -- :: Roped e => e -> Rope -> Bool
++    notElem,        -- :: Roped e => e -> Rope -> Bool
++     
++    find,           -- :: Roped e => (e -> Bool) -> Rope -> Maybe e
++    filter,         -- :: Roped e => (e -> Bool) -> Rope -> Rope
++
++    index,          -- :: Roped e => Rope -> Int -> e
++
++    elemIndex,      -- :: Roped e => e -> Rope -> Maybe Int
++    elemIndices,    -- :: Roped e => e -> Rope -> [Int]
++    elemIndexEnd,   -- :: Roped e => e -> Rope -> Maybe Int
++
++    findIndex,      -- :: Roped e => (e -> Bool) -> Rope -> Maybe Int
++    findIndices,    -- :: Roped e => e -> Rope -> [Int]
++
++    count,          -- :: Roped e => e -> Rope -> Int
++
++    zip,            -- :: Roped e => Rope -> Rope -> [(e,e)]
++    zipWith,        -- :: Roped e => (e -> e -> a) -> Rope -> Rope -> [a]
++    unzip           -- :: Roped e => [(e,e)] -> (Rope,Rope)
++-}
++  ) where
++
++
++import Prelude hiding
++    (reverse,head,tail,last,init,null,length,map,lines,foldl,foldr,unlines
++    ,concat,any,take,drop,splitAt,takeWhile,dropWhile,span,break,elem,filter,maximum
++    ,minimum,all,concatMap,foldl1,foldr1,scanl, scanl1, scanr, scanr1
++    ,repeat, cycle, interact, iterate,readFile,writeFile,appendFile,replicate
++    ,getContents,getLine,putStr,putStrLn ,zip,zipWith,unzip,notElem)
++
++import Data.Rope.Word8 (
++    null, empty, concat, unlines, unwords, intercalate, 
++    {-
++    isPrefixOf, copy,
++    getLine, getContents, putStr, putStrLn, 
++    interact, readFile, writeFile, appendFile, hGetLine, hGetNonBlocking, 
++    hGetContents, hGet, hPut, hPutStr, hPutStrLn, packAddress, unsafePackAddress, 
++    , readInt, readInteger
++    -} )
++
++import qualified Data.Rope.Word8 as W
++import qualified Data.Rope.Char as C
++
++import Data.Rope.View
++import Data.Rope.Internal (null, empty)
++
++class Ord e => Roped e where
++
++    singleton :: e -> Rope
++
++    viewl :: Rope -> ViewL Rope e
++    viewr :: Rope -> ViewR Rope e
++
++    uncons :: Rope -> Maybe (e, Rope)
++    unsnoc :: Rope -> Maybe (Rope, e)
++    
++    pack :: [e] -> Rope
++    unpack :: Rope -> [e]
++
++    cons :: e -> Rope -> Rope
++    snoc :: Rope -> e -> Rope
++
++    head :: Rope -> e
++    last :: Rope -> e
++
++{-
++    foldl :: (a -> e -> a) -> a -> Rope -> a
++    foldl' :: (a -> e -> a) -> a -> Rope -> a
++    foldl1 :: (e -> e -> e) -> Rope -> e
++    foldl1' :: (e -> e -> e) -> Rope -> e
++
++    foldr :: (e -> a -> e) -> a -> Rope -> a
++    foldr' :: (e -> a -> a) -> a -> Rope -> a
++    foldr1 :: (e -> e -> e) -> Rope -> e
++    foldr1' :: (e -> e -> e) -> Rope -> e
++
++    concatMap :: (e -> Rope) -> Rope -> Rope
++
++    any :: (e -> Bool) -> Rope -> Rope
++
++    all :: (e -> Bool) -> Rope -> BUffer
++
++    maximum :: Rope -> e
++    minimum :: Rope -> e
++
++    scanl ::(e -> e -> e) -> e -> Rope -> Rope
++    scanl1 :: (e -> e -> e) -> Rope -> Rope
++    scanr :: (e -> e -> e) -> e -> Rope -> Rope
++    scanr1 :: (e -> e -> e) -> Rope -> Rope
++
++    mapAccumL :: (acc -> e -> (acc, e)) -> acc -> Rope -> (acc, Rope)
++    mapAccumR :: (acc -> e -> (acc, e)) -> acc -> Rope -> (acc, Rope)
++
++    mapIndexed :: (Int -> e -> e) -> Rope -> Rope
++
++    replicate :: Int -> e -> Rope
++
++    unfoldr :: (a -> Maybe (e, a)) -> a -> Rope
++    unfoldrN :: Int -> (a -> Maybe (e, a)) -> a -> (Rope, Maybe a)
++
++    takeWhile :: (e -> Bool) -> Rope -> Rope
++    dropWhile :: (e -> Bool) -> Rope -> Rope
++
++    span :: (e -> Bool) -> Rope -> (Rope, Rope)
++    spanEnd :: (e -> Bool) -> Rope -> (Rope, Rope)
++
++    break :: (e -> Bool) -> Rope -> (Rope, Rope)
++    breakEnd :: (e -> Bool) -> Rope -> (Rope, Rope)
++
++    groupBy :: (e -> e -> Bool) -> Rope -> [Rope]
++
++    split :: e -> Rope -> Rope
++    splitWith :: (e -> Bool) -> Rope -> Rope
++    intersperse :: e -> Rope -> Rope
++
++    elem :: e -> Rope -> Bool
++    notElem :: e -> Rope -> Bool
++     
++    find :: (e -> Bool) -> Rope -> Maybe e
++    filter :: (e -> Bool) -> Rope -> Rope
++
++    index :: Rope -> Int -> e
++
++    elemIndex :: e -> Rope -> Maybe Int
++    elemIndices :: e -> Rope -> [Int]
++    elemIndexEnd :: e -> Rope -> Maybe Int
++
++    findIndex :: (e -> Bool) -> Rope -> Maybe Int
++    findIndices :: e -> Rope -> [Int]
++
++    count :: e -> Rope -> Int
++
++    zip :: Rope -> Rope -> [(e,e)]
++    zip as bs = zip (unpack as) (unpack bs)
++
++    zipWith :: (e -> e -> a) -> Rope -> Rope -> [a]
++    zipWith f as bs = P.zipWith f (unpack as) (unpack bs)
++
++    unzip :: [(e,e)] -> (Rope, Rope)
++    unzip ls = (pack (P.map fst ls), pack (P.map snd ls))
++-}
++
++instance Roped Word8 where
++    singleton = W.singleton
++
++    viewl = W.viewl
++    viewr = W.viewr
++
++    uncons = W.uncons
++    unsnoc = W.unsnoc
++
++    head = W.head
++    last = W.last
++
++    cons = W.cons
++    snoc = W.snoc
++
++{-
++    foldl = W.foldl
++    foldl' = W.foldl'
++    foldl1 = W.foldl1
++    foldl1' = W.foldl1'
++
++    foldr = W.foldr
++    foldr' = W.foldr'
++    foldr1 = W.foldr1
++    foldr1' = W.foldr1'
++
++    concatMap = W.concatMap
++
++    any = W.any
++    all = W.all
++
++    minimum = W.minimum
++    maximum = W.maximum
++
++    scanl = W.scanl
++    scanl1 = W.scanl1
++    scanr = W.scanr
++    scanr1 = W.scanr1
++    
++    mapAccumL = W.mapAccumL
++    mapAccumR = W.mapAccumR
++    
++    mapIndexed = W.mapIndexed
++
++    replicate = W.replicate
++    unfoldr = W.unfoldr
++    unfoldrN = W.unfoldN
++    takeWhile = W.takeWhile
++    dropWhile = W.dropWhile
++    span = W.span
++    spanEnd = W.spanEnd
++
++    break = W.break
++    breakEnd = W.breakEnd
++    groupBy = W.groupBy
++
++    split = W.split
++    splitWith = W.splitWith
++    
++    intersperse = W.intersperse
++
++    elem = W.elem
++    notElem = W.notElem
++     
++    find = W.find
++    filter = W.filter
++    index = W.index 
++
++    elemIndex = W.elemIndex
++    elemIndices = W.elemIndices
++    elemIndexEnd = W.elemIndexEnd 
++
++    findIndex = W.findIndex 
++    findIndices = W.findIndices
++
++    count = W.count
++    zip = W.zip
++    zipWith = W.zipWith
++    unzip = W.unzip
++-}
++
++instance Roped Char where
++    singleton = C.singleton
++
++    viewl = C.viewl
++    viewr = C.viewr
++
++    uncons = C.uncons
++    unsnoc = C.unsnoc
++
++    head = C.head
++    last = C.last
++
++{-
++    foldl = C.foldl
++    foldl' = C.foldl'
++    foldl1 = C.foldl1
++    foldl1' = C.foldl1'
++
++    foldr = C.foldr
++    foldr' = C.foldr'
++    foldr1 = C.foldr1
++    foldr1' = C.foldr1'
++
++    concatMap = C.concatMap
++
++    any = C.any
++    all = C.all
++
++    minimum = C.minimum
++    maximum = C.maximum
++
++    scanl = C.scanl
++    scanl1 = C.scanl1
++    scanr = C.scanr
++    scanr1 = C.scanr1
++    
++    mapAccumL = C.mapAccumL
++    mapAccumR = C.mapAccumR
++    
++    mapIndexed = C.mapIndexed
++
++    replicate = C.replicate
++    unfoldr = C.unfoldr
++    unfoldrN = C.unfoldN
++    takeChile = C.takeChile
++    dropChile = C.dropChile
++    span = C.span
++    spanEnd = C.spanEnd
++
++    break = C.break
++    breakEnd = C.breakEnd
++    groupBy = C.groupBy
++
++    split = C.split
++    splitCith = C.splitCith
++    
++    intersperse = C.intersperse
++
++    elem = C.elem
++    notElem = C.notElem
++     
++    find = C.find
++    filter = C.filter
++    index = C.index 
++
++    elemIndex = C.elemIndex
++    elemIndices = C.elemIndices
++    elemIndexEnd = C.elemIndexEnd 
++
++    findIndex = C.findIndex 
++    findIndices = C.findIndices
++
++    count = C.count
++    zip = C.zip
++    zipCith = C.zipCith
++    unzip = C.unzip
++-}
+hunk ./Data/Buffer/Rope/Internal.hs 24
++        consBuffer,
++        snocBuffer,
++        foldrChunks,
++        foldlChunks,
+hunk ./Data/Buffer/Rope/Internal.hs 102
+-instance ToRope Buffer 
+-    toRope (PS x s l e) = Rope (foldr F.cons F.empty (run e x s l))
+-    where STRICT4(run)
++fromBuffer :: Buffer -> Rope
++fromBuffer (PS x s l e) = Rope (foldr F.cons F.empty (run x s l e))
++    where big = extraChunkSize
++
++          STRICT4(run)
+hunk ./Data/Buffer/Rope/Internal.hs 108
+-            | l < extraChunkSize || e == 0 = 
++            | l < big || e == 0 = 
+hunk ./Data/Buffer/Rope/Internal.hs 115
+-          walk e x p s l i = assert (i < l) $! do -- non-zero e => we can't make it to the end of the string without seeing a high byte
++          walk e x p s l i = assert (i < l) $! do -- e non-zero => we can't make it to the end without seeing a high byte
+hunk ./Data/Buffer/Rope/Internal.hs 118
+-              _ | c <= 0x80           -> walk e x p s l (i+1)
+-                | l' > extraChunkSize -> return $! PS x s l' 0              : run x i                  (l-l')             e
+-                | otherwise           -> return $! PS x s extraChunkSize e' : run x (s+extraChunkSize) (l-extraChunkSize) (e-e')
+-             where l' = i - s
+-                   e' = extras x i (extraChunkSize - l')
+-
+-class ToRope a where
+-    toRope :: a -> Rope
+-    cons :: a -> Rope -> Rope
+-    snoc :: Rope -> a -> Rope
+-
+-class FromRope a where
+-    fromRope :: Rope -> a
+-    viewl :: Rope -> ViewL a
+-    viewr :: Rope -> ViewR a
+-
+-uncons :: FromRope a => Rope -> Maybe (a, Rope)
+-uncons r = case viewl r of
+-    a :< as -> Just (a,as)
+-    EmptyL -> Nothing
+-{-# INLINE uncons #-}
+-
+-unsnoc :: FromRope a => Rope -> Maybe (Rope, a)
+-unsnoc r = case viewr r of
+-    as :> a -> Just (as,a)
+-    EmptyR -> Nothing
+-{-# INLINE unsnoc #-}
++              _ | c <= 0x80 -> walk e x p s l (i+1)
++                | l' > big  -> return $! PS x s l'  0  : run x i       (l-l')  e
++                | otherwise -> let e' = extras x i (extraChunkSize - l') in 
++                               return $! PS x s big e' : run x (s+big) (l-big) (e-e')
+hunk ./Data/Buffer/Rope/Internal.hs 127
+-
+hunk ./Data/Buffer/Rope/Internal.hs 129
+-foldrChunks f z (Rope r) = go r 
+-  where go Empty        = z
+-        go (Chunk c cs) = f c (go cs)
++foldrChunks f z (Rope r) = foldr f z r 
+hunk ./Data/Buffer/Rope/Internal.hs 135
+-foldlChunks f z (Rope r) = go z
+-  where STRICT2(go)
+-        go a Empty        = a
+-        go a (Chunk c cs) = go (f a c) cs
++foldlChunks f z (Rope r) = foldl f z r
+hunk ./Data/Buffer/Rope/Internal.hs 138
++
++instance Eq Rope where 
++    Rope a == Rope b = sa == sb && ea == eb && eq (F.viewl a) (F.viewl b)
++        where MEASURED(a,b)
++
++instance Ord Rope where
++    where compare = cmp (F.viewl a) (F.viewl b)
++
++instance Monoid Buffer where
++    mempty  = empty
++    mappend = append
++    mconcat = concat
++
++eq :: ViewL (FingerTree Buffer) Buffer -> ViewL (FingerTree Buffer) Buffer -> Bool
++eq EmptyL    EmptyL    = True
++eq EmptyL    _         = False
++eq _         EmptyL    = False
++eq (a :< as) (b :< bs) =
++  case compare (S.length a) (S.length b) of
++    LT -> a == (S.take (S.length a) b) && eq (F.viewl as) (S.drop (S.length a) b :< bs)
++    EQ -> a == b                       && eq (F.viewl as) (F.viewl bs)
++    GT -> (S.take (S.length b) a) == b && eq (S.drop (S.length b) a :< as) (F.viewl bs)
++
++cmp :: ViewL (FingerTree Buffer) -> ViewL (FingerTree Buffer) -> Ordering
++cmp EmptyL    EmptyL    = EQ
++cmp EmptyL    _         = LT
++cmp _         EmptyL    = GT
++cmp (a :< as) (b :< bs) =
++  case compare (S.length a) (S.length b) of
++    LT -> case compare a (S.take (S.length a) b) of
++            EQ     -> cmp (F.viewl as) (S.drop (S.length a) b :< bs)
++            result -> result
++    EQ -> case compare a b of
++            EQ     -> cmp (F.viewl as) (F.viewl bs)
++            result -> result
++    GT -> case compare (S.take (S.length b) a) b of
++            EQ     -> cmp (S.drop (S.length b) a) :< as) (F.viewl bs)
++            result -> result
++
+hunk ./Data/Buffer/Rope/Word8.hs 51
++        tail,                   -- :: Rope -> Rope
+hunk ./Data/Buffer/Rope/Word8.hs 53
++        viewl,                  -- :: Rope -> ViewL Rope Word8
+hunk ./Data/Buffer/Rope/Word8.hs 55
+-        tail,                   -- :: Rope -> Rope
+hunk ./Data/Buffer/Rope/Word8.hs 56
++        unsnoc,                 -- :: Rope -> Maybe (Rope, Word8)
++        viewr,                  -- :: Rope -> ViewR Rope Word8
+hunk ./Data/Buffer/Rope/Word8.hs 62
+-        map,                    -- :: (Word8 -> Word8) -> Rope -> Rope
++        map                    -- :: (Word8 -> Word8) -> Rope -> Rope
+hunk ./Data/Buffer/Rope/Word8.hs 83
++{-
+hunk ./Data/Buffer/Rope/Word8.hs 179
++-}
+hunk ./Data/Buffer/Rope/Word8.hs 191
+-import qualified Data.Buffer.Word8 as P  (Buffer) -- type name only
+-import qualified Data.Buffer.Word8 as S  -- S for strict (hmm...)
++import Data.Buffer.Rope.Internal
++
++import Data.Buffer.Internal (Buffer(..))
++import qualified Data.Buffer.Word8 as P (Buffer) -- type name only
++import qualified Data.Buffer.Word8 as S -- S for strict (hmm...)
+hunk ./Data/Buffer/Rope/Word8.hs 198
+-import Data.Buffer.Lazy.Internal
++
++import qualified Data.Buffer.Internal.FingerTree as F
++import qualified Data.Foldable as F
+hunk ./Data/Buffer/Rope/Word8.hs 233
+-instance Eq  Buffer
+-    where (==)    = eq
+hunk ./Data/Buffer/Rope/Word8.hs 234
+-instance Ord Buffer
+-    where compare = cmp
++-- this will rip the input up into chunks from 112 byte to 64k long each depending on 
++pack :: [Word8] -> Rope
++pack ws = L.foldr (fromBuffer . S.pack) empty (chunks defaultChunkSize ws)
++  where
++    chunks :: Int -> [a] -> [[a]]
++    chunks _    [] = []
++    chunks size xs = case L.splitAt size xs of
++                      (xs', xs'') -> xs' : chunks size xs''
+hunk ./Data/Buffer/Rope/Word8.hs 243
+-instance Monoid Buffer where
+-    mempty  = empty
+-    mappend = append
+-    mconcat = concat
++unpack :: Rope -> [Word8]
++unpack (Rope r) = concatMap S.unpack (F.toList r)
+hunk ./Data/Buffer/Rope/Word8.hs 246
+-eq :: Buffer -> Buffer -> Bool
+-eq Empty Empty = True
+-eq Empty _     = False
+-eq _     Empty = False
+-eq (Chunk a as) (Chunk b bs) =
+-  case compare (S.length a) (S.length b) of
+-    LT -> a == (S.take (S.length a) b) && eq as (Chunk (S.drop (S.length a) b) bs)
+-    EQ -> a == b                       && eq as bs
+-    GT -> (S.take (S.length b) a) == b && eq (Chunk (S.drop (S.length b) a) as) bs
++fromChunks :: [Buffer] -> Rope
++fromChunks = F.foldMap fromBuffer
+hunk ./Data/Buffer/Rope/Word8.hs 249
+-cmp :: Buffer -> Buffer -> Ordering
+-cmp Empty Empty = EQ
+-cmp Empty _     = LT
+-cmp _     Empty = GT
+-cmp (Chunk a as) (Chunk b bs) =
+-  case compare (S.length a) (S.length b) of
+-    LT -> case compare a (S.take (S.length a) b) of
+-            EQ     -> cmp as (Chunk (S.drop (S.length a) b) bs)
+-            result -> result
+-    EQ -> case compare a b of
+-            EQ     -> cmp as bs
+-            result -> result
+-    GT -> case compare (S.take (S.length b) a) b of
+-            EQ     -> cmp (Chunk (S.drop (S.length b) a) as) bs
+-            result -> result
++toChunks :: Rope -> [Buffer]
++toChunks (Rope r) = F.toList r
+hunk ./Data/Buffer/Rope/Word8.hs 252
+--- -----------------------------------------------------------------------------
+--- Introducing and eliminating 'Buffer's
+hunk ./Data/Buffer/Rope/Word8.hs 253
+--- | /O(1)/ The empty 'Buffer'
+-empty :: Buffer
+-empty = Empty
+-{-# INLINE empty #-}
++-- | Assume that the buffer is small enough that it doesn't need splitting
++consBuffer' :: Buffer -> Rope -> Rope
++consBuffer' a@(PS _ _ l _) (Rope as) 
++    | l == 0 = Rope as 
++    | otherwise = Rope (F.cons a as)
++
++snocBuffer' :: Rope -> Buffer -> Rope
++snocBuffer' (Rope as) a@(PS _ _ l _) 
++    | l == 0 = Rope as
++    | otherwise = Rope (F.snoc as a)
+hunk ./Data/Buffer/Rope/Word8.hs 265
+-singleton :: Word8 -> Buffer
+-singleton w = Chunk (S.singleton w) Empty
++singleton :: Word8 -> Rope
++singleton x = Rope (F.singleton (S.singleton x))
+hunk ./Data/Buffer/Rope/Word8.hs 293
+-{-
+--- | /O(n)/ Convert a '[a]' into a 'Buffer' using some
+--- conversion function
+-packWith :: (a -> Word8) -> [a] -> Buffer
+-packWith k str = LPS $ L.map (P.packWith k) (chunk defaultChunkSize str)
+-{-# INLINE packWith #-}
+-{-# SPECIALIZE packWith :: (Char -> Word8) -> [Char] -> Buffer #-}
+-
+--- | /O(n)/ Converts a 'Buffer' to a '[a]', using a conversion function.
+-unpackWith :: (Word8 -> a) -> Buffer -> [a]
+-unpackWith k (LPS ss) = L.concatMap (S.unpackWith k) ss
+-{-# INLINE unpackWith #-}
+-{-# SPECIALIZE unpackWith :: (Word8 -> Char) -> Buffer -> [Char] #-}
+--}
+-
+--- ---------------------------------------------------------------------
+hunk ./Data/Buffer/Rope/Word8.hs 295
+--- | /O(1)/ Test whether a Buffer is empty.
+-null :: Buffer -> Bool
++-- | /O(1)/ Test whether a 'Buffer' is empty.
++null :: Rope -> Bool
+hunk ./Data/Buffer/Rope/Word8.hs 301
+--- | /O(n\/c)/ 'length' returns the length of a Buffer as an 'Int64'
+-length :: Buffer -> Int64
+-length cs = foldlChunks (\n c -> n + fromIntegral (S.length c)) 0 cs
++-- | /O(n\/c)/ 'length' returns the length of a 'Buffer' as an 'Int'
++length :: Rope -> Int
++length = size
+hunk ./Data/Buffer/Rope/Word8.hs 307
+---
+-cons :: Word8 -> Buffer -> Buffer
+-cons c cs = Chunk (S.singleton c) cs
++cons :: Word8 -> Rope -> Rope
++cons w (Rope F.Empty) = singleton w
++cons w (Rope F.Single a) | S.length a < 16 = F.singleton (S.cons w a))
++cons w (Rope (F.Deep s e (One a) m sf)) | S.length a < 16 = Rope (F.Deep (s+1) (e+S.extra w) (One (S.cons w a)) m sf)
++cons w (Rope (F.Deep s e (Two a b) m sf)) | S.length a < 16 = Rope (F.Deep (s+1) (e+S.extra w) (Two (S.cons w a) b) m sf)
++cons w (Rope (F.Deep s e (Three a b c) m sf)) | S.length a < 16 = Rope (F.Deep (s+1) (e+S.extra w) (Three (S.cons w a) b c) m sf)
++cons w (Rope (F.Deep s e (Four a b c d) m sf)) | S.length a < 16 = Rope (F.Deep (s+1) (e+S.extra w) (Four (S.cons w a) b c d) m sf)
++cons w r = Rope (S.singleton a `F.cons` r)
+hunk ./Data/Buffer/Rope/Word8.hs 317
+--- | /O(1)/ Unlike 'cons', 'cons\'' is
+--- strict in the Buffer that we are consing onto. More precisely, it forces
+--- the head and the first chunk. It does this because, for space efficiency, it
+--- may coalesce the new byte onto the first \'chunk\' rather than starting a
+--- new \'chunk\'.
+---
+--- So that means you can't use a lazy recursive contruction like this:
+---
+--- > let xs = cons\' c xs in xs
+---
+--- You can however use 'cons', as well as 'repeat' and 'cycle', to build
+--- infinite lazy Buffers.
+---
+-cons' :: Word8 -> Buffer -> Buffer
+-cons' w (Chunk c cs) | S.length c < 16 = Chunk (S.cons w c) cs
+-cons' w cs                             = Chunk (S.singleton w) cs
+-{-# INLINE cons' #-}
+-
+--- | /O(n\/c)/ Append a byte to the end of a 'Buffer'
++-- | /O(1)/ Append a byte to the end of a 'Rope'
+hunk ./Data/Buffer/Rope/Word8.hs 319
+-snoc cs w = foldrChunks Chunk (singleton w) cs
++snoc (Rope F.Empty) = singleton w 
++snoc (Rope F.Single a) w | S.length a < 16 = F.singleton (S.snoc a w)
++snoc (Rope (F.Deep s e pr m (One a))) w | S.length a < 16 = Rope (F.Deep (s+1) (e+S.extra w) pr m (One (S.snoc a w)))
++snoc (Rope (F.Deep s e pr m (Two a b))) w | S.length b < 16 = Rope (F.Deep (s+1) (e+S.extra w) pr m (Two a (S.snoc b w)))
++snoc (Rope (F.Deep s e pr m (Three a b c))) w | S.length c < 16 = Rope (F.Deep (s+1) (e+S.extra w) pr m (Three a b (S.snoc c w)))
++snoc (Rope (F.Deep s e pr m (Four a b c d))) w | S.length d < 16 = Rope (F.Deep (s+1) (e+S.extra w) pr m (Four a b c (S.snoc d w)))
++snoc r w = Rope (r `F.snoc` S.singleton a)
+hunk ./Data/Buffer/Rope/Word8.hs 328
+--- | /O(1)/ Extract the first element of a Buffer, which must be non-empty.
+-head :: Buffer -> Word8
+-head Empty       = errorEmptyList "head"
++-- | /O(1)/ Extract the first element of a 'Rope', which must be non-empty.
+hunk ./Data/Buffer/Rope/Word8.hs 330
++head :: Rope -> Word8
++head (Rope r) = S.unsafeHead (F.head r)
+hunk ./Data/Buffer/Rope/Word8.hs 334
+--- | /O(1)/ Extract the head and tail of a Buffer, returning Nothing
++-- | /O(1)/ Extract the head and tail of a 'Rope', returning Nothing
+hunk ./Data/Buffer/Rope/Word8.hs 336
+-uncons :: Buffer -> Maybe (Word8, Buffer)
+-uncons Empty = Nothing
+-uncons (Chunk c cs)
+-    = Just (S.unsafeHead c,
+-            if S.length c == 1 then cs else Chunk (S.unsafeTail c) cs)
++uncons :: Rope -> Maybe (Word8, Rope)
++uncons (Rope r) = case F.viewl r of
++        a :< as -> case S.viewl a of
++            b :< nbs -> Just (b, bs `consBuffer'` Rope as) 
++        EmptyL -> EmptyR
+hunk ./Data/Buffer/Rope/Word8.hs 343
+--- | /O(1)/ Extract the elements after the head of a Buffer, which must be
+--- non-empty.
+-tail :: Buffer -> Buffer
+-tail Empty          = errorEmptyList "tail"
+-tail (Chunk c cs)
+-  | S.length c == 1 = cs
+-  | otherwise       = Chunk (S.unsafeTail c) cs
++-- | /O(1)/ Extract the head and tail of a 'Rope' as a 'ViewL'
++viewl :: Rope -> ViewL Rope Word8
++viewl (Rope r) = case F.viewl r of 
++        a :< as -> case S.viewl a of
++            b :< bs -> b :< (bs `consBuffer'` Rope as)
++        EmptyL  -> EmptyL
++{-# INLINE viewl #-}
++
++
++
++-- | /O(1)/ Extract the elements after the head of a 'Rope', which must be non-empty.
++tail (Rope r) = case F.viewl r of
++        a :> as -> S.tail a `consBuffer'` Rope as
++        EmptyL -> errorEmptyList "tail"
+hunk ./Data/Buffer/Rope/Word8.hs 359
+--- | /O(n\/c)/ Extract the last element of a Buffer, which must be finite
+--- and non-empty.
+-last :: Buffer -> Word8
+-last Empty          = errorEmptyList "last"
+-last (Chunk c0 cs0) = go c0 cs0
+-  where go c Empty        = S.last c
+-        go _ (Chunk c cs) = go c cs
+--- XXX Don't inline this. Something breaks with 6.8.2 (haven't investigated yet)
+hunk ./Data/Buffer/Rope/Word8.hs 360
+--- | /O(n\/c)/ Return all the elements of a 'Buffer' except the last one.
+-init :: Buffer -> Buffer
+-init Empty          = errorEmptyList "init"
+-init (Chunk c0 cs0) = go c0 cs0
+-  where go c Empty | S.length c == 1 = Empty
+-                   | otherwise       = Chunk (S.init c) Empty
+-        go c (Chunk c' cs)           = Chunk c (go c' cs)
++-- | /O(1)/ Extract everything preceding the last element, and the last element of a 'Rope', returning Nothing if it is empty
++unsnoc :: Rope -> Maybe (Rope, Word8)
++unsnoc (Rope r) = case F.viewl r of
++        as :> a -> S.viewr a of
++            bs :> b -> Just (Rope as `snocBuffer'` bs, b)
++        EmptyR -> EmptyR
++{-# INLINE unsnoc #-}
+hunk ./Data/Buffer/Rope/Word8.hs 368
+--- | /O(n\/c)/ Append two Buffers
+-append :: Buffer -> Buffer -> Buffer
+-append xs ys = foldrChunks Chunk ys xs
++-- | /O(1)/ Extract the init and last of a 'Rope' as a 'ViewR'
++viewr :: Rope -> ViewR Rope Word8
++viewr (Rope r) = case F.viewr r of
++        as :> a -> S.viewr a of
++            bs :> b -> (Rope as `snocBuffer'` bs) :> b
++        EmptyR -> EmptyR
++{-# INLINE viewr #-}
++        
++-- | /O(1)/ Extract the last element of a Buffer, which must be finite and non-empty.
++last :: Rope -> Word8
++last (Rope r) = S.unsafeLast (F.last r)
++{-# INLINE last #-}
++
++-- | /O(1)/ Return all the elements of a 'Rope' except the last one. Requires the 'Rope' to be non-empty.
++init (Rope r) = case F.viewR r of
++        as :< a -> Rope as `snocBuffer'` S.init a
++        EmptyR -> errorEmptyList "init"
++{-# INLINE init #-}
++
++-- | /O(log(min(n,m)))/ Append two Buffers
++append :: Rope -> Rope -> Rope
++append (Rope a) (Rope b) = Rope (a `mappend` b)
+hunk ./Data/Buffer/Rope/Word8.hs 397
+-map :: (Word8 -> Word8) -> Buffer -> Buffer
+-map f s = go s
+-    where
+-        go Empty        = Empty
+-        go (Chunk x xs) = Chunk y ys
+-            where
+-                y  = S.map f x
+-                ys = go xs
++map :: (Word8 -> Word8) -> Rope -> Rope
++map f = foldMap (fromBuffer . map f)
+hunk ./Data/Buffer/Rope/Word8.hs 401
+--- | /O(n)/ 'reverse' @xs@ returns the elements of @xs@ in reverse order.
+-reverse :: Buffer -> Buffer
+-reverse cs0 = rev Empty cs0
+-  where rev a Empty        = a
+-        rev a (Chunk c cs) = rev (Chunk (S.reverse c) a) cs
++-- | /O(n)/. The reverse of a 'Rope'.
++reverse :: Rope -> Rope
++reverse (Rope xs) = Rope (reverseTree S.reverse xs)
+hunk ./Data/Buffer/Rope/Word8.hs 406
++reverseTree :: (a -> a) -> FingerTree a -> FingerTree a
++reverseTree _ F.Empty = F.Empty
++reverseTree f (F.Single x) = F.Single (f x)
++reverseTree f (F.Deep s e pr m sf) =
++    F.Deep s e (reverseDigit f sf)
++        (reverseTree (reverseNode f) m)
++        (reverseDigit f pr)
++
++{-# INLINE reverseDigit #-}
++reverseDigit :: (a -> a) -> Digit a -> Digit a
++reverseDigit f (One a) = One (f a)
++reverseDigit f (Two a b) = Two (f b) (f a)
++reverseDigit f (Three a b c) = Three (f c) (f b) (f a)
++reverseDigit f (Four a b c d) = Four (f d) (f c) (f b) (f a)
++
++reverseNode :: (a -> a) -> Node a -> Node a
++reverseNode f (Node2 s e a b) = Node2 s e (f b) (f a)
++reverseNode f (Node3 s e a b c) = Node3 s e (f c) (f b) (f a)
++
+hunk ./Data/Buffer/Rope/Word8.hs 428
+-intersperse :: Word8 -> Buffer -> Buffer
+-intersperse _ Empty        = Empty
+-intersperse w (Chunk c cs) = Chunk (S.intersperse w c)
+-                                   (foldrChunks (Chunk . intersperse') Empty cs)
+-  where intersperse' :: P.Buffer -> P.Buffer
++intersperse :: Word8 -> Rope -> Rope
++intersperse w (Rope r) = case f.viewL r of
++    EmptyL -> empty
++    c :< cs -> intersperse w c `consBuffer` mapBuffer intersperse' cs
++  where intersperse' :: S.Buffer -> S.Buffer
+hunk ./Data/Buffer/Rope/Word8.hs 441
+-transpose :: [Buffer] -> [Buffer]
+-transpose css = L.map (\ss -> Chunk (S.pack ss) Empty)
+-                      (L.transpose (L.map unpack css))
++transpose :: [Rope] -> [Rope]
++transpose css = L.map pack (L.transpose (L.map unpack css))
+hunk ./Data/Buffer/Rope/Word8.hs 451
+-foldl :: (a -> Word8 -> a) -> a -> Buffer -> a
+-foldl f z = go z
+-  where go a Empty        = a
+-        go a (Chunk c cs) = go (S.foldl f a c) cs
++foldl :: (a -> Word8 -> a) -> a -> Rope -> a
++foldl f z = foldlChunks (S.foldl f z) z
+hunk ./Data/Buffer/Rope/Word8.hs 456
+-foldl' :: (a -> Word8 -> a) -> a -> Buffer -> a
+-foldl' f z = go z
+-  where go a _ | a `seq` False = undefined
+-        go a Empty        = a
+-        go a (Chunk c cs) = go (S.foldl f a c) cs
++foldl' :: (a -> Word8 -> a) -> a -> Rope -> a
++foldl' f z = foldlChunks' (S.foldl' f z) z
+hunk ./Data/Buffer/Rope/Word8.hs 463
+-foldr :: (Word8 -> a -> a) -> a -> Buffer -> a
+-foldr k z cs = foldrChunks (flip (S.foldr k)) z cs
++foldr :: (Word8 -> a -> a) -> a -> Rope -> a
++foldr k z = foldrChunks (S.foldl f z) z
+hunk ./Data/Buffer/Rope/Word8.hs 470
+-foldl1 :: (Word8 -> Word8 -> Word8) -> Buffer -> Word8
+-foldl1 _ Empty        = errorEmptyList "foldl1"
+-foldl1 f (Chunk c cs) = foldl f (S.unsafeHead c) (Chunk (S.unsafeTail c) cs)
++foldl1 :: (Word8 -> Word8 -> Word8) -> Rope -> Word8
++foldl1 f r = case viewl r of 
++    EmptyL -> errorEmptyList "foldl1"
++    a :< as -> foldlChunks f (S.foldl f (S.unsafeHead a) (S.unsafeTail a)) as
+hunk ./Data/Buffer/Rope/Word8.hs 477
+-foldl1' _ Empty        = errorEmptyList "foldl1'"
+-foldl1' f (Chunk c cs) = foldl' f (S.unsafeHead c) (Chunk (S.unsafeTail c) cs)
++foldl1' f r = case viewl r of 
++    EmptyL -> errorEmptyList "foldl1'"
++    a :< as -> foldlChunks' f (S.foldl' f (S.unsafeHead a) (S.unsafeTail a)) as
+hunk ./Data/Buffer/Rope/Word8.hs 484
+-foldr1 _ Empty          = errorEmptyList "foldr1"
+-foldr1 f (Chunk c0 cs0) = go c0 cs0
+-  where go c Empty         = S.foldr1 f c
+-        go c (Chunk c' cs) = S.foldr  f (go c' cs) c
++foldr1 f r = case viewr r of
++    EmptyR -> errorEmptyList "foldr1"
++    as :> a -> foldrChunks f (S.foldr f (S.unsafeLast a)) (S.unsafeInit a)) as
++
++-- | 'foldr1\'' is like 'foldr1', but strict in the accumulator.
++foldr1' :: (Word8 -> Word8 -> Word8) -> Buffer -> Word8
++foldr1' f r = case viewr r of
++    EmptyR -> errorEmptyList "foldr1"
++    as :> a -> foldrChunks' f (S.foldr' f (S.unsafeLast a)) (S.unsafeInit a)) as
+hunk ./Data/Buffer/Rope/Word8.hs 498
+-concat :: [Buffer] -> Buffer
+-concat css0 = to css0
+-  where
+-    go Empty        css = to css
+-    go (Chunk c cs) css = Chunk c (go cs css)
+-    to []               = Empty
+-    to (cs:css)         = go cs css
++concat :: [Rope] -> Rope
++concat = L.foldr append empty
+hunk ./Data/Buffer/Rope/Word8.hs 501
+--- | Map a function over a 'Buffer' and concatenate the results
+-concatMap :: (Word8 -> Buffer) -> Buffer -> Buffer
+-concatMap _ Empty        = Empty
+-concatMap f (Chunk c0 cs0) = to c0 cs0
+-  where
+-    go :: Buffer -> P.Buffer -> Buffer -> Buffer
+-    go Empty        c' cs' = to c' cs'
+-    go (Chunk c cs) c' cs' = Chunk c (go cs c' cs')
++-- | Map a function over a 'Rope' and concatenate the results
++concatMap :: (Word8 -> Rope) -> Rope -> Rope
++concatMap f = foldMap (mconcat . S.unpackWith f)
+hunk ./Data/Buffer/Rope/Word8.hs 505
+-    to :: P.Buffer -> Buffer -> Buffer
+-    to c cs | S.null c  = case cs of
+-        Empty          -> Empty
+-        (Chunk c' cs') -> to c' cs'
+-            | otherwise = go (f (S.unsafeHead c)) (S.unsafeTail c) cs
+-
+--- | /O(n)/ Applied to a predicate and a Buffer, 'any' determines if
+--- any element of the 'Buffer' satisfies the predicate.
+-any :: (Word8 -> Bool) -> Buffer -> Bool
+-any f cs = foldrChunks (\c rest -> S.any f c || rest) False cs
++-- | /O(n)/ Applied to a predicate and a Rope, 'any' determines if
++-- any element of the 'Rope' satisfies the predicate.
++any :: (Word8 -> Bool) -> Rope -> Bool
++any f (Rope r) = F.any (S.any f) r
+hunk ./Data/Buffer/Rope/Word8.hs 512
+--- | /O(n)/ Applied to a predicate and a 'Buffer', 'all' determines
+--- if all elements of the 'Buffer' satisfy the predicate.
++-- | /O(n)/ Applied to a predicate and a 'Rope', 'all' determines
++-- if all elements of the 'Rope' satisfy the predicate.
+hunk ./Data/Buffer/Rope/Word8.hs 515
+-all f cs = foldrChunks (\c rest -> S.all f c && rest) True cs
++all f (Rope r) = F.all (S.all f) r
+hunk ./Data/Buffer/Rope/Word8.hs 519
+--- | /O(n)/ 'maximum' returns the maximum value from a 'Buffer'
+-maximum :: Buffer -> Word8
+-maximum Empty        = errorEmptyList "maximum"
+-maximum (Chunk c cs) = foldlChunks (\n c' -> n `max` S.maximum c')
+-                                   (S.maximum c) cs
++-- | /O(n)/ 'maximum' returns the maximum value from a 'Rope'
++maximum :: Rope -> Word8
++maximum (Rope r) = case F.viewL r of
++    EmptyL -> errorEmptyList "maximum"
++    c :< cs -> foldlChunks (\n c' -> n `max` S.maximum c') (S.maximum c) cs
+hunk ./Data/Buffer/Rope/Word8.hs 526
+--- | /O(n)/ 'minimum' returns the minimum value from a 'Buffer'
+-minimum :: Buffer -> Word8
+-minimum Empty        = errorEmptyList "minimum"
+-minimum (Chunk c cs) = foldlChunks (\n c' -> n `min` S.minimum c')
+-                                     (S.minimum c) cs
++-- | /O(n)/ 'minimum' returns the minimum value from a 'Rope'
++minimum :: Rope -> Word8
++minimum (Rope r) = case F.viewR r of
++    EmptyL -> errorEmptyList "minimum"
++    c :< cs -> foldlChunks (\n c' -> n `min` S.minimum c') (S.minimum c) cs
+hunk ./Data/Buffer/Rope/Word8.hs 533
++-- | The 'mapAccumBufferL' function behaves like a combination of 'map' and
++-- 'foldl'; it applies a function to each 'Buffer' in the 'Rope'
++-- passing an accumulating parameter from left to right, and returning a
++-- final value of this accumulator together with a new 'Rope' formed 
++-- by gluing together the buffers, and splitting the ones that are too large.
++mapAccumBufferL :: (acc -> Buffer -> (acc, Buffer)) -> acc -> Rope -> (acc, Rope)
++mapAccumBufferL f s0 r = go s0 (viewl r)
++    where
++        go s EmptyL = (s, empty)
++        go s (c :< cs) = (s'', c' `consBuffer` cs')
++            where (s', c') = S.mapAccumL f s c
++                  (s'', cs') = go s' cs
++
+hunk ./Data/Buffer/Rope/Word8.hs 550
+-mapAccumL :: (acc -> Word8 -> (acc, Word8)) -> acc -> Buffer -> (acc, Buffer)
+-mapAccumL f s0 cs0 = go s0 cs0
+-  where
+-    go s Empty        = (s, Empty)
+-    go s (Chunk c cs) = (s'', Chunk c' cs')
+-        where (s',  c')  = S.mapAccumL f s c
+-              (s'', cs') = go s' cs
++mapAccumL :: (acc -> Word8 -> (acc, Word8)) -> acc -> Rope -> (acc, Rope)
++mapAccumL f = mapAccumBufferL (S.mapAccumL f)
++
+hunk ./Data/Buffer/Rope/Word8.hs 566
++-- | The 'mapAccumBufferL' function behaves like a combination of 'map' and
++-- 'foldr'; it applies a function to each 'Buffer' in the 'Rope'
++-- passing an accumulating parameter from right to left, and returning a
++-- final value of this accumulator together with a new 'Rope' formed 
++-- by gluing together the buffers, and splitting the ones that are too large.
++mapAccumBufferR :: (acc -> Buffer -> (acc, Buffer)) -> acc -> Rope -> (acc, Rope)
++mapAccumBufferR f s0 r = go s0 (viewr r)
++    where
++        go s EmptyR = (s, empty)
++        go s (cs :> c) = (s'', cs' `snocBuffer` c)
++            where (s', c') = S.mapAccumR f s c
++                  (s'', cs') = go s' cs
++
+hunk ./Data/Buffer/Rope/Word8.hs 590
+-scanl :: (Word8 -> Word8 -> Word8) -> Word8 -> Buffer -> Buffer
++scanl :: (Word8 -> Word8 -> Word8) -> Word8 -> Rope -> Rope

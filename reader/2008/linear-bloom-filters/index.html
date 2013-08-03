@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Linear Bloom Filters</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Linear Bloom Filters Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Kan Extensions III: As Ends and Coends' href='../kan-extension-iii/index.html' />
+<link rel='next' title='Representing Adjunctions' href='../representing-adjunctions/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Tue 3 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Linear Bloom Filters">Linear Bloom Filters</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> <br/><a href="index.html#comments" title="Comment on Linear Bloom Filters">[11] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>This post is a bit of a departure from my recent norm. It contains no category theory whatsoever. None. I promise.</p>
+<p>Now that I've bored away the math folks, I'll point out that this also isn't a guide to better horticulture. Great, there goes the rest of you.</p>
+<p>Instead, I want to talk about <a href="http://citeseer.ist.psu.edu/bloom70spacetime.html">Bloom filters</a>, Bloom joins for distributed databases and some novel extensions to them that let you trade in resources that we have in abundance for ones that are scarce, which I've been using for the last few months and which I have never before seen before in print. Primarily because I guess they have little to do with the strengths of Bloom filters.</p>
+<p><span id="more-66"></span></p>
+<p>For practical purposes you will need to use a <a href="http://en.wikipedia.org/wiki/Bloom_filter#Counting_filters">counted</a> or <a href="http://theory.stanford.edu/~matias/papers/sbf-sigmod-03.pdf">spectral</a> Bloom filter for the purposes of the structure mentioned below. However, as these introduce nothing novel, and simply muddle the exposition, I'll ignore counting and spectral Blooms for now.</p>
+<p><b>Bloom Filters</b></p>
+<p>Ok, so what is a Bloom filter? Bloom filters date back to 1970. A simple Bloom filter is a novel data structure for approximating membership in a set, yielding only false positives. A filter consists of an m-bit array and k distinct hash functions. To add an element to the filter you run it through each of the k hash functions and setting the appropriate bits. A value is considered to be a member of the set if you hash it through each of the k functions and each of the target bits is set. It is easy to see that this can only result in a false positive, but its also easy to see that you need to set the size of the array before you start adding elements to it, and that you need to balance the number of hash functions to the overall desired precision of your filter. In general you want to have about half of the bits set in the resulting array to maximize your information density -- a fact which can be derived with elementary calculus. From which you can figure out that you get optimal results when <img src='../../../latex/2926fa9fe0e15aa4f8ef10438cd6822e.png' title='$k = \frac{m}{n} \ln 2$' alt='$k = \frac{m}{n} \ln 2$' align=absmiddle>.</p>
+<p>We can readily approximate k distinct hashing functions by using a single one-way hashing function and carving it up into a number of hashing functions that consist of the right number of bits each. A simpler approach due to <a href="http://www.eecs.harvard.edu/~kirsch/pubs/bbbf/esa06.pdf">Kirsch and Mitzenmacher</a> is to sacrifice the independence of the hash functions without particularly adversely affecting the properties of the filter.</p>
+<p>The nice thing about a Bloom filter is that the parameters m and k can be varied to tune space requirements and precision.</p>
+<p><b>Improving Locality</b></p>
+<p>One common way to improve the locality of reference for excessively large Bloom filters is to break up the structure into two tiers. You have an upper tier in which you use a single hash function to bin the data, then within the bin you placed the data you run the remaining k-1 hash functions. This can result in a 'lumpier' distribution of data, but generally improves performance because if you exceed working memory, this model can typically page in a single page from disk to handle the k-1 writes. When you figure that it is common to use between several hashing functions with a bloom filter this can result in a several-fold performance improvement as the data set grows and you become IO bound. As a result of being primarily to optimize IO you typically want to have a bin size that corresponds with your block or page size. </p>
+<p>As an admittedly <em>completely</em> unintelligible aside, I am particularly fond of 8k bins for a simple Bloom filter, because they nicely consume 16 bits of hash evenly, and 4k bins, when used with 4 bit counting Blooms, page in and out efficiently and compress nicely with an arithmetic/exponentiated Huffman encoding into near even multiples of the ethernet packet MTU when you tune the ratio of set bits carefully, I've found this to be beneficial for tweaking real world performance.</p>
+<p><b>Bloom Joins</b></p>
+<p>Given a pair of bloom filters that share a given size m and which use the same k hash functions. You can take their intersection (or union) quite efficiently with bitwise and (or or). This is a well known technique for dealing with distributed database joins when you have data distributed across multiple servers joining against data distributed across other servers. In general, you are only interested in transmitting the data that exists on both sides of the join.</p>
+<p>(You can technically free yourself from the requirement that both sides agree on the number of hash functions if you are willing to accept more false positives and you test for membership in the result set using just the hash functions contained in both Blooms. The easiest way to do this is to just agree on an order in which hash functions will be used, which comes for free from the Kirsch/Mitzenmacher approach mentioned above.)</p>
+<p><b>The good</b><br />
+The nice thing about a standard Bloom join is that you can send the Bloom filter over the network quite cheaply in comparison to the data, and with the addition of counting Bloom filter tricks it can be used to calculate approximately the size of the result set. This allows you to use it to load level <a href="http://labs.google.com/papers/mapreduce.html">MapReduce</a> style workloads effectively by estimating the size of intermediate results quite accurately before you send everything over the network to be aggregated.</p>
+<p><b>The bad</b><br />
+One problem with this model is that you have to know the size of your data set up front in order to calculate an ideal m for a desired precision level. Moreover both sides of the join have to agree on this figure m before calculating the join.</p>
+<p>Now, the main goal of a Bloom join is to conserve an scarce resource (network bandwith) by exchanging cheaper, more plentiful resources (local CPU utilization, and disk IO). In that respect it serves adequately, but we can do better if our goal is more or less purely to optimize network bandwidth. Lets carry that a bit further.</p>
+<p><b>Linear Hash Tables</b></p>
+<p>To address the limitation that you have to know the size of the bloom a priori, we'll turn to another data structure, the <a href="http://en.wikipedia.org/wiki/Linear_hash">linear hash table</a>. Linear hash tables were designed by Witold Litwin back in 1980 to provide an expandable hash table without a huge stairstep in the cost function whenever you hit a power of two in size. The basic idea of a linear hash table is that you grow the table gradually, by splitting one bucket at a time and using the least significant bits of your hash function.</p>
+<p>For sake of variety, I've included a C# 3.5 implementation here:</p>
+<p>[<a href="../../../csharp/SortedLinearHashTable.cs">SortedLinearHashTable.cs</a>]<br />
+[<a href="../../../csharp/SinglyLinkedList.cs">SinglyLinkedList.cs</a>]<br />
+[<a href="../../../csharp/PreparedEqualityComparer.cs">PreparedEqualityComparer.cs</a>]<br />
+[<a href="../../../csharp/PreparedEqualityComparerTypeProxyAttribute.cs">PreparedEqualityComparerTypeProxyAttribute.cs</a>]</p>
+<p>For my regular audience, an implementation in Haskell using STM &mdash; incidentally was the first piece of Haskell I ever wrote &mdash; designed for read-mostly use can be found here:</p>
+<p>[<a href="../../../haskell/thash/dist/doc/html/index.html">haddock</a>]<br />
+[<a href="../../../haskell/thash/index.html">darcs</a>]</p>
+<p><b>A Linear Bloom Filter</b></p>
+<p>Now, we can look at the bi-level structure we introduced above for dealing with improved cache locality and note that we could go in a different direction and treat the upper level as a linear hash table, instead of a simple hash function! This requires that we keep not only the Bloom but also the member list (or at least their hashes). We can optimize this slightly by computing the Bloom of the member list for each page lazily. This costs us quite a bit of storage relative to a traditional Bloom filter, but we can transmit the Bloom of the resulting set over the network more cheaply than we can transmit a linear hash table and it isn't appreciably more expensive locally than a linear hash table due to only lazily constructing the Blooms.</p>
+<p>This mechanism gives rise to an actual tree of pages based on the unfolding of the linear hash table in the resulting hierarchical bloom if you choose to represent the interior of the tree.</p>
+<p>Again, this isn't a win for all scenarios, but if you are intending to transmit the resulting set over the network, and don't know its size a priori, the combination of properties from the linear hash table and the bloomed pages leads to some interesting options.</p>
+<p><b>Linear Bloom Origami</b></p>
+<p>Now that we have an expandable hash in our top level, we finally have the machinery to deal with how to perform a join between two linear bloom filters of different size. The model is actually quite simple. We can fold the larger bloom up by <em>or</em>ing together the leaves that were split by the linear hash table in the larger bloom until we have the same number of pages and then perform a standard Bloom join. This frees us from the tyranny of having to have both sides of the join guess in advance a shared number of buckets to use to perform the join. </p>
+<p>As an aside, an interesting thought experiment is to go one step further and use a full-fledged sorted linear hash table for the extra cost of sorting the chains, but this doesn't seem to be useful in practice.</p>
+<p><b>Mipmapping Blooms</b></p>
+<p>If we are willing to pay an <img src='../../../latex/01a17e3e6b652247d2115619a119c921.png' title='$\mathcal{O}(n \log n)$' alt='$\mathcal{O}(n \log n)$' align=absmiddle> cost in terms of the data set size cost in terms of CPU utilization and memory bandwidth we can gain some further performance in terms of network utilization through encoding a set of "<a href="http://en.wikipedia.org/wiki/Mipmap">mipmaps</a>" for our filters. </p>
+<p>Basically the idea is to fold up the tree by <em>or</em>ing together the pages into an admissible Bloom of the dataset. Then you encode the splitting of each bit that was set in the Bloom using conditional probabilities. This can be transmitted near optimally using arithmetic encoding or exponentiated Huffman.</p>
+<p>If a bit is set in the parent Bloom, then at least one of the two bits will be set in the child Blooms; if no bit is set in the parent Bloom, then no bit can be set in the child Blooms. The probability of each bit being set in each child is for all practical intents and purposes independent and can reasonably be modeled as a function of the expected number of set bits. (This is ever-so-slightly suboptimal if the overall number of values is known). You can determine exact values for the weights of each of the three cases using conditional probabilities and then use an arithmetic compressor, or exponentiate the alphabet for a Huffman compressor &mdash; this is otherwise near worst-case for Huffman, since you have two possibilities both just shy of 50% and one much smaller probability. Nicely the regular structure of the exponentiated alphabet is very regular and can be represented efficiently. With careful choice of page size (or bit density within a page) you can transmit the initial page cheaply, and then pack multiple pages into subsequent packets. </p>
+<p>Since we can determine the relevance of portions of the tree based on partial information this may allow you to avoid transmitting some branches of the tree. More interestingly we can use it to figure out approximately the size of the join set from the first few pages transmitted and to gain gradual refinements as both sides of the join supply more information. </p>
+<p>If you wanted to optimize strictly for network bandwidth and were willing to accept additional latency you could prune branches of the tree after it was clear that the intersection was empty and so no further resolution was required, but in my experience this optimization doesn't seem to be worth the effort.</p>
+<p><b>Incremental Update</b></p>
+<p>Interestingly if you have already shared a Linear Bloom and need to update your copy it admits a cheap network representation using the same arithmetic/exponentiated Huffman encoding trick mentioned earlier. You lose the ability to ignore all unset bits in the dataset because extending the set of known values will in all likelihood set new bits, but as you add members you can transmit splits using the same mechanism used above, and you have the actual member set needed to populate the child pages accurately.</p>
+<p>Interestingly it is the ability to mipmap the intermediate results that sometimes makes it worth dealing with a suboptimal choice of density for the overall Bloom filter, because it only affects the cost on either end of the network, it doesn't affect the network transmission costs all that adversely and more sparse population early in the tree can allow you to have a less oversaturated tree near the root, allowing earlier pruning of branches - I have yet to take this from an art to a science.</p>
+<p><b>Conclusion</b></p>
+<p>I had intended to explain things in more detail and delve into the asymptotic behavior of hierarchical and linear Blooms, but various people have been hammering me to just post this already, so here it is.</p>
+<p>So to recap, we took a normal (or counted or spectral) Bloom filter, crossbred it with Litwin's linear hash table and found that the mutant offspring is an approximation of a set that is better suited to sharing over the network than either structure alone, with a memory usage profile similar to that of a linear hash table. Interestingly as a side effect you can go one step further and allow for transmission of a requested subset of the exact hashes present in which case we've really only used the Blooms to provide partial information about the underlying linear hash table, which can aid in the subsequent join process.</p>
+<p>And yes, they are probably better named something like Bloomed linear hash tables, but that doesn't roll off the tongue.</p>
+<p>If there is enough interest and I don't get dragged into other things, I might see about packaging up and genericizing some code that I had lying around intended for production use into a more general purpose library for Linear Bloom Filters. </p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">11 Responses to &#8220;Linear Bloom Filters&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1601">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=7a94394b49ca6e8abbe48d46ec7c5156&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Shae Erisson</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1601" title="">June 4th, 2008 at 12:51 am</a> </small>
+			<br clear="all"/>
+
+			<p>This is me expressing interest in both the general purpose Linear Bloom Filter library, and the asymptotic behavior.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1602">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1602" title="">June 4th, 2008 at 2:01 am</a> </small>
+			<br clear="all"/>
+
+			<p>Bah. You don&#8217;t count. You already have access to the original library. =)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1604">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=423ea323160555479e6298bd520bc3d5&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.blabberize.com' rel='external nofollow' class='url'>Mo Kakwan</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1604" title="">June 4th, 2008 at 9:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>With all that talk of bloom filters and even a few mentions of mipmaps I thought you would have thrown in a few screenshots. Ha.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1607">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1607" title="">June 4th, 2008 at 10:30 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Hah! Sorry Mo.</p>
+<p>Unfortunately nothing I do these days makes for great screenshots. Maybe I should go back to voxels and stabbing line problems. ;)</p>
+<p>I suppose you could Bloom a scene&#8217;s PVS or something, but its not all that useful for its primary purpose because then you wouldn&#8217;t be able to extract the member cells. Hrmm. That said, I guess it could be used for a quick, &#8220;is this model that overlaps these cells probably visible?&#8221; tester.</p>
+<p>I almost referred to the hierarchical representation as a kind of Haar wavelet encoding, but I figured that would cause the last person in the audience to tune me out.</p>
+<p>P.S. The alpaca on your page still refers to  blabberize as &#8216;the technology of 2007&#8242; ;)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1618">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.s31.org/2008/06/05/links-for-2008-06-06/' rel='external nofollow' class='url'>links for 2008-06-06</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1618" title="">June 5th, 2008 at 8:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] The Comonad.Reader » Linear Bloom Filters (tags: algorithm algorithms article data math research programming) [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-2378">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8737e8b7274c1c75ed8164e3744a4701&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.subayai.com' rel='external nofollow' class='url'>Darrell Teague</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-2378" title="">August 5th, 2008 at 2:02 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Your article was well-written and is very interesting. I was really geeking out on it and I am not even a mathematician. I think the article would have made my ex-girlfriend hot.</p>
+<p>Anyway, all jokes aside, I am surprised to find Bloom Filter usage very sparse within the general software industry (I am a consultant-of-one running my own company but have large clients in the Fortune 100, start-ups, etc).</p>
+<p>The case you presented here for being able to efficiently serialize the filter has notable use in web-application farm environments where sessions and other state table information must be migrated between servers (depending on session management strategy employed). Indeed one challenge I am considering is somehow managing some Bloom Filter construct across a RAIN architecture without sacrificing the small memory footprint and performance advantages that Blooms provide.</p>
+<p>Thanks again.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-6564">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=5646c6bb5b097105b718b73c4bd215f7&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Christian</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6564" title="">March 8th, 2009 at 12:52 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Edward, are you aware of any specific paper discussing theoretical properties of the two-tier Bloom filter architecture? I am specifically interested in a comparison of false-positive rates of two-tier filters and standard filters.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-6569">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6569" title="">March 8th, 2009 at 6:00 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Christian you might want to check out:</p>
+<p><a href="http://algo2.iti.uni-karlsruhe.de/singler/publications/cacheefficientbloomfilters-wea2007.pdf" rel="nofollow">http://algo2.iti.uni-karlsruhe.de/singler/publications/cacheefficientbloomfilters-wea2007.pdf</a></p>
+<p>Although they concern themselves with clustering within a single cache line, the idea of clustering within a page follows similarly.</p>
+<p>IIRC they take up like ~32% extra space to get the same precision, but they use VERY small buckets of the same size as a cache line. So that should give you an upper bound for space comparison that you can back into a false positive rate comparison.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-6577">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=5646c6bb5b097105b718b73c4bd215f7&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Christian</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6577" title="">March 9th, 2009 at 6:07 am</a> </small>
+			<br clear="all"/>
+
+			<p>Thanks, Edward. If I get this right, the larger the single buckets, the closer the two-tier variant performs to the standard variant (in sense of the false-positive rate for a total length of m)?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-6604">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-6604" title="">March 10th, 2009 at 4:43 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Yes.</p>
+<p>If you have p bits of hash function available to you, and the top tier consumes q of them, then at one extreme q = 0, and you have all p bits available for use within the one bucket, cutting p up into k different hash functions yields the traditional Bloom filter. </p>
+<p>In the other extreme you have q = p, and you have the efficacy of a bloom table/bit-hash with one hash function. </p>
+<p>In the middle the false positive rate lies somewhere in between, but you only have to deal with data points within a single bucket to answer the query, so you can typically save a factor of k in paging or cache-thrashing costs.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-7126">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8737e8b7274c1c75ed8164e3744a4701&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.subayai.com' rel='external nofollow' class='url'>Darrell Teague</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-7126" title="">April 7th, 2009 at 7:41 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Ed,<br />
+I know you and some of your readers love Haskell so I thought I would share this funny (but real) programming language I just read about:</p>
+<p><a href="http://compsoc.dur.ac.uk/whitespace/index.php" rel="nofollow">http://compsoc.dur.ac.uk/whitespace/index.php</a></p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="66" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Tuesday, Jun 3rd, 2008 at 10:26 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

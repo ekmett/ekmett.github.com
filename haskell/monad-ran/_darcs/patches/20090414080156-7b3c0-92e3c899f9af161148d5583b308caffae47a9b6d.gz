@@ -1,0 +1,31 @@
+[added Codensity and Yoneda
+ekmett@gmail.com**20090414080156
+ Ignore-this: 8ac0fb545aa4795ad2ed5413fcbd5edc
+] {
+hunk ./Control/Monad/Ran.hs 73
+---class RMonadTrans t where
+---    liftR :: RMonad m => RanT m a -> RanT (t m) a
+-
+--- utility bifunctors for definitions below
+hunk ./Control/Monad/Ran.hs 79
+--- Yoneda Identity
++-- Yoneda Identity ~ Codensity Identity
+hunk ./Control/Monad/Ran.hs 108
+-   type G (ErrorT b m) = G m 
+-   type H (ErrorT b m) = ErrorTH b m
++    type G (ErrorT b m) = G m 
++    type H (ErrorT b m) = ErrorTH b m
++
+hunk ./Control/Monad/Ran.hs 113
+--- forall o. (a -> o) -> f o 
++-- forall o. (a -> Identity o) -> f o 
+hunk ./Control/Monad/Ran.hs 117
++    toRan (Yoneda f) = Ran (\b -> f (runIdentity . b))
++    fromRan (Ran f) = Yoneda (\b -> f (Identity . b))
+hunk ./Control/Monad/Ran.hs 125
++    toRan (Codensity f) = Ran f
++    fromRan (Ran f) = Codensity f
+hunk ./Control/Monad/Ran.hs 132
+-    type H (Reader e) = Hom e
++    type H (Reader e) = Reader e
+}

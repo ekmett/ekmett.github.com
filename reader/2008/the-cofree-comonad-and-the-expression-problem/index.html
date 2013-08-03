@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; The Cofree Comonad and the Expression Problem</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; The Cofree Comonad and the Expression Problem Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Deriving Strength from Laziness' href='../deriving-strength-from-laziness/index.html' />
+<link rel='next' title='Zipping and Unzipping Functors' href='../zipping-and-unzipping-functors/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Wed 30 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: The Cofree Comonad and the Expression Problem">The Cofree Comonad and the Expression Problem</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="index.html#comments" title="Comment on The Cofree Comonad and the Expression Problem">[8] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# OPTIONS -fglasgow-exts -fallow-undecidable-instances #-}</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">import</span> Control.Arrow <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>&amp;&amp;&amp;<span style="color: green;">&#41;</span>, <span style="color: green;">&#40;</span>***<span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span>+++<span style="color: green;">&#41;</span>, <span style="color: green;">&#40;</span>|||<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I want to talk about duality briefly. I don't want to go all the way to <a href="http://citeseer.ist.psu.edu/filinski89declarative.html">Filinski</a>-style or <a href="http://research.microsoft.com/users/simonpj/papers/not-not-ml/index.htm">Haskell is Not Not ML</a>-style value/continuation duality, but I do want to poke a bit at the variant/record duality explified by the extensible cases used to handle variants in <a href="http://ttic.uchicago.edu/~wchae/wiki/pmwiki.php">MLPolyR</a>. </p>
+<p>The need for extensible cases to handle open variants is part of the expression problem as stated by Wadler:</p>
+<blockquote><p>
+The goal is to define a data type by cases, where one can add new cases to the data type and new functions over the data type, without recompiling existing code, and while retaining static type safety.
+</p></blockquote>
+<p>One obvious trick is to use an extensible record of functions as a 'case' statement, with each field corresponding to one of the variants. To index into records you can use an extensible variant of functions to represent a field selection. In a purer form ala the Filinski or the Haskell is Not Not ML approach mentioned above, you can replace the word 'function' with continuation and everything works out.</p>
+<p>Sweirstra recently tackled the extensible variant side of the equation with in <a href="http://www.cs.nott.ac.uk/~wss/Publications/DataTypesALaCarte.pdf">Data types a la carte</a> using the free monad coproduct to handle the 'variant' side of things, leaving the handling of cases to typeclasses, but we can see if we can go one better and just exploit the variant/record duality directly.</p>
+<p><span id="more-53"></span></p>
+<p><b>Fight Club for Functors</b></p>
+<p>Leaning a little on multi-parameter type classes we define:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Dual f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+        zap :: <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; f a -&gt; g b -&gt; c
+&nbsp;
+<span style="color: green;">&#40;</span>&gt;$&lt; <span style="color: green;">&#41;</span> :: Dual f g =&gt; f <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; g a -&gt; b
+<span style="color: green;">&#40;</span>&gt;$&lt; <span style="color: green;">&#41;</span> = zap <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>The (>$&lt;) operator takes a functor containing functions, and its 'dual functor' and annihilates them both obtaining a single value in a deterministic fashion.</p>
+<p>The easiest inhabitant of this typeclass is the following:</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Dual Identity Identity <span style="color: #06c; font-weight: bold;">where</span>
+        zap f <span style="color: green;">&#40;</span>Identity a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Identity b<span style="color: green;">&#41;</span> = f a b
+&nbsp;</pre>
+<p>After all there is only one item to be had on both the left and right so the choice is obvious. Now, we can take a couple of additional functors, the coproduct and product functors and define instances of Dual for them:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> a = Inl <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> | Inr <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">data</span> <span style="color: green;">&#40;</span>f :*: g<span style="color: green;">&#41;</span> a = Prod <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Inl x<span style="color: green;">&#41;</span> = Inl <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Inr y<span style="color: green;">&#41;</span> = Inr <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Prod x y<span style="color: green;">&#41;</span> = Prod <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Dual f f', Dual g g'<span style="color: green;">&#41;</span> =&gt; Dual <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f' :*: g'<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zap op <span style="color: green;">&#40;</span>Inl f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Prod a _<span style="color: green;">&#41;</span> = zap op f a
+        zap op <span style="color: green;">&#40;</span>Inr f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Prod _ b<span style="color: green;">&#41;</span> = zap op f b
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Dual f f', Dual g g'<span style="color: green;">&#41;</span> =&gt; Dual <span style="color: green;">&#40;</span>f :*: g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f' :+: g'<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zap op <span style="color: green;">&#40;</span>Prod f _<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Inl a<span style="color: green;">&#41;</span> = zap op f a
+        zap op <span style="color: green;">&#40;</span>Prod _ g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Inr b<span style="color: green;">&#41;</span> = zap op g b
+&nbsp;</pre>
+<p>Now, we can use the above to define an extensible case using (:*:)'s to handle any matching variant (:+:).</p>
+<p>Clearly if you use any composition of the above, what will happen is whenever you have a product on the left you will have a sum on the right 'choosing' which half of the product you are interested, and whenever you have a sum on the left you will have a product on the right, and the sum in THAT case will choose which half of the product you are interested in. You will eventually reach a leaf (or evaluate to bottom), and the only base case we have is the Identity functor on both sides, so you will have only one candidate value to return. </p>
+<p>The 'dispatch' of the function call is handled by some choices being made by sums on the left and others being made by sums on the right, but always in order to preserve duality, there is a corresponding pair of options on the other side.</p>
+<p>A more straightforward insight might be obtained by extending this logic to bifunctors to eliminate some of the noise and allow your types to vary more.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | Bifunctor Duality</span>
+<span style="color: #06c; font-weight: bold;">class</span> BiDual p q | p -&gt; q, q -&gt; p <span style="color: #06c; font-weight: bold;">where</span>
+        bizap :: <span style="color: green;">&#40;</span>a -&gt; c -&gt; e<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; d -&gt; e<span style="color: green;">&#41;</span> -&gt; p a b -&gt; q c d -&gt; e
+&nbsp;
+<span style="color: green;">&#40;</span>&gt;&gt;$&lt; &lt;<span style="color: green;">&#41;</span>:: BiDual p q =&gt; p <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b -&gt; c<span style="color: green;">&#41;</span> -&gt; q a b -&gt; c
+<span style="color: green;">&#40;</span>&gt;&gt;$&lt; &lt;<span style="color: green;">&#41;</span> = bizap <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> BiDual <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: #06c; font-weight: bold;">where</span>
+        bizap l r <span style="color: green;">&#40;</span>f,g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span>  = l f a
+        bizap l r <span style="color: green;">&#40;</span>f,g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> b<span style="color: green;">&#41;</span> = r g b
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> BiDual <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        bizap l r <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>  = l f a
+        bizap l r <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = r g b
+&nbsp;</pre>
+<p>With the latter definition in hand, we can use products of functions to annihilate sums of values, or sums of functions to annihilate products of values.</p>
+</pre>
+<pre class="haskell">&nbsp;
+ten :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+ten = <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>*<span style="color: red;">2</span><span style="color: green;">&#41;</span>,<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span> &gt;&gt;$&lt; &lt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> <span style="color: red;">5</span>
+&nbsp;
+four :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+four = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> <span style="color: green;">&#40;</span>/<span style="color: red;">2</span><span style="color: green;">&#41;</span> &gt;&gt;$&lt; &lt; <span style="color: green;">&#40;</span><span style="color: red;">8.0</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can use the earlier definitions to define the different algebra instances used by Swierstra as functions as a product of functions thereby decoupling us from the typeclass machinery.</p>
+<p>I'll leave this bit as an exercise for the reader. The translation is pretty much straightforward.</p>
+<p>[Edit: See a simple worked example in the comments]</p>
+<p><em>However</em>, the catamorphism used in the a la Carte paper to deconstruct the free monad with an initial algebra is not the only way you may want to take a free monad apart!</p>
+<p>We can also use the cofree comonad of its dual functor, exploiting the same duality we used above to construct the algebra itself. And similarly we can stick a bunch of functions in the free monad of a the dual of a functor to pick a value out of a cofree comonad.</p>
+<p>Where the a la Carte paper approach let you carry around different variants, the cofree comonad product construction allows you to 'carry around more stuff in each one.' The record/variant stuff has been around since Oleg et al.'s <a href="http://darcs.haskell.org/HList/">HList</a>/<a href="http://homepages.cwi.nl/~ralf/OOHaskell/">OOHaskell</a> stuff, but I don't recall seeing records of functions used to handle variants in that setting. I'm sure someone will correct me with a 15 year old example.</p>
+<p>Recall the relevant portions of the free monad and cofree comonad:</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Cofree f a = Cofree <span style="color: green;">&#123;</span> runCofree :: <span style="color: green;">&#40;</span>a, f <span style="color: green;">&#40;</span>Cofree f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">newtype</span> Free f a = Free <span style="color: green;">&#123;</span> runFree :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Free f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Cofree f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Cofree . <span style="color: green;">&#40;</span>f *** <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> . runCofree
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Free . <span style="color: green;">&#40;</span>f +++ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> . runFree
+&nbsp;
+anaC :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>a -&gt; f a<span style="color: green;">&#41;</span> -&gt; a -&gt; Cofree f a
+anaC t = Cofree . <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> &amp;&amp;&amp; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>anaC t<span style="color: green;">&#41;</span> . t<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> = Free . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a>
+        m &gt;&gt;= k = <span style="color: green;">&#40;</span>k ||| <span style="color: green;">&#40;</span>inFree . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>&gt;&gt;= k<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>runFree m<span style="color: green;">&#41;</span>
+&nbsp;
+inFree :: f <span style="color: green;">&#40;</span>Free f a<span style="color: green;">&#41;</span> -&gt; Free f a
+inFree = Free . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a>
+&nbsp;</pre>
+<p>Now, we can use the bizap we defined above for bifunctors to handle the (,) and Either portions and the zap function defined above to handle the nested functor, obtaining:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Dual f g =&gt; Dual <span style="color: green;">&#40;</span>Cofree f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Free g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zap op <span style="color: green;">&#40;</span>Cofree fs<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Free <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = bizap op <span style="color: green;">&#40;</span>zap <span style="color: green;">&#40;</span>zap op<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> fs <span style="color: #06c; font-weight: bold;">as</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Dual f g =&gt; Dual <span style="color: green;">&#40;</span>Free f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Cofree g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zap op <span style="color: green;">&#40;</span>Free fs<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Cofree <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = bizap op <span style="color: green;">&#40;</span>zap <span style="color: green;">&#40;</span>zap op<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> fs <span style="color: #06c; font-weight: bold;">as</span>
+&nbsp;</pre>
+<p>The most trivial example of a free monad and a cofree comonad would be the 'natural number' free monad and the 'stream' comonad, which both coincidentally can be obtained from the Identity functor -- how convenient! Its almost like I planned this.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Nat a = Free Identity a
+<span style="color: #06c; font-weight: bold;">type</span> Stream a = Cofree Identity a
+&nbsp;</pre>
+<p>We can define a successor function for our Naturals:</p>
+<pre>&nbsp;
+suck :: Nat a -&gt; Nat a
+suck = inFree . Identity
+&nbsp;</pre>
+<p>And we can build up a stream of integers, just to have a stream to search through:</p>
+<pre class="haskell">&nbsp;
+ints :: Stream <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+ints = anaC <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> . <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: red;">0</span>
+&nbsp;</pre>
+<p>Then we can look at the <i>n</i>th element of the stream, by annihilating it with a free monad of the dual of its base functor. </p>
+<p>In other words, we can ask for the element at a position that is given as a natural number!</p>
+<pre class="haskell">&nbsp;
+two :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+two = suck <span style="color: green;">&#40;</span>suck <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> &gt;$&lt; ints
+&nbsp;</pre>
+<p>And by duality we can take a stream of functions, and use it to annihilate a Nat functor wrapped around a value. Another exercise for the reader.</p>
+<p>These are of course the simplest example of a free monad and a cofree comonad, but it works for any dualizable construction. </p>
+<p>i.e. Given a binary tree containing values you index with a path into the tree. If your tree is potentially non-infinite then your path has to be decorated with functions in order to handle potential leaves. If your path is non-infinite then your tree has to be decorated with values. The types enforce that you'll either return bottom or find a single value at some point.</p>
+<p>Two functors enter, one value leaves.</p>
+<p><a href="../../../haskell/posts/FreeExpression.hs">Source Code</a></pre>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">8 Responses to &#8220;The Cofree Comonad and the Expression Problem&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1098">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=3597986e287d745b646b22bc713520cf&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Grant B</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1098" title="">May 1st, 2008 at 4:45 am</a> </small>
+			<br clear="all"/>
+
+			<p>I&#8217;m interested in your variant approach to the expression problem, but I have a hard time comparing yours to Swierstra&#8217;s. I tried working on the translation exercise you suggested but that led me nowhere. Could you please present at least one worked example taken from the original paper?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1102">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1102" title="">May 1st, 2008 at 10:36 am</a> </small>
+			<br clear="all"/>
+
+			<p>Here is a quick take on the Incr/Recall example.</p>
+<p>[Edit: typechecked, added to source code, and a couple typos corrected]</p>
+<p>data Incr t = Incr Int t<br />
+data Recall t = Recall (Int -> t)</p>
+<p>instance Functor Incr where<br />
+        fmap f (Incr i t) = Incr i (f t)</p>
+<p>instance Functor Recall where<br />
+        fmap f (Recall g) = Recall (f . g)</p>
+<p>(/+/) :: (Functor f, Functor g) => (f a -> a) -> (g a -> a) -> ((f :+: g) a -> a)<br />
+(f /+/ g) (Inl a) = f a<br />
+(f /+/ g) (Inr b) = g b</p>
+<p>newtype Mem = Mem Int<br />
+type RunAlg f a = f (Mem -> (a,Mem)) -> Mem -> (a,Mem)</p>
+<p>incrRun :: RunAlg Incr a<br />
+incrRun (Incr k r) (Mem i) = r (Mem (i + k))</p>
+<p>recallRun :: RunAlg Recall a<br />
+recallRun (Recall r) (Mem i) = r i (Mem i)</p>
+<p>run :: Functor f => RunAlg f a -> Free f a -> Mem -> (a, Mem)<br />
+run = cataFree (,)</p>
+<p>runMyExpr :: Free (Incr :+: Recall) a -> Mem -> (a, Mem)<br />
+runMyExpr = run (incrRun /+/ recallRun)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1125">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=45d9f8e98b06084be98a25d31d64fe82&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.eyrie.org/~zednenem/' rel='external nofollow' class='url'>Dave Menendez</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1125" title="">May 3rd, 2008 at 2:00 am</a> </small>
+			<br clear="all"/>
+
+			<p>It&#8217;s only two years old, but Oleg describes how to handle polymorphic variants using a record of functions in . He doesn&#8217;t have the neat Dual class, though.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1126">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=45d9f8e98b06084be98a25d31d64fe82&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://www.eyrie.org/~zednenem/' rel='external nofollow' class='url'>Dave Menendez</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1126" title="">May 3rd, 2008 at 2:01 am</a> </small>
+			<br clear="all"/>
+
+			<p>Here&#8217;s the URI: <a href="http://okmij.org/ftp/Haskell/generics.html#PolyVariant" rel="nofollow">http://okmij.org/ftp/Haskell/generics.html#PolyVariant</a></p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1154">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../zipping-and-unzipping-functors/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Zipping and Unzipping Functors</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1154" title="">May 4th, 2008 at 10:01 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Here we set aside the restriction that we only be able to Zip a comonad, and simply require that if the functor in question is a comonad, then it is a &#8220;symmetric semi-monoidal comonad&#8221;, which is to say that zipping and then extracting yields the same result as extracting from each separately. You may note a lot of similarity in the above to the definition for Control.Functor.Zap the Dual functor from the other day. [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1614">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../zapping-strong-adjunctions/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Zapping Adjunctions</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1614" title="">June 5th, 2008 at 2:29 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-60990">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8bb6cced6d3d0827e9ec228c1180135f&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://girls.lady-fabienne.com/' rel='external nofollow' class='url'>fetisch spiele</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-60990" title="">June 22nd, 2011 at 12:04 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Its like you learn my mind! You seem to know so much about this, like you wrote the guide in it or something. I think that you just could do with some p.c. to power the message house a little bit, however instead of that, this is fantastic blog. An excellent read. I will certainly be back.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-104596">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=439c16dfeff3f906d93cf7f4499d44f4&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Richard Wallace</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-104596" title="">April 23rd, 2012 at 8:11 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I&#8217;ve really enjoyed studying and trying to understand this, but one thing has still got me hung up that I just can&#8217;t seem to get past.</p>
+<p>I&#8217;ve been trying, as an exercise, to get the addition example from Swierstra’s paper working in terms of Free and Cofree.  I translated Expr to Free successfully and am able to right an eval function </p>
+<p>eval :: (Eval f, Functor f) =&gt; Free f Int -&gt; Int</p>
+<p>that works using cataFree.  I&#8217;ve also taken the next step and eliminated the Eval type-class and written runArith and runVal functions that I can then compose in the way outlined in the comment above.</p>
+<p>But I just can&#8217;t seem to take that mental leap to translate it using Cofree.  I think my problem is in determining what the dual of Addition and Val should be.</p>
+<p>An example of that would be greatly appreciated and hopefully shine light the last bits that are still eluding me.</p>
+<p>Thanks.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="53" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Wednesday, Apr 30th, 2008 at 11:46 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

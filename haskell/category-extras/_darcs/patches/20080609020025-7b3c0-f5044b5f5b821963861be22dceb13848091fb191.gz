@@ -1,0 +1,237 @@
+[Added Martin Erwig's morphisms and prepro/postpromorphisms
+ekmett@gmail.com**20080609020025] {
+adddir ./src/Control/Morphism/Meta
+move ./src/Control/Morphism/Meta.hs ./src/Control/Morphism/Meta/Gibbons.hs
+hunk ./category-extras.cabal 3
+-version:                0.53.0
++version:                0.53.1
+hunk ./category-extras.cabal 133
++                Control.Morphism.Exo,
+hunk ./category-extras.cabal 137
+-                Control.Morphism.Meta,
++                Control.Morphism.Meta.Gibbons,
++                Control.Morphism.Meta.Erwig,
+hunk ./category-extras.cabal 143
++                Control.Morphism.Synchro,
+hunk ./src/Control/Functor/Algebra.hs 19
++	, Trialgebra
+hunk ./src/Control/Functor/Algebra.hs 44
++-- | Martin Erwig's trialgebras for indexed data types
++type Trialgebra f g h a = (Algebra f a, Dialgebra g h a)
++
+hunk ./src/Control/Functor/Extras.hs 21
+--- A natural transformation between functors f and g.
++-- | A natural transformation between functors f and g.
+hunk ./src/Control/Functor/Extras.hs 23
++type Natural f g = f :~> g
+hunk ./src/Control/Functor/Extras.hs 25
+--- Its bifunctorial analogue
++-- | A transformation natural in both sides of a bifunctor.
+hunk ./src/Control/Functor/Extras.hs 28
+--- Dinatural transformations
++-- | Dinatural transformations
+hunk ./src/Control/Functor/Fix.hs 18
++	, identityBialgebraF
+hunk ./src/Control/Functor/Fix.hs 21
++	, identityBialgebraB
+hunk ./src/Control/Functor/Fix.hs 42
+--- * Fixpoint of a bifunctor
++identityBialgebraF :: Bialgebra f f (FixF f)
++identityBialgebraF = (InF,outF)
+hunk ./src/Control/Functor/Fix.hs 45
++-- * Fixpoint of a bifunctor
+hunk ./src/Control/Functor/Fix.hs 64
++identityBialgebraB :: Bialgebra (f a) (f a) (Fix f a)
++identityBialgebraB = (InB,outB)
++
+hunk ./src/Control/Morphism/Ana.hs 45
+-biana :: Bifunctor f Hask Hask Hask => Coalgebra (f b) a -> a -> Fix f b
+-biana g = InB . bimap id (biana g) . g
++biana :: QFunctor f Hask Hask => Coalgebra (f b) a -> a -> Fix f b
++biana g = InB . second (biana g) . g
+hunk ./src/Control/Morphism/Ana.hs 48
+-g_biana :: (Bifunctor f Hask Hask Hask, Monad m) => Dist m (f b) -> GCoalgebra (f b) m a -> a -> Fix f b
+-g_biana k g = a . return where a = InB . bimap id (a . join) . k . liftM g
++g_biana :: (QFunctor f Hask Hask, Monad m) => Dist m (f b) -> GCoalgebra (f b) m a -> a -> Fix f b
++g_biana k g = a . return where a = InB . second (a . join) . k . liftM g
+hunk ./src/Control/Morphism/Cata.hs 43
+-bicata :: Bifunctor f Hask Hask Hask => Algebra (f b) a -> Fix f b -> a
+-bicata f = f . bimap id (bicata f) . outB
++bicata :: QFunctor f Hask Hask => Algebra (f b) a -> Fix f b -> a
++bicata f = f . second (bicata f) . outB
+hunk ./src/Control/Morphism/Cata.hs 46
+-g_bicata :: (Bifunctor f Hask Hask Hask, Comonad w) => Dist (f b) w -> GAlgebra (f b) w a -> Fix f b -> a
+-g_bicata k g = extract . c where c = liftW g . k . bimap id (duplicate . c) . outB
++g_bicata :: (QFunctor f Hask Hask, Comonad w) => Dist (f b) w -> GAlgebra (f b) w a -> Fix f b -> a
++g_bicata k g = extract . c where c = liftW g . k . second (duplicate . c) . outB
+addfile ./src/Control/Morphism/Exo.hs
+hunk ./src/Control/Morphism/Exo.hs 1
++{-# OPTIONS_GHC -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Exo
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Martin Erwig's exomorphism
++----------------------------------------------------------------------------
++module Control.Morphism.Exo 
++	( exo
++	) where
++
++import Control.Functor.Algebra
++import Control.Morphism.Hylo
++
++-- | Martin Erwig's exomorphism from d to d'
++exo :: Functor h => Bialgebra m n b -> (h b -> m b) -> (h a -> h (g a)) -> Trialgebra f g h a -> g a -> b
++exo d' f g d = hylo (fst d' . f) id (g . snd d)
++
+addfile ./src/Control/Morphism/Meta/Erwig.hs
+hunk ./src/Control/Morphism/Meta/Erwig.hs 1
++{-# OPTIONS_GHC -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Meta.Erwig
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Martin Erwig's metamorphisms for indexed data types.
++-- 
++-- ADT fusion: @snd c . fst c == id  => erwig d id c . erwig c id d' = erwig d id d'@
++-- 
++-- FreeMeta: @l strict, snd c == snd c' == phi', fst d == fst d' == alpha, l . fst c = fst c' . fmap l, snd d' . rr = fmap r . snd d ==> l . (erwig d id c) = (erwig d' id c') . r@
++----------------------------------------------------------------------------
++module Control.Morphism.Meta.Erwig
++	( meta
++	) where
++
++import Control.Functor.Algebra
++import Control.Functor.Extras
++import Control.Morphism.Hylo
++
++-- | @meta d f c@ is Martin Erwig's metamorphism from @c@ to @d@
++meta :: Functor h => Bialgebra m n b -> (h :~> m) -> Bialgebra f h a -> a -> b
++meta d f c = hylo (fst d) f (snd c)
++
+hunk ./src/Control/Morphism/Meta/Gibbons.hs 4
+--- Module      :  Control.Morphism.Meta
++-- Module      :  Control.Morphism.Meta.Gibbons
+hunk ./src/Control/Morphism/Meta/Gibbons.hs 17
+-module Control.Morphism.Meta where
++module Control.Morphism.Meta.Gibbons 
++	( meta
++	, g_meta
++	) where
+hunk ./src/Control/Morphism/Meta/Gibbons.hs 30
++-- Jeremy Gibbons' metamorphism
+hunk ./src/Control/Morphism/Meta/Gibbons.hs 35
++-- | Generalized Jeremy Gibbons metamorphism
+hunk ./src/Control/Morphism/Meta/Gibbons.hs 40
++
+hunk ./src/Control/Morphism/Postpro.hs 18
++	, bipostpro
++	, g_bipostpro
+hunk ./src/Control/Morphism/Postpro.hs 23
++import Control.Category.Hask
++import Control.Functor
+hunk ./src/Control/Morphism/Postpro.hs 31
+-postpro :: Functor f => (c -> f c) -> (f :~> f) -> c -> FixF f
++postpro :: Functor f => Coalgebra f c -> (f :~> f) -> c -> FixF f
+hunk ./src/Control/Morphism/Postpro.hs 38
++bipostpro :: Bifunctor f Hask Hask Hask => Coalgebra (f a) c -> (f a :~> f a) -> c -> Fix f a
++bipostpro g e = x where x = InB . bimap id (biana (e . outB) . x) . g
++
++g_bipostpro :: (Bifunctor f Hask Hask Hask, Monad m) => Dist m (f a) -> GCoalgebra (f a) m c -> (f a :~> f a) -> c -> Fix f a
++g_bipostpro k g e = a . return where a = InB . bimap id (biana (e . outB) . a . join) . k . liftM g
++
+hunk ./src/Control/Morphism/Prepro.hs 13
+--- g_prepro is an obvious generalization.
++-- g_prepro is an obvious generalization. The prepro variants of other
++-- morphisms are distributed through the corresponding files.
+hunk ./src/Control/Morphism/Prepro.hs 17
+-	( prepro, g_prepro, cascade
++	( prepro, g_prepro, cascade, biprepro, g_biprepro
+hunk ./src/Control/Morphism/Prepro.hs 27
+--- import Control.Functor.HigherOrder
+hunk ./src/Control/Morphism/Prepro.hs 31
++-- | @cascade f = biprepro InB (first f)@
++-- | @cascade f = x where x = InB . bimap id (x . fmap f) . outB@
++-- | @cascade f = x where x = InB . bimap id (fmap f . x) . outB@
+hunk ./src/Control/Morphism/Prepro.hs 35
+-cascade f = InB . bimap id (cascade f . fmap f) . outB 
+--- equivalently:
+--- cascade f = InB . bimap id (fmap f . cascade f) . outB 
++-- cascade f = biprepro InB (first f)
++cascade f = x where x = InB . bimap id (x . fmap f) . outB 
++-- equivalently: @cascade f = InB . bimap id (fmap f . cascade f) . outB@
+hunk ./src/Control/Morphism/Prepro.hs 39
+-prepro :: Functor f => (f c -> c) -> (f :~> f) -> FixF f -> c
++-- | Fokkinga's Prepromorphism
++prepro :: Functor f => Algebra f c -> (f :~> f) -> FixF f -> c
+hunk ./src/Control/Morphism/Prepro.hs 43
+--- | Generalized prepromorphisms
++-- | Generalized prepromorphisms, parameterized by a comonad
++-- This is used to generate most of the specialized prepromorphisms in other modules.
++-- You can use the distributive law combinators to build up analogues of other recursion 
++-- schemes.
+hunk ./src/Control/Morphism/Prepro.hs 50
+---repro :: Functor f => (f b -> b) -> (f :~> f) -> (f :~> f) -> (a -> f a) -> a -> b
+---repro f fe ge g = x where x = f . fmap (ana (fe . outF) . x . cata (InF . ge)) . g
++-- | Prepromorphisms for bifunctors
++biprepro :: Bifunctor f Hask Hask Hask => Algebra (f a) c -> (f a :~> f a) -> Fix f a -> c
++biprepro f e = x where x = f . bimap id (x . bicata (InB . e)) . outB
++
++-- | Generalized bifunctor prepromorphism, parameterized by a comonad
++g_biprepro :: (Bifunctor f Hask Hask Hask, Comonad w) => Dist (f a) w -> GAlgebra (f a) w c -> (f a :~> f a) -> Fix f a -> c
++g_biprepro k g e = extract . c where c = liftW g . k . bimap id (duplicate . c . bicata (InB . e)) . outB
+addfile ./src/Control/Morphism/Synchro.hs
+hunk ./src/Control/Morphism/Synchro.hs 1
++{-# OPTIONS_GHC -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Morphism.Synchro
++-- Copyright   :  (C) 2008 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (rank-2 polymorphism)
++--
++-- Martin Erwig's synchromorphisms.
++----------------------------------------------------------------------------
++module Control.Morphism.Synchro where
++
++import Control.Category.Cartesian ((&&&))
++import Control.Category.Hask
++import Control.Functor
++import Control.Functor.Algebra
++
++-- | @synchro d' f d g1 g2 d''@ is Martin Erwig's @d,d''-synchromorphism to d'@. Mostly useful for graph algorithms.
++synchro :: QFunctor h Hask Hask => Bialgebra m n c -> (h x (Either a c) -> m c) -> Trialgebra (f x) (g x) (h x) a -> ((h x a, b) -> k x b) -> ((h x a, j x b) -> h x (Either a (g x a, b))) -> Bialgebra (k x) (j x) b -> (g x a, b) -> c 
++
++--             g1
++-- h = D' <- D <-> D''
++--       f     g2
++-- dfs = List <- Graph <-> Stack -- depth-first search
++-- bfs = List <- Graph <-> Queue -- breadth-first search
++
++synchro d' f d g1 g2 d'' = h where
++	h = fst d' . f . second (second h) . g2 . (fst &&& (snd d'' . fst d'' . g1)) . first (snd d)
++	-- (g x a, b) 			>- first (snd d)  ->
++	-- (h x a, b) 			>- (fst &&& g1) ->
++	-- (h x a, k x b) 		>- second (fst d'') ->
++	-- (h x a, b) 			>- second (snd d'') ->
++	-- (h x a, j x b)		>- g2 ->
++	-- (h x (Either a (g x a, b)) 	>- second (second h) ->
++	-- (h x (Either a c))		>- f ->
++	-- m c				>- fst d'
++	-- c
+}

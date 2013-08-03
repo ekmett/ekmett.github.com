@@ -1,0 +1,10 @@
+[warning elimination
+ekmett@gmail.com**20090407010548
+ Ignore-this: e7f2ef53f661878a08398c422f998c27
+] {
+hunk ./Data/Set/Unboxed.hs 40
++--
+hunk ./unboxed-containers.cabal 22
+-  ghc-options: -Wall -fno-warn-overlapping-patterns
++  ghc-options: -fno-warn-overlapping-patterns
+}

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Recursion Schemes: A Field Guide (Redux)</title>
+	<atom:link href="http://comonad.com/reader/2009/recursion-schemes/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2009/recursion-schemes/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-14071</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 24 Jan 2010 18:33:30 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-14071</guid>
+		<description>@Damien:
+
+Regarding &quot;le compte est bon&quot; you can implement that fairly directly as a hylomorphism. You need an algebra for an anamorphism that generates a list of all trees, and a coalgebra for a catamorphism that searches the list for the answers. 
+
+With more thought there is probably some kind of dynamorphic variation that evaluations the subtrees, figures out their valuation, and then proceeds as above, saving some effort in computing valuations of the subtrees in the catamorphism. For that matter, there is the code elsewhere on this blog for incremental folds which might be an easier way to integrate that incremental result.
+
+The Rubik&#039;s cube is probably most easily solved in the same manner. The choice of catamorphism will determine if you search breadth-first, depth-first, or using some other strategy.</description>
+		<content:encoded><![CDATA[<p>@Damien:</p>
+<p>Regarding &#8220;le compte est bon&#8221; you can implement that fairly directly as a hylomorphism. You need an algebra for an anamorphism that generates a list of all trees, and a coalgebra for a catamorphism that searches the list for the answers. </p>
+<p>With more thought there is probably some kind of dynamorphic variation that evaluations the subtrees, figures out their valuation, and then proceeds as above, saving some effort in computing valuations of the subtrees in the catamorphism. For that matter, there is the code elsewhere on this blog for incremental folds which might be an easier way to integrate that incremental result.</p>
+<p>The Rubik&#8217;s cube is probably most easily solved in the same manner. The choice of catamorphism will determine if you search breadth-first, depth-first, or using some other strategy.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Damien Guichard</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-13783</link>
+		<dc:creator>Damien Guichard</dc:creator>
+		<pubDate>Mon, 11 Jan 2010 16:35:00 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-13783</guid>
+		<description>Thanks for this (co-)recursion schemes guide.
+
+I have toyed with the Charity language hence some basic schemes (catamorphism,paramorphism,anamorphism) are already familiar to me.
+
+Plus histomorphism/futumorphism are well documented by Varmo Vene.
+
+Others are not so well documented and quite difficult to grasp for mere mortal fonctional programmers like me.
+
+One corecursion scheme that i face again and again is exploration. I mean i have an arithmetic expression type and i want to solve some &quot;le compte est bon&quot; problem. Or i have this move type (front&#124;back&#124;left&#124;right&#124;up&#124;down) list, and i want to solve my Rubik&#039;s cube. What corecursion scheme is that ?</description>
+		<content:encoded><![CDATA[<p>Thanks for this (co-)recursion schemes guide.</p>
+<p>I have toyed with the Charity language hence some basic schemes (catamorphism,paramorphism,anamorphism) are already familiar to me.</p>
+<p>Plus histomorphism/futumorphism are well documented by Varmo Vene.</p>
+<p>Others are not so well documented and quite difficult to grasp for mere mortal fonctional programmers like me.</p>
+<p>One corecursion scheme that i face again and again is exploration. I mean i have an arithmetic expression type and i want to solve some &#8220;le compte est bon&#8221; problem. Or i have this move type (front|back|left|right|up|down) list, and i want to solve my Rubik&#8217;s cube. What corecursion scheme is that ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fritz</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9565</link>
+		<dc:creator>Fritz</dc:creator>
+		<pubDate>Wed, 17 Jun 2009 20:53:47 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9565</guid>
+		<description>The field guide returns! How wonderful! Thank you, Edward, as well as Jeff Cutsinger, for bringing it back from the dead. I will let my students know of its revival.</description>
+		<content:encoded><![CDATA[<p>The field guide returns! How wonderful! Thank you, Edward, as well as Jeff Cutsinger, for bringing it back from the dead. I will let my students know of its revival.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Martijn</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9554</link>
+		<dc:creator>Martijn</dc:creator>
+		<pubDate>Wed, 17 Jun 2009 12:02:33 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9554</guid>
+		<description>I&#039;m really happy to see this back up! Thank you. :-)</description>
+		<content:encoded><![CDATA[<p>I&#8217;m really happy to see this back up! Thank you. :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9527</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 16 Jun 2009 19:39:19 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9527</guid>
+		<description>I had hoped to go through and do a nice writeup on each in turn, but you&#039;re probably right.</description>
+		<content:encoded><![CDATA[<p>I had hoped to go through and do a nice writeup on each in turn, but you&#8217;re probably right.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: wren ng thornton</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9498</link>
+		<dc:creator>wren ng thornton</dc:creator>
+		<pubDate>Tue, 16 Jun 2009 02:14:57 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9498</guid>
+		<description>It may be worth directing the Elgot (co-)algebra entries to point to the post you mentioned above. Unless you intended to do more elaboration on them.</description>
+		<content:encoded><![CDATA[<p>It may be worth directing the Elgot (co-)algebra entries to point to the post you mentioned above. Unless you intended to do more elaboration on them.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9371</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Fri, 12 Jun 2009 14:27:26 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9371</guid>
+		<description>I agree. At the time I first wrote this the plan was to go through and flesh each of these out in turn. 
+
+As you can see from the catamorphism link there is a lot of substance to fleshing out each one in terms of applicable laws, examples, etc.
+
+I was able to recover the text of the paramorphism entry as well, so I&#039;ll repost that some time soon (as soon as I get around to reformatting all the LaTeX in it) and see about proceeding from there.</description>
+		<content:encoded><![CDATA[<p>I agree. At the time I first wrote this the plan was to go through and flesh each of these out in turn. </p>
+<p>As you can see from the catamorphism link there is a lot of substance to fleshing out each one in terms of applicable laws, examples, etc.</p>
+<p>I was able to recover the text of the paramorphism entry as well, so I&#8217;ll repost that some time soon (as soon as I get around to reformatting all the LaTeX in it) and see about proceeding from there.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Leon P Smith</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9358</link>
+		<dc:creator>Leon P Smith</dc:creator>
+		<pubDate>Fri, 12 Jun 2009 00:22:00 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9358</guid>
+		<description>I think you could make this even better by choosing one or maybe two concrete examples for each scheme,  preferably examples that are likely to be familiar.   Then write each example in two forms:  one that uses your abstraction, and one that does not.</description>
+		<content:encoded><![CDATA[<p>I think you could make this even better by choosing one or maybe two concrete examples for each scheme,  preferably examples that are likely to be familiar.   Then write each example in two forms:  one that uses your abstraction, and one that does not.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9357</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 11 Jun 2009 23:18:05 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9357</guid>
+		<description>construction vs. deconstruction
+
+In one the near-algebra knows about the carrier of the coalgebra.
+
+In the other the near-coalgebra knows about the carrier of the algebra.
+
+See http://comonad.com/reader/2008/elgot-coalgebras/</description>
+		<content:encoded><![CDATA[<p>construction vs. deconstruction</p>
+<p>In one the near-algebra knows about the carrier of the coalgebra.</p>
+<p>In the other the near-coalgebra knows about the carrier of the algebra.</p>
+<p>See <a href="../../../2008/elgot-coalgebras/index.html" rel="nofollow">http://comonad.com/reader/2008/elgot-coalgebras/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Craig T. Nelson</title>
+		<link>http://comonad.com/reader/2009/recursion-schemes/comment-page-1/#comment-9356</link>
+		<dc:creator>Craig T. Nelson</dc:creator>
+		<pubDate>Thu, 11 Jun 2009 23:03:07 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2009/recursion-schemes/#comment-9356</guid>
+		<description>I can&#039;t see the difference between an Elgot algebra and an Elgot coalgebra in the table.  Is this a typo or simply my misunderstanding?</description>
+		<content:encoded><![CDATA[<p>I can&#8217;t see the difference between an Elgot algebra and an Elgot coalgebra in the table.  Is this a typo or simply my misunderstanding?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

@@ -1,0 +1,240 @@
+[initial build
+ekmett@gmail.com**20070714193128] {
+addfile ./LICENSE
+addfile ./monad-sec.cabal
+move ./monad-sec.cabal ./security-policy.cabal
+adddir ./test
+hunk ./LICENSE 1
++Copyright (c) 2007, Edward Kmett
++
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
++
++    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
++CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
++LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+addfile ./Makefile
+hunk ./Makefile 1
++SETUP = ./Setup.lhs
++
++all: build doc
++
++.setup-config: security-policy.cabal 
++	runhaskell $(SETUP) configure
++
++configure: .setup-config
++
++build: configure
++	runhaskell $(SETUP) build
++
++doc:
++	runhaskell $(SETUP) haddock
++
++sdist:
++	runhaskell $(SETUP) sdist
++
++test: build
++
++clean:
++	rm -rf dist 
++	rm -f .setup-config .installed-pkg-config
++	find src -name "*.hi" -or -name "*.o" -delete
+addfile ./Setup.lhs
+hunk ./Setup.lhs 1
++#!/usr/bin/env runhaskell
++> import Distribution.Simple
++> main = defaultMainWithHooks defaultUserHooks
+hunk ./security-policy.cabal 1
++name:           security-policy
++category:	Control, Monads
++version:        0.0.1
++synopsis:       Type-parameterized Security Monads
++description:	Implements a little library for implementing a security monad that checks security at compile time.
++stability:      alpha
++author:         Edward Kmett <ekmett@gmail.com>
++maintainer:     Edward Kmett <ekmett@gmail.com>
++copyright:      Copyright (C) 2006-2007, Edward Kmett
++homepage:       http://comonad.com/haskell/security-policy/dist/doc/html/Control-Monad-Security.html
++package-url:    http://comonad.com/haskell/security-policy
++build-depends:  base -any, readline -any
++cabal-version:  -any
++license:        BSD3
++license-file:	LICENSE
++buildable:      True
++extensions:     MultiParamTypeClasses 
++                FunctionalDependencies 
++                EmptyDataDecls
++exposed-modules:
++		Control.Monad.Security
++ghc-options:    -funbox-strict-fields -threaded -fasm -fglasgow-exts
++hs-source-dirs: src
++
++executable:	policy-test
++main-is:	Main.hs
++other-modules:  Policy Control.Monad.Security
++hs-source-dirs: src test 
++ghc-options:    -funbox-strict-fields -threaded -fasm -fglasgow-exts
+addfile ./test/Main.hs
+hunk ./test/Main.hs 1
++{-# OPTIONS -fallow-undecidable-instances #-}
++module Main where
++
++import Control.Monad.Security
++import Policy
++import qualified Data.Map as Map
++import Data.Map (Map)
++import Data.Typeable
++
++agents :: Secret [(String,Bool)]
++agents = return 
++	[ ("Jimmy Hoffa", True)
++	, ("John F. Kennedy", True)
++	, ("Eve",True)
++	, ("Mallory",True)
++	, ("Valerie Plame", False)
++	, ("Fidel Castro", False)
++	]
++
++suspects :: Classified [String] 
++suspects = return ["Alice","Bob","Eve"]
++
++phonebook :: Secret (Map String String)
++phonebook = return $ Map.fromList 
++	[ ("Alice","313-555-5555")
++	, ("Bob","734-555-1111")
++	, ("Eve","810-555-2222") 
++	]
++
++lookupSuspect :: String -> Secret (Maybe String)
++lookupSuspect name = do
++	xs <- reclassify suspects
++	if elem name xs
++		then do 
++			pb <- phonebook
++			return $ Map.lookup name pb
++	   	else return Nothing
++	
++-- can't get a hold on Government to define a Subversive typeclass!
++--newtype Subversive a = Subversive { runSubversive :: a }
++--instance PolicyLevel a Classified => PolicyLevel a Subversive
++--instance PolicyLattice Secret Subversive Subversive where witness = undefined
++
++{-
++test/Main.hs:42:0:
++    Couldn't match expected type `a' (a rigid variable)
++           against inferred type `Policy.Government'
++      `a' is bound by the instance declaration at test/Main.hs:42:0
++    When using functional dependencies to combine
++      PolicyLevel Policy.Government Classified,
++        arising from the instance declaration at Defined in Policy
++      PolicyLevel a Classified,
++        arising from is bound by the instance declaration at test/Main.hs:42:0
++        at test/Main.hs:42:0
++    When checking the super-classes of an instance declaration
++    In the instance declaration for `PolicyLevel a Subversive'
++-}
++
++main = do
++	-- answer <- runSecret (lookupSuspect "Eve")
++--	let answer = runSubversive (reclassify (lookupSuspect "Eve") :: Subversive (Maybe String))
++--	let answer = cast agents :: Maybe [(String,Bool)]
++	print answer
++	-- a raw pointer manipulation round-trip through c could force it
++	-- and an unsound combination of newtype deriving and data families can also force it
++	-- it can also be extracted by using external Bjorn standalone deriving Foo for Bar clauses.
++	-- however, in the absence of these a dialect of haskell that is hsplugin safe could allow
++	-- arbitrary user code to access secured data.
+addfile ./test/Policy.hs
+hunk ./test/Policy.hs 1
++module Policy (Classified, Secret, runSecret, runClassified) where
++
++import Control.Monad (liftM)
++import Control.Monad.Security
++import System.IO.Unsafe (unsafePerformIO)
++import Control.Concurrent.MVar (MVar,newMVar,withMVar)
++import Foreign.C.String (peekCAString,withCString,CString)
++import System.Console.Readline (readline)
++import Data.Typeable (Typeable(..))
++import Data.Generics (Data(..))
++import Data.Char (isAlpha, isDigit)
++import Debug.Trace (trace)
++
++
++-- | `Secret` > `Classified`. A simple two level lattice.
++data Government
++instance Policy Government
++
++newtype Classified a = Classified { tellClassified :: a }
++
++instance Typeable (Classified a) where typeOf = unsecure
++instance Data (Classified a) where gunfold = unsecure; toConstr = unsecure; dataTypeOf = unsecure
++
++instance Monad Classified where
++        return = Classified
++        a >>= f = f (tellClassified a)
++
++instance PolicyLevel Government Classified
++
++-- insert unsafePerformIO log step here
++unsecure = error "unsecured access attempt"
++
++-- | Secret 
++newtype Secret a = Secret { tellSecret :: a }
++
++instance Typeable (Secret a) where typeOf = unsecure
++instance Data (Secret a) where gunfold = unsecure; toConstr = unsecure; dataTypeOf = unsecure
++
++instance Monad Secret where
++        return = Secret
++        a >>= f = f (tellSecret a)
++
++instance PolicyLevel Government Secret
++
++instance PolicyLattice Classified Classified Classified where witness = (>>=)
++instance PolicyLattice Secret Secret Secret where witness = (>>=)
++
++-- | n^2 - n instances. 
++instance PolicyLattice Classified Secret Secret where
++        witness a f = f (tellClassified a)
++
++instance PolicyLattice Secret Classified Secret where
++        witness a f = reclassify (f (tellSecret a))
++
++
++foreign import ccall "unistd.h getpass" getpass :: CString -> IO (CString)
++
++canHasStdio :: MVar ()
++canHasStdio = unsafePerformIO $ newMVar ()
++
++-- we only let you extract secret things that we can show in the logs later
++runSecret :: (Access m Secret, Show a) => m a -> IO (Maybe a)
++runSecret s = withMVar canHasStdio $ const $ do 
++	user <- liftM (maybe "" (filter (\x -> isAlpha x || isDigit x))) $ readline "Secret Username: "
++	pass <- peekCAString =<< withCString "Secret Password: " getpass 
++	if user == "edwardk" && pass == "monad"
++		then do logOk user
++			return $ Just theSecret
++	        else do logFail user
++			return Nothing
++ 	where 
++		logOk u = putStrLn ("user " ++ u ++ " accessed fact " ++ show theSecret)
++		logFail u = putStrLn ("access denied for user " ++ u)
++		theSecret = tellSecret $ reclassify s
++
++
++-- | allow anyone to extract classified data if they just say please.
++runClassified :: Classified a -> a 
++runClassified = tellClassified
+}

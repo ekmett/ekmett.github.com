@@ -1,0 +1,677 @@
+[repository initialized
+ekmett@gmail.com**20090430234824
+ Ignore-this: 28a8778bb06c52f086328f388e84c56a
+] {
+addfile ./Setup.hs
+hunk ./Setup.hs 1
+-
++import Distribution.Simple
++main = defaultMain
+adddir ./Text
+adddir ./Text/ParserCombinators
+adddir ./Text/ParserCombinators/UU
+addfile ./Text/ParserCombinators/UU/BasicInstances.hs
+hunk ./Text/ParserCombinators/UU/BasicInstances.hs 1
++{-# LANGUAGE  RankNTypes, 
++              GADTs,
++              MultiParamTypeClasses,
++              FunctionalDependencies, 
++              FlexibleInstances, 
++              FlexibleContexts, 
++              UndecidableInstances,
++              NoMonomorphismRestriction #-}
++
++------------------------------------------------------------------------
++-- |
++-- Module	: Text.ParserCombinators.UU.BasicInstances
++-- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License	: LGPL 
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (GADTs, MPTCs, Fundeps)
++--
++-------------------------------------------------------------------------
++
++module Text.ParserCombinators.UU.BasicInstances where
++
++import Text.ParserCombinators.UU.Parsing
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Some Instances        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++data Error t s pos 
++    = Inserted s pos [String]
++    | Deleted  t pos [String]
++    | DeletedAtEnd t
++    deriving (Show)
++
++showError (Inserted s pos expecting) = 
++    "\nInserted " ++ show s ++ " at position " ++ show pos ++ " expecting one of " ++ show expecting 
++showError (Deleted  t pos expecting) = 
++    "\nDeleted  " ++ show t ++ " at position " ++ show pos ++ " expecting one of " ++ show expecting 
++showError (DeletedAtEnd t) 
++    = "\nThe token " ++ show t ++ " was not consumed by the parsing process." 
++
++data Str t = Str 
++    { input    :: [t]
++    , msgs     :: [Error t t Int]
++    , pos      :: {-# UNPACK #-} !Int
++    , deleteOk :: !Bool
++    } deriving (Show)
++
++listToStr :: [t] -> Str t
++listToStr ls = Str ls [] 0 True
++
++instance (Show a) => Provides (Str a) (a -> Bool, String, a) a where
++    splitState (p, msg, a) k (Str tts msgs pos ok) = 
++        let ins exp = (5, k a (Str tts (msgs ++ [Inserted a  pos  exp]) pos  False))
++            del exp = (5, splitState (p,msg, a) k (Str (tail tts) (msgs ++ [Deleted  (head tts)  pos  exp]) (pos+1) True ))
++        in case tts of
++            (t:ts) | p t       -> Step 1 (k t (Str ts msgs (pos + 1) True))
++                   | otherwise -> Fail [msg] (ins: if ok then [del] else [])
++            [] -> Fail [msg] [ins]
++
++instance (Ord a, Show a) => Provides (Str a) (a,a) a where
++    splitState a@(low, high) = splitState (\ t -> low <= t && t <= high, show low ++ ".." ++ show high, low)
++
++instance (Eq a, Show a) => Provides (Str a) a a where
++    splitState a = splitState ((==a), show a, a) 
++
++instance Eof (Str a) where
++    eof (Str i _ _ _) = null i
++    deleteAtEnd (Str (i:ii) msgs pos ok) = Just (5, Str ii (msgs ++ [DeletedAtEnd i]) pos ok)
++    deleteAtEnd _ = Nothing
++
++instance Stores (Str a) [Error a a Int] where
++    getErrors (Str inp msgs pos ok) = (msgs, Str inp [] pos ok)
+addfile ./Text/ParserCombinators/UU/Examples.hs
+hunk ./Text/ParserCombinators/UU/Examples.hs 1
++{-# LANGUAGE  RankNTypes, 
++              GADTs,
++              MultiParamTypeClasses,
++              FunctionalDependencies, 
++              FlexibleInstances, 
++              FlexibleContexts, 
++              UndecidableInstances,
++              NoMonomorphismRestriction#-}
++
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Text.ParserCombinators.UU.BasicInstances
++-- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License	: LGPL 
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (GADTs, MPTCs, Fundeps)
++--
++-------------------------------------------------------------------------------------------
++
++module Text.ParserCombinators.UU.Examples where
++
++import Data.Char
++import Text.ParserCombinators.UU.Parsing
++import Text.ParserCombinators.UU.BasicInstances
++
++type P b = Parser (Str Char) b -> String -> (b, [Error Char Char Int]) 
++test :: P b
++test p inp = parse ( (,) <$> p <*> pEnd) (listToStr inp)
++
++lift a = [a]
++
++pa, pb, paz :: Parser (Str Char) [Char] 
++pa = lift <$> pSym 'a'
++pb = lift <$> pSym 'b'
++p <++> q = (++) <$> p <*> q
++pa2 =   pa <++> pa
++pa3 =   pa <++> pa2
++
++pCount p = (\ a b -> b+1) <$> p <*> pCount p <<|> pReturn 0
++pExact 0 p = pReturn []
++pExact n p = (:) <$> p <*> pExact (n-1) p
++
++paz = pMany (pSym ('a', 'z'))
++
++paz' = pSym (\t -> 'a' <= t && t <= 'z', "a .. z", 'k')
++
++printTest :: Show b => (b,[Error Char Char Int]) -> IO ()
++printTest (b,e) = putStrLn ("Result: " ++ show b ++ concatMap showError e)
++
++main :: IO ()
++main = do 
++    printTest $ test pa "a"
++    printTest $ test pa "b"
++    printTest $ test pa2 "bbab"
++    printTest $ test pa "ba"
++    printTest $ test pa "aa"
++    printTest $ test (do  l <- pCount pa; pExact l pb) "aaacabbb"
++    printTest $ test (amb ( (++) <$> pa2 <*> pa3 <|> (++) <$> pa3 <*> pa2)) "aaabaa"
++    printTest $ test paz "ab1z7"
++    printTest $ test paz' "m"
++    printTest $ test paz' ""
++
++infixl 3 `opt`
++p `opt` v = p <|> pReturn v 
++
++-- parsing many things
++pMany p  = (:) <$> p <*> pMany p <|> pReturn []
++pMany1 p = (:) <$> p <*> pMany p
++pChoice = foldr (<|>) pFail
++pSeq (p : pp ) = (:) <$> p <*> pSeq pp 
++pSeq [ ] = pReturn [ ] 
++pListSep p s = pListSep1 p s `opt` []
++pListSep1 p s = (:) <$> p <*> pSepTail p s
++   where pSepTail p s = pMany (s *> p)
++
++-- bracketing expressions
++pParens p = id <$ pSym '(' <*> p <* pSym ')'
++pBracks p = id <$ pSym '[' <*> p <* pSym ']'
++pCurlys p = id <$ pSym '{' <*> p <* pSym '}'
++
++-- parsing numbers
++pDigit = pSym ('0', '9')
++pDigitAsInt = digit2Int <$> pDigit 
++pNatural = foldl (\a b -> a * 10 + b ) 0 <$> pMany1 pDigitAsInt
++digit2Int a = ord a - ord '0'
++
++-- parsing letters and identifiers
++pLower  = pSym ('a','z')
++pUpper  = pSym ('A','Z')
++pLetter = pUpper <|> pLower
++pVarId  = (:) <$> pLower <*> pMany pIdChar
++pConId  = (:) <$> pUpper <*> pMany pIdChar
++pIdChar = pLower <|> pUpper <|> pDigit <|> pSymIn "='"
++pSymIn s = pChoice $ map pSym s
++pKey str = pSeq (map pSym str)
++
++-- running the parser; if complete input accepted return the result else fail with reporting unconsumed tokens
++run :: forall t. Parser (Str Char) t -> String -> t
++run p i = let (a,b) = exec p i in
++          if null b then a else error (show b)
++
++exec :: Parser (Str Char) b -> String -> (b, [Error Char Char Int])
++exec p inp = parse ( (,) <$> p <*> pEnd) (listToStr inp)
++
++-- Testing
++pTest_MS :: Parser (Str Char) Char
++pTest_MS = id <$ pSym 'u' <*> pSym '2'
++
++pOp (c, op) = op <$ pSym c
++
++pChainl t op = applyall <$> t <*> pMany (flip <$> op <*> t)
++applyall e [] = e
++applyall e (f:fs) = applyall (f e) fs
++
++expr = term `pChainl` (pOp ('+', (+)) <|> pOp ('-', (-)))
++term = factor `pChainl` pOp ('*' , (*))
++factor = getal <|> pSym '(' *> expr <* pSym ')'
++getal = pNatural
++
++rune ::  String -> IO ()
++rune i = let (a,b) = exec expr i in
++         if null b then print ("Result: " ++ show a)
++                   else do print b
++                           print ("Result: " ++ show a)
+addfile ./Text/ParserCombinators/UU/Parsing.hs
+hunk ./Text/ParserCombinators/UU/Parsing.hs 1
++{-# LANGUAGE  RankNTypes, 
++              GADTs,
++              MultiParamTypeClasses,
++              FunctionalDependencies, 
++              FlexibleInstances, 
++              FlexibleContexts, 
++              UndecidableInstances
++	#-}
++          --    NoMonomorphismRestriction
++
++-------------------------------------------------------------------------------------------
++-- |
++-- Module	: Text.ParserCombinators.UU.Parsing
++-- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License	: LGPL 
++--
++-- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Stability	: experimental
++-- Portability	: non-portable (GADTs, MPTCs, Fundeps, RankNTypes)
++--
++-------------------------------------------------------------------------------------------
++ 
++module Text.ParserCombinators.UU.Parsing 
++    ( 
++      -- Functor
++      (<$>)
++      -- Applicative
++    , Applicative, (<*>), pure
++    , pReturn
++      -- Alternative
++    , Alternative, (<|>), empty
++    , pFail
++      -- Symbol
++    , Symbol, pSym
++    , Provides, splitState
++    , Eof, eof, deleteAtEnd
++    , Parsable, parse
++    , History(..)
++    , Future(..)
++    , Parser(..)
++    , fail
++
++
++    , best
++    , Steps(..)
++    , Cost
++    , Progress
++    , noAlts
++    , eval, push, apply, norm
++    , GenMonad, (>>>=)
++    , Greedy, (<<|>)
++    , Ambiguous, amb
++    , getCheapest
++    , Stores, getErrors
++    , AsksFor, pErrors, pEnd
++    , Switch, pSwitch
++    , R(..)
++    , ExtApplicative, (<*), (*>), (<$)
++    ) where
++
++
++import Prelude hiding (fail)
++
++import Control.Applicative (Applicative, Alternative, (<*>), (<|>), (<$>), pure, empty, liftA)
++import Control.Monad hiding (fail)
++import Data.Char
++import Data.Maybe
++import Unsafe.Coerce
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Classes     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++pReturn :: Applicative p => a -> p a 
++pReturn = pure
++
++pFail :: Alternative p => p a 
++pFail = empty
++
++class Symbol p symbol token | symbol -> token where
++    pSym :: symbol -> p token
++
++type Cost     = Int
++type Progress = Int
++
++class Provides state symbol token | state symbol -> token where
++    splitState  :: symbol -> (token -> state -> Steps a) -> state -> Steps a
++
++class Eof state where
++    eof         :: state -> Bool
++    deleteAtEnd :: state -> Maybe (Cost, state)
++
++class Parsable p where
++    parse :: Eof state => p state a -> state -> a
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Steps      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++data Steps a where
++    Step  :: Progress -> Steps a -> Steps a
++    Fail  :: [String] -> [[String] -> (Int, Steps a)] -> Steps a
++    Apply :: forall b. (b -> a) -> Steps b -> Steps a
++    EndH :: [a] -> ([a] -> Steps r) -> Steps (a,r) -> Steps   (a, r)
++    EndF :: [Steps a] -> Steps a -> Steps a
++
++fail :: Steps a 
++fail = Fail [] [const ((0, fail))]
++
++noAlts :: Steps a
++noAlts = Fail [] []
++
++eval :: Steps a -> a
++eval (Step _ l)   = eval l
++eval (Fail ss ls) = eval (getCheapest 3 [f ss | f <- ls]) 
++eval (Apply f l)  = f (eval l)
++eval (EndF _ _)   = error "eval: dangling EndF constructor"
++eval (EndH _ _ _) = error "eval: dangling EndH constructor"
++
++push :: v -> Steps r -> Steps (v, r)
++push v = Apply ((,) v)
++
++apply :: Steps (b -> a, (b, r)) -> Steps (a, r)
++apply = Apply (\(b2a, ~(b, r)) -> (b2a b, r))  
++
++norm :: Steps a -> Steps a
++norm (Apply f x) = case x of
++    Step p l   -> Step p (Apply f l)
++    Fail ss ls -> fail' ss (Apply f) ls
++    Apply g l  -> norm (Apply (f . g) l)
++    EndF ss l  -> EndF (map (Apply f) ss) (Apply f l)
++    EndH _ _ _ -> error "norm: Apply before EndH"
++norm steps = steps
++
++-- fail' :: [String] -> (Steps b -> Steps c) -> Steps b -> Steps c
++fail' m f ls = Fail m (map (\g -> second f . g) ls) where
++    second h (a,b) = (a, h b)
++
++best :: Steps a -> Steps a -> Steps a
++x `best` y = norm x `best'` norm y
++
++best' :: Steps a -> Steps a -> Steps a
++Fail sl ll  `best'` Fail sr rr  = Fail (sl ++ sr) (ll++rr)
++Fail _  _   `best'` r           = r
++l           `best'` Fail _  _   = l
++
++Step n l    `best'` Step m r = case compare n m of
++    EQ -> Step n (l `best'` r)     
++    LT -> Step n (l `best'` Step (m - n)  r)
++    GT -> Step m (Step (n - m) l `best'` r)
++
++EndF as l   `best'` EndF bs r   = EndF (as++bs)  (l `best` r)
++EndF as l   `best'` r           = EndF as        (l `best` r)
++l           `best'` EndF bs r   = EndF bs        (l `best` r)
++
++EndH as k l `best'` EndH bs _ r = EndH (as++bs) k (l `best` r)
++EndH as k l `best'` r           = EndH as k (l `best` r)
++l           `best'` EndH bs k r = EndH bs k (l `best` r)
++
++l `best'` r = l `best` r 
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% History     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++-- do not change into data !!
++newtype History st a = History 
++    { unHistory :: (forall r. (a -> st -> Steps r) -> st -> Steps r) } 
++
++instance Functor (History state) where
++    fmap f (History p)      = History (\k -> p (\a -> k (f a))) 
++
++instance Applicative (History  state) where
++    pure a                  = History (\k -> k a)
++    History p <*> History q = History (\k -> p (\f -> q (\a -> k (f a)))) 
++
++instance Alternative (History state) where
++    empty                     = History (\_ _   -> noAlts) 
++    History p <|> History q = History (\k inp -> p k inp `best` q k inp) 
++
++instance Monad (History state) where
++    p >>= f = History (\k -> unHistory p (\a -> unHistory (f a) k))
++    return  = pure
++
++instance MonadPlus (History state) where
++    mzero = empty
++    mplus = (<|>) 
++
++instance (Provides state symbol token) => Symbol (History  state) symbol token where
++    pSym a = History (splitState a)
++
++instance Parsable History where
++    parse (History p) =  
++        fst . eval . p  (\ a rest -> if eof rest then push a fail else error "pEnd missing?") 
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Future      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++-- do not change into data !!
++newtype  Future st a  = Future 
++    { unFuture :: forall r . (st -> Steps r) -> st -> Steps (a, r) } 
++
++instance Functor (Future st) where
++    fmap = liftA
++
++instance Applicative (Future st) where
++    pure a                = Future ((push a).)
++    Future p <*> Future q = Future ((apply .) . (p . q))
++
++instance Alternative (Future st) where
++    empty                 = Future (\_ _   -> noAlts)
++    Future p <|> Future q = Future (\k inp -> p k inp `best` q k inp)  
++
++instance (Provides state symbol token) => Symbol (Future state) symbol token where
++    pSym a = Future (\k -> splitState a (\t inp' -> push t (k inp')))
++
++instance Parsable Future where
++    parse (Future p) = 
++	fst . eval . p (\rest -> if eof rest then fail else error "pEnd missing")
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Monads      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++infixr 1 >>>=
++class GenMonad m n where
++    (>>>=) :: m b -> (b -> n a) -> n a
++
++instance Monad (History s) => GenMonad (History s) (History s) where
++    (>>>=) = (>>=) --  the monadic bind defined before
++
++instance GenMonad (History s) (Future s) where
++    History p >>>= f = Future (\k st -> p (\pv st -> unFuture (f pv) k st) st)
++
++
++data Parser s a = Parser
++    { getHistory :: History s a
++    , getFuture  :: Future s a 
++    } 
++
++instance Functor (Parser st) where
++    fmap f (Parser x y) = Parser (fmap f x) (fmap f y)
++
++instance Applicative (Parser st) where
++    pure a                         = Parser (pReturn a) (pReturn a) 
++    Parser hp fp <*> ~(Parser hq fq) = Parser (hp <*> hq) (fp <*> fq) 
++
++instance Alternative (Parser st) where
++    Parser hp fp <|> Parser hq fq = Parser (hp <|> hq) (fp <|> fq)
++    empty = Parser empty empty       
++ 
++instance (Provides state symbol token) => Symbol (Parser state) symbol token where
++    pSym a = Parser (pSym a) (pSym a)
++
++instance Parsable Parser where
++    parse p = fst . eval . unFuture (getFuture p) (\rest -> if eof rest then fail else error "Parser.parse: EndF missing?") 
++
++instance Monad (Parser st) where
++    Parser (History h) _ >>= f = Parser (History (\k -> h (\a -> unHistory (getHistory (f a)) k)))
++                                        (Future  (\k -> h (\a -> unFuture (getFuture  (f a)) k)))
++    return  = pure
++
++instance MonadPlus (Parser st) where
++    mzero = empty
++    mplus = (<|>)
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Greedy      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++bestGreedy :: Steps a -> Steps a -> Steps a
++bestGreedy l@Step{} = const l 
++bestGreedy l        = best l 
++
++class  Greedy p where 
++  (<<|>) :: p a -> p a -> p a
++
++instance Greedy (History s)  where
++    History p <<|> History q = History (\k st -> norm (p k st) `bestGreedy` norm (q k st))
++
++instance Greedy (Future s)  where
++    Future p <<|> Future q = Future (\k st -> norm (p k st) `bestGreedy` norm (q k st))
++
++instance Greedy (Parser s) where
++    Parser hp fp <<|> Parser hq fq = Parser (hp <<|> hq) (fp <<|> fq) 
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Ambiguous   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++class Ambiguous p where
++    amb :: p a -> p [a]
++
++instance Ambiguous (History s) where
++    amb (History p) = History (\k -> removeEndH . p (\a st' -> EndH [a] (\as -> k as st') noAlts))
++
++removeEndH :: Steps (a, r) -> Steps r
++removeEndH (Fail m ls)   = fail' m removeEndH ls
++removeEndH (Step ps l)   = Step ps (removeEndH l)
++removeEndH (Apply f l)   = error "removeEndH: unexpected Apply"
++removeEndH (EndH as k r) = k as `best` removeEndH r 
++
++instance Ambiguous (Future s) where
++    amb (Future p) = Future (\k inp -> combineValues . removeEndF $ p (\st -> EndF [k st] noAlts) inp) where
++        combineValues :: Steps [(a,r)] -> Steps ([a],r)
++        combineValues lar = Apply (\lar -> (map fst lar, snd (head lar))) lar
++
++removeEndF :: Steps r -> Steps [r]
++removeEndF (Fail m ls)     = fail' m removeEndF ls
++removeEndF (Step ps l)     = Step ps (removeEndF l)
++removeEndF (Apply f l)     = Apply (map' f) (removeEndF l) where
++    map' f ~(x:xs) = f x : map f xs
++removeEndF (EndF (s:ss) r) = Apply (: map eval ss) s `best` removeEndF r
++
++
++instance Ambiguous (Parser state) where
++    amb (Parser hp fp) = Parser (amb hp) (amb fp)
++       
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% getCheapest  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++getCheapest :: Int -> [(Int, Steps a)] -> Steps a 
++getCheapest n = snd . foldr step (maxBound, error "getCheapest: no correcting alternative found") where        
++    step (w,ll) btf@(c,l) 
++        | w < c, new <- getCheapest' n ll w c, new < c = (new, ll)
++        | otherwise = btf 
++
++getCheapest' :: Int -> Steps a -> Int -> Int -> Int
++getCheapest' 0 _ v c = v
++getCheapest' n (Step ps l) v c = getCheapest' (n-1) l v c
++getCheapest' n (Apply _ l) v c = getCheapest' n l v c
++getCheapest' n (Fail m m2ls) v c = foldr f c $map ($m) m2ls where
++    f (w,l) c' 
++        | v + w < c' = getCheapest' (n-1) l (v+w) c'
++        | otherwise  = c'
++getCheapest' n (EndH a lf r) v c  = getCheapest' n (lf a `best` removeEndH r) v c
++getCheapest' n (EndF (l:_) r) v c = getCheapest' n (l `best` r) v c
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% pErrors     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++class state `Stores` errors where
++    getErrors :: state -> (errors, state)
++
++class p `AsksFor` errors where
++    pErrors :: p errors
++    pEnd    :: p errors
++
++instance (Eof state, state `Stores` errors) => AsksFor (History state) errors where
++    pErrors = History (\k -> uncurry k . getErrors)
++    pEnd    = History (\k -> 
++	let deleterest inp = case deleteAtEnd inp of
++                Nothing        -> uncurry k (getErrors inp)
++                Just (i, inp') -> Fail [] [const (i,  deleterest inp')]
++        in deleterest)
++
++push' :: (state -> Steps r) -> (v, state) -> Steps (v, r)
++push' k (errors, state) = push errors (k state)
++
++instance (Eof state, state `Stores` errors) => AsksFor (Future state) errors where
++    pErrors = Future (\k -> push' k . getErrors)
++    pEnd    = Future (\k -> 
++	let deleterest inp = case deleteAtEnd inp of
++               Nothing -> push' k (getErrors inp)
++               Just (i, inp') -> Fail [] [const (i, deleterest inp')]
++        in deleterest)
++
++instance (Eof state, state `Stores` errors) => AsksFor (Parser state) errors where
++    pErrors = Parser pErrors pErrors
++    pEnd    = Parser pEnd pEnd
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% State Change          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++class Switch p where
++    pSwitch :: (st1 -> (st2, st2 -> st1)) -> p st2 a -> p st1 a
++
++instance Switch History where
++--  pSwitch split (History p) = History (\k (split -> (st2,back)) -> p (\a -> k a . back)) st2)
++    pSwitch split (History p) = History (\k st1 -> 
++        let (st2, back) = split st1
++        in p (\a -> k a . back) st2)
++
++instance Switch Future where
++--  pSwitch split (Future p) = Future (\k (split -> (st2, back)) -> p (k . back) st2)
++    pSwitch split (Future p) = Future (\k st1 -> 
++        let (st2, back) = split st1
++        in p (k . back) st2)
++
++instance Switch Parser where
++    pSwitch split (Parser p q) = Parser (pSwitch split p) (pSwitch split q)
++
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%% Recognisers           %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++newtype R st a = R 
++    { unR :: forall r . (st -> Steps r) -> st -> Steps r } 
++
++instance Functor (R state) where
++    fmap _ = unsafeCoerce -- to preserve sharing
++
++instance Applicative (R state) where
++    pure a      = R id
++    R p <*> R q = R (p . q)
++
++instance Alternative (R state) where
++    empty       = R (\_ _   -> noAlts)
++    R p <|> R q = R (\k inp -> p k inp `best` q k inp)  
++
++instance (Provides state symbol token) => Symbol (R state) symbol token where
++    pSym a = R (splitState a . const) 
++
++class  Alternative p => ExtApplicative p st | p -> st where
++    (<*) :: p    a -> R st b -> p a
++    (*>) :: R st b -> p    a -> p a
++    (<$) :: a      -> R st b -> p a
++
++instance ExtApplicative (History st) st where
++    History p <* R r       = History (p . (r.)) 
++    R r       *> History p = History (r . p)
++    f         <$ R r       = History (r . ($f))
++
++instance ExtApplicative (Future st) st where
++    Future p <* R r      = Future (\k -> p (r k))
++    R r      *> Future p = Future (\k -> r (p k))
++    f        <$ R r      = Future (\k -> push f . r k)
++
++instance  ExtApplicative (Parser st) st where
++    Parser h f <* r     = Parser (h <* r) (f <* r) 
++    r     *> Parser h f = Parser (r *> h) (r *> f)
++    f     <$ r          = Parser (f <$ r) (f <$ r)       
+addfile ./uu-parsinglib-alt.cabal
+hunk ./uu-parsinglib-alt.cabal 1
++Name:                uu-parsinglib-alt
++Version:             2.1.0
++Build-Type:          Simple
++License:             LGPL
++Author:              Doaitse Swierstra, Edward Kmett
++Maintainer:          ekmett@gmail.com
++Stability:           experimental
++Homepage:            http://www.cs.uu.nl/wiki/bin/view/HUT/ParserCombinators
++Bug-reports:         mailto:doaitse@swierstra.net
++Synopsis:            New version of the Utrecht University parser combinator library        
++Cabal-Version:       >=1.2
++Description:         New version of the Utrecht University parser combinator library, containing monadic, online, error correction, annotation free, applicative style parser combinators.
++Category:            Text, Language, Text.ParserCombinators 
++
++Library
++    Build-Depends:     base, haskell98
++    Exposed-modules:   
++        Text.ParserCombinators.UU.Parsing
++        Text.ParserCombinators.UU.BasicInstances
++        Text.ParserCombinators.UU.Examples
+}

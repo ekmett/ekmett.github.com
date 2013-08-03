@@ -1,0 +1,38 @@
+module Data.Rope.Annotated
+    ( A(rope)
+    , Ann
+    , Annotation
+    , (:~>)
+    , (:*:)(..)
+
+    , null      -- :: A s a -> Bool
+    , rope      -- :: A s a -> Rope
+    , head      -- :: Unpackable t => A s a -> t
+    , last      -- :: Unpackable t => A s a -> t
+
+    , empty     -- :: (Annotation f) => Ann Empty f 
+    , append    -- :: (Annotation f, Append a b c) => Ann a f -> Ann b f -> Ann c f
+
+    , splitAt   -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , drop      -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Drop n a) f -> r) -> r
+    , take      -- :: (Annotation f) => Int -> Ann a f -> (forall n. Ann (Take n a) f -> r) -> r
+
+    , unit      -- :: (Annotation f, Reducer t Rope) => t -> Ann a f
+    , snoc      -- :: (Annotation f, Reducer t Rope) => t -> Ann a f -> (forall c. Ann (Snoc c t a) f -> r) -> r
+    , cons      -- :: (Annotation f, Reducer t Rope) => Ann a f -> t -> (forall c. Ann (Cons c t a) f -> r) -> r
+
+    , uncons    -- :: (Annotation f, Unpackable t, Uncons t a b) => Ann a f -> Maybe (t, Ann b f)
+    , unsnoc    -- :: (Annotation f, Unpackable t, Unsnoc t a b) => Ann a f -> Maybe (t, Ann b f)
+
+    , break     -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , span      -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> Ann (Drop n a) f -> r) -> r
+    , takeWhile -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Take n a) f -> r) -> r
+    , dropWhile -- :: (Annotation f, Breakable t) => (t -> Bool) -> Ann a f -> (forall n. Ann (Drop n a) f -> r) -> r
+
+    -- * Type-level constructors
+    , Drop, Take, Snoc, Cons, Tail, Init, Empty
+    -- * Type-level programming classes
+    , Append, Unsnoc, Uncons
+    ) where
+
+import Data.Rope.Annotated.Internal

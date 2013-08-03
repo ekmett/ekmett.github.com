@@ -1,0 +1,686 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Rotten Bananas</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Rotten Bananas Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Elgot Algebras' href='../elgot-algebras/index.html' />
+<link rel='next' title='Higher-Order Abstract Syntax à la Carte' href='../higher-order-abstract-syntax-a-la-carte/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Tue 25 Mar 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Rotten Bananas">Rotten Bananas</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="index.html#comments" title="Comment on Rotten Bananas">[10] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I have been trying out various representations for higher-order abstract syntax (HOAS) in Haskell, with an eye towards seeing what I can actually use to get real work done and I have run into a few unexpected headaches, and a couple of neat observations. That said, I should probably start by explaining some terminology.</p>
+<p>Encoding a language that binds variables in higher order abstract syntax generally involves constructing an abstract data type that contains functions. A functor for representing expressions from Berendregdt's lambda cube in HOAS goes something like (ignoring any consolidation of binders and sorts)</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> F a
+    = Lam a <span style="color: green;">&#40;</span>a -&gt; a<span style="color: green;">&#41;</span>
+    | Pi a <span style="color: green;">&#40;</span>a -&gt; a<span style="color: green;">&#41;</span>
+    | App a a
+    | Star
+    | Box
+&nbsp;</pre>
+<p>There are a number of mathematical functors that are not instances has Haskell's Functor class, such as the above.</p>
+<p><span id="more-44"></span></p>
+<p>If you don't believe me that F is not a functor, try deriving an instance for fmap for F that satisfies the functor laws:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> == <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>f . g<span style="color: green;">&#41;</span> == <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g
+&nbsp;</pre>
+<p>The reason it can't be is that fmap can really only be defined for 'covariant endofunctors on the category of types'. </p>
+<p>Most covariant functors used in Haskell are among the so-called 'polynomial' functors, meaning that they can be built up out of sums, products and constants. </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> a | Nil <span style="color: #5d478b; font-style: italic;">-- covariant in a</span>
+<span style="color: #06c; font-weight: bold;">data</span> ListF t a = Cons t a | Nil <span style="color: #5d478b; font-style: italic;">-- covariant in a</span>
+&nbsp;</pre>
+<p>That said, polynomial functors are not the only covariant functors, because you can also have some functions in the type, as long as the type over which you are parameterized only occurs in 'positive' position. The informal way to think about it is that every time you have a parameter on the left of an (->) in the type, the occurrence switches signs, starting positive, so for some Functors, you can have functions, as long as the parameter occurs only in positive positions. Most of us know some instances of Functor that are covariant, but not polynomial such as:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Reader e a = Reader <span style="color: green;">&#40;</span>e -&gt; a<span style="color: green;">&#41;</span> <span style="color: #5d478b; font-style: italic;">-- covariant in a</span>
+<span style="color: #06c; font-weight: bold;">newtype</span> Cont r a = Cont <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; r<span style="color: green;">&#41;</span> <span style="color: #5d478b; font-style: italic;">-- covariant in a</span>
+&nbsp;</pre>
+<p>On the other hand the following functors are not covariant, because the parameter occurs in negative position somewhere in the type.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> ContravariantSample a = Bar <span style="color: green;">&#40;</span>a -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#41;</span> <span style="color: #5d478b; font-style: italic;">-- contravariant</span>
+<span style="color: #06c; font-weight: bold;">data</span> InvariantSample a = Baz <span style="color: green;">&#40;</span>a -&gt; a<span style="color: green;">&#41;</span> <span style="color: #5d478b; font-style: italic;">-- invariant</span>
+&nbsp;</pre>
+<p>You could go through and define a 'ContravariantFunctor' type class if you really want:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> ContravariantFunctor f <span style="color: #06c; font-weight: bold;">where</span>
+    cofmap :: <span style="color: green;">&#40;</span>b -&gt; a<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b
+&nbsp;</pre>
+<p>But for HOAS you tend to need terms like Lam (a -> a) that have both positive and negative occurrences of a to handle variable binding, so we'll skip to a definition for an invariant functor, which we'll choose to call an exponential functor in contrast to a polynomial, because category theory types like to refer to functions as exponentials, and use the notation b<sup>a</sup> to denote a function of type (a -> b).</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> ExpFunctor f <span style="color: #06c; font-weight: bold;">where</span>
+    xmap :: <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; a<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b
+&nbsp;</pre>
+<p>Now, obviously every Functor is trivially an ExpFunctor, witnessed by the default definition:</p>
+<pre class="haskell">&nbsp;
+xmapF :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; a<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b
+xmapF = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>
+&nbsp;</pre>
+<p>And just as people are wont to do with Functor and Monad you could argue that in an ideal world the definition for Functor should change to class ExpFunctor f => Functor f, but since not that many people use these things, I doubt anyone would be interested in the change.</p>
+<p>This is a sufficiently general definition that you can construct instances for exponential data types such as:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> ExpFunctor F <span style="color: #06c; font-weight: bold;">where</span>
+    xmap f g <span style="color: green;">&#40;</span>Lam t k<span style="color: green;">&#41;</span> = Lam <span style="color: green;">&#40;</span>f t<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f . k . g<span style="color: green;">&#41;</span>
+    xmap f g <span style="color: green;">&#40;</span>Pi t k<span style="color: green;">&#41;</span> = Pi <span style="color: green;">&#40;</span>f t<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f . k . g<span style="color: green;">&#41;</span>
+    xmap f g <span style="color: green;">&#40;</span>App a b<span style="color: green;">&#41;</span> = App <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>
+    xmap f g Star = Star
+    xmap f g Box = Box
+&nbsp;</pre>
+<p>As an aside we can define exponential functor composition, just like functor composition if we want to:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> O f g e = Comp <span style="color: green;">&#123;</span> deComp :: f <span style="color: green;">&#40;</span>g e<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Comp . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . deComp
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>ExpFunctor f, ExpFunctor g<span style="color: green;">&#41;</span> =&gt; ExpFunctor <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        xmap f g = Comp . xmap <span style="color: green;">&#40;</span>xmap f g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>xmap g f<span style="color: green;">&#41;</span> . deComp
+&nbsp;</pre>
+<p>Typically we'd like to represent the recursive part of a functor with another ADT. This makes it easier to go through and apply things like catamorphisms and anamorphisms to them (see <a href="http://citeseer.ist.psu.edu/meijer91functional.html">Functional Programming with Bananas, Lenses, Envelopes and Barbed Wire</a> for more information). Catamorphisms are sometimes called bananas because of the notation from that paper.</p>
+<p>A typical newtype used for explicit <a href="http://en.wikipedia.org/wiki/Recursive_type">isorecursion</a> is:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Nu f  = Nu <span style="color: green;">&#123;</span> old :: f <span style="color: green;">&#40;</span>Nu f<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span> <span style="color: #5d478b; font-style: italic;">--so its not funny</span>
+&nbsp;</pre>
+<p>Now if f is a good old fashioned Functor, we can define a pretty straightforward idea of a catamorphism over Nu f. I want to be able to handle ExpFunctor's later, so we'll leave the Functor constraint off of the class and move it to the instance.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Cata f t | t -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+    cata :: <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span> -&gt; t -&gt; a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Cata f <span style="color: green;">&#40;</span>Nu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    cata f = f . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>cata f<span style="color: green;">&#41;</span> . old
+&nbsp;</pre>
+<p>And given cata and fmap one can go through and build up a whole host of other recursion schemes, paramorphisms, zygomorphisms, histomorphisms, generalized catamorphisms, ...; the menagerie is quite forbidding and these can be used to tear apart covariant functors with reckless abandon. With the power of a paramorphism you rederive the notion of general recursion, and so you can basically write any recursive function you want. (On the coalgebra side of the house there are anamorphisms, apomorphisms, and all sorts of other beasts for effectively generating covariant functors)</p>
+<p>You can also use them on contravariant functors with some work, because it turns out you can 'square' a contravariant functor to derive a covariant one.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Square f a = Square <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> ContravariantFunctor f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Square f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Square . cofmap <span style="color: green;">&#40;</span>cofmap f<span style="color: green;">&#41;</span> . unSquare
+&nbsp;</pre>
+<p>The problem is that once you weaken from a Functor all the way to an ExpFunctor, most of that machinery goes out the window. </p>
+<p>Cue the arrival of Erik Meijer and Graham Hutton. They derived a kind of catamorphism for exponential functors back in 1995 in <a href="http://citeseer.ist.psu.edu/293490.html">Bananas in Space</a>.</p>
+<pre class="haskell">&nbsp;
+cataMH :: ExpFunctor f =&gt; <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; f a<span style="color: green;">&#41;</span> -&gt; Nu f -&gt; a
+cataMH f g = f . xmap <span style="color: green;">&#40;</span>cataMH f g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>anaMH f g<span style="color: green;">&#41;</span> . old
+&nbsp;
+anaMH :: ExpFunctor f =&gt; <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; f a<span style="color: green;">&#41;</span> -&gt; a -&gt; Nu f
+anaMH f g = Nu . xmap <span style="color: green;">&#40;</span>anaMH f g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>cataMH f g<span style="color: green;">&#41;</span> . g
+&nbsp;</pre>
+<p>Note the similarity and differences between cataMH and the cata described above. In order to satisfy the type of xmap you need not just an operation to fold your structure, but you need an 'unfold' step as well; to run the catamorphism backwards to satisfy the type of xmap, cataMH requires not just an 'algebra structure' (f a -> a) for folding, but it also requires an inverse 'coalgebra structure' (a -> f a) to unfold what it just did. </p>
+<p>In other words, to use the Meijer/Hutton catamorphism to write a pretty printer, you have to write a parser as well; to use it to eval, you must also be able to reify values back into programs.</p>
+<p>Unfortunately we won't be able to get an instance of Cata out of the Meijer/Hutton catamorphism.</p>
+<p>With it in hand, you can write a pretty powerful HOAS representation, but there are some huge caveats to the Meijer-Hutton catamorphism:</p>
+<ol>
+<li>Some catamorphisms don't have inverses!</li>
+<li>Since a function in your embedded language is represented as a function in the 'meta-language' Haskell, HOAS functions have the ability to host 'bad terms' that do things that the underlying embedded language can't do like use case to inspect if they were given a lambda or an application as an argument on terms passed to them and do different things accordingly.</li>
+<li>Using the inverse can be very slow</li>
+</ol>
+<p>Fortunately, a year later <a href="http://citeseer.ist.psu.edu/2065.html">Leonidas Fegaras and Tim Sheard</a> realized that the main use of the 'unfold step' above was to just undo the damage caused by the fold step and that a full inverse wasn't needed, just a place holder 'place' such that serves as a right-inverse such that:</p>
+<pre class="haskell">&nbsp;
+cata f . place = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>The problem the reduces to the question of how to define place. Fegaras and Sheard were willing (and able) to change every functor to include an extra member name Place and then define as part of each catamorphism that cata f (Place x) = x. They then ensured that Place wasn't abused by the programmer by a complicated type system that we really don't have access to in Haskell. So, if you are able to go into some as-yet-unwritten language where their tagged types exist, then your problems are solved for the most part and you can write general recursion over exponential functors without impossible to find inverses, bad terms or expensive inverse operations.</p>
+<p>A compromise is to realize as much of the Fegaras/Sheard vision as you can reasonably type in Haskell. As noted by Weirich and Washburn, you can move the 'Place' term into the explicit recursion ADT yielding something like: </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Rec f a = Roll <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Rec f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> | Place a
+&nbsp;</pre>
+<p>This obviates the need to modify every single base functor you use to include a Place term  -- admittedly at the cost of introducing another case analysis where a bottom can occur because the recursive data type is no longer a newtype.</p>
+<p>We can then readily almost define a catamorphism for this type - ignoring the extra 'a' term in Rec f a for the nonce.</p>
+<pre class="haskell">&nbsp;
+cataFS :: ExpFunctor f =&gt; <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span> -&gt; Rec f a -&gt; a
+cataFS f <span style="color: green;">&#40;</span>Roll x<span style="color: green;">&#41;</span> = f <span style="color: green;">&#40;</span>xmap <span style="color: green;">&#40;</span>cataFS f<span style="color: green;">&#41;</span> Place x<span style="color: green;">&#41;</span>
+cataFS f <span style="color: green;">&#40;</span>Place x<span style="color: green;">&#41;</span> = x
+&nbsp;</pre>
+<p>As an aside to build terms to feed to either of these recursive forms, you need to inject values by wrapping them in the recursive constructor:</p>
+<pre class="haskell">&nbsp;
+lamMH :: Nu F -&gt; <span style="color: green;">&#40;</span>Nu F -&gt; Nu F<span style="color: green;">&#41;</span> -&gt; Nu F
+lamMH t k = Nu <span style="color: green;">&#40;</span>Lam t k<span style="color: green;">&#41;</span>
+&nbsp;
+lamFS :: Rec F a -&gt; <span style="color: green;">&#40;</span>Rec F a -&gt; Rec F a<span style="color: green;">&#41;</span> -&gt; Rec F a
+lamFS t k = Roll <span style="color: green;">&#40;</span>Lam t k<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>You'll note a lot of similarity here, and also a superfluous term 'a' floating around in the Fegaras Sheard definition, which is necessary for Place to work its magic.</p>
+<p>Since I want to compare a few different ways to represent HOAS here, lets define:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Rollable f t | t -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+    roll :: f t -&gt; t
+<span style="color: #06c; font-weight: bold;">instance</span> Rollable f <span style="color: green;">&#40;</span>Nu f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    roll = Nu
+<span style="color: #06c; font-weight: bold;">instance</span> Rollable f <span style="color: green;">&#40;</span>Rec f a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    roll = Roll
+&nbsp;</pre>
+<p>Then we can use one function for either recursion scheme that we want to use for our particular functor 'F'.</p>
+<pre class="haskell">&nbsp;
+lam :: Rollable F t =&gt; t -&gt; <span style="color: green;">&#40;</span>t -&gt; t<span style="color: green;">&#41;</span> -&gt; t
+lam t f = roll <span style="color: green;">&#40;</span>Lam t f<span style="color: green;">&#41;</span>
+&nbsp;
+app :: Rollable F t =&gt; t -&gt; t -&gt; t
+app f a = roll <span style="color: green;">&#40;</span>App f a<span style="color: green;">&#41;</span>
+&nbsp;
+...
+&nbsp;</pre>
+<p>The problem then comes down to the fact that when working with the Fegaras/Sheard form, you have a superfluous term 'a' that can bite you when you go to apply two different catamorphisms to your HOAS term. The first will fix your type to the return type of its catamorphism and you'll be done for when you attempt to apply a different catamorphism that needs a different type.</p>
+<p>One fix, as noted by Washburn and Weirich is to quantify over the a with an explicit forall when working with the Fegaras/Sheard catamorphism. This has the nice side effect that it prevents illegal uses of 'Place'. Moreover, that explicit quantifier allows you to use different catamorphisms over the term. </p>
+<p>So, now instead of being interested in terms of the type 'Rec f a' we want terms of the type 'forall a. Rec f a', but then we run into another problem! </p>
+<p>You can't define a typeclass instance for a type that has a leading explicit 'forall' quantifier, and I for one really like to be able to use typeclasses like Show, Eq, etc over my types.</p>
+<p>However, Shae Erisson and I noticed the fact that you can define the following strange, beautiful but legal newtype to box up the quantifier:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> ForAll f = ForAll <span style="color: green;">&#123;</span> runForAll :: <span style="color: #06c; font-weight: bold;">forall</span> a. f a <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>This lets us define a better catamorphism which doesn't suffer from the monomorphism problems that the previous version did, and finally we get an instance of Cata for the FegarasSheard catamorphism.</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> ExpFunctor f =&gt; Cata f <span style="color: green;">&#40;</span>ForAll <span style="color: green;">&#40;</span>Rec f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    cata f = cataFS f . runForAll
+&nbsp;</pre>
+<p>A lambda calculus pretty printer in the style of Washburn and Weirich's <a href="http://repository.upenn.edu/cis_reports/43/">Boxes Go Bananas</a> goes something like the following (although you need -fallow-undecidable-instances in GHC.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Cata F <span style="color: green;">&#40;</span>ForAll t<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>ForAll t<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> x = cata phi x vars <span style="color: #06c; font-weight: bold;">where</span>
+        phi <span style="color: green;">&#40;</span>Lam t k<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>v:vars<span style="color: green;">&#41;</span> =
+            <span style="color: #3c7331;">&quot;(<span style="">\\</span><span style="">\\</span>&quot;</span> ++ v ++ <span style="color: #3c7331;">&quot;: &quot;</span> + t vars ++ <span style="color: #3c7331;">&quot;. &quot;</span> ++ k <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> v<span style="color: green;">&#41;</span> vars ++ <span style="color: #3c7331;">&quot;)&quot;</span>
+	phi <span style="color: green;">&#40;</span>App a b<span style="color: green;">&#41;</span> vars =
+            <span style="color: #3c7331;">&quot;(&quot;</span> ++ a vars ++ <span style="color: #3c7331;">&quot; &quot;</span> ++ b vars ++ <span style="color: #3c7331;">&quot;)&quot;</span>
+        ...
+	vars =
+            <span style="color: green;">&#91;</span> <span style="color: green;">&#91;</span>i<span style="color: green;">&#93;</span> | i &lt; - <span style="color: green;">&#91;</span>'a'..'z'<span style="color: green;">&#93;</span><span style="color: green;">&#93;</span> ++
+            <span style="color: green;">&#91;</span>i : <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> j | j &lt;- <span style="color: green;">&#91;</span><span style="color: red;">1</span>..<span style="color: green;">&#93;</span>, i &lt;- <span style="color: green;">&#91;</span>'a'..'z'<span style="color: green;">&#93;</span> <span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>All is not roses, however. We still haven't ruled out bad functions that inspect the functor they are given.</p>
+<p>Washburn and Weirich go off and change the form of the recursion data type yet again to yield an explicit elimination form with some benefits and costs, which I can represent here as:</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Rec' f a = <span style="color: green;">&#40;</span>f a -&gt; a<span style="color: green;">&#41;</span> -&gt; a
+&nbsp;</pre>
+<p>As an interesting aside, you may notice some similarities to the type of the continuation monad:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Cont r a = Cont <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Rec'' w a = Cont a <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I'll have more to say about this curious use of a monad later on, but unfortunately Rec and Rec'' can't be used with ForAll as they stand, so we have to introduce yet another newtype so that they can be partially applied -- thankfully these are free at runtime!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Elim f a = Elim <span style="color: green;">&#123;</span> unElim :: Cont a <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+elim = Elim . Cont
+runElim = runCont . unElim
+&nbsp;</pre>
+<p>Now, we can define the relevant typeclasses needed to support all the Fegaras and Sheard machinery for this type:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> ExpFunctor f =&gt; Rollable f <span style="color: green;">&#40;</span>Elim f a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    roll x = elim $ \f -&gt; f $ xmap <span style="color: green;">&#40;</span>cata f<span style="color: green;">&#41;</span> place x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Placeable Elim <span style="color: #06c; font-weight: bold;">where</span>
+    place = elim . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Cata f <span style="color: green;">&#40;</span>ForAll <span style="color: green;">&#40;</span>Elim f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    cata f x = runElim <span style="color: green;">&#40;</span>runForAll x<span style="color: green;">&#41;</span> f
+&nbsp;</pre>
+<p>After all of that, we basically get the 'iteration library interface' of Boxes Go Bananas packaged up so that we can play with these representations more or less interchangeably.</p>
+<p>Now for the problem. </p>
+<p>Weirich and Washburn's encoding as an elimination form protect the user from bad case analysis by denying you the ability to inspect terms with case at all. This is immediately apparent by the signature of Rec' f a above: </p>
+<p>In their encoding:</p>
+<pre class="haskell">&nbsp;
+cata x f = f x
+&nbsp;</pre>
+<p>In other words, the only thing you can do to a term is apply a catamorphism to it. They even say as much somewhere in the paper.</p>
+<p>No sweat, we can go rederive all of the other stuff thats defined in terms of catamorphism, right? paramorphisms, zygomorphisms, histomorphisms, generalized catamorphisms, and then we can do anything we want, right? Unfortunately, here is where we run out of steam.</p>
+<p>A catamorphism isn't strong enough to encode general recursion without fmap. In order to rederive general recursion from a catamorphism you need at least a paramorphism. Normally we can define a paramorphism in terms of our catamorphism with the use of fmap, but as we are working over merely an exponential functor we do not have fmap!</p>
+<p>I ran headlong into this wall, while trying to derive a minimalist dependently-typed lambda calculus implementation using the Boxes Go Bananas encoding, because typechecking requires normal form reduction, which could be cleanly encoded as a paramorphism, but which couldn't seem to be represented in the Boxes Go Bananas style.</p>
+<p>Depending on how bad we want to be, we can get out of the Washburn/Weirich or Fegaras/Sheard sandboxes and into one of the others. Though curiously we can't get back out of the Meijer/Hutton-style unless we have a full Functor.</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+reroll :: <span style="color: green;">&#40;</span>Cata f t, Rollable f t'<span style="color: green;">&#41;</span> =&gt; t -&gt; t'
+reroll = cata roll
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | safe $$ hoas-expression</span>
+safe :: <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. Elim f a<span style="color: green;">&#41;</span> -&gt; ForAll <span style="color: green;">&#40;</span>Elim f<span style="color: green;">&#41;</span>
+safe = ForAll
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | unsafe $$ hoas-expression</span>
+unsafe :: <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. Rec f a<span style="color: green;">&#41;</span> -&gt; ForAll <span style="color: green;">&#40;</span>Rec f<span style="color: green;">&#41;</span>
+unsafe = ForAll
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | cast to Meijer/Hutton</span>
+toMH :: <span style="color: green;">&#40;</span>Cata f t, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; t -&gt; Nu f
+toMH = cata Nu
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | cast to Washburn/Weirich</span>
+toWW :: <span style="color: green;">&#40;</span>Cata f t, ExpFunctor f<span style="color: green;">&#41;</span> =&gt; t -&gt; ForAll <span style="color: green;">&#40;</span>Elim f<span style="color: green;">&#41;</span>
+toWW x = ForAll <span style="color: green;">&#40;</span>reroll x<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | cast to Fegaras/Sheard</span>
+toFS :: <span style="color: green;">&#40;</span>Cata f t, ExpFunctor f<span style="color: green;">&#41;</span> =&gt; t -&gt; ForAll <span style="color: green;">&#40;</span>Rec f<span style="color: green;">&#41;</span>
+toFS x = ForAll <span style="color: green;">&#40;</span>reroll x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>It seems we can get to a point where the System <img src='../../../latex/74ae456c93c1f240a1dc6678e12e6438.png' title='F_\omega' alt='F_\omega' align=absmiddle> fragment of Haskell protects us from ourselves, preventing bad case analysis and abuse of the place term, but in the process we give up general recursion.</p>
+<p>For now, I think I have to hop out to at least the Fegaras and Sheard encoding to get any work done.</p>
+<p><a href="../../../haskell/hoas/Exponential.hs">Source Code</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">10 Responses to &#8220;Rotten Bananas&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-989">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=868d9091e935a8186c3588472d63fb33&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://blog.jbapple.com' rel='external nofollow' class='url'>Jim Apple</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-989" title="">March 25th, 2008 at 5:32 am</a> </small>
+			<br clear="all"/>
+
+			<p>I think the Beluga project (<a href="http://www.cs.mcgill.ca/~complogic/beluga/" rel="nofollow">http://www.cs.mcgill.ca/~complogic/beluga/</a>) addresses your issue. The first paper listed on the page is titled &#8220;Case analysis of higher-order data&#8221;. :-)</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-991">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-991" title="">March 25th, 2008 at 2:14 pm</a> </small>
+			<br clear="all"/>
+
+			<p>The Beluga project seems to be focused on the idea of how to represent HOAS in logical frameworks like LF, TWELF, etc. </p>
+<p>My main focus is on using HOAS practically in a compiler in Haskell. Consequently, I wind up with a fair bit less control over exotic terms, because I don&#8217;t get to roll nearly as much of my own structure in the meta-language. </p>
+<p>As a result I&#8217;m not sure how much what the Beluga folks are doing really helps, beyond the fact that it was fun getting a chance to pick at another HOAS encoding over lunch. </p>
+<p>I had hoped that the Washburn/Weirich encoding would give me a &#8216;no exotic terms  other than bottom&#8217; security blanket, but it appears that I just have to suck it up. =)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-992">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=868d9091e935a8186c3588472d63fb33&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://blog.jbapple.com' rel='external nofollow' class='url'>Jim Apple</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-992" title="">March 25th, 2008 at 2:51 pm</a> </small>
+			<br clear="all"/>
+
+			<p>It&#8217;s true that the goal of the project is different. The similarity I mean is that HOAS has *traditionally* had the problem of trading case analysis for safety. That is to say, it&#8217;s not a just a Haskell problem.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1020">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=b95683b99f7dab915776491a600e7ef2&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Darin Morrison</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1020" title="">April 5th, 2008 at 7:00 am</a> </small>
+			<br clear="all"/>
+
+			<p>The idea behind the Beluga project is to develop a dependently typed functional programming language that supports HOAS in a natural way.  The connection to LF is that the Beluga language is split into two layers &#8212; a data layer which combines LF with constructs from contextual modal type theory in order to encode (open) data objects (which could represent terms in an object languages with binding described by HOAS), and a computation layer where things like recursion and case analysis happen.  In Beluga, LF objects serve the same purpose as (G)ADTs in Haskell.</p>
+<p>HOAS has been with LF and Twelf (which is just an implementation of LF + a logic programming engine and some other stuff) from the beginning, and Beluga has nothing to do with that specifically.  What Beluga is trying to do that is new is to solve the problem of practical functional programming with HOAS.  Compiler construction would be an obvious application.</p>
+<p>In any case, it doesn&#8217;t really help you program easily with HOAS in Haskell&#8230; :)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1076">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../unnatural-transformations/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Unnatural Transformations</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1076" title="">April 26th, 2008 at 7:38 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Note that while 3 &#8216;Functors&#8217; e, f and g are involved, only f needs to be a Functor in Hask because we do the duplication, hylomorphism and join all inside f in either case. And most of the time e = f = g. For instance e or g could be exponential or contravariant. [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-22301">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=357a20e8c56e69d6f9734d23ef9517e8&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Paul</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-22301" title="">October 4th, 2010 at 4:04 am</a> </small>
+			<br clear="all"/>
+
+			<p>Another excellent post.</p>
+<p>I think some links may have died. I assume the 1996 Leonidas Fegaras and Tim Sheard paper is &#8220;Revisiting catamorphisms over datatypes with embedded functions (or, programs from outer space)&#8221;.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-22338">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../2010/introducing-speculation/index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-22338" title="">October 4th, 2010 at 12:16 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Paul:</p>
+<p>Very likely.</p>
+<p>I&#8217;ll locate a more recent link and update the article.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-23412">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a43213193edfe5f59a8ad6eeb414724f&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Paul Keir</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-23412" title="">October 13th, 2010 at 8:24 am</a> </small>
+			<br clear="all"/>
+
+			<p>Can you help me with some terminology? You mention that Hutton and Meijer derived a kind of catamorphism for exponential functors. Yet in their paper, they instead talk only about difunctors. They refer to this difunctor as coming from a paper by Peter Freyd: &#8220;RECURSIVE TYPES REDUCED TO INDUCTIVE TYPES&#8221;. I downloaded that paper, but it doesn&#8217;t mention difunctors, and instead discusses bifunctors. (Also, the Hutton/Meijer difunctor looks a lot like the bifunctor from your category-extras package.)</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-23414">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../2010/introducing-speculation/index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-23414" title="">October 13th, 2010 at 8:55 am</a> </small>
+			<br clear="all"/>
+
+			<p>Same thing, different authors, different words. =)</p>
+<p>Difunctor often means the same thing as bifunctor, sometimes it is also used to denote a bifunctor that is contravariant in its first category. One use of this terminology is to describe a dinatural transformation.</p>
+<p>Sadly there is little consistency in this regard.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-61214">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../2011/free-monads-for-less-2/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Free Monads for Less (Part 2 of 3): Yoneda</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61214" title="">June 23rd, 2011 at 11:50 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] up once previously on this blog in Rotten Bananas. In that post, I talked about how Fegaras and Sheard used a free monad (somewhat obliquely) in [...]</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="44" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Tuesday, Mar 25th, 2008 at 3:53 am</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

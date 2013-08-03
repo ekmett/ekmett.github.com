@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Meta</title>
+	<atom:link href="http://comonad.com/reader/category/meta/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 23 Sep 2012 03:43:13 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Wadler&#8217;s Law Revisited</title>
+		<link>http://comonad.com/reader/2012/wadlers-law-revisited/</link>
+		<comments>http://comonad.com/reader/2012/wadlers-law-revisited/#comments</comments>
+		<pubDate>Mon, 02 Apr 2012 19:40:47 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Meta]]></category>
+		<category><![CDATA[records]]></category>
+		<category><![CDATA[wadler]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=571</guid>
+		<description><![CDATA[In light of the burgeoning length of the ongoing record discussion sparked off by Simon Peyton-Jones in October, I would like to propose that we recognize an extension to Wadler's law (supplied in bold), which I'll refer to as the "Weak Record Conjecture" below.
+
+In any language design, the total time spent discussing a feature in [...]]]></description>
+			<content:encoded><![CDATA[<p>In light of the burgeoning length of the ongoing record discussion <a href="http://www.haskell.org/pipermail/glasgow-haskell-users/2011-October/021101.html">sparked off by Simon Peyton-Jones in October</a>, I would like to propose that we recognize an extension to Wadler's law (supplied in bold), which I'll refer to as the "Weak Record Conjecture" below.</p>
+<blockquote><p>
+In any language design, the total time spent discussing a feature in this list is proportional to two raised to the power of its position.</p>
+<ul>
+<li>0. Semantics</li>
+<li>1. Syntax</li>
+<li>2. Lexical syntax</li>
+<li>3. Lexical syntax of comments</li>
+<li><strong>4. Semantics of records</strong></li>
+</ul>
+</blockquote>
+<p><span id="more-571"></span></p>
+<p>I base the Weak Record Conjecture on the stable of proposed record semantics, which now includes (among others) <a href="http://hackage.haskell.org/trac/ghc/wiki/Records/OverloadedRecordFields">Simple Overloaded Record Fields (SORF)</a>, <a href="http://www.youtube.com/watch?v=pEig1D4sJdI%3C/a>,  </a><a href="http://hackage.haskell.org/trac/ghc/wiki/Records/NameSpacing">Agda-derived Records (ADR)</a>, <a href="http://hackage.haskell.org/trac/ghc/wiki/Records/NameSpacing">Frege-derived Records (FDR)</a>, <a href="http://hackage.haskell.org/trac/ghc/wiki/Records/TypePunningDeclaredOverloadedRecordFields">Type-Punning Declared Overloaded Record Fields (TPDORF)</a>, <a href="http://hackage.haskell.org/trac/ghc/wiki/Records/SyntaxDirectedNameResolution">Syntax Directed Name Resolution</a>, <a href="http://hackage.haskell.org/trac/ghc/wiki/Records/TypeIndexedRecords">Type Indexed Records</a> and the less seriously proposed <a href="http://www.haskell.org/pipermail/glasgow-haskell-users/2012-April/022219.html">Homotopy Extensional Record Proposal (HERP)</a> and <a href="http://www.haskell.org/pipermail/glasgow-haskell-users/2012-April/022219.html">Dependent Extensional Record Proposal (DERP)</a>.</p>
+<p>There is an additional option implied but not stated in all of this, which is the option to "Leave Well Enough Alone" (LWEA?), since you can always <a href="http://stackoverflow.com/questions/5767129/lenses-fclabels-data-accessor-which-library-for-structure-access-and-mutatio/5769285#5769285">Man Up and Learn Lenses (MUALL)</a>. Given that every record proposal I've seen thus far breaks polymorphic field updates to some degree, and lenses are going to be compatible with whatever mess folks settle on, even preserving the status quo, this is the path I've chosen to take.</p>
+<p>Now, based on the fact that discussions of <a href="http://www.haskell.org/pipermail/glasgow-haskell-users/2012-January/021531.html">syntax have already started</a>, and the intuition supplied by the ordering already present in Wadler's insightful law, I would also like to conjecture that perhaps an even stronger version of Wadler's law might be able to be stated, the "Strong Record Conjecture".</p>
+<blockquote><p>
+In any language design, the total time spent discussing a feature in this list is proportional to two raised to the power of its position.</p>
+<ul>
+<li>0. Semantics</li>
+<li>1. Syntax</li>
+<li>2. Lexical syntax</li>
+<li>3. Lexical syntax of comments</li>
+<li><strong>4. Semantics of records</strong></li>
+<li>
+<div style="color: red">5. Syntax of records</div>
+</li>
+<li>
+<div style="color: red">6. Lexical syntax of records</div>
+</li>
+</ul>
+</blockquote>
+<p>Under the Strong Record Conjecture, even in the unlikely event that universal accord could be reached on record semantics today — 164 days into this discussion — we'd still be due for at least another 3 years (328 + 656 days) of backlogged complaining over the syntax before anything gets done.</p>
+<p>The evidence thus far is pretty strong that at least the Weak Record Conjecture holds — if anything the exponent is too small and may require further calibration, but we don't have much data yet on the Strong Record Conjecture. Consequently, and in the name of science, I plan to check in again on the record debate in 3 years. Hopefully by then we will have resolved the remaining semantic issues, and will have a better feel for the necessary time commitment required to resolve items 5 and 6.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/wadlers-law-revisited/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>WikiPress</title>
+		<link>http://comonad.com/reader/2006/wikipress/</link>
+		<comments>http://comonad.com/reader/2006/wikipress/#comments</comments>
+		<pubDate>Thu, 26 Oct 2006 23:22:56 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Meta]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2006/10/26/wiki-content-loaded/</guid>
+		<description><![CDATA[I almost have the blog integrated with the old slipwave wiki content. I kludged something together to display it in WordPress. While I may add a flashy dynamic in-page loading feature like TiddlyWiki, for right now its functional and backwards compatible with my old content and gracefully degrades in the absence of javascript.
+By way of [...]]]></description>
+			<content:encoded><![CDATA[<p>I almost have the blog integrated with the old <a href="../../../wiki/index-item=slipwave.html">slipwave</a> wiki content. I kludged something together to display it in WordPress. While I may add a flashy dynamic in-page loading feature like <a href="http://www.tiddlywiki.com">TiddlyWiki</a>, for right now its functional and backwards compatible with my old content and gracefully degrades in the absence of javascript.</p>
+<p>By way of example, you might try to <a href="../../../source/index-item=Data_Haskell.html">view some Haskell source code</a>. </p>
+<p>This also might provide better context when I start to talk about things like <a href="../../../wiki/index-mode=category&item=continuations.html">continuations</a> because I can link right inline to more extended static content.</p>
+<p>This also provides me with a more convenient venue for static content than WordPress' default page management system.</p>
+<p>Please, let me know if some bit of markup doesn't show up right.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2006/wikipress/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Hello, World!</title>
+		<link>http://comonad.com/reader/2006/hello-world/</link>
+		<comments>http://comonad.com/reader/2006/hello-world/#comments</comments>
+		<pubDate>Tue, 17 Oct 2006 23:03:01 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Meta]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2006/10/17/welcome/</guid>
+		<description><![CDATA[&#160;
+&#160;
+import qualified Control.Comonad as Comonad
+import qualified Edward hiding &#40;personal_details&#41;
+import Blog.Software
+&#160;
+-- Hello, World!
+&#160;
+instance Blog Comonad.Reader where
+    url = &#34;http://comonad.com/reader&#34;
+    author = Edward.Kmett
+&#160;
+main = forever $ post stuff
+&#160;
+Syntax highlighting works.
+
+
+
+
+
+Apparently,  works.
+
+
+
+Commutative diagrams, check.
+All systems go.
+World, meet blog; blog, meet world.
+]]></description>
+			<content:encoded><![CDATA[<pre class="haskell">&nbsp;
+&nbsp;
+<span style="color: #06c; font-weight: bold;">import</span> <span style="color: #06c; font-weight: bold;">qualified</span> Control.<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> <span style="color: #06c; font-weight: bold;">as</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a>
+<span style="color: #06c; font-weight: bold;">import</span> <span style="color: #06c; font-weight: bold;">qualified</span> Edward <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>personal_details<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Blog.Software
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- Hello, World!</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Blog <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a>.Reader <span style="color: #06c; font-weight: bold;">where</span>
+    url = <span style="color: #3c7331;">&quot;http://comonad.com/reader&quot;</span>
+    author = Edward.Kmett
+&nbsp;
+main = forever $ post stuff
+&nbsp;</pre>
+<p>Syntax highlighting works.</p>
+<div class="codeblock">
+<p align="center"><img src='../../../../latex/e645c5ec70f37ece72dd6cfe28d4f4e6.png' title=' \inference{}{\Gamma, x:\tau \vdash x:\tau}[var]' alt=' \inference{}{\Gamma, x:\tau \vdash x:\tau}[var]' align=absmiddle></p>
+<p align="center"><img src='../../../../latex/05f05269088d58a918791c0832838cb5.png' title=' \inference{\Gamma,x:\sigma \vdash M:\tau}{\Gamma \vdash \lambda x : \sigma. M : \sigma \rightarrow \tau}[abs]' alt=' \inference{\Gamma,x:\sigma \vdash M:\tau}{\Gamma \vdash \lambda x : \sigma. M : \sigma \rightarrow \tau}[abs]' align=absmiddle></p>
+<p align="center"><img src='../../../../latex/6b489a895eb7d0e43a552fdda5bd3a6a.png' title=' \inference{\Gamma \vdash M : \sigma \rightarrow \tau &amp; \Gamma \vdash N:\sigma}{\Gamma \vdash M N : \tau}[app]' alt=' \inference{\Gamma \vdash M : \sigma \rightarrow \tau &amp; \Gamma \vdash N:\sigma}{\Gamma \vdash M N : \tau}[app]' align=absmiddle></p>
+</div>
+<p>Apparently, <img src='../../../../latex/c51d7e23458ca0e7373a8ed6ab56b2b9.png' title='\LaTeX' alt='\LaTeX' align=absmiddle> works.</p>
+<div class="codeblock" align="center">
+<img src='../../../../latex/4fd5bd37f2fbd56aafb426d35dafa6d9.png' title='\bfig \square/&gt;&gt;`&gt;`&gt;` &gt;-&gt;/[A`B`C`D;e`f`g`m] \morphism(500,500)|m|/.&gt;/&lt; -500,-500&gt;[B`C;h] \efig ' alt='\bfig \square/&gt;&gt;`&gt;`&gt;` &gt;-&gt;/[A`B`C`D;e`f`g`m] \morphism(500,500)|m|/.&gt;/&lt; -500,-500&gt;[B`C;h] \efig ' align=absmiddle>
+</div>
+<p>Commutative diagrams, check.</p>
+<p>All systems go.</p>
+<p>World, meet blog; blog, meet world.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2006/hello-world/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>
+
+<!-- Localized -->

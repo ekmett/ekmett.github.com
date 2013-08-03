@@ -1,0 +1,462 @@
+/* 
+Theme Name: (Galois) Connections
+Theme URI: http://www.patriciamuller.com/
+Version: 1.0
+Description: A Theme from wpthemes.Info
+Original Author: Patricia Muller
+Original Author URI: http://www.vanillamist.com/blog/
+Modified By: Edward Kmett
+*/
+
+body {
+	margin:0;
+	padding:0;
+	font-family: 'Trebuchet MS', Georgia, Times, Times New Roman, sans-serif;
+	font-size: 1.0em;
+	text-align:center;
+	color:#29103B;
+	line-height:1.3em;
+	background: #F3F6ED;
+}
+
+
+#logo {
+	position: absolute;
+	width: 80px;
+	height: 110px;
+	top: 50px;
+	left: 50px;
+}
+
+a { color: #8a3207; text-decoration: underline; font-weight: normal; }
+a:visited { color: #3a3207; }
+a:hover { color: #f53206; text-decoration:underline; }
+
+input, textarea, select { background: #ffffff; border: #E1D6C6 1px solid; }
+
+#rap {
+	background:#fff url(img/rap.jpg) center repeat-y;
+	width:760px;
+	margin:0 auto;
+	padding:0px 8px;
+	text-align:left;
+	font-family: Trebuchet MS,Georgia, Arial, serif;
+	font-size: 0.9em;
+}
+#header {
+	position: relative;
+	background:#fff url(img/top.jpg) no-repeat bottom; 	
+ 	height: 183px;
+	margin: 0 auto;
+	width:760px;
+	padding:0;
+	border:#fc9 0px solid;
+}
+#header a { font-size: 0.9em; }
+
+#main {
+	margin:0 auto;
+	padding:0;
+	background:url(img/content_bg.gif) repeat;
+	width:740px;
+}
+
+#fpjobs {
+        padding: 5px 0px 5px 0px;
+}
+
+sup { position: relative; top: -4px; }
+
+#content {
+	width:510px;
+	float:left;
+	padding:5px;
+	margin:0;
+	overflow:hidden;
+	display:inline;
+}
+
+#sidebar {
+	width:186px;
+	float:right;
+	padding:0px 8px 10px 8px;
+	margin:0;
+	font-size:1em;
+	color:#333;
+	display:inline;
+} 
+a img { border: none; }
+acronym, abbr { border-bottom: 1px dotted #0c6bf0; }
+acronym, abbr, span.caps { cursor: help; letter-spacing: .07em; }
+blockquote {
+	margin: 15px 30px 0 45px;
+	padding: 0 0 0 45px;
+	background: url(img/blockquote.gif) no-repeat left top;
+	font-style:italic;
+}
+
+cite { font-size: 0.9em; font-style: normal; }
+h3 { margin: 0; padding: 0; font-size:1.3em; }
+p { margin: 0 0 1em; padding: 0; line-height: 1.5em; }
+h1, h2, h3, h4, th {
+	font-family: Georgia, "Times New Roman", "Lucida Sans Unicode", lucida, Verdana, serif;
+}
+h1, h2, h3, h4 { letter-spacing: .8px; }
+h1 	{ font-size: 1.5em; }
+h2, th  { font-size: 1.2em; }
+.tag0 { font-size: .8em; }
+.tag1 { font-size: .9em; }
+.tag2 { font-size: 1.0em; }
+.tag3 { font-size: 1.2m; }
+.tag4 { font-size: 1.3em; }
+
+
+#header h1 
+{
+	margin: 0;	
+	font-size: 1.6em;	
+	padding:10px 20px 0 0;
+	text-align:right;	
+}
+#header h1 a { color:#B5C09D; text-decoration:none; }
+#header h1 a:hover 
+{
+	color:#F7F3ED;
+}
+#header #desc
+{
+	font-weight:normal;
+	font-style:italic;
+	font-size:1em;
+	color:#B5C09D;
+	text-align:right;
+	margin:0;
+	padding:0 20px 0 0;
+}
+
+#sidebar h2, th {
+	margin: 10px 0 0 0;
+	padding:2px;
+	font-size: 0.9em;
+	color: #676E04;
+	text-align:center;
+	border:#ccc 0px solid;
+	height:22px;
+	font-weight:bold;
+}
+#sidebar h2 { background:url(img/sidenav_top.jpg) no-repeat center; }
+th { background-color: #e6eadb }
+
+#sidebar ul,table {
+	list-style-type: none;
+	margin: 0;
+	font-size: 0.9em;	
+	padding: 5px 5px 2em 5px;
+	border:#E1D6c6 1px solid;
+	border-top:#f3f6ed 1px solid;
+}
+
+#sidebar ul { background:#F3F6ED url(img/sidenav_bottom.jpg) no-repeat bottom; }
+table { background:#F3F6ED; padding: 0px; }
+
+#pagenav { list-style:none; }
+#sidebar ul li {
+	margin: 0.1em 0 0 0;
+	padding: 0;	
+}
+#sidebar ul li a {
+	text-decoration: none;
+	border:none;
+}
+#sidebar ul li a:link {
+	color: #909D73;	
+}
+#sidebar ul li a:visited {
+	color: #999999;	
+}
+#sidebar ul li a:hover, #sidebar ul li a:active {
+	color: #990000;
+}
+#sidebar ul ul {
+	list-style-type: none;
+	padding: 5px;
+	margin: 0;
+	font-size: 1em;	
+	background:none;
+	border:none;
+}
+#sidebar ul ul li {
+	margin:0;
+	padding:0;
+	padding-left:10px;
+	margin-left:10px;
+	background:url(img/subcat_bullet.gif) no-repeat left;
+}
+#content ul {
+	margin-left: 0;
+	padding-left: 45px;
+	list-style-type: none;
+}
+#content ul li {
+	background: url(img/bullet.gif) no-repeat 0 7px;
+	padding-left: 1.5em;
+}
+/*.post , .page { margin:0 0 30px 0; }
+.page { margin:25px -5px 0 27px; } */
+/*.page, .post { margin: 25px -5px 0px 27px }*/
+.post-info, .page-info {
+	font-size:0.85em;
+	font-family: Verdana, Arial, Sans-Serif;
+	margin:0;
+	padding:0;
+	color:#333;
+}
+.page-info {
+	text-align:center;	
+}
+
+.post-info a { color:#990000; }
+.post-info a:hover { color:#000; }
+post-content, .page-content {
+	padding:10px 0;
+	margin:3px 0;
+	border-top:#BBC4A3 1px solid;	
+	font-family: Georgia, Verdana, Arial, serif;
+	font-size: 12px;
+}
+.post-title, .page-title {
+	font-family:Georgia, Arial, Serif;
+	font-size:1.3em;
+	margin:0;
+	font-weight:bold;
+}
+.page-title {
+	font-size:1.6em;
+	font-weight:normal;
+}
+
+/*div.ads { padding-bottom: 18px; }*/
+
+#content .page-title a, .post-title a:link, .post-title a:visited, .post-title a:active { 
+	text-decoration:none;
+	letter-spacing: 0px;
+	font-size: 1.05em;
+	color: #0e3f0e;
+	/*color:#676E04;*/
+}
+#content .page-title a:hover, .post-title a:hover { 
+	text-decoration:underline;
+}
+
+span.greek { font-style: italic; font-weight: normal; }
+
+.post-date { 
+	float: left;
+	color: #BBC4A3;
+	font-family: Georgia,'Lucida sans ms', Verdana, Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	text-align: center;
+	font-weight: bold;
+	margin: 3px 10px 0 0;
+	padding: 8px 3px;
+	width: 55px;
+	background: #E7EBDE;
+	line-height:1em;
+}
+.post-footer, .page-footer { padding-top:20px; background:url(img/divider.gif) no-repeat center; }
+.page-footer { margin-left: 30px; }
+
+#footer {
+	margin:0 auto;
+	padding: 7px 0;
+	border-top:#BBC4A3 1px solid;
+	clear: both;
+	font-size: 0.8em;
+	color: #999;
+	text-align:center;
+	width:740px;
+}
+#footer a { border:none; color:#7A7636; }
+
+.commentlist { font-size:1em; font-weight:normal; }
+#commentform { margin:0 0 0 40px; }
+#commentform textarea { width: 80%; }
+#commentform p { margin: 0 0 1em; }
+#comments,#respond {
+	text-transform: uppercase;
+	margin: 3em 0 1em 40px;
+	color: #676E04;
+	font: 0.9em verdana, helvetica, sans-serif;
+}
+.commentlist li {
+	margin:5px 0;
+	padding:10px 10px 20px 10px;
+	background:#F3F6ED url(img/comments_bottom.jpg) repeat-x bottom;
+	border:#E1D6C6 1px solid;
+}
+.commentlist .alt { }
+#topnav {
+	list-style:none;
+	font-size:0.9em;
+	margin:0 auto;	
+	padding:12px 20px 0 0;
+	text-align:right;	
+	font-family:Verdana, Arial, Sans-Serif;
+}
+#topnav li {
+	list-style:none;
+	display:inline;
+	padding:0;
+	margin:0;
+	font-weight:bold;
+}
+
+#topnav li a:link, #topnav li a:visited { text-decoration:none;	color:#BBC4A3; }
+#topnav li a:hover, #topnav li a:active { color:#F7F3ED; }
+
+code, span.codeblock, div.codeblock { color: #338877; }
+
+div.codeblock { 
+  margin-bottom:10px;
+  padding: 5px;
+  background-color: #F3F6ED;
+  border: 1px solid #CCC;
+  width: auto; /* 490px; auto;*/
+  overflow: auto;
+  white-space: nowrap;
+  overflow: scrollX;
+}
+span.codeblock { 
+  padding: 0px;
+  background: transparent;
+  border: 0px;
+}
+
+code, span.codeblock, div.codeblock, .synComment, .synConstant, .synIdentifier, 
+.synStatement, .synPreProc, .synType, .synSpecial, .synUnderlined, .synError, .synTodo {
+  font-family: 'Courier New', Verdana, Arial, serif;
+  text-decoration: none;
+  font-size: 10x;
+  font-weight: normal;
+}
+
+.synComment    { color: #0000FF ; }
+.synConstant   { color: #0000FF ; }
+.synIdentifier { color: #008B8B ; }
+.synStatement  { color: #A52A2A ; font-weight: bold }
+.synPreProc    { color: #A020F0 ; }
+.synType       { color: #2E8B57 ; font-weight: bold }
+.synSpecial    { color: #6A5ACD ; }
+.synUnderlined { color: #000000 ; text-decoration: underline }
+.synError      { color: #FFFFFF ; background: #FF0000 none }
+.synTodo       { color: #0000FF ; background: #FFFF00 none }
+
+
+/* $Id: example.css,v 1.5 2006/03/27 02:44:36 pat Exp $ */
+
+.tabberlive .tabbertabhide {
+ display:none;
+}
+
+/*--------------------------------------------------
+  .tabber = before the tabber interface is set up
+  .tabberlive = after the tabber interface is set up
+  --------------------------------------------------*/
+.tabber {}
+.tabberlive {
+ list-style-type: none;
+ margin-top:1em;
+}
+
+/*--------------------------------------------------
+  ul.tabbernav = the tab navigation list
+  li.tabberactive = the active tab
+  --------------------------------------------------*/
+ul.tabbernav
+{
+ margin:0;
+ padding: 3px 0;
+ border-bottom: 1px solid #778;
+ font: bold 12px Verdana, sans-serif;
+}
+
+ul.tabbernav li
+{
+ list-style: none;
+ margin: 0;
+ display: inline;
+}
+
+ul.tabbernav li a
+{
+ padding: 3px 0.5em;
+ margin-left: 3px;
+ border: 1px solid #778;
+ border-bottom: none;
+ background-color: #e6eadb;
+ /*background: #DDE;*/
+ text-decoration: none;
+}
+
+ul.tabbernav li a:link { color: #448; }
+ul.tabbernav li a:visited { color: #667; }
+
+ul.tabbernav li a:hover
+{
+ color: #000;
+ background: #AAE;
+ border-color: #227;
+}
+
+ul.tabbernav li.tabberactive a
+{
+ background-color: #F3F6ED;
+ border-bottom: 1px solid #f3f6ed;
+}
+
+ul.tabbernav li.tabberactive a:hover
+{
+ color: #000;
+ background: white;
+ border-bottom: 1px solid white;
+}
+
+/*--------------------------------------------------
+  .tabbertab = the tab content
+  Add style only after the tabber interface is set up (.tabberlive)
+  --------------------------------------------------*/
+.tabberlive .tabbertab {
+ padding:5px;
+ border:1px solid #aaa;
+ border-top:0;
+ /*background: white;*/
+ background-color: #F3F6ED
+
+ /* If you don't want the tab size changing whenever a tab is changed
+    you can set a fixed height */
+
+ /* height:200px; */
+
+ /* If you set a fix height set overflow to auto and you will get a
+    scrollbar when necessary */
+
+ /* overflow:auto; */
+}
+
+#content .tabberlive ul {
+ padding-left: 0px;
+}
+#content .tabberlive ul li {
+ background: none;
+ padding-left: 0px;
+ margin-left: 0px;
+}
+/* If desired, hide the heading since a heading is provided by the tab */
+.tabberlive .tabbertab h2 {
+ display:none;
+}
+/*
+.tabberlive .tabbertab h3 {
+ display:none;
+}
+*/

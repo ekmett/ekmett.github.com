@@ -1,0 +1,545 @@
+[removed type families
+ekmett@gmail.com**20080518065606
+ 
+ 
+] {
+hunk ./Makefile 1
++# OPTIONS = "-f-TypeFamilies"
+hunk ./Makefile 15
+-	@runhaskell Setup.lhs configure
++	@runhaskell Setup.lhs configure $(OPTIONS)
+hunk ./category-extras.cabal 3
+-version:                0.50.0
++version:                0.50.1
+hunk ./category-extras.cabal 5
++cabal-version:          >= 1.2
+hunk ./category-extras.cabal 7
+-build-depends:          base > 3, mtl, array, ghc > 6.9
+hunk ./category-extras.cabal 22
+-extensions:
+-        CPP,
+-        EmptyDataDecls,
+-        FlexibleContexts,
+-        FlexibleInstances,
+-        FunctionalDependencies,
+-        MultiParamTypeClasses,
+-        TypeOperators,
+-	TypeSynonymInstances,
+-        UndecidableInstances,
+-        ExistentialQuantification,
+-        Rank2Types
++flag ArrowSubclassesCategory {
++        description:    Indicates Control.Category is available and that the standard library has
++                        its arrows subclass Control.Category.Category
++        default:        True
++}
+hunk ./category-extras.cabal 28
+-exposed-modules:
+-	Control.Applicative.Parameterized,
+-	Control.Arrow.BiKleisli,
+-	Control.Arrow.CoKleisli,
+-	Control.Category.Associative,
+-	Control.Category.Monoidal,
+-	Control.Category.Braided,
+-	Control.Category.Cartesian,
+-	Control.Category.Cartesian.Closed,
+-	Control.Category.Distributive,
+-	Control.Category.Dual,
+-	Control.Category.Hask,
+-	Control.Category.Object,
+-	Control.Comonad,
+-	Control.Comonad.Cofree,
+-	Control.Comonad.Context,
+-	Control.Comonad.Coideal,
+-	Control.Comonad.Fix,
+-	Control.Comonad.Indexed,
+-	Control.Comonad.HigherOrder,
+-	Control.Comonad.Parameterized,
+-	Control.Comonad.Pointer,
+-	Control.Comonad.Reader,
+-	Control.Comonad.Supply
+-	Control.Functor.Adjunction,
+-	Control.Functor.Adjunction.HigherOrder,
+-	Control.Functor.Algebra,
+-	Control.Functor.Composition,
+-	Control.Functor.Combinators.Const,
+-	Control.Functor.Combinators.Lift,
+-	Control.Functor.Combinators.Join,
+-	Control.Functor.Combinators.Biff,
+-	Control.Functor.Combinators.Flip,
+-	Control.Functor.Combinators.Of,
+-	Control.Functor.Contra,
+-	Control.Functor.Extras,
+-	Control.Functor.Exponential,
+-	Control.Functor.Fix,
+-	Control.Functor.Full,
+-	Control.Functor.HigherOrder,
+-	Control.Functor.HigherOrder.Composition,
+-	Control.Functor.Indexed,
+-	Control.Functor.KanExtension,
+-	Control.Functor.Strong,
+-	Control.Functor.Pointed,
+-	Control.Functor.Pointed.Composition,
+-	Control.Functor.Representable,
+-	Control.Functor.Zip,
+-	Control.Functor.Zap,
+-	Control.Monad.Free,
+-	Control.Monad.HigherOrder,
+-	Control.Monad.Indexed,
+-	Control.Monad.Indexed.Cont,
+-	Control.Monad.Indexed.Fix,
+-	Control.Monad.Indexed.State,
+-	Control.Monad.Indexed.Trans,
+-	Control.Monad.Parameterized,
+-	Control.Monad.Hyper,
+-	Control.Monad.Either,
+-	Control.Morphism.Hylo,
+-	Control.Morphism.Cata,
+-	Control.Morphism.Ana,
+-	Control.Morphism.Meta,
+-	Control.Morphism.Futu,
+-	Control.Morphism.Chrono,
+-	Control.Morphism.Para,
+-	Control.Morphism.Dyna,
+-	Control.Morphism.Apo,
+-	Control.Morphism.Zygo,
+-	Control.Morphism.Histo,
+-	Data.Void
++flag TypeFamilies {
++       description:    Support for Type Families is available to us
++}
++
++flag Optimize { 
++        description:    Enable optimizations
++        default:        False
++}
++
++library { 
++        build-depends:          base > 3, mtl, array, ghc > 6.9
++        extensions:
++                CPP,
++                EmptyDataDecls,
++                FlexibleContexts,
++                FlexibleInstances,
++                FunctionalDependencies,
++                MultiParamTypeClasses,
++                TypeOperators,
++                TypeSynonymInstances
++                UndecidableInstances,
++                ExistentialQuantification,
++                Rank2Types
++
++        exposed-modules:
++                Control.Category.Monoidal,
++                Control.Category.Cartesian,
++                Control.Category.Cartesian.Closed,
++
++                Control.Applicative.Parameterized,
++                Control.Arrow.BiKleisli,
++                Control.Arrow.CoKleisli,
++                Control.Category.Associative,
++                Control.Category.Braided,
++                Control.Category.Distributive,
++                Control.Category.Dual,
++                Control.Category.Hask,
++                Control.Category.Object,
++                Control.Comonad,
++                Control.Comonad.Cofree,
++                Control.Comonad.Context,
++                Control.Comonad.Coideal,
++                Control.Comonad.Fix,
++                Control.Comonad.Indexed,
++                Control.Comonad.HigherOrder,
++                Control.Comonad.Parameterized,
++                Control.Comonad.Pointer,
++                Control.Comonad.Reader,
++                Control.Comonad.Supply
++                Control.Functor.Adjunction,
++                Control.Functor.Adjunction.HigherOrder,
++                Control.Functor.Algebra,
++                Control.Functor.Composition,
++                Control.Functor.Combinators.Const,
++                Control.Functor.Combinators.Lift,
++                Control.Functor.Combinators.Join,
++                Control.Functor.Combinators.Biff,
++                Control.Functor.Combinators.Flip,
++                Control.Functor.Combinators.Of,
++                Control.Functor.Contra,
++                Control.Functor.Extras,
++                Control.Functor.Exponential,
++                Control.Functor.Fix,
++                Control.Functor.Full,
++                Control.Functor.HigherOrder,
++                Control.Functor.HigherOrder.Composition,
++                Control.Functor.Indexed,
++                Control.Functor.KanExtension,
++                Control.Functor.Strong,
++                Control.Functor.Pointed,
++                Control.Functor.Pointed.Composition,
++                Control.Functor.Representable,
++                Control.Functor.Zip,
++                Control.Functor.Zap,
++                Control.Monad.Free,
++                Control.Monad.HigherOrder,
++                Control.Monad.Indexed,
++                Control.Monad.Indexed.Cont,
++                Control.Monad.Indexed.Fix,
++                Control.Monad.Indexed.State,
++                Control.Monad.Indexed.Trans,
++                Control.Monad.Parameterized,
++                Control.Monad.Hyper,
++                Control.Monad.Either,
++                Control.Morphism.Hylo,
++                Control.Morphism.Cata,
++                Control.Morphism.Ana,
++                Control.Morphism.Meta,
++                Control.Morphism.Futu,
++                Control.Morphism.Chrono,
++                Control.Morphism.Para,
++                Control.Morphism.Dyna,
++                Control.Morphism.Apo,
++                Control.Morphism.Zygo,
++                Control.Morphism.Histo,
++                Data.Void
++
++        hs-source-dirs:         src
++        ghc-options:            -Wall
++
++        if flag(ArrowSubclassesCategory) {
++                build-depends: ghc > 6.9
++--                cpp-options: -D__ARROW_SUBCLASSES_CATEGORY__
++                ghc-options: -D__ARROW_SUBCLASSES_CATEGORY__
++        }
++
++
++        if flag(TypeFamilies) {
++                extensions:
++                        TypeFamilies
++--                cpp-options: -D__USE_TYPE_FAMILIES__
++                ghc-options: -D__USE_TYPE_FAMILIES__
++        }
++
++        if flag(Optimize) {
++                ghc-options: -funbox-strict-fields -O2
++        }
++}
+hunk ./category-extras.cabal 147
+-ghc-options:            -Wall -funbox-strict-fields -O2
+-hs-source-dirs:         src
+hunk ./src/Control/Arrow/BiKleisli.hs 18
+-#if __GLASGOW_HASKELL__ >= 609
++#ifdef __ARROW_SUBCLASSES_CATEGORY__
+hunk ./src/Control/Arrow/BiKleisli.hs 37
+-#if __GLASGOW_HASKELL__ < 609
+-	BiKleisli g >>> BiKleisli f = BiKleisli ((>>= f) . dist . extend g)
+-#else
++#ifdef __ARROW_SUBCLASSES_CATEGORY__
+hunk ./src/Control/Arrow/BiKleisli.hs 41
++#else
++	BiKleisli g >>> BiKleisli f = BiKleisli ((>>= f) . dist . extend g)
+hunk ./src/Control/Arrow/CoKleisli.hs 18
+-#if __GLASGOW_HASKELL__ >= 609
++
++#ifdef __ARROW_SUBCLASSES_CATEGORY__
+hunk ./src/Control/Arrow/CoKleisli.hs 37
+-#if __GLASGOW_HASKELL__ >= 609
++#ifdef __ARROW_SUBCLASSES_CATEGORY__
+hunk ./src/Control/Category/Associative.hs 28
+-class Bifunctor p k k k => Associative p k where
++class Bifunctor p k k k => Associative k p where
+hunk ./src/Control/Category/Associative.hs 35
+-class Bifunctor s k k k => Coassociative s k where
++class Bifunctor s k k k => Coassociative k s where
+hunk ./src/Control/Category/Associative.hs 43
+-instance Associative (,) Hask where
++instance Associative Hask (,) where
+hunk ./src/Control/Category/Associative.hs 46
+-instance Coassociative (,) Hask where
++instance Coassociative Hask (,) where
+hunk ./src/Control/Category/Associative.hs 49
+-instance Associative Either Hask where
++instance Associative Hask Either where
+hunk ./src/Control/Category/Associative.hs 54
+-instance Coassociative Either Hask where
++instance Coassociative Hask Either where
+hunk ./src/Control/Category/Braided.hs 33
+-class Braided p k where
++class Braided k p where
+hunk ./src/Control/Category/Braided.hs 41
+-class Braided p k => Symmetric p k
++class Braided k p => Symmetric k p
+hunk ./src/Control/Category/Braided.hs 43
+-swap :: Symmetric p k => k (p a b) (p b a)
++swap :: Symmetric k p => k (p a b) (p b a)
+hunk ./src/Control/Category/Braided.hs 52
+-instance Braided Either Hask where
++instance Braided Hask Either where
+hunk ./src/Control/Category/Braided.hs 56
+-instance Symmetric Either Hask
++instance Symmetric Hask Either 
+hunk ./src/Control/Category/Braided.hs 58
+-instance Braided (,) Hask where
++instance Braided Hask (,) where
+hunk ./src/Control/Category/Braided.hs 61
+-instance Symmetric (,) Hask
++instance Symmetric Hask (,)
+hunk ./src/Control/Category/Cartesian/Closed.hs 8
+--- Maintainer	: Edward Kmett <ekmett@gmail.com>
++-- Maintainer	: Edward Kmett <ehommett@gmail.com>
+hunk ./src/Control/Category/Cartesian/Closed.hs 13
+--- <http://hackage.haskell.org/trac/ghc/ticket/2291>
++-- <http://hachomage.hashomell.org/trac/ghc/tichomet/2291>
+hunk ./src/Control/Category/Cartesian/Closed.hs 35
+--- Ideally you also want an instance for @'Bifunctor' ('Exp' k) ('Dual' k) k k@.
+--- or at least @'Functor' ('Exp' k a) k k@, which cannot be expressed in the constraints here.
++-- Ideally you also want an instance for @'Bifunctor' ('Exp' hom) ('Dual' hom) hom hom@.
++-- or at least @'Functor' ('Exp' hom a) hom hom@, which cannot be expressed in the constraints here.
+hunk ./src/Control/Category/Cartesian/Closed.hs 38
+-class (Monoidal (Prod k) k, Cartesian k) => CCC k where
+-#ifndef __HADDOCK__
+-	type Exp k :: * -> * -> *
+-#endif
+-	apply :: k (Prod k (Exp k a b) a) b
+-	curry :: k (Prod k a b) c -> k a (Exp k b c)
+-	uncurry :: k a (Exp k b c) -> k (Prod k a b) c
++class (Monoidal hom prod i, Cartesian hom prod i) => CCC hom prod exp i | hom -> prod exp i where
++	apply :: hom (prod (exp a b) a) b
++	curry :: hom (prod a b) c -> hom a (exp b c)
++	uncurry :: hom a (exp b c) -> hom (prod a b) c
+hunk ./src/Control/Category/Cartesian/Closed.hs 45
+--- "curry . uncurry" 	curry . uncurry = id :: CCC k => k a (Exp k b c) -> k a (Exp k b c)
+--- "uncurry . curry" 	uncurry . curry = id :: CCC k => k (Prod k a b) c -> k (Prod k a b) c
++-- "curry . uncurry" 	curry . uncurry = id :: CCC hom => hom a (exp b c) -> hom a (exp b c)
++-- "uncurry . curry" 	uncurry . curry = id :: CCC hom => hom (prod a b) c -> hom (prod a b) c
+hunk ./src/Control/Category/Cartesian/Closed.hs 49
+--- * Free 'Adjunction' (Prod k a) (Exp k a) k k 
++-- * Free 'Adjunction' (prod a) (exp a) hom hom 
+hunk ./src/Control/Category/Cartesian/Closed.hs 51
+-unitCCC :: CCC k => k a (Exp k b (Prod k b a))
++unitCCC :: CCC hom prod exp i => hom a (exp b (prod b a))
+hunk ./src/Control/Category/Cartesian/Closed.hs 54
+-counitCCC :: CCC k => k (Prod k b (Exp k b a)) a
++counitCCC :: CCC hom prod exp i => hom (prod b (exp b a)) a
+hunk ./src/Control/Category/Cartesian/Closed.hs 61
+--- You probably also want an instance for @'Bifunctor' ('Coexp' k) ('Dual' k) k k@.
++-- You probably also want an instance for @'Bifunctor' ('coexp' hom) ('Dual' hom) hom hom@.
+hunk ./src/Control/Category/Cartesian/Closed.hs 63
+-class (Comonoidal (Sum k) k, CoCartesian k) => CoCCC k where
+-#ifndef __HADDOCK__
+-	type Coexp k :: * -> * -> *
+-#endif
+-	coapply :: k b (Sum k (Coexp k a b) a)
+-	cocurry :: k c (Sum k a b) -> k (Coexp k b c) a
+-	uncocurry :: k (Coexp k b c) a -> k c (Sum k a b)
++class (Comonoidal hom sum i, CoCartesian hom sum i) => CoCCC hom sum coexp i | hom -> sum coexp i where
++	coapply :: hom b (sum (coexp hom a b) a)
++	cocurry :: hom c (sum a b) -> hom (coexp hom b c) a
++	uncocurry :: hom (coexp hom b c) a -> hom c (sum a b)
+hunk ./src/Control/Category/Cartesian/Closed.hs 69
+-"cocurry coapply" 	cocurry coapply = id
+--- "cocurry . uncocurry"	cocurry . uncocurry = id
++"cocurry coapply" 	   cocurry coapply = id
++-- "cocurry . uncocurry"   cocurry . uncocurry = id
+hunk ./src/Control/Category/Cartesian/Closed.hs 74
+--- * Free 'Adjunction' (Coexp k a) (Sum k a) k k 
++-- * Free 'Adjunction' (coexp hom a) (sum a) hom hom 
+hunk ./src/Control/Category/Cartesian/Closed.hs 76
+-unitCoCCC :: CoCCC k => k a (Sum k b (Coexp k b a))
++unitCoCCC :: CoCCC hom sum coexp i => hom a (sum b (coexp hom b a))
+hunk ./src/Control/Category/Cartesian/Closed.hs 79
+-counitCoCCC :: CoCCC k => k (Coexp k b (Sum k b a)) a
++counitCoCCC :: CoCCC hom sum coexp i => hom (coexp hom b (sum b a)) a
+hunk ./src/Control/Category/Cartesian.hs 26
++import Control.Category.Hask
++import Control.Category.Associative
++import Control.Category.Monoidal
+hunk ./src/Control/Category/Cartesian.hs 31
+-
+hunk ./src/Control/Category/Cartesian.hs 33
+-import Control.Category.Associative
+-import Control.Category.Monoidal
+hunk ./src/Control/Category/Cartesian.hs 50
+-class (Associative (Prod k) k, Coassociative (Prod k) k, Braided (Prod k) k) => PreCartesian k where
+-	type Prod k :: * -> * -> *
+-	fst :: k (Prod k a b) a
+-	snd :: k (Prod k a b) b
+-	diag :: k a (Prod k a a)
+-	(&&&) :: k a b -> k a c -> k a (Prod k b c)
++class (Associative k p, Coassociative k p, Braided k p) => PreCartesian k p | k -> p where
++	fst :: k (p a b) a
++	snd :: k (p a b) b
++	diag :: k a (p a a)
++	(&&&) :: k a b -> k a c -> k a (p b c)
+hunk ./src/Control/Category/Cartesian.hs 67
+-instance PreCartesian (->) where
+-	type Prod (->) = (,)
++instance PreCartesian Hask (,) where
+hunk ./src/Control/Category/Cartesian.hs 74
+-class (Monoidal (Prod k) k, PreCartesian k) => Cartesian k
+-instance (Monoidal (Prod k) k, PreCartesian k) => Cartesian k
++class (Monoidal k p i, PreCartesian k p) => Cartesian k p i | k -> p i 
++instance (Monoidal k p i, PreCartesian k p) => Cartesian k p i
+hunk ./src/Control/Category/Cartesian.hs 78
+-bimapPreCartesian :: PreCartesian k => k a c -> k b d -> k (Prod k a b) (Prod k c d)
++bimapPreCartesian :: PreCartesian k p => k a c -> k b d -> k (p a b) (p c d)
+hunk ./src/Control/Category/Cartesian.hs 82
+-braidPreCartesian :: PreCartesian k => k (Prod k a b) (Prod k b a)
++braidPreCartesian :: PreCartesian k p => k (p a b) (p b a)
+hunk ./src/Control/Category/Cartesian.hs 86
+-associatePreCartesian :: PreCartesian k => k (Prod k (Prod k a b) c) (Prod k a (Prod k b c))
++associatePreCartesian :: PreCartesian k p => k (p (p a b) c) (p a (p b c))
+hunk ./src/Control/Category/Cartesian.hs 90
+-coassociatePreCartesian :: PreCartesian k => k (Prod k a (Prod k b c)) (Prod k (Prod k a b) c)
++coassociatePreCartesian :: PreCartesian k p => k (p a (p b c)) (p (p a b) c)
+hunk ./src/Control/Category/Cartesian.hs 96
+-class (Associative (Sum k) k, Coassociative (Sum k) k, Braided (Sum k) k) => PreCoCartesian k where
+-#ifndef __HADDOCK__
+-	type Sum k :: * -> * -> *
+-#endif
+-	inl :: k a (Sum k a b)
+-	inr :: k b (Sum k a b)
+-	codiag :: k (Sum k a a) a
+-	(|||) :: k a c -> k b c -> k (Sum k a b) c
++class (Associative k s, Coassociative k s , Braided k s) => PreCoCartesian k s | k -> s where
++	inl :: k a (s a b)
++	inr :: k b (s a b)
++	codiag :: k (s a a) a
++	(|||) :: k a c -> k b c -> k (s a b) c
+hunk ./src/Control/Category/Cartesian.hs 112
+-instance PreCoCartesian (->) where
+-	type Sum (->) = Either
++instance PreCoCartesian Hask Either where
+hunk ./src/Control/Category/Cartesian.hs 121
+-bimapPreCoCartesian :: PreCoCartesian k => k a c -> k b d -> k (Sum k a b) (Sum k c d)
++bimapPreCoCartesian :: PreCoCartesian k s => k a c -> k b d -> k (s a b) (s c d)
+hunk ./src/Control/Category/Cartesian.hs 125
+-braidPreCoCartesian :: PreCoCartesian k => k (Sum k a b) (Sum k b a)
++braidPreCoCartesian :: PreCoCartesian k s => k (s a b) (s b a)
+hunk ./src/Control/Category/Cartesian.hs 129
+-associatePreCoCartesian :: PreCoCartesian k => k (Sum k (Sum k a b) c) (Sum k a (Sum k b c))
++associatePreCoCartesian :: PreCoCartesian k s => k (s (s a b) c) (s a (s b c))
+hunk ./src/Control/Category/Cartesian.hs 133
+-coassociatePreCoCartesian :: PreCoCartesian k => k (Sum k a (Sum k b c)) (Sum k (Sum k a b) c)
++coassociatePreCoCartesian :: PreCoCartesian k s => k (s a (s b c)) (s (s a b) c)
+hunk ./src/Control/Category/Cartesian.hs 136
+-class (Comonoidal (Sum k) k, PreCoCartesian k) => CoCartesian k
+-instance (Comonoidal (Sum k) k, PreCoCartesian k) => CoCartesian k
++class (Comonoidal k s i, PreCoCartesian k s) => CoCartesian k s i | k -> s i
++instance (Comonoidal k s i, PreCoCartesian k s) => CoCartesian k s i 
+hunk ./src/Control/Category/Distributive.hs 22
++import Control.Category.Hask
+hunk ./src/Control/Category/Distributive.hs 26
+-factor :: (Cartesian k, CoCartesian k) => k (Sum k (Prod k a b) (Prod k a c)) (Prod k a (Sum k b c))
++factor :: (PreCartesian hom prod, PreCoCartesian hom sum) => hom (sum (prod a b) (prod a c)) (prod a (sum b c))
+hunk ./src/Control/Category/Distributive.hs 30
+-class (Cartesian k, CoCartesian k) => Distributive k where
+-	distribute :: k (Prod k a (Sum k b c)) (Sum k (Prod k a b) (Prod k a c))
++class (PreCartesian hom prod, PreCoCartesian hom sum) => Distributive hom prod sum where
++	distribute :: hom (prod a (sum b c)) (sum (prod a b) (prod a c))
++
++instance Distributive Hask (,) Either where
++	distribute (a,Left b) = Left (a,b)
++	distribute (a,Right c) = Right (a,c)
+hunk ./src/Control/Category/Monoidal.hs 25
+-	, Void
+-	, HasIdentity(..)
++	, HasIdentity
+hunk ./src/Control/Category/Monoidal.hs 30
++import Control.Category.Braided
+hunk ./src/Control/Category/Monoidal.hs 33
+-import Control.Category.Braided
+hunk ./src/Control/Category/Monoidal.hs 38
+-class Bifunctor p k k k => HasIdentity p k where
+-	type Id p k :: *
++class Bifunctor p k k k => HasIdentity k p i | k p -> i 
+hunk ./src/Control/Category/Monoidal.hs 47
+-class (Associative p k , HasIdentity p k) => Monoidal p k where
+-	idl :: k (p (Id p k) a) a
+-	idr :: k (p a (Id p k)) a
++class (Associative k p, HasIdentity k p i) => Monoidal k p i | k p -> i where
++	idl :: k (p i a) a
++	idr :: k (p a i) a
+hunk ./src/Control/Category/Monoidal.hs 65
+-class (Coassociative p k, HasIdentity p k) => Comonoidal p k where
+-	coidl :: k a (p (Id p k) a)
+-	coidr :: k a (p a (Id p k))
++class (Coassociative k p, HasIdentity k p i) => Comonoidal k p i | k p -> i where
++	coidl :: k a (p i a)
++	coidr :: k a (p a i)
+hunk ./src/Control/Category/Monoidal.hs 84
+-instance HasIdentity (,) Hask where
+-	type Id (,) Hask = Void
++instance HasIdentity Hask (,) Void
+hunk ./src/Control/Category/Monoidal.hs 86
+-instance Monoidal (,) Hask where
++
++instance Monoidal Hask (,) Void where
+hunk ./src/Control/Category/Monoidal.hs 91
++
+hunk ./src/Control/Functor/Combinators/Biff.hs 28
+-import Control.Category.Monoidal
++import Control.Category.Braided
+hunk ./src/Control/Functor/Combinators/Biff.hs 84
+-instance (Functor f, Braided p Hask) => Braided (Biff p f f) Hask where
++instance (Functor f, Braided Hask p) => Braided Hask (Biff p f f) where
+hunk ./src/Control/Functor/Combinators/Biff.hs 87
+-instance (Functor f, Symmetric p Hask) => Symmetric (Biff p f f) Hask
++instance (Functor f, Symmetric Hask p) => Symmetric Hask (Biff p f f) 
+hunk ./src/Control/Functor/Combinators/Const.hs 43
+-instance Associative (Const2 t) Hask where
++instance Associative Hask (Const2 t) where
+hunk ./src/Control/Functor/Combinators/Const.hs 46
+-instance Coassociative (Const2 t) Hask where
++instance Coassociative Hask (Const2 t) where
+hunk ./src/Control/Functor/Combinators/Const.hs 49
+-instance Braided (Const2 t) Hask where
++instance Braided Hask (Const2 t) where
+hunk ./src/Control/Functor/Combinators/Const.hs 52
+-instance Symmetric (Const2 t) Hask
++instance Symmetric Hask (Const2 t)
+hunk ./src/Control/Functor/Combinators/Flip.hs 39
+-instance Braided p Hask => Braided (Flip p) Hask where
++instance Braided Hask p => Braided Hask (Flip p) where
+hunk ./src/Control/Functor/Combinators/Flip.hs 42
+-instance Symmetric p Hask => Symmetric (Flip p) Hask
++instance Symmetric Hask p => Symmetric Hask (Flip p) 
+hunk ./src/Control/Functor/Combinators/Flip.hs 47
+-instance HasIdentity p Hask => HasIdentity (Flip p) Hask where
+-	type Id (Flip p) Hask = Id p Hask
++instance HasIdentity Hask p i => HasIdentity Hask (Flip p) i where
+hunk ./src/Control/Functor/Combinators/Flip.hs 49
+-instance Associative p Hask => Coassociative (Flip p) Hask where
++instance Associative Hask p => Coassociative Hask (Flip p) where
+hunk ./src/Control/Functor/Combinators/Flip.hs 58
+-instance Coassociative p Hask => Associative (Flip p) Hask where
++instance Coassociative Hask p => Associative Hask (Flip p) where
+hunk ./src/Control/Functor/Combinators/Flip.hs 61
+-instance (Coassociative p Hask, Monoidal p Hask) => Monoidal (Flip p) Hask where
++instance (Coassociative Hask p, Monoidal Hask p i) => Monoidal Hask (Flip p) i where
+hunk ./src/Control/Functor/Combinators/Flip.hs 65
+-instance (Associative p Hask, Comonoidal p Hask) => Comonoidal (Flip p) Hask where
++instance (Associative Hask p, Comonoidal Hask p i) => Comonoidal Hask (Flip p) i where
+hunk ./src/Control/Functor/Combinators/Of.hs 38
+-instance (Functor f, Braided p Hask) => Braided (f `Of` p) Hask where
++instance (Functor f, Braided Hask p ) => Braided Hask (f `Of` p) where
+hunk ./src/Control/Functor/Combinators/Of.hs 41
+-instance (Functor f, Symmetric p Hask) => Symmetric (f `Of` p) Hask
++instance (Functor f, Symmetric Hask p) => Symmetric Hask (f `Of` p)
+hunk ./src/Control/Functor/Composition.hs 77
+-instance (Bifunctor p Hask Hask Hask, Braided f Hask, Braided g Hask) => Braided (Comp p f g) Hask where
++instance (Bifunctor p Hask Hask Hask, Braided Hask f, Braided Hask g) => Braided Hask (Comp p f g) where
+hunk ./src/Control/Functor/Composition.hs 80
+-instance (Bifunctor p Hask Hask Hask, Symmetric f Hask, Symmetric g Hask) => Symmetric (Comp p f g) Hask
++instance (Bifunctor p Hask Hask Hask, Symmetric Hask f,  Symmetric Hask g) => Symmetric Hask (Comp p f g) 
+hunk ./src/Control/Functor/Zip.hs 36
+-unbizip :: (PreCartesian r, PreCartesian s, PreCartesian t, Bifunctor p r s t) => 
+-	t (p (Prod r a c) (Prod s b d)) 
+-	  (Prod t (p a b) (p c d))
++unbizip :: (PreCartesian r pr , PreCartesian s ps, PreCartesian t pt, Bifunctor p r s t) => 
++	t (p (pr a c) (ps b d)) (pt (p a b) (p c d))
+hunk ./src/Control/Functor/Zip.hs 106
+-counbizip :: (PreCoCartesian r, PreCoCartesian s, PreCoCartesian t, Bifunctor q r s t) => 
+-	t (Sum t (q a c) (q b d)) (q (Sum r a b) (Sum s c d))
++counbizip :: (PreCoCartesian r sr, PreCoCartesian s ss, PreCoCartesian t st, Bifunctor q r s t) => 
++	t (st (q a c) (q b d)) (q (sr a b) (ss c d))
+}

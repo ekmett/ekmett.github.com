@@ -1,0 +1,45 @@
+
+New patches:
+
+[unrevert
+anonymous**20070713064548] 
+<
+> {
+hunk ./src/Control/Monad/Parameterized.hs 148
+ 	fail :: String -> m a
+ 
+ -- | Implement parameterized monads like Oleg's restricted monads, but vary the monad itself rather than restrict its parameters
+-class (Functor m, Functor m', Functor m'') => Bind m m' m'' | m m' -> m'' where
++class (Functor m') => Bind m m' m'' | m m' -> m'' where
+ 	(>>=) :: m a -> (a -> m' b) -> (m'' b) 
+ 	(>>)  :: m a -> m' b -> m'' b
+ 	m >> k = m >>= const k
+hunk ./src/Control/Monad/Parameterized.hs 153
+ 
+-instance Functor a => Bind Identity a a 	where m >>= f = f (runIdentity m)
++instance Bind Identity a a 	where m >>= f = f (runIdentity m)
+ instance Functor a => Bind a Identity a 	where m >>= f = fmap (runIdentity . f) m
+ instance Bind Identity Identity Identity 	where m >>= f = f (runIdentity m)
+ 
+}
+
+Context:
+
+[clean up
+ekmett@gmail.com**20070713053904] 
+[fussy documentation fixes and adding most of the mtl
+ekmett@gmail.com**20070713053346] 
+[cleaned up and added documentation
+ekmett@gmail.com**20070713030253] 
+[add description to module
+ekmett@gmail.com**20070713024634] 
+[added hackage requirements
+ekmett@gmail.com**20070713022857] 
+[need license
+ekmett@gmail.com**20070713020739] 
+[initialized
+ekmett@gmail.com**20070713020206] 
+Patch bundle hash:
+4b0fcfb3fa9100538ffef2640432cc809a37585a
+
+<!-- Localized -->

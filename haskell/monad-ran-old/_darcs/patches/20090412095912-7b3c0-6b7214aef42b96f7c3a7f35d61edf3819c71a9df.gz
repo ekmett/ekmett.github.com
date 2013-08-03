@@ -1,0 +1,193 @@
+[reshuffled and added Maybe
+ekmett@gmail.com**20090412095912
+ Ignore-this: ca15465232667e053e102db48bff493a
+] {
+hunk ./monad-cps.cabal 26
++                    Control.Monad.CPS.Codensity,
++                    Control.Monad.CPS.Cont,
+hunk ./monad-cps.cabal 29
++                    Control.Monad.CPS.Maybe,
++                    Control.Monad.CPS.Ran,
+hunk ./monad-cps.cabal 32
+-                    Control.Monad.CPS.Writer,
++                    Control.Monad.CPS.RWS,
+hunk ./monad-cps.cabal 34
+-                    Control.Monad.CPS.Cont,
+-                    Control.Monad.CPS.Codensity,
+-                    Control.Monad.CPS.Ran,
+-                    Control.Monad.CPS.RWS
++                    Control.Monad.CPS.Writer
+hunk ./src/Control/Monad/CPS.hs 2
+-    ( module Control.Monad.CPS.Identity
+-    , module Control.Monad.CPS.Reader
+-    , module Control.Monad.CPS.Writer
+-    , module Control.Monad.CPS.State
++    ( module Control.Monad.CPS.Codensity
+hunk ./src/Control/Monad/CPS.hs 4
+-    , module Control.Monad.CPS.Codensity
++    , module Control.Monad.CPS.Identity
++    , module Control.Monad.CPS.Maybe
+hunk ./src/Control/Monad/CPS.hs 7
++    , module Control.Monad.CPS.Reader
++    , module Control.Monad.CPS.State
++    , module Control.Monad.CPS.Writer
+hunk ./src/Control/Monad/CPS.hs 12
++import Control.Monad.CPS.Codensity
++import Control.Monad.CPS.Cont
+hunk ./src/Control/Monad/CPS.hs 15
++import Control.Monad.CPS.Maybe
++import Control.Monad.CPS.Ran
+hunk ./src/Control/Monad/CPS.hs 18
+-import Control.Monad.CPS.Writer
+hunk ./src/Control/Monad/CPS.hs 19
+-import Control.Monad.CPS.Cont
+-import Control.Monad.CPS.Codensity
+-import Control.Monad.CPS.Ran
++import Control.Monad.CPS.Writer
+hunk ./src/Control/Monad/CPS/Codensity.hs 2
+-    ( Codensity(Codensity, unCodensity)
++    ( Codensity(Codensity, getCodensity)
+hunk ./src/Control/Monad/CPS/Codensity.hs 10
+-newtype Codensity f a = Codensity { unCodensity :: forall o. (a -> f o) -> f o }
++newtype Codensity f a = Codensity { getCodensity :: forall o. (a -> f o) -> f o }
+hunk ./src/Control/Monad/CPS/Codensity.hs 21
+-    Codensity g >>= f = Codensity (\k -> g (\a -> unCodensity (f a) k))
++    Codensity g >>= f = Codensity (\k -> g (\a -> getCodensity (f a) k))
+hunk ./src/Control/Monad/CPS/Cont.hs 9
++    , Cont'(..)
++    , runCont'
+hunk ./src/Control/Monad/CPS/Cont.hs 14
++import Control.Applicative
+hunk ./src/Control/Monad/CPS/Cont.hs 16
++import Control.Monad.CPS.Codensity
+hunk ./src/Control/Monad/CPS/Cont.hs 20
+-newtype Cont r a = Cont {unCont :: forall o. (a -> r) -> (r -> o) -> o}
++newtype Cont r a = Cont {getCont :: forall o. (a -> r) -> (r -> o) -> o}
+hunk ./src/Control/Monad/CPS/Cont.hs 23
+-  fmap f (Cont g) = Cont (\k -> g (k . f))
++    fmap f (Cont g) = Cont (\k -> g (k . f))
++
++instance Applicative (Cont r) where
++    pure = return
++    (<*>) = ap
+hunk ./src/Control/Monad/CPS/Cont.hs 30
+-  return a = Cont (\k z -> z (k a))
+-  Cont g >>= f = Cont (\k -> g (\a -> unCont (f a) k id))
++    return a = Cont (\k z -> z (k a))
++    Cont g >>= f = Cont (\k -> g (\a -> getCont (f a) k id))
+hunk ./src/Control/Monad/CPS/Cont.hs 48
+-    callCC f = Cont (\k -> unCont (f (\a -> Cont (\_ h -> (h . k) a))) k)
++    callCC f = Cont (\k -> getCont (f (\a -> Cont (\_ h -> (h . k) a))) k)
+hunk ./src/Control/Monad/CPS/Cont.hs 51
+-shift f = Cont (\k -> unCont (f (\a -> Cont (\e h -> (h . e . k) a))) id)
++shift f = Cont (\k -> getCont (f (\a -> Cont (\e h -> (h . e . k) a))) id)
+hunk ./src/Control/Monad/CPS/Cont.hs 56
+-newtype Const r a = Const { unConst :: r } 
+-
+-instance Functor (Const r) where
+-	fmap _ = Const . unConst
+-
+-newtype Cont' r a = Cont' { unCont' :: Codensity (Const r) a } 
+-
+-callCC' :: ((a -> Codensity (Const r) b) -> Codensity (Const r) a) -> Codensity (Const r) a
+-callCC' f = Codensity $ \k -> runCodensity (f (\a -> Codensity $ \_ -> k a))
++-- traditional Cont derived as a codensity monad showing why the above is unnecessary
++newtype Cont' r a = Cont' { getCont' :: Codensity (Const r) a } 
++    deriving (Functor,Applicative,Monad)
+hunk ./src/Control/Monad/CPS/Cont.hs 61
+-    callCC f = Cont' (Codensity $ \k -> runContT (f (\a -> ContT $ \_ -> k a)) (Const k)
++     callCC f =  Cont' (Codensity (\k -> getCodensity (getCont' (f (\a -> Cont' (Codensity (\_ -> Const (getConst ((k a)))))))) k))
+hunk ./src/Control/Monad/CPS/Cont.hs 64
+-
++runCont' (Cont' f) k = getConst (getCodensity f (Const . k))
+hunk ./src/Control/Monad/CPS/Identity.hs 2
+-    ( Identity(Identity, unIdentity)
++    ( Identity(Identity, getIdentity)
+hunk ./src/Control/Monad/CPS/Identity.hs 9
+-newtype Identity a = Identity {unIdentity :: forall o. (a -> o) -> o}
++newtype Identity a = Identity {getIdentity :: forall o. (a -> o) -> o}
+hunk ./src/Control/Monad/CPS/Identity.hs 21
+-    Identity g >>= f = Identity (\k -> g (\a -> unIdentity (f a) k))
++    Identity g >>= f = Identity (\k -> g (\a -> getIdentity (f a) k))
+addfile ./src/Control/Monad/CPS/Maybe.hs
+hunk ./src/Control/Monad/CPS/Maybe.hs 1
++module Control.Monad.CPS.Maybe
++    ( Maybe'(Maybe',getMaybe')
++    , runMaybe'
++    ) where
++
++import Control.Applicative
++import Control.Monad
++
++newtype Maybe' a = Maybe' { getMaybe' :: forall o. (a -> o) -> o -> o } 
++
++runMaybe' :: Maybe' a -> (a -> b) -> b -> b
++runMaybe' = getMaybe'
++
++instance Functor Maybe' where
++    fmap f (Maybe' g) = Maybe' (\k -> g (k . f))
++
++instance Applicative Maybe' where
++    pure = return
++    (<*>) = ap
++
++instance Monad Maybe' where
++    return a = Maybe' (\k _ -> k a)
++    Maybe' f >>= g = Maybe' (\k z -> f (\a -> getMaybe' (g a) k z) z)
++
++-- TODO: Ran Identity Endo, a right Kan extension/Yoneda lemma of a non-Hask Functor!
+hunk ./src/Control/Monad/CPS/RWS.hs 3
+-    ( RWS(RWS,unRWS)
++    ( RWS(RWS,getRWS)
+hunk ./src/Control/Monad/CPS/RWS.hs 13
+-newtype RWS r w s a = RWS { unRWS :: forall o. (a -> w -> s -> o) -> r -> s -> o }
++newtype RWS r w s a = RWS { getRWS :: forall o. (a -> w -> s -> o) -> r -> s -> o }
+hunk ./src/Control/Monad/CPS/RWS.hs 24
+-    RWS g >>= f = RWS (\k r -> g (\a w -> unRWS (f a) (\b w' -> k b (w `mappend` w')) r) r)
++    RWS g >>= f = RWS (\k r -> g (\a w -> getRWS (f a) (\b w' -> k b (w `mappend` w')) r) r)
+hunk ./src/Control/Monad/CPS/Ran.hs 2
+-    ( Ran(Ran,runRan)
++    ( Ran(Ran,getRan)
+hunk ./src/Control/Monad/CPS/Ran.hs 5
+-newtype Ran g h a = Ran { runRan :: forall b. (a -> g b) -> h b } 
++newtype Ran g h a = Ran { getRan :: forall b. (a -> g b) -> h b } 
+hunk ./src/Control/Monad/CPS/Ran.hs 8
+-    fmap f m = Ran (\k -> runRan m (k . f))
++    fmap f m = Ran (\k -> getRan m (k . f))
+hunk ./src/Control/Monad/CPS/Reader.hs 3
+-    , Reader(Reader, unReader)
++    , Reader(Reader, getReader)
+hunk ./src/Control/Monad/CPS/Reader.hs 11
+-newtype Reader r a = Reader { unReader :: forall o. (a -> o) -> r -> o }
++newtype Reader r a = Reader { getReader :: forall o. (a -> o) -> r -> o }
+hunk ./src/Control/Monad/CPS/Reader.hs 18
+-    Reader g >>= f = Reader (\k r -> g (\a -> unReader (f a) k r) r)
++    Reader g >>= f = Reader (\k r -> g (\a -> getReader (f a) k r) r)
+hunk ./src/Control/Monad/CPS/State.hs 15
+-newtype State s a = State { unState :: forall o. (a -> s -> o) -> s -> o }
++newtype State s a = State { getState :: forall o. (a -> s -> o) -> s -> o }
+hunk ./src/Control/Monad/CPS/State.hs 26
+-  State g >>= f = State (\k -> g (\a -> unState (f a) k))
++  State g >>= f = State (\k -> g (\a -> getState (f a) k))
+hunk ./src/Control/Monad/CPS/State.hs 35
+-newtype State' s a = State' { unState' :: Codensity ((->)s) a }
++newtype State' s a = State' { getState' :: Codensity ((->)s) a }
+hunk ./src/Control/Monad/CPS/State.hs 43
+-runState' = flip unCodensity (,) . unState'
++runState' = flip getCodensity (,) . getState'
+hunk ./src/Control/Monad/CPS/Writer.hs 4
+-    , Writer(Writer, unWriter)
++    , Writer(Writer, getWriter)
+hunk ./src/Control/Monad/CPS/Writer.hs 16
+-newtype Writer w a = Writer { unWriter :: forall o. (a -> w -> o) -> o }
++newtype Writer w a = Writer { getWriter :: forall o. (a -> w -> o) -> o }
+hunk ./src/Control/Monad/CPS/Writer.hs 27
+-    Writer g >>= f = Writer (\k -> g (\a w -> unWriter (f a) (\a w' -> k a (w `mappend` w'))))
++    Writer g >>= f = Writer (\k -> g (\a w -> getWriter (f a) (\a w' -> k a (w `mappend` w'))))
+hunk ./src/Control/Monad/CPS/Writer.hs 38
+-newtype Writer' w a = Writer' { unWriter' :: forall o. (a -> w -> o) -> w -> o }
++newtype Writer' w a = Writer' { getWriter' :: forall o. (a -> w -> o) -> w -> o }
+hunk ./src/Control/Monad/CPS/Writer.hs 49
+-  Writer' g >>= f = Writer' (\k -> g (\a -> unWriter' (f a) k))
++  Writer' g >>= f = Writer' (\k -> g (\a -> getWriter' (f a) k))
+}

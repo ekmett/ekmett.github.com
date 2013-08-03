@@ -1,0 +1,72 @@
+[cleaned up and added documentation
+ekmett@gmail.com**20070713030253] {
+hunk ./Makefile 14
++
++sdist:
++	runhaskell $(SETUP) sdist
+hunk ./src/Control/Monad/Parameterized.hs 14
+--- The signature of @>>=@ would cost us type inference for the type of return and mzero
+--- so we restore that by appealing to the monad laws and treating return as the unit of 
+--- the @Identity@ monad and mzero as an injection into the trivial bottom monad.
++-- The signature of `>>=` costs us type inference for the types of `return` and `mzero`,
++-- so we restore by defining `returnM` as the unit of the `Identity` monad and `mzeroM` as 
++-- the unit of the trivial bottom monad, and appealing to the monad laws to allow these to combine
++-- with all other monads satisfying the monad laws through `>>=`
+hunk ./src/Control/Monad/Parameterized.hs 19
+--- Caveat: this currently doesn't permit types to vary under the do-sugar because of how GHC desugars.
++-- Caveat: this currently doesn't permit types to vary under the @do@-sugar because of assumptions in GHC
++-- about the shape of `>>=`
+hunk ./src/Control/Monad/Parameterized.hs 24
+-	-- * Rebound monad sugar
+-	  returnM	
+-	, Return	(return) 
++	-- * Rebound `Monad` 
++	  Return	(return) 
+hunk ./src/Control/Monad/Parameterized.hs 28
+-	-- * Rebound 
+-	, mzeroM	
++	, (=<<)
++
++	-- * Rebound `MonadPlus` 
+hunk ./src/Control/Monad/Parameterized.hs 33
++
+hunk ./src/Control/Monad/Parameterized.hs 37
+-	-- * Restored type inference
++
++	-- * Restoring type inference
+hunk ./src/Control/Monad/Parameterized.hs 40
++	, returnM	
++	, mzeroM	
+hunk ./src/Control/Monad/Parameterized.hs 64
+--- | An inferable type for return
++-- | An inferable version of `return`
+hunk ./src/Control/Monad/Parameterized.hs 68
+--- | Restrict the cases where we allow pattern matching to fail. You have to explicitly supply this to allow patterns to fail.
++-- | Restrict the cases where we allow pattern matching to @fail@. You have to explicitly supply this.
+hunk ./src/Control/Monad/Parameterized.hs 72
+--- | A parameterized monad is like a restricted monad, but we vary the monad itself
++-- | Implement parameterized monads like Oleg's restricted monads, but vary the monad itself rather than restrict its parameters
+hunk ./src/Control/Monad/Parameterized.hs 78
+--- | lookie, monad laws!
+hunk ./src/Control/Monad/Parameterized.hs 85
+--- | When a parameterized monad can be used without varying its parameter, we can get the ease of the original Monad syntax.
++-- | When a parameterized monad can be used without varying its parameter, we can get the ease of use of the original @Monad@ class.
+hunk ./src/Control/Monad/Parameterized.hs 89
+--- | same trick as above, exploit the MonadZero laws
++-- | Same trick using with `Identity` to build a canonical `returnM`, here we exploit the `MonadPlus` laws to make a canonical `mzeroM`
+hunk ./src/Control/Monad/Parameterized.hs 112
+--- | traditional return, note this probably has lost its type inference. You probably want returnM
++-- | Traditional `return`, note this probably has lost its type inference where you want to use it. 
++-- You probably want to use `returnM`
+hunk ./src/Control/Monad/Parameterized.hs 117
+--- | traditional mzero, note this probably has lost its type inference. You probably want mzeroM
++-- | Traditional `mzero`, note this probably has lost its type inference. 
++-- You probably want `mzeroM`.
+hunk ./src/Control/Monad/Parameterized.hs 122
+--- | Now of course we can have MZero's and Identity's float to the top, so we need a way to convert out to any monad
++-- | Now of course we can have `MZero`s and `Identity`s float to the top of a @do@ expression, so we need a way to convert them to any `Monad` or `MonadPlus` instance respectively
++
+hunk ./src/Control/Monad/Parameterized.hs 132
+--- | class alias to get back an approximation of the original, easy-to-use-class where available
++-- | Class alias to get back an approximation of the original, easy-to-specify `MonadPlus` class where available
+}

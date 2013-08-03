@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Parameterized Monads in Haskell</title>
+	<atom:link href="http://comonad.com/reader/2007/parameterized-monads-in-haskell/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Garden Seed</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/comment-page-1/#comment-104982</link>
+		<dc:creator>Garden Seed</dc:creator>
+		<pubDate>Mon, 28 May 2012 13:43:05 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comment-104982</guid>
+		<description>The post is written in very a good manner and it entails many useful information for me. I am happy to find your distinguished way of writing the post. Now you make it easy for me to understand and implement the concept.</description>
+		<content:encoded><![CDATA[<p>The post is written in very a good manner and it entails many useful information for me. I am happy to find your distinguished way of writing the post. Now you make it easy for me to understand and implement the concept.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Der Blog (mk II) &#187; Blog Archive &#187; Parameterised monads</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/comment-page-1/#comment-6214</link>
+		<dc:creator>Der Blog (mk II) &#187; Blog Archive &#187; Parameterised monads</dc:creator>
+		<pubDate>Sun, 15 Feb 2009 22:43:59 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comment-6214</guid>
+		<description>[...] It seems that a module has already been written to encode parameterised modules and uploaded to Hackage: Control.Monad.Parameterized (package monad-param). It dates from before the current excitement (2007 and it&#039;s at version 0.0.2) so the concept is apparently not new. It does however take a somewhat different approach, one that&#039;s seemingly more general but also more cumbersome. The change in approach is explained in a blog post by its author, Edward Kmett. Here&#039;s what the &quot;parameterized monad&quot; class would look like if translated from the paper:  &gt; class PMonad m where &gt;     returnP :: a -&gt; m p p a &gt;     (&gt;&gt;&gt;=)  :: m p1 p2 a -&gt; (a -&gt; m p2 p3 b) -&gt; m p1 p3 b [...]</description>
+		<content:encoded><![CDATA[<p>[...] It seems that a module has already been written to encode parameterised modules and uploaded to Hackage: Control.Monad.Parameterized (package monad-param). It dates from before the current excitement (2007 and it&#8217;s at version 0.0.2) so the concept is apparently not new. It does however take a somewhat different approach, one that&#8217;s seemingly more general but also more cumbersome. The change in approach is explained in a blog post by its author, Edward Kmett. Here&#8217;s what the &#8220;parameterized monad&#8221; class would look like if translated from the paper:  &gt; class PMonad m where &gt;     returnP :: a -&gt; m p p a &gt;     (&gt;&gt;&gt;=)  :: m p1 p2 a -&gt; (a -&gt; m p2 p3 b) -&gt; m p1 p3 b [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cora Bass</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/comment-page-1/#comment-4167</link>
+		<dc:creator>Cora Bass</dc:creator>
+		<pubDate>Thu, 13 Nov 2008 05:40:50 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comment-4167</guid>
+		<description>2awx0pd6ozbp4lg8</description>
+		<content:encoded><![CDATA[<p>2awx0pd6ozbp4lg8</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/comment-page-1/#comment-226</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sat, 14 Jul 2007 02:30:06 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comment-226</guid>
+		<description>It seems that Oleg&#039;s version mentioned there was the one I linked to above for a form of restricted monad, where the parameter passed to the monad is restricted as to the types it can take, limiting it to being an endofunctor supporting injections from a portion of the category smaller than the whole of the category of all types. 
+
+Unfortunately that isn&#039;t so useful for the part of this I was working up next. 
+
+What I need (for something else) is a monad that could contain anything, but where I could either vary a type parameter which can be done through a fairly boring MTL-style bit of typeclass hackery, in which case all of the nice examples in the parameterized monad module would require a lot of &#039;lift&#039; style plumbing or where I could change out the monad itself, which was the path I decided to try out.
+
+The main reason I decided to write out the above was because of the fairly interesting (to me anyways) property that by employing the monad laws we get back a notion of type inference for that weakened type for bind.
+
+Er.. that is unless you are referring to somewhere else where Oleg wrote up another form of parameterized monad. Which is quite likely, as I&#039;ve just grown to assume anything worth doing in Haskell or Scheme has already been done by him and is just waiting for someone to come along and read the message on the mailing list.</description>
+		<content:encoded><![CDATA[<p>It seems that Oleg&#8217;s version mentioned there was the one I linked to above for a form of restricted monad, where the parameter passed to the monad is restricted as to the types it can take, limiting it to being an endofunctor supporting injections from a portion of the category smaller than the whole of the category of all types. </p>
+<p>Unfortunately that isn&#8217;t so useful for the part of this I was working up next. </p>
+<p>What I need (for something else) is a monad that could contain anything, but where I could either vary a type parameter which can be done through a fairly boring MTL-style bit of typeclass hackery, in which case all of the nice examples in the parameterized monad module would require a lot of &#8216;lift&#8217; style plumbing or where I could change out the monad itself, which was the path I decided to try out.</p>
+<p>The main reason I decided to write out the above was because of the fairly interesting (to me anyways) property that by employing the monad laws we get back a notion of type inference for that weakened type for bind.</p>
+<p>Er.. that is unless you are referring to somewhere else where Oleg wrote up another form of parameterized monad. Which is quite likely, as I&#8217;ve just grown to assume anything worth doing in Haskell or Scheme has already been done by him and is just waiting for someone to come along and read the message on the mailing list.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Chung-chieh Shan</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/comment-page-1/#comment-225</link>
+		<dc:creator>Chung-chieh Shan</dc:creator>
+		<pubDate>Fri, 13 Jul 2007 22:07:52 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comment-225</guid>
+		<description>Oleg represented parameterized monads differently:
+&lt;a href=&quot;http://www.haskell.org/pipermail/haskell-prime/2006-February/000498.html&quot; rel=&quot;nofollow&quot;&gt;http://www.haskell.org/pipermail/haskell-prime/2006-February/000498.html&lt;/a&gt;
+
+The way to think about parameterized monads is that they are like monads except there is mutable state at compile time. In other words, each action in a parameterized monad has a start state and an end state that is checked at compile time: the end state of one action must match the start state of the next action.</description>
+		<content:encoded><![CDATA[<p>Oleg represented parameterized monads differently:<br />
+<a href="http://www.haskell.org/pipermail/haskell-prime/2006-February/000498.html" rel="nofollow">http://www.haskell.org/pipermail/haskell-prime/2006-February/000498.html</a></p>
+<p>The way to think about parameterized monads is that they are like monads except there is mutable state at compile time. In other words, each action in a parameterized monad has a start state and an end state that is checked at compile time: the end state of one action must match the start state of the next action.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

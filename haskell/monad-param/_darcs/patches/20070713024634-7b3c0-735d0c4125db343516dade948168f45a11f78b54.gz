@@ -1,0 +1,78 @@
+[add description to module
+ekmett@gmail.com**20070713024634] {
+hunk ./src/Control/Monad/Parameterized.hs 1
+-{-# OPTIONS_GHC -fno-implicit-prelude -fallow-overlapping-instances -fallow-undecidable-instances -fglasgow-exts -fextended-default-rules #-}
++{-# OPTIONS_GHC -fno-implicit-prelude -fallow-overlapping-instances -fallow-undecidable-instances -fglasgow-exts #-} 
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Control.Monad.Parameterized
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (requires the kitchen sink)
++--
++-- Implements a notion of parameterized monad by varying the monad itself, this lets us 
++-- avoid having to carry a parameter around for monads that do not need it.
++-- The signature of @>>=@ would cost us type inference for the type of return and mzero
++-- so we restore that by appealing to the monad laws and treating return as the unit of 
++-- the @Identity@ monad and mzero as an injection into the trivial bottom monad.
++--
++-- Caveat: this currently doesn't permit types to vary under the do-sugar because of how GHC desugars.
++----------------------------------------------------------------------------
++
+hunk ./src/Control/Monad/Parameterized.hs 24
+-	, mzeroM	
+hunk ./src/Control/Monad/Parameterized.hs 25
+-	, Go		(go)
+-	, Identity      (runIdentity)
+hunk ./src/Control/Monad/Parameterized.hs 27
++	-- * Rebound 
++	, mzeroM	
+hunk ./src/Control/Monad/Parameterized.hs 31
+-	, MZero
+-	-- * Something like the legacy interfaces
++	-- * Convenient class aliases
+hunk ./src/Control/Monad/Parameterized.hs 34
++	-- * Restored type inference
++	, Go		(go)
++	, Identity      (runIdentity)
++	, MZero
+hunk ./src/Control/Monad/Parameterized.hs 41
+-
+hunk ./src/Control/Monad/Parameterized.hs 42
+-
+hunk ./src/Control/Monad/Parameterized.hs 49
++infixl 1  >>, >>=
++infixr 1  =<<
++
+hunk ./src/Control/Monad/Parameterized.hs 80
+-
+hunk ./src/Control/Monad/Parameterized.hs 107
+-class Return m where return :: a -> m a 
+-class MonadZero m where mzero :: m a
++-- | traditional return, note this probably has lost its type inference. You probably want returnM
++class Return m where 
++	return :: a -> m a 
++
++-- | traditional mzero, note this probably has lost its type inference. You probably want mzeroM
++class MonadZero m where 
++	mzero :: m a
+hunk ./src/Control/Monad/Parameterized.hs 115
+--- | Now of course we can have MZero's and Identity's float to the top
++-- | Now of course we can have MZero's and Identity's float to the top, so we need a way to convert out to any monad
+hunk ./src/Control/Monad/Parameterized.hs 164
+--- perform it once or n times? don't decide 
+---instance Bind IO [] (ListT IO) where m >>= f = 
+-
++-- | Demonstrate mixed STM and IO
+hunk ./src/Control/Monad/Parameterized.hs 166
++
++-- | Demonstrate mixed Maybe and List
+hunk ./src/Control/Monad/Parameterized.hs 169
++
++-- | Demonstrate mixing Identity, Maybe and List
+hunk ./src/Control/Monad/Parameterized.hs 176
+-
+}

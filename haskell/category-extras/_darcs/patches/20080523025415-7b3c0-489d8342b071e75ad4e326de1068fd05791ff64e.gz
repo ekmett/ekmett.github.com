@@ -1,0 +1,6 @@
+[0.51.2
+ekmett@gmail.com**20080523025415] {
+hunk ./category-extras.cabal 3
+-version:                0.51.1
++version:                0.51.2
+}

@@ -1,0 +1,88 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
+module Data.Rope.Unpackable
+    ( Unpackable(..)
+    ) where
+import Prelude hiding (head, last, drop)
+import qualified Prelude
+
+import Data.Word (Word8)
+import Data.Monoid (Monoid, mempty, mappend)
+import qualified Data.Foldable as F
+
+import qualified Data.FingerTree as F (empty, null, split)
+import Data.FingerTree (FingerTree, ViewL(..),ViewR(..),viewl,viewr,(<|),(><))
+
+import qualified Data.ByteString as S
+import qualified Data.ByteString.Unsafe as S (unsafeTail, unsafeHead)
+import qualified Data.ByteString.UTF8 as U
+import qualified Data.ByteString.Lazy as L
+import qualified Data.ByteString.Lazy.UTF8 as LU
+
+import Data.Rope.Body (Offset(..), Chunk(..), cons', snoc', measureBody) -- Chunk
+import Data.Rope.Internal (Annotation(..), drop, Rope(..), body, toLazyByteString, uncons8, unsnoc8) -- Rope, etc.
+import Codec.Binary.UTF8.Generic (UTF8Bytes)
+import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
+
+class Unpackable a where
+    unpack :: Rope -> [a]
+
+    head :: Rope -> a
+    head = Prelude.head . unpack
+
+    last :: Rope -> a
+
+    uncons :: Rope -> Maybe (a, Rope)
+    unsnoc :: Rope -> Maybe (Rope, a)
+
+instance Unpackable Word8 where
+    unpack = concatMap (S.unpack . unchunk) . F.toList . body
+    head (Rope t _) = case viewl t of
+        Chunk a :< _ -> S.head a
+        EmptyL -> errorEmptyList "head"
+    last (Rope t _) = case viewr t of
+        _ :> Chunk a -> S.last a
+        EmptyR -> errorEmptyList "last"
+    uncons = uncons8
+    unsnoc = unsnoc8
+
+instance Unpackable Char where
+    unpack = LU.toString . toLazyByteString
+    head = Prelude.head . unpack
+    last = undefined -- TODO
+    uncons r@(Rope t _) = case UTF8Bytes.decode (Rope t) of 
+        Nothing -> Nothing
+        Just (a,n) -> Just (a, drop n r)
+    unsnoc = undefined -- TODO
+
+instance Unpackable S.ByteString where
+    unpack = map unchunk . F.toList . body
+    head r = case viewl (body r) of
+        Chunk a :< _ -> a
+        _ -> errorEmptyList "head"
+    last r = case viewr (body r) of
+        _ :> Chunk a -> a
+        _ -> errorEmptyList "last" 
+    uncons r = case viewl (body r) of
+        Chunk a :< as -> Just (a, Rope as)
+        EmptyL -> Nothing
+    unsnoc r = case viewr (body r) of
+        as :> Chunk a -> Just (Rope as, a)
+        EmptyR -> Nothing
+
+instance Unpackable Chunk where
+    unpack = F.toList . body
+    head r = case viewl (body r) of
+        a :< _ -> a
+        _ -> errorEmptyList "head"
+    last r = case viewr (body r) of
+        _ :> a -> a
+        _ -> errorEmptyList "last"
+    uncons r = case viewl (body r) of
+        Chunk a :< as -> Just (Chunk a, Rope as)
+        EmptyL -> Nothing
+    unsnoc r = case viewr (body r) of
+        as :> Chunk a -> Just (Rope as, Chunk a)
+        EmptyR -> Nothing
+
+errorEmptyList :: String -> a
+errorEmptyList t = error $ "Data.Rope.Unpackable." ++ t ++ ": empty list"  

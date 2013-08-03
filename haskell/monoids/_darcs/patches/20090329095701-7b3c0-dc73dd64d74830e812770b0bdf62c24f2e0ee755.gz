@@ -1,0 +1,6 @@
+[bump
+ekmett@gmail.com**20090329095701] {
+hunk ./monoids.cabal 2
+-version:	    0.1.11
++version:	    0.1.12
+}

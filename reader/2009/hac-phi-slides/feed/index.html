@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Slides from Hac Phi: &#8220;All About Monoids&#8221;</title>
+	<atom:link href="http://comonad.com/reader/2009/hac-phi-slides/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2009/hac-phi-slides/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmeft</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10826</link>
+		<dc:creator>Edward Kmeft</dc:creator>
+		<pubDate>Mon, 03 Aug 2009 11:33:04 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10826</guid>
+		<description>@Stulli
+
+Look on hackage at any revision of monoids before 0.2.0, and it will contain Data.Monoid.Lexical.SourcePosition -- I recently slimmed the package down and plan to move the remaining functionality into a monoid-extras style package so that the core functionality is available without a laundry list of dependencies.
+
+Your kind error comes from the fact that when I added Pos, I added an argument to the type to make it a Pointed Functor. So you need to make Monoid (SourcePosition f) and Reducer Char (SourcePosition f).
+
+I explained the extra argument as part of the narrative during the talk, but naked slides do not provide me such opportunity for elaboration. :)</description>
+		<content:encoded><![CDATA[<p>@Stulli</p>
+<p>Look on hackage at any revision of monoids before 0.2.0, and it will contain Data.Monoid.Lexical.SourcePosition &#8212; I recently slimmed the package down and plan to move the remaining functionality into a monoid-extras style package so that the core functionality is available without a laundry list of dependencies.</p>
+<p>Your kind error comes from the fact that when I added Pos, I added an argument to the type to make it a Pointed Functor. So you need to make Monoid (SourcePosition f) and Reducer Char (SourcePosition f).</p>
+<p>I explained the extra argument as part of the narrative during the talk, but naked slides do not provide me such opportunity for elaboration. :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: stulli</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10809</link>
+		<dc:creator>stulli</dc:creator>
+		<pubDate>Sun, 02 Aug 2009 14:01:35 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10809</guid>
+		<description>Hi, do you have a working code example for the file position example? I get following error:
+
+`Reducer SourcePosition&#039; is not applied to enough type arguments
+    Expected kind `*&#039;, but `Reducer SourcePosition&#039; has kind `* -&gt; *&#039;
+    In the instance declaration for `Reducer SourcePosition&#039;</description>
+		<content:encoded><![CDATA[<p>Hi, do you have a working code example for the file position example? I get following error:</p>
+<p>`Reducer SourcePosition&#8217; is not applied to enough type arguments<br />
+    Expected kind `*&#8217;, but `Reducer SourcePosition&#8217; has kind `* -&gt; *&#8217;<br />
+    In the instance declaration for `Reducer SourcePosition&#8217;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10782</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sat, 01 Aug 2009 03:49:31 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10782</guid>
+		<description>@RayNBow: Yeah, I spotted it during the talk, but didn&#039;t fix the slides, woops!
+
+Re: the gravatar thing, hrmm. It is funny that they should be case insensitive given that at least the portion before the @ should technically be handled case sensitively per RFC 2821 (though requiring this is explicitly called out as not being nice in the RFC).
+
+The wordpress gravatar php function seems to be implemented along the guidelines of the other examples on gravatar which only trim whitespace and don&#039;t change case. (i.e. http://en.gravatar.com/site/implement/textpattern) 
+
+So I&#039;m thinking that the only way to portably get your gravatar to work on everyone&#039;s site is to explicitly lowercase it yourself since anyone else doing it could incorrectly mangle an email address. ;)
+
+I&#039;d not be adverse to fixing it, since after all case sensitive email addresses don&#039;t seem to really exist in practice, but currently the fragment looks like &lt; ?php gravatar(&quot;R&quot;, 40); ?&gt; and calls off to some method in some library somewhere, which already knows the email address in question.  If I ever learned php, I might know where to find it. :)
+
+[Edit: I did at least tweak your email address to be lowercase. ;) ]</description>
+		<content:encoded><![CDATA[<p>@RayNBow: Yeah, I spotted it during the talk, but didn&#8217;t fix the slides, woops!</p>
+<p>Re: the gravatar thing, hrmm. It is funny that they should be case insensitive given that at least the portion before the @ should technically be handled case sensitively per RFC 2821 (though requiring this is explicitly called out as not being nice in the RFC).</p>
+<p>The wordpress gravatar php function seems to be implemented along the guidelines of the other examples on gravatar which only trim whitespace and don&#8217;t change case. (i.e. <a href="http://en.gravatar.com/site/implement/textpattern)" rel="nofollow">http://en.gravatar.com/site/implement/textpattern)</a> </p>
+<p>So I&#8217;m thinking that the only way to portably get your gravatar to work on everyone&#8217;s site is to explicitly lowercase it yourself since anyone else doing it could incorrectly mangle an email address. ;)</p>
+<p>I&#8217;d not be adverse to fixing it, since after all case sensitive email addresses don&#8217;t seem to really exist in practice, but currently the fragment looks like < ?php gravatar("R", 40); ?> and calls off to some method in some library somewhere, which already knows the email address in question.  If I ever learned php, I might know where to find it. :)</p>
+<p>[Edit: I did at least tweak your email address to be lowercase. ;) ]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: RayNbow</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10777</link>
+		<dc:creator>RayNbow</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 21:18:47 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10777</guid>
+		<description>@EdwardK:
+np :). Btw, there&#039;s a small mistake in the definition of Endo&#039;s mempty in your slides. &quot;id&quot; should be wrapped within Endo.
+
+Also, Gravatars don&#039;t seem to work on this blog when using capital letters in the email address.</description>
+		<content:encoded><![CDATA[<p>@EdwardK:<br />
+np :). Btw, there&#8217;s a small mistake in the definition of Endo&#8217;s mempty in your slides. &#8220;id&#8221; should be wrapped within Endo.</p>
+<p>Also, Gravatars don&#8217;t seem to work on this blog when using capital letters in the email address.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10775</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 20:13:25 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10775</guid>
+		<description>@Raynbow: Thanks!
+
+@wwkeyboard: It should be around the week of the 17th. Ravi was waiting to see what Norman Ramsey&#039;s schedule was like before setting it in stone since we keep scheduling it when he can&#039;t show up!</description>
+		<content:encoded><![CDATA[<p>@Raynbow: Thanks!</p>
+<p>@wwkeyboard: It should be around the week of the 17th. Ravi was waiting to see what Norman Ramsey&#8217;s schedule was like before setting it in stone since we keep scheduling it when he can&#8217;t show up!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: wwkeyboard</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10773</link>
+		<dc:creator>wwkeyboard</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 20:04:23 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10773</guid>
+		<description>So when is this August meeting of the Boston Haskell Users Group? I want to attend but can&#039;t seem to find information about it.</description>
+		<content:encoded><![CDATA[<p>So when is this August meeting of the Boston Haskell Users Group? I want to attend but can&#8217;t seem to find information about it.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: RayNbow</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10772</link>
+		<dc:creator>RayNbow</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 19:43:51 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10772</guid>
+		<description>PDF:
+
+http://www.mediafire.com/file/anifmxlzfgm/AllAboutMonoids.pdf</description>
+		<content:encoded><![CDATA[<p>PDF:</p>
+<p><a href="http://www.mediafire.com/file/anifmxlzfgm/AllAboutMonoids.pdf" rel="nofollow">http://www.mediafire.com/file/anifmxlzfgm/AllAboutMonoids.pdf</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Socrates philosophy and hyoptheses can't stop me from doing it monadically.</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10771</link>
+		<dc:creator>Socrates philosophy and hyoptheses can't stop me from doing it monadically.</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 19:26:24 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10771</guid>
+		<description>Can someone dump this to PDF? Or are the transitions too tasty to give up?</description>
+		<content:encoded><![CDATA[<p>Can someone dump this to PDF? Or are the transitions too tasty to give up?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lee</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10769</link>
+		<dc:creator>Lee</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 18:56:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10769</guid>
+		<description>Brett: Looks like a Powerpoint 2007 file.
+
+If you have Powerpoint 2003, try http://www.microsoft.com/downloads/details.aspx?FamilyId=941b3470-3ae9-4aee-8f43-c6bb74cd1466&amp;displaylang=en.</description>
+		<content:encoded><![CDATA[<p>Brett: Looks like a Powerpoint 2007 file.</p>
+<p>If you have Powerpoint 2003, try <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=941b3470-3ae9-4aee-8f43-c6bb74cd1466&displaylang=en." rel="nofollow">http://www.microsoft.com/downloads/details.aspx?FamilyId=941b3470-3ae9-4aee-8f43-c6bb74cd1466&amp;displaylang=en.</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Brett</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/comment-page-1/#comment-10767</link>
+		<dc:creator>Brett</dc:creator>
+		<pubDate>Fri, 31 Jul 2009 18:21:14 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85#comment-10767</guid>
+		<description>How does one actually view the slides? The zip file seems to contain a large number of xml and .xml.rels files, but nothing to click on such as a pdf or even a powerpoint file.</description>
+		<content:encoded><![CDATA[<p>How does one actually view the slides? The zip file seems to contain a large number of xml and .xml.rels files, but nothing to click on such as a pdf or even a powerpoint file.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

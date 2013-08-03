@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Forgetful Laziness</title>
+	<atom:link href="http://comonad.com/reader/2008/forgetful-laziness/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/forgetful-laziness/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-5420</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Fri, 09 Jan 2009 00:52:15 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-5420</guid>
+		<description>The non-deterministic problem with any forgetful laziness policy is the bit I had posted the [Edit:] block in the original post for, commenting on with the possible loss of sharing. If you had relied on shared thunks for your asymptotic bounds as in, say, dynamic programming then the forgetful laziness thing can be really bad. ;)
+
+The problem I was alluding to with the CAF list was a little bit simpler than the environment problem you describe. If you have a CAF, it is always considered referenced and is hence uncollectable.
+
+So something as simple as:
+
+nats = [1..]
+
+when used at the module level, will never get collected. This is mostly so things like global MVars can be created using unsafePerformIO, etc.
+
+The only way I was able to redeem the idea of forgetful laziness was to execute it in a setting that is fully hash consed ala linear lisp, but there are even issues with that, mostly when it comes to trying to find a good hash function that can work recursively, since you _can_ get cycles in a lazy setting - unlike linear lisp - due to the presence of thunk evaluation.
+
+It can work if you do something like modify GRIN or the STG to perform hash-consing lookup on let binding, but that also has corner cases, Interestingly, in a GRIN setting, using hash consed thunk construction is effectively memoizing every function application that isn&#039;t inlined.
+
+Mixed with speculative evaluation to avoid explicit construction of small thunks, it has always struck me as an amusing toy.
+
+It all runs into theoretical results w.r.t. optimal lambda calculus reduction strategies that prove that in the general case you can&#039;t get it right all the time, but it is fun trying to get it close.</description>
+		<content:encoded><![CDATA[<p>The non-deterministic problem with any forgetful laziness policy is the bit I had posted the [Edit:] block in the original post for, commenting on with the possible loss of sharing. If you had relied on shared thunks for your asymptotic bounds as in, say, dynamic programming then the forgetful laziness thing can be really bad. ;)</p>
+<p>The problem I was alluding to with the CAF list was a little bit simpler than the environment problem you describe. If you have a CAF, it is always considered referenced and is hence uncollectable.</p>
+<p>So something as simple as:</p>
+<p>nats = [1..]</p>
+<p>when used at the module level, will never get collected. This is mostly so things like global MVars can be created using unsafePerformIO, etc.</p>
+<p>The only way I was able to redeem the idea of forgetful laziness was to execute it in a setting that is fully hash consed ala linear lisp, but there are even issues with that, mostly when it comes to trying to find a good hash function that can work recursively, since you _can_ get cycles in a lazy setting &#8211; unlike linear lisp &#8211; due to the presence of thunk evaluation.</p>
+<p>It can work if you do something like modify GRIN or the STG to perform hash-consing lookup on let binding, but that also has corner cases, Interestingly, in a GRIN setting, using hash consed thunk construction is effectively memoizing every function application that isn&#8217;t inlined.</p>
+<p>Mixed with speculative evaluation to avoid explicit construction of small thunks, it has always struck me as an amusing toy.</p>
+<p>It all runs into theoretical results w.r.t. optimal lambda calculus reduction strategies that prove that in the general case you can&#8217;t get it right all the time, but it is fun trying to get it close.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Michael Winking</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-5412</link>
+		<dc:creator>Michael Winking</dc:creator>
+		<pubDate>Thu, 08 Jan 2009 14:05:54 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-5412</guid>
+		<description>&gt; ...he himself seems to think lazy semantics isn’t a good default
+For me it works quite well so far and doesn&#039;t get in the way too often. I can&#039;t complain. Is there really such a thing as a good default evaluation semantic, or are we just so used to the workarounds we employ in conjunction with eager evaluation that we no longer notice them anymore? Take forward iterators for iterating through the results from a query on some container. Instead of a forward iterator we could just return a list with all the result values. With strict evaluation this might be a bit of a problem since keeping the entire list in memory takes a bit of space, whereas with lazy semantics we no longer need any iterators and we can work with all those wonderful list functions like foldr instead of duplicating them for iterators. Thus, seen from this angle forward iterators are just a workaround for the lack of lazy lists, albeit we usually don&#039;t think of them in this way. (In the iterator example call-by-name as well as your &quot;forgetful-laziness&quot; scheme might be even more of an improvement, just in case we want to keep a reference to an earlier entry whilst traversing. Lazy evaluation might keep too much of the spine in this case).
+
+&gt; ...Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC? 
+Can&#039;t comment on it, never took a look at the GHC source nor at his optimistic evaluation papers (although I always wanted to take a look at GHC to see if I could figure out a way to try some of my ideas).
+
+&gt; ...huge chains of unevaluated ... That is pretty much what you describe
+Mostly, but I also had thunks like &quot;a ! 1&quot; in mind, where &quot;a&quot; would be some huge array that isn&#039;t referenced from anywhere else. Once the thunk is evaluated the GC could usuallly free the array. However with forgetful evaluation we have to keep the array around since the thunk might be reevaluated.
+
+&gt; Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.
+It depends, doesn&#039;t it? Consider a list of naturals instead of a list of primes according to the following (otherwise maybe somewhat unusual) code fragments 
+nats1 = 1 : map (+1) nats1
+nats100 = drop 99 nats where nats = 1 : map (+1) nats
+print (nats1 !! 99)
+print (nats100 !! 0)
+As it is written every list entry in nats1 and nats100 depends directly on the previous entries result (which is somewhat simpler than for a prime sieve where each entry directly depends on many previous ones). Now forcing (nats1 !! 99) and (nats100 !! 0) basically do the same, return the 100&#039;th entry from a list of naturals. Except of course in the case of nats1 we keep the evaluated spine with the first 100 entries around for later reuse whereas with &quot;forgetful laziness&quot; we could blissfully discard the spine and only keep the first thunk. However for nats100 we might get somewhat the opposite problem. With lazy evaluation, after forcing (nats100 !! 0) there is no reference left to &quot;nats&quot; (the &quot;where&quot; part in nats100), the head of nats100 contains the evaluated value and the tail consists of a thunk that references the value in the head, but no other previous values, thus the gc could discard the entire front of the spine from nats up to the head from nats100, keeping only the head of nats100 itself. With &quot;forgetful laziness&quot;, if the GC starts to traverse the root pointers, first encounters nats100, it might discard the result in the head, thereby being obliged to keep the thunk which references the previous element, the gc follows this reference, discards the result and again needs to keep the reference to the next previous element in order to be able to recompute the result and so on until the first thunk for the head of &quot;nats&quot;. So here we would end with a cascading chain of thunks when using &quot;forgetful laziness&quot; whereas normal &quot;laziness&quot; could collect most of the spine only keeping the head. Given how similar &quot;nats1 !! 99&quot; and &quot;nats100 !! 0&quot; appear to us otherwise, their different behaviour under the two evaluation schemes might come to us as a a bit of surprise. 
+
+&gt; Alternately I suppose you could consider all references from an evaluated thunk to be weak references. ...you would only get to forget evaluations that still had fully intact environments.
+This is interesting, if we had &quot;nats100&#039; = drop 99 nats1&quot; and force &quot;nats1 !! 99&quot; and &quot;nats100&#039; !! 0&quot;, then might the space usage depend on the order in which the gc encounters the roots of nats1 and nats100&#039; ? Might we get a cascading chain in one case and keep the evaluated spine in the other? I might have to think through it.
+
+
+
+&gt; ... an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.
+It just occured to me, that you might have the same problem with the &#039;forget at most once&#039; policy but in an indeterministic way. Suppose again a list of naturals as above instead of primes and you are evaluating &#039;nats !! 999999&#039;. If the gc starts collecting after the evaluation, then indeed the entire spine gets collected and only the head of nats is left. However imagine the gc starts collecting during the evaluation of &#039;nats !! 999999&#039;, say when already the next to last value has been computed, then the gc would collect all those elements and mark them as &#039;collected once&#039;. When the gc has finished, the computation for the last element would start, triggering recomputation of all the previous elements. However the next time the gc starts, it can&#039;t recycle anything of the spine except for the last element since all the others have already been &#039;forgotten once&#039;. Now if we had a program that has a hundred such lists and cases and let each fully evaluated list take up 100MB, then depending on when the gc starts in the best case the program won&#039;t take up more than around 100MB and in the worst case it might take 100*100MB if the gc collects at the most inopportune moment thereby preventing all those spines from getting collected. So sometimes the program would trash the memory and in other cases it would run just fine, you might not notice the problem until many runs latter. This could be fun, think of the outcry: &quot;My program just runs fine most of the time, but sometimes it completely trashes the memory on the same input. I have now already spent weeks on debugging it but I just can&#039;t figure out the reason. Help!&quot; I guess there are less surprises with lazy-eval.</description>
+		<content:encoded><![CDATA[<p>&gt; &#8230;he himself seems to think lazy semantics isn’t a good default<br />
+For me it works quite well so far and doesn&#8217;t get in the way too often. I can&#8217;t complain. Is there really such a thing as a good default evaluation semantic, or are we just so used to the workarounds we employ in conjunction with eager evaluation that we no longer notice them anymore? Take forward iterators for iterating through the results from a query on some container. Instead of a forward iterator we could just return a list with all the result values. With strict evaluation this might be a bit of a problem since keeping the entire list in memory takes a bit of space, whereas with lazy semantics we no longer need any iterators and we can work with all those wonderful list functions like foldr instead of duplicating them for iterators. Thus, seen from this angle forward iterators are just a workaround for the lack of lazy lists, albeit we usually don&#8217;t think of them in this way. (In the iterator example call-by-name as well as your &#8220;forgetful-laziness&#8221; scheme might be even more of an improvement, just in case we want to keep a reference to an earlier entry whilst traversing. Lazy evaluation might keep too much of the spine in this case).</p>
+<p>&gt; &#8230;Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC?<br />
+Can&#8217;t comment on it, never took a look at the GHC source nor at his optimistic evaluation papers (although I always wanted to take a look at GHC to see if I could figure out a way to try some of my ideas).</p>
+<p>&gt; &#8230;huge chains of unevaluated &#8230; That is pretty much what you describe<br />
+Mostly, but I also had thunks like &#8220;a ! 1&#8243; in mind, where &#8220;a&#8221; would be some huge array that isn&#8217;t referenced from anywhere else. Once the thunk is evaluated the GC could usuallly free the array. However with forgetful evaluation we have to keep the array around since the thunk might be reevaluated.</p>
+<p>&gt; Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.<br />
+It depends, doesn&#8217;t it? Consider a list of naturals instead of a list of primes according to the following (otherwise maybe somewhat unusual) code fragments<br />
+nats1 = 1 : map (+1) nats1<br />
+nats100 = drop 99 nats where nats = 1 : map (+1) nats<br />
+print (nats1 !! 99)<br />
+print (nats100 !! 0)<br />
+As it is written every list entry in nats1 and nats100 depends directly on the previous entries result (which is somewhat simpler than for a prime sieve where each entry directly depends on many previous ones). Now forcing (nats1 !! 99) and (nats100 !! 0) basically do the same, return the 100&#8242;th entry from a list of naturals. Except of course in the case of nats1 we keep the evaluated spine with the first 100 entries around for later reuse whereas with &#8220;forgetful laziness&#8221; we could blissfully discard the spine and only keep the first thunk. However for nats100 we might get somewhat the opposite problem. With lazy evaluation, after forcing (nats100 !! 0) there is no reference left to &#8220;nats&#8221; (the &#8220;where&#8221; part in nats100), the head of nats100 contains the evaluated value and the tail consists of a thunk that references the value in the head, but no other previous values, thus the gc could discard the entire front of the spine from nats up to the head from nats100, keeping only the head of nats100 itself. With &#8220;forgetful laziness&#8221;, if the GC starts to traverse the root pointers, first encounters nats100, it might discard the result in the head, thereby being obliged to keep the thunk which references the previous element, the gc follows this reference, discards the result and again needs to keep the reference to the next previous element in order to be able to recompute the result and so on until the first thunk for the head of &#8220;nats&#8221;. So here we would end with a cascading chain of thunks when using &#8220;forgetful laziness&#8221; whereas normal &#8220;laziness&#8221; could collect most of the spine only keeping the head. Given how similar &#8220;nats1 !! 99&#8243; and &#8220;nats100 !! 0&#8243; appear to us otherwise, their different behaviour under the two evaluation schemes might come to us as a a bit of surprise. </p>
+<p>&gt; Alternately I suppose you could consider all references from an evaluated thunk to be weak references. &#8230;you would only get to forget evaluations that still had fully intact environments.<br />
+This is interesting, if we had &#8220;nats100&#8242; = drop 99 nats1&#8243; and force &#8220;nats1 !! 99&#8243; and &#8220;nats100&#8242; !! 0&#8243;, then might the space usage depend on the order in which the gc encounters the roots of nats1 and nats100&#8242; ? Might we get a cascading chain in one case and keep the evaluated spine in the other? I might have to think through it.</p>
+<p>&gt; &#8230; an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.<br />
+It just occured to me, that you might have the same problem with the &#8216;forget at most once&#8217; policy but in an indeterministic way. Suppose again a list of naturals as above instead of primes and you are evaluating &#8216;nats !! 999999&#8242;. If the gc starts collecting after the evaluation, then indeed the entire spine gets collected and only the head of nats is left. However imagine the gc starts collecting during the evaluation of &#8216;nats !! 999999&#8242;, say when already the next to last value has been computed, then the gc would collect all those elements and mark them as &#8216;collected once&#8217;. When the gc has finished, the computation for the last element would start, triggering recomputation of all the previous elements. However the next time the gc starts, it can&#8217;t recycle anything of the spine except for the last element since all the others have already been &#8216;forgotten once&#8217;. Now if we had a program that has a hundred such lists and cases and let each fully evaluated list take up 100MB, then depending on when the gc starts in the best case the program won&#8217;t take up more than around 100MB and in the worst case it might take 100*100MB if the gc collects at the most inopportune moment thereby preventing all those spines from getting collected. So sometimes the program would trash the memory and in other cases it would run just fine, you might not notice the problem until many runs latter. This could be fun, think of the outcry: &#8220;My program just runs fine most of the time, but sometimes it completely trashes the memory on the same input. I have now already spent weeks on debugging it but I just can&#8217;t figure out the reason. Help!&#8221; I guess there are less surprises with lazy-eval.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-5401</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 07 Jan 2009 22:45:44 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-5401</guid>
+		<description>Well, there are two scenarios. In one you can get huge chains of unevaluated thunks in code that isn&#039;t sufficiently strict for simple accumulated (+1) type modifications. That is pretty much what you describe. One potential remedy is to gamble on optimistic evaluation techniques like from Robert Ennals&#039; dissertation. Though, I seem to recall hearing that he himself seems to think lazy semantics isn&#039;t a good default. Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC? 
+
+Another leak happens in CAFs. This is the one I sought in a fairly poorly thought out manner to resolve here. 
+
+Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.
+
+If I still thought it to be a viable idea the answer would probably be to only forget stuff that was bigger than the environment contained in the thunk according to some measure, but then that leads to the question of what constitutes a robust metric for size in the presence of cycles, etc. 
+
+Alternately I suppose you could consider all references from an evaluated thunk to be weak references. That would let the garbage collector have its way with them, and you would only get to forget evaluations that still had fully intact environments.</description>
+		<content:encoded><![CDATA[<p>Well, there are two scenarios. In one you can get huge chains of unevaluated thunks in code that isn&#8217;t sufficiently strict for simple accumulated (+1) type modifications. That is pretty much what you describe. One potential remedy is to gamble on optimistic evaluation techniques like from Robert Ennals&#8217; dissertation. Though, I seem to recall hearing that he himself seems to think lazy semantics isn&#8217;t a good default. Perhaps burnout from implementing all of that machinery to get optimistic evaluation to work in GHC? </p>
+<p>Another leak happens in CAFs. This is the one I sought in a fairly poorly thought out manner to resolve here. </p>
+<p>Because there always exists a reference to the object, if you have a CAF that is, say, an infinite list of primes and you ever evaluate the millionth prime, then you keep the entire spine of the list forever.</p>
+<p>If I still thought it to be a viable idea the answer would probably be to only forget stuff that was bigger than the environment contained in the thunk according to some measure, but then that leads to the question of what constitutes a robust metric for size in the presence of cycles, etc. </p>
+<p>Alternately I suppose you could consider all references from an evaluated thunk to be weak references. That would let the garbage collector have its way with them, and you would only get to forget evaluations that still had fully intact environments.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Michael Winking</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-5400</link>
+		<dc:creator>Michael Winking</dc:creator>
+		<pubDate>Wed, 07 Jan 2009 21:19:51 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-5400</guid>
+		<description>&gt; ...and allow GC to collect the answers over time. 
+&gt; ...but most of the horror stories you hear about Haskell center around its occasional horrific memory usage profile.
+
+Isn&#039;t the common complaint about lazy evaluation that together with the unevaluated thunks you have to keep their environment around, thus preventing its constituent variables from being GC&#039;ed even if they are not referenced from anywhere else. The answers/results aren&#039;t so much a cause for surprise since you also have keep them around in a strictly evaluated language which is what most people are used to. So wouldn&#039;t your solution actually in many cases aggravate the problem, since even if you have already evaluated a thunk you have to keep the variables from its environment around just in case it needs to be reevaluated.
+
+To be sure I can think of a few cases where &quot;forgetful laziness&quot; or even call-by-name instead of call-by-need would reduce memory usage, the trouble is that a good compiler or GC heuristic for deciding when it might be appropriate seems not so obvious to me.</description>
+		<content:encoded><![CDATA[<p>&gt; &#8230;and allow GC to collect the answers over time.<br />
+&gt; &#8230;but most of the horror stories you hear about Haskell center around its occasional horrific memory usage profile.</p>
+<p>Isn&#8217;t the common complaint about lazy evaluation that together with the unevaluated thunks you have to keep their environment around, thus preventing its constituent variables from being GC&#8217;ed even if they are not referenced from anywhere else. The answers/results aren&#8217;t so much a cause for surprise since you also have keep them around in a strictly evaluated language which is what most people are used to. So wouldn&#8217;t your solution actually in many cases aggravate the problem, since even if you have already evaluated a thunk you have to keep the variables from its environment around just in case it needs to be reevaluated.</p>
+<p>To be sure I can think of a few cases where &#8220;forgetful laziness&#8221; or even call-by-name instead of call-by-need would reduce memory usage, the trouble is that a good compiler or GC heuristic for deciding when it might be appropriate seems not so obvious to me.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-1352</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sat, 17 May 2008 02:37:38 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-1352</guid>
+		<description>Its a little bit different. The goal is much the same, but with a thunk you have a delayed computation that you may need the result of along with a closure of the values you need to actually generate the result.
+
+When you force the thunk, you usually (in call-by-need) update it in place to be the result, unless you know that you only need the result once.
+
+Here the idea is to allow the thunk to &#039;unforce&#039; itself over time, but to remember that it was unforced by tagging the thunk (or ticking a counter in it similar to a mark cost) to cause it to become harder to &#039;unforce&#039; in the future.
+
+Weak references don&#039;t keep their values alive at all. Here a thunk would slowly bitrot. Once you &#039;forget&#039; a value, the weak reference to it never becomes valid again. Here if you look at the same thunk again and you regenerate the value it becomes valid again, but of course thunks themselves are subject to garbage collection.
+
+In some senses there is conceptual overlap between memoization and thunking, but a memo-table gives you some control over bounding the amount of stuff you hold on to, while the only time you get benefit from a thunk is when two computations reference the same thunk.
+
+If you are interested in automatic memoization you might find some of Umut Acar&#039;s papers interesting starting with something like: http://ttic.uchicago.edu/~umut/papers/ml05.pdf</description>
+		<content:encoded><![CDATA[<p>Its a little bit different. The goal is much the same, but with a thunk you have a delayed computation that you may need the result of along with a closure of the values you need to actually generate the result.</p>
+<p>When you force the thunk, you usually (in call-by-need) update it in place to be the result, unless you know that you only need the result once.</p>
+<p>Here the idea is to allow the thunk to &#8216;unforce&#8217; itself over time, but to remember that it was unforced by tagging the thunk (or ticking a counter in it similar to a mark cost) to cause it to become harder to &#8216;unforce&#8217; in the future.</p>
+<p>Weak references don&#8217;t keep their values alive at all. Here a thunk would slowly bitrot. Once you &#8216;forget&#8217; a value, the weak reference to it never becomes valid again. Here if you look at the same thunk again and you regenerate the value it becomes valid again, but of course thunks themselves are subject to garbage collection.</p>
+<p>In some senses there is conceptual overlap between memoization and thunking, but a memo-table gives you some control over bounding the amount of stuff you hold on to, while the only time you get benefit from a thunk is when two computations reference the same thunk.</p>
+<p>If you are interested in automatic memoization you might find some of Umut Acar&#8217;s papers interesting starting with something like: <a href="http://ttic.uchicago.edu/~umut/papers/ml05.pdf" rel="nofollow">http://ttic.uchicago.edu/~umut/papers/ml05.pdf</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mike</title>
+		<link>http://comonad.com/reader/2008/forgetful-laziness/comment-page-1/#comment-1348</link>
+		<dc:creator>Mike</dc:creator>
+		<pubDate>Fri, 16 May 2008 23:37:19 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/forgetful-laziness/#comment-1348</guid>
+		<description>This is basically weak references, yes? I looked once upon a time at combining automatic memoization with weak references (useful for dynamic programming), but I never got around to completing it.</description>
+		<content:encoded><![CDATA[<p>This is basically weak references, yes? I looked once upon a time at combining automatic memoization with weak references (useful for dynamic programming), but I never got around to completing it.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

@@ -1,0 +1,53 @@
+[0.51.1
+ekmett@gmail.com**20080523022211
+ 
+ Added universal identity morphisms
+ Minor tweaks
+ Added the forgotten Control.Functor
+ 
+ 
+] {
+hunk ./category-extras.cabal 3
+-version:                0.51.0
++version:                0.51.1
+hunk ./category-extras.cabal 76
++		Control.Functor,
+hunk ./src/Control/Functor/Adjunction.hs 74
++	leftAdjunct f a e  = f (e,a)
++	rightAdjunct f ~(e,a) = f a e
+hunk ./src/Control/Functor/KanExtension.hs 34
+-	-- * Performance tweaks for (co)free comonads
++	-- * Performance tweaks for (co)free (co)monads
+hunk ./src/Control/Monad/Ideal.hs 19
++	, destroyIdeal
+hunk ./src/Control/Monad/Ideal.hs 24
++	, buildCoideal
+hunk ./src/Control/Monad/Ideal.hs 38
++import Control.Functor.Algebra
+hunk ./src/Control/Monad/Ideal.hs 83
++destroyIdeal :: Algebra m a -> Ideal m a -> a
++destroyIdeal phi = (id ||| phi) . runIdeal 
+hunk ./src/Control/Monad/Ideal.hs 99
++buildCoideal :: Coalgebra m a -> a -> Coideal m a
++buildCoideal phi = coideal . (id &&& phi)
++
+hunk ./src/Control/Morphism/Universal.hs 17
+-	( Couniversal(..), extractCouniversal, universalize
+-	, Universal(..), extractUniversal, couniversalize
++	( Couniversal(..), extractCouniversal, couniversalize
++	, couniversalIdentity
++	, Universal(..), extractUniversal, universalize
++	, universalIdentity
+hunk ./src/Control/Morphism/Universal.hs 23
++import Control.Monad.Identity
++
+hunk ./src/Control/Morphism/Universal.hs 33
++couniversalIdentity :: Couniversal a Identity a 
++couniversalIdentity = Couniversal Identity (runIdentity .)
++
+hunk ./src/Control/Morphism/Universal.hs 44
++universalIdentity :: Universal a Identity a 
++universalIdentity = Universal runIdentity (. Identity)
++
++
+}

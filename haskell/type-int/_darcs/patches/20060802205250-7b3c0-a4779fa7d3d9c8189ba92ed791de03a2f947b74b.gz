@@ -1,0 +1,546 @@
+[setup
+ekmett@gmail.com**20060802205250] {
+adddir ./bin
+adddir ./src
+adddir ./src/Type
+addfile ./Makefile
+hunk ./Makefile 1
++URL=http://slipwave.info/haskell/jugs/
++TITLE="Random Haskell Tools"
++
++BASE=/home/slipwave/jugs
++SRC=$(BASE)/src
++
++.PHONY: docs
++
++build: all
++
++
++all:
++	@runhaskell Setup.lhs build
++
++config:
++	@runhaskell Setup.lhs configure
++
++html:
++	@runhaskell Setup.lhs haddock
++
++install:
++	@runhaskell Setup.lhs install
++
++run:
++	$(GHCI) Js
++
++test:
++	find . -name "*.hs" | xargs qc
++
++docs: 
++	find . -name "*.hs" | egrep -v 'VHT|ref' | xargs haddock -html -odocs --source=$(URL) --title=$(TITLE)
++
++tags:
++	find . -name "*.hs" | xargs hasktags -c
+addfile ./Setup.lhs
+hunk ./Setup.lhs 1
++#!/usr/bin/env runhaskell
++> import Distribution.Simple
++> main = defaultMainWithHooks defaultUserHooks
+addfile ./bin/qc
+hunk ./bin/qc 1
++#!/usr/bin/runhugs 
++-- 	$Id: quickcheck,v 1.4 2003/01/08 15:09:22 shae Exp $	
++-- This file defines a command
++--      quickCheck <options> <files>
++-- which invokes quickCheck on all properties defined in the files given as
++-- arguments, by generating an input script for hugs and then invoking it.
++-- quickCheck recognises the options
++--      +names     print the name of each property before checking it
++--      -names     do not print property names (the default)
++-- Other options (beginning with + or -) are passed unchanged to hugs.
++--
++-- Change the first line of this file to the location of runhugs on your 
++-- system.
++-- Make the file executable.
++--
++-- TODO:
++-- someone on #haskell asked about supporting QC tests inside LaTeX, ex. \{begin} \{end}, how?
++-- add a verbosity switch that uses verboseCheck instead of quickCheck
++
++import System
++import List
++
++main :: IO ()
++main = do as<-getArgs
++          sequence_ (map (process (filter isOption as)) 
++	                 (filter (not.isOption) as))
++
++-- ugly hack for .lhs files, is there a better way?
++unlit [] = []
++unlit x  = if (head x) == '>' then (tail x) else x
++
++process opts file =
++       let (namesOpt,opts') = getOption "names" "-names" opts in
++       do xs<-readFile file
++          let names = nub$ filter (\x -> (("> prop_" `isPrefixOf` x) || ("prop_" `isPrefixOf` x)))
++	                (map (fst.head.lex.unlit) (lines xs)) 
++          if null names then
++	      putStr (file++": no properties to check\n")
++	    else do writeFile "hugsin"$
++	              unlines ((":l "++file):
++	                       [(if namesOpt=="+names" then 
++			           "putStr \""++p++": \" >> "
++				 else "") ++
++				"QuickCheck.quickCheck "++p | p<-names])
++	            system ("./ghci "++options opts'++" <hugsin")
++	            return ()
++
++isOption xs = head xs `elem` "-+"
++
++options opts = unwords ["\""++opt++"\"" | opt<-opts]
++
++getOption name def opts = 
++  let opt = head [opt | opt<-opts++[def], isPrefixOf name (drop 1 opt)] in
++    (opt, filter (/=opt) opts)
++
+addfile ./jugs.cabal
+hunk ./jugs.cabal 1
++name:			jugs
++version:		0.1
++license:		OtherLicense
++license-file:		LICENSE
++author:			Edward Kmett
++maintainer:		ekmett@gmail.com
++stability:		alpha
++homepage:		http://slipwave.info/
++synopsis:		ECMAScript 4 Language Tools for Haskell
++copyright:		Copyright (C) 2006 Edward Kmett. All Rights Reserved
++description: 		Exposes a ECMAScript 4 implementation to Haskell.
++build-depends:		plugins>=1.0
++extensions:		MultiParamTypeClasses, FunctionalDependencies, Arrows, TemplateHaskell
++exposed-modules:	Type.Binary, Type.Boolean, Type.Ord
++ghc-options:		-Wall -O -funbox-strict-fields
++hs-source-dirs:		src
+addfile ./src/Type/Binary.hs
+hunk ./src/Type/Binary.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++{-# OPTIONS -fallow-undecidable-instances #-}
++{--# OPTIONS -fallow-incoherent-instances #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Binary
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (FD and MPTC)
++--
++-- Simple type-level binary numbers, positive and negative with infinite 
++-- precision. This forms a nice commutative ring with multiplicative identity
++-- like we would expect from a representation for Z.
++--
++-- The numbers are represented as a Boolean Ring over a countable set of 
++-- variables, in which for every element in the set there exists an n
++-- such that there exists a B in {T,F} for all n' in N > n x_i = b.
++-- for uniqueness we always choose the least such n when representing numbers
++-- this allows us to run all computations backwards.
++--
++-- The goal here was to pull together all of the good ideas I've seen from
++-- various sources, and sprinkle a twos complement negative number 
++-- representation on top.
++--
++-- Reuses T and F from the Type.Boolean as the infinite tail of a 2s 
++-- complement binary number. 
++----------------------------------------------------------------------------
++
++module Type.Binary (
++	O, I, 				   -- zero or one digit
++	TBinary, fromTBinary,		   -- Infinite precision binary
++	TIsZero, TIsPositive, TIsNegative, -- Trichotomy
++	tIsZero, tIsPositive, tIsNegative,
++	LSB, tLSB, 
++	TNeg, TNot, tNot, tNeg,
++	TSucc, tSucc, tPred
++) where
++
++import Type.Boolean
++import Type.Ord
++
++data O a
++data I a
++
++-- | Internal closure, not exposed
++data Closure
++class Closed a | -> a
++instance Closed Closure
++
++class (TBool d) => LSB a d a' | a -> d a', d a' -> a
++instance LSB F F F
++instance LSB T T T
++instance LSB (O T) F T
++instance LSB (I F) T F
++instance LSB (O (O n)) F (O n)
++instance LSB (O (I n)) F (I n)
++instance LSB (I (O n)) T (O n)
++instance LSB (I (I n)) T (I n)
++tLSB :: LSB a d a' => a -> d -> a'; tLSB = undefined
++tBSL :: LSB a d a' => a' -> d -> a; tBSL = undefined
++
++-- | extract the lsb and assert we aren't at the long tail
++class LSB a d a' => X a d a' | a -> d a', d a' -> a, a a' -> d
++instance (LSB (O a) F a) => X (O a) F a
++instance (LSB (I a) T a) => X (I a) T a
++
++-- | assert 2n !=n
++class LSB (O a) F a => XO a
++instance (LSB (O a) F a) => XO a
++
++-- | assert 2n+1 !=n
++class LSB (I a) T a => XI a
++instance (LSB (I a) T a) => XI a
++
++class TSucc n m | n -> m, m -> n
++instance TSucc T F
++instance TSucc F (I F)
++instance TSucc (O T) T
++instance TSucc (O (I n)) (I (I n))
++instance TSucc (O (O n)) (I (O n))
++instance (TSucc n m, XI n, XO m) => TSucc (I n) (O m)
++tSucc :: TSucc n m => n -> m
++tSucc = undefined
++tPred :: TSucc n m => m -> n
++tPred = undefined
++
++instance Show (O F) where show n = "({-error-} O F)";
++instance Show (I T) where show n = "({-error-} I T)";
++instance Show (I F) where show n = "I F";
++instance Show (O T) where show n = "O T";
++instance (Show (I t)) => Show (O (I t)) where show n = "O (" ++ show (undefined::I t) ++ ")"
++instance (Show (I t)) => Show (I (I t)) where show n = "I (" ++ show (undefined::I t) ++ ")" 
++instance (Show (O t)) => Show (O (O t)) where show n = "O (" ++ show (undefined::O t) ++ ")"
++instance (Show (O t)) => Show (I (O t)) where show n = "I (" ++ show (undefined::O t) ++ ")"
++
++class TCBinary c a | a -> c
++instance TCBinary Closure F
++instance TCBinary Closure T
++instance (TCBinary c a, XO a) => TCBinary c (O a)
++instance (TCBinary c a, XI a) => TCBinary c (I a)
++
++class TCBinary Closure a => TBinary a where fromTBinary :: Integral b => a -> b 
++instance TBinary F where fromTBinary _ = fromInteger 0
++instance TBinary T where fromTBinary _ = fromInteger (-1)
++instance (TBinary a, XO a) => TBinary (O a) where fromTBinary _ = let x = fromTBinary (undefined::a) in x+x
++instance (TBinary a, XI a) => TBinary (I a) where fromTBinary _ = let x = fromTBinary (undefined::a) in succ(x+x)
++
++instance (TNot a b) => TNot (O a) (I b)
++instance (TNot a b) => TNot (I a) (O b)
++
++neg_two  = undefined :: O T
++neg_one	 = undefined :: T
++zero 	 = undefined :: F
++one 	 = undefined :: I F
++two 	 = undefined :: O(I F)
++three	 = undefined :: I(I F)
++four 	 = undefined :: O(O(I F))
++five     = undefined :: I(O(I F))
++six  	 = undefined :: O(I(I F))
++seven 	 = undefined :: I(I(I F))
++eight :: O(O(O(I F))); eight = undefined
++nine     = undefined :: I(O(O(I F)))
++ten      = undefined :: O(I(O(I F)))
++eleven   = undefined :: I(I(O(I F)))
++twelve   = undefined :: O(O(I(I F)))
++thirteen = undefined :: I(O(I(I F)))
++fourteen = undefined :: O(O(I(I F)))
++fifteen  = undefined :: I(O(I(I F)))
++sixteen :: O(O(O(O(I F))));sixteen  = undefined
++seventeen= undefined :: I(O(O(O(I F))))
++eighteen = undefined :: O(I(O(O(I F))))
++nineteen = undefined :: I(I(O(O(I F))))
++twenty_  = undefined :: O(O(I(O(I F))))
++--twenty _ = undefined :: TAdd O(O(I(O(I F)))) a b => a -> b
++
++instance TEq (I m) (O n) F
++instance TEq (O m) (I n) F
++instance TEq (O m) F F
++instance TEq (O m) T F
++instance TEq (I m) T F
++instance TEq (I m) F F
++instance (TEq m n b) => TEq (I m) (I n) b
++instance (TEq m n b) => TEq (O m) (O n) b
++
++class TNeg a b | a -> b, b -> a
++instance (TNot a b, TSucc b c) => TNeg a c
++tNeg :: TNeg a b => a -> b
++tNeg = undefined
++
++data IsNegative
++data IsZero
++data IsPositive
++
++class TCSign c a | a -> c
++instance TCSign Closure IsNegative
++instance TCSign Closure IsPositive
++instance TCSign Closure IsZero
++
++class TCSign Closure s => TSign s
++instance TSign IsNegative
++instance TSign IsZero
++instance TSign IsPositive
++
++instance TEq IsNegative IsNegative T
++instance TEq IsNegative IsZero F
++instance TEq IsNegative IsPositive F
++instance TEq IsZero IsNegative F
++instance TEq IsZero IsZero T
++instance TEq IsZero IsPositive F
++instance TEq IsPositive IsNegative F
++instance TEq IsPositive IsZero F
++instance TEq IsPositive IsPositive T
++
++class Trichotomy n s | n -> s
++instance Trichotomy T IsNegative
++instance Trichotomy F IsZero
++instance Trichotomy (I F) IsPositive
++instance Trichotomy (O T) IsNegative
++instance (Trichotomy a b, XI a) => Trichotomy (I (I a)) b
++instance (Trichotomy a b, XI a) => Trichotomy (O (I a)) b
++instance (Trichotomy a b, XO a) => Trichotomy (I (O a)) b
++instance (Trichotomy a b, XO a) => Trichotomy (O (O a)) b
++
++class TIsPositive n b | n -> b
++instance (Trichotomy n s, TEq s IsPositive b)  => TIsPositive n b
++tIsPositive :: TIsPositive n b => n -> b; tIsPositive = undefined 
++
++class TIsNegative n b | n -> b
++instance (Trichotomy n s, TEq s IsNegative b)  => TIsNegative n b
++tIsNegative :: TIsNegative n b => n -> b; tIsNegative = undefined
++
++class TIsZero n b | n -> b
++instance (Trichotomy n s, TEq s IsZero b)  => TIsZero n b
++tIsZero :: TIsZero n b => n -> b; tIsZero = undefined 
++
++class TEven a b | a -> b
++instance LSB a b c => TEven a b
++tEven :: (TEven a b) => a -> b; tEven = undefined
++
++class TOdd a b | a -> b
++instance (LSB a b c, TNot b b') => TOdd a b'
++tOdd :: (TOdd a b) => a -> b; tOdd = undefined
++
++-- | nice adder with carry. does not yield normal form answers.
++class TAddC a b c d | a b c -> d
++instance TAddC F F F F 
++instance TAddC T F T F
++instance TAddC F T F T 
++instance TAddC T T T T
++instance TAddC T F F T
++instance TAddC F T T F
++instance TAddC F F T (I F) 
++instance TAddC T T F (O T)
++instance TAddC F (O a) F (O a) 
++instance TAddC T (O a) T (O a)
++instance TAddC F (I a) F (I a) 
++instance TAddC T (I a) T (I a)
++instance TAddC (O a) F F (O a) 
++instance TAddC (O a) T T (O a)
++instance TAddC (I a) F F (I a) 
++instance TAddC (I a) T T (I a)
++instance TAddC F (O a) T (I a) 
++instance TAddC T (I a) F (O a)
++instance TAddC (O a) F T (I a) 
++instance TAddC (I a) T F (O a)
++instance TSucc a b => TAddC F (I a) T (O b) 
++instance TSucc b a => TAddC T (O a) F (I b)
++instance TSucc a b => TAddC (I a) F T (O b) 
++instance TSucc b a => TAddC (O a) T F (I b)
++instance TAddC a b F c => TAddC (O a) (O b) F (O c) 
++instance TAddC a b F c => TAddC (O a) (O b) T (I c)
++instance TAddC a b F c => TAddC (I a) (O b) F (I c) 
++instance TAddC a b T c => TAddC (I a) (O b) T (O c)
++instance TAddC a b F c => TAddC (O a) (I b) F (I c) 
++instance TAddC a b T c => TAddC (O a) (I b) T (O c)
++instance TAddC a b T c => TAddC (I a) (I b) F (O c) 
++instance TAddC a b T c => TAddC (I a) (I b) T (I c)
++tAddC :: TAddC a b c d => a -> b -> c -> d
++tAddC = undefined
++
++class TNF' a b c | a -> b c
++instance TNF' F F F
++instance TNF' T T F
++instance TNF' (O F) F F
++instance TNF' (I T) T F
++instance TNF' (I F) (I F) T
++instance TNF' (O T) (O T) T
++instance (TNF' (I a) c b, TIf b (I c) T d) => TNF' (I (I a)) d b
++instance (TNF' (O a) c b, TIf b (O c) F d) => TNF' (O (O a)) d b
++instance (TNF' (O a) c b) 		   => TNF' (I (O a)) (I c) T
++instance (TNF' (I a) c b) 		   => TNF' (O (I a)) (O c) T
++
++class TNF a b | a -> b
++instance TNF' a b c => TNF a b
++tNF :: TNF a b => a -> b
++tNF = undefined
++tAdd :: (TAddC a b F d, TNF d d') => a -> b -> d'
++tAdd = undefined
++
+addfile ./src/Type/Boolean.hs
+hunk ./src/Type/Boolean.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Boolean
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (FD and MPTC. no constructor data types)
++--
++-- Simple closed type-level booleans. 
++----------------------------------------------------------------------------
++
++module Type.Boolean (
++    TBool, 
++    F, T, 
++    tT, tF,
++    TAnd, TOr, TNot, TXOr, TImplies, TIf,
++    tAnd, tOr, tNot, tXOr, tImplies, tIf
++) where
++
++data Closure
++class Closed a | -> a
++instance Closed Closure
++
++data T; tT :: T; tT = undefined
++data F; tF :: F; tF = undefined
++
++-- |We have a closed set of possible booleans
++class (Closed c) => TCBool c x | x -> c
++instance TCBool Closure T
++instance TCBool Closure F
++
++-- |...and every boolean is in that set.
++-- This lets us avoid carrying the closure parameter around
++class (TCBool Closure x) => TBool x where fromTBool :: x -> Bool
++instance TBool T where fromTBool _ = True
++instance TBool F where fromTBool _ = False
++
++-- | Let them be shown
++instance Show T where show _ = "T"
++instance Show F where show _ = "F"
++
++-- | Type-Level a `and` b = c
++class TAnd a b c | a b -> c
++instance TAnd F F F
++instance TAnd T F F
++instance TAnd F T F
++instance TAnd T T T
++tAnd :: TAnd a b c => a -> b -> c
++tAnd = undefined 
++
++-- | Type-Level a `or` b = c
++class TOr a b c | a b -> c
++instance TOr F F F
++instance TOr F T T
++instance TOr T F T
++instance TOr T T T
++tOr :: TOr a b c => a -> b -> c
++tOr = undefined
++
++-- | Type-Level: a `xor` b = c
++class TXOr a b c | a b -> c, a c -> b, b c -> a
++instance TXOr F F F
++instance TXOr F T T
++instance TXOr T F T
++instance TXOr T T F
++tXOr :: TXOr a b c => a -> b -> c
++tXOr = undefined
++
++-- | Type-Level: a `implies` b = c
++class TImplies a b c | a b -> c
++instance TImplies F F T
++instance TImplies F T T
++instance TImplies T F F
++instance TImplies T T T
++tImplies :: TImplies a b c => a -> b -> c
++tImplies = undefined
++
++-- | Type-Level: not a 
++class TNot a b | a -> b, b -> a
++instance TNot T F
++instance TNot F T
++tNot :: TNot a b => a -> b
++tNot = undefined
++
++-- | Type-Level: if t then x else y
++class TIf t x y z | t x y -> z where tIf :: t -> x -> y -> z
++instance TIf F x y y where tIf _ _ y = y
++instance TIf T x y x where tIf _ x _ = x
+addfile ./src/Type/Ord.hs
+hunk ./src/Type/Ord.hs 1
++{-# OPTIONS -fglasgow-exts #-}
++{-# OPTIONS -fallow-undecidable-instances #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Ord
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (FD and MPTC, undecidable-instances)
++--
++-- Simple equality and ordering for types.
++-- Extended to include common usage cases.
++--
++-- Instances should all really be decidable.
++----------------------------------------------------------------------------
++
++module Type.Ord 
++	( TEq, tEq
++	, TLt, tLt
++	, TGe, tGe -- closed, extend via TEq/TLt
++	, TLe, tLe -- closed, extend via TEq/TLt
++	, TGt, tGt -- closed, extend via TEq/TLt
++) where 
++
++import Type.Boolean
++
++data Closure
++class Closed a | -> a
++instance Closed Closure
++
++-- two open classes
++class TBool b => TEq x y b | x y -> b
++instance TEq T T T 
++instance TEq T F F
++instance TEq F T F
++instance TEq F F T
++tEq :: TEq x y b => x -> y -> b; 
++tEq = undefined
++
++class TBool b => TLt x y b | x y -> b
++tLt :: TLt x y b => x -> y -> b
++tLt = undefined
++
++class TBool b => TCGe c x y b | x y -> b, x y b -> c
++instance (TBool b', TLt x y b, TNot b b') => TCGe Closure x y b'
++class TCGe Closure x y b => TGe x y b | x y -> b
++instance (TBool b', TLt x y b, TNot b b') => TGe x y b'
++tGe :: TGe x y b => x -> y -> b
++tGe = undefined
++
++class TBool b => TCLe c x y b | x y -> b, x y b -> c
++instance (TBool b'', TEq x y b, TLt x y b', TOr b b' b'') => TCLe Closure x y b''
++class TBool b => TLe x y b | x y -> b
++instance (TBool b'', TEq x y b, TLt x y b', TOr b b' b'') => TLe x y b''
++tLe :: TGt x y b => x -> y -> b
++tLe = undefined
++
++class TBool b => TCGt c x y b | x y -> b, x y b -> c
++instance (TBool b', TLe x y b, TNot b b') => TCGt Closure x y b'
++class TBool b => TGt x y b | x y -> b
++instance (TBool b', TLe x y b, TNot b b') => TGt x y b'
++tGt :: TGt x y b => x -> y -> b
++tGt = undefined
+}

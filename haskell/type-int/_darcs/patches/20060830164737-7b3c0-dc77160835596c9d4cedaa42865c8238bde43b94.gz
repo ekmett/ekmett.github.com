@@ -1,0 +1,45 @@
+[Removed Type.Maybe
+ekmett@gmail.com**20060830164737] {
+hunk ./jugs.cabal 27
+-	Type.Maybe
+hunk ./src/Type/Maybe.hs 1
+-{-# OPTIONS -fglasgow-exts #-}
+------------------------------------------------------------------------------
+--- |
+--- Module      :  Type.Maybe
+--- Copyright   :  (C) 2006 Edward Kmett
+--- License     :  BSD-style (see the file LICENSE)
+---
+--- Maintainer  :  Edward Kmett <ekmett@gmail.com>
+--- Stability   :  experimental
+--- Portability :  non-portable (MPTC)
+---
+--- Simple type-level Maybe w/ Just/Nothing Types
+-----------------------------------------------------------------------------
+-
+-module Type.Maybe (
+-	TNothing(..), tNothing,
+-	TJust(..), tJust,
+-	TFromJust, tFromJust,
+-	TMaybe
+-) where
+-
+-data TNothing
+-tNothing :: TNothing
+-tNothing = undefined
+-
+-data TJust x
+-tJust :: t -> TJust t 
+-tJust = undefined
+-tFromJust :: TJust t -> t
+-tFromJust = undefined
+-
+--- |todo get precedence right
+-instance Show TNothing where show _ = "TNothing"
+-instance (TJust a, Show a) => Show (TJust a) where show x = "TJust " ++ show (tFromJust x)
+-
+-class TMaybe a b
+-instance TMaybe TNothing b
+-instance TMaybe (TJust b) b
+rmfile ./src/Type/Maybe.hs
+}

@@ -1,0 +1,12 @@
+[simplified data.monoid.categorical
+ekmett@gmail.com**20090327073632] {
+hunk ./Data/Monoid/Categorical.hs 1
+-{-# LANGUAGE TypeOperators, GADTs #-}
++{-# LANGUAGE GADTs #-}
+hunk ./Data/Monoid/Categorical.hs 14
+-data Endo (~>) a = Endo { getEndo :: a ~> a } 
++data Endo k a = Endo { getEndo :: k a a } 
+hunk ./Data/Monoid/Categorical.hs 16
+-instance Category (~>) => Monoid (Endo (~>) a) where
++instance Category k =>  Monoid (Endo k a) where
+}

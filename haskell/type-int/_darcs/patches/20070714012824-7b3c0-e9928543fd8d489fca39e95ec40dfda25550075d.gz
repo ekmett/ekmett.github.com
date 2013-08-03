@@ -1,0 +1,11 @@
+[twitches
+ekmett@gmail.com**20070714012824] {
+hunk ./type-int.cabal 2
++category:		Type
+hunk ./type-int.cabal 11
+-synopsis:		Type Level 2s- and 16s- Complement Integers
++synopsis:		Type Level 2s- and 16s- Complement Integers (Positive and Negative), Booleans, Ord and Eq
+hunk ./type-int.cabal 13
+-description: 		Type Level 2s- and 16s- Complement Integers 
++description: 		Type Level 2s- and 16s- Complement Integers (Positive and Negative), Booleans, Ord and Eq
+}

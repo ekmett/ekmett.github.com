@@ -1,0 +1,35 @@
+[copyright cleanup
+ekmett@gmail.com**20090405152422
+ Ignore-this: 7259ebc4ee69f462df74fa692b89f2fe
+] {
+hunk ./Data/Ring/Semi/BitSet.hs 6
+--- Copyright   :  (c) Edward Kmett 2009.
++-- Copyright   :  (c) Edward Kmett 2009. 
++--                Based on Data.BitSet (c) Denis Bueno 2008-2009
+hunk ./Data/Ring/Semi/BitSet.hs 24
+-    -- * manipulation
++    -- * Manipulation
+hunk ./Data/Ring/Semi/BitSet.hs 27
+-    , null
+hunk ./Data/Ring/Semi/BitSet.hs 28
++    , union
++    , intersection
+hunk ./Data/Ring/Semi/BitSet.hs 34
+-    -- * Construction
+hunk ./Data/Ring/Semi/BitSet.hs 36
+-    -- * Destruction
+-    , toInteger
+-    -- * Membership
++    -- * Acessors
+hunk ./Data/Ring/Semi/BitSet.hs 38
+-    -- * Size
++    , null
+hunk ./Data/Ring/Semi/BitSet.hs 41
++    , toInteger
+hunk ./Data/Ring/Semi/BitSet.hs 273
+--- TODO finish
+-instance Ord (BitSet a) where
+-    BS _ _ _ l _ m _ `compare` BS _ _ _ l' _ m' _ = shift m (l'' - l) `compare` shift m' (l'' - l) where l'' = min l l'
++-- instance Ord (BitSet a) where
++--    BS _ _ _ l _ m _ `compare` BS _ _ _ l' _ m' _ = shift m (l'' - l) `compare` shift m' (l'' - l) where l'' = min l l'
+}

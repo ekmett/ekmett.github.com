@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Curried Scheme</title>
+	<atom:link href="http://comonad.com/reader/2009/curried-scheme/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2009/curried-scheme/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sun, 18 Nov 2012 17:21:31 -0500</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Gary Ballin</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-41360</link>
+		<dc:creator>Gary Ballin</dc:creator>
+		<pubDate>Thu, 03 Mar 2011 17:14:43 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-41360</guid>
+		<description>Thanks for sharing, I`ll come back and check one of the other posts you have written. See ya.</description>
+		<content:encoded><![CDATA[<p>Thanks for sharing, I`ll come back and check one of the other posts you have written. See ya.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Yi DAI</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-17384</link>
+		<dc:creator>Yi DAI</dc:creator>
+		<pubDate>Mon, 07 Jun 2010 10:37:05 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-17384</guid>
+		<description>A cleaned version:
+
+
+(define-syntax curried-lambda
+  (syntax-rules ()
+    ((_ () exp exps ...)
+     (lambda as
+       (cond ((null? as) exp exps ...)
+             (else (apply (begin exp exps ...) as)))))
+    ((_ (arg args ...) exp exps ...)
+     (letrec ((papp (lambda as
+                      (cond ((null? as) papp)
+                            (else (let ((arg (car as)))
+                              (apply (curried-lambda (args ...) exp exps ...) (cdr as))))))))
+             papp))))
+</description>
+		<content:encoded><![CDATA[<p>A cleaned version:</p>
+<p>(define-syntax curried-lambda<br />
+  (syntax-rules ()<br />
+    ((_ () exp exps &#8230;)<br />
+     (lambda as<br />
+       (cond ((null? as) exp exps &#8230;)<br />
+             (else (apply (begin exp exps &#8230;) as)))))<br />
+    ((_ (arg args &#8230;) exp exps &#8230;)<br />
+     (letrec ((papp (lambda as<br />
+                      (cond ((null? as) papp)<br />
+                            (else (let ((arg (car as)))<br />
+                              (apply (curried-lambda (args &#8230;) exp exps &#8230;) (cdr as))))))))<br />
+             papp))))</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11379</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Mon, 31 Aug 2009 19:01:10 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11379</guid>
+		<description>Hi Dan,
+
+The code above provides both.
+
+(define id (curried (x) x))
+
+uses the lambda form (perhaps &#039;curried&#039; should be renamed &#039;curried-lambda&#039; ?)
+
+On the other hand,
+
+(define-curried (id x) x)
+
+provides a definition with a curried argument list in the same fashion that (define (id x) x) desugars to (define id (lambda (x) x)) --  a convenience that I seem to recall you don&#039;t like using. ;)</description>
+		<content:encoded><![CDATA[<p>Hi Dan,</p>
+<p>The code above provides both.</p>
+<p>(define id (curried (x) x))</p>
+<p>uses the lambda form (perhaps &#8216;curried&#8217; should be renamed &#8216;curried-lambda&#8217; ?)</p>
+<p>On the other hand,</p>
+<p>(define-curried (id x) x)</p>
+<p>provides a definition with a curried argument list in the same fashion that (define (id x) x) desugars to (define id (lambda (x) x)) &#8212;  a convenience that I seem to recall you don&#8217;t like using. ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dan Friedman</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11378</link>
+		<dc:creator>Dan Friedman</dc:creator>
+		<pubDate>Mon, 31 Aug 2009 18:10:07 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11378</guid>
+		<description>Ed,
+
+I noticed that one of the comments mentioned using a curried lambda.  I think that having
+a curried lambda instead of a curried define
+makes much more sense, given that the define 
+is like let/letrec/  etc., but it is lambda that absorbs values. 
+
+... Dan</description>
+		<content:encoded><![CDATA[<p>Ed,</p>
+<p>I noticed that one of the comments mentioned using a curried lambda.  I think that having<br />
+a curried lambda instead of a curried define<br />
+makes much more sense, given that the define<br />
+is like let/letrec/  etc., but it is lambda that absorbs values. </p>
+<p>&#8230; Dan</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11358</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 30 Aug 2009 19:13:45 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11358</guid>
+		<description>@Anthony:
+
+It looks like my parametricity concern was a bit of a misapprehension. I wasn&#039;t able to concoct a scenario where it led to a problem. ;)
+
+If we ignore the existence of nullary functions the new version works really well, as would, I suppose, your fix.</description>
+		<content:encoded><![CDATA[<p>@Anthony:</p>
+<p>It looks like my parametricity concern was a bit of a misapprehension. I wasn&#8217;t able to concoct a scenario where it led to a problem. ;)</p>
+<p>If we ignore the existence of nullary functions the new version works really well, as would, I suppose, your fix.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Anthony Cowley</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11343</link>
+		<dc:creator>Anthony Cowley</dc:creator>
+		<pubDate>Sun, 30 Aug 2009 03:42:59 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11343</guid>
+		<description>Edward,
+
+I like your fix; a definite improvement! Can you offer more detail on your parametricity concern, though? Like many others, I, too, have a toy monad library in my collection, but it&#039;s not obvious to me how this situation with my proposed patch raises a problem in that area.</description>
+		<content:encoded><![CDATA[<p>Edward,</p>
+<p>I like your fix; a definite improvement! Can you offer more detail on your parametricity concern, though? Like many others, I, too, have a toy monad library in my collection, but it&#8217;s not obvious to me how this situation with my proposed patch raises a problem in that area.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11341</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sun, 30 Aug 2009 02:46:29 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11341</guid>
+		<description>@Phil:
+
+Nice macro. =) While, alas, it doesn&#039;t handle over or null application, it is really succinct!</description>
+		<content:encoded><![CDATA[<p>@Phil:</p>
+<p>Nice macro. =) While, alas, it doesn&#8217;t handle over or null application, it is really succinct!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Phil</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11340</link>
+		<dc:creator>Phil</dc:creator>
+		<pubDate>Sun, 30 Aug 2009 01:27:44 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11340</guid>
+		<description>There is a curried lambda at http://programmingpraxis.com/standard-prelude.</description>
+		<content:encoded><![CDATA[<p>There is a curried lambda at <a href="http://programmingpraxis.com/standard-prelude." rel="nofollow">http://programmingpraxis.com/standard-prelude.</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11336</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Sat, 29 Aug 2009 20:24:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11336</guid>
+		<description>@Anthony: 
+
+Good point. I was trying to avoid discriminating, so I could just work parametrically, but a quick procedure? check isn&#039;t such a high price to pay to handle the base case more gracefully. 
+
+I have two concerns with this proposed fix though. 
+
+&lt;ol&gt;
+&lt;li&gt;One is that this will silently eat the remaining arguments when you try to handle a non-procedure. Perhaps it should do the null? check on args rather than swallow them in the non-procedure case.&lt;/li&gt;
+&lt;li&gt;The other is more subtle and has to do with parametricity. Since we now may or may not invoke the result, I might not be able to use this in a number of situations inside of my toy monad library.&lt;/li&gt;
+&lt;/ol&gt;
+
+By redefining (define-curried name body) to just use a define and migrating its current behavior to (define-curried (name) body) this obtains, perhaps a more pleasing result. Patching it thus:
+
+&lt;pre lang=&quot;scheme&quot;&gt;
+((_ () body)
+     (lambda args
+         (if (null? args)
+             body
+             (apply body args))))
+&lt;/pre&gt;
+
+yields a result that is identical to the handling of the other two cases in behavior.
+
+Then (define-curried x 5) does the right thing, and just gives you 5.
+and (define-curried (x) 5) gives you a nullary function that when invoked will give you back 5, but will try to pass any superfluous over-applied arguments to 5 and crash.</description>
+		<content:encoded><![CDATA[<p>@Anthony: </p>
+<p>Good point. I was trying to avoid discriminating, so I could just work parametrically, but a quick procedure? check isn&#8217;t such a high price to pay to handle the base case more gracefully. </p>
+<p>I have two concerns with this proposed fix though. </p>
+<ol>
+<li>One is that this will silently eat the remaining arguments when you try to handle a non-procedure. Perhaps it should do the null? check on args rather than swallow them in the non-procedure case.</li>
+<li>The other is more subtle and has to do with parametricity. Since we now may or may not invoke the result, I might not be able to use this in a number of situations inside of my toy monad library.</li>
+</ol>
+<p>By redefining (define-curried name body) to just use a define and migrating its current behavior to (define-curried (name) body) this obtains, perhaps a more pleasing result. Patching it thus:</p>
+<pre lang="scheme">
+((_ () body)
+     (lambda args
+         (if (null? args)
+             body
+             (apply body args))))
+</pre>
+<p>yields a result that is identical to the handling of the other two cases in behavior.</p>
+<p>Then (define-curried x 5) does the right thing, and just gives you 5.<br />
+and (define-curried (x) 5) gives you a nullary function that when invoked will give you back 5, but will try to pass any superfluous over-applied arguments to 5 and crash.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Anthony Cowley</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/comment-page-1/#comment-11333</link>
+		<dc:creator>Anthony Cowley</dc:creator>
+		<pubDate>Sat, 29 Aug 2009 18:27:57 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145#comment-11333</guid>
+		<description>I don&#039;t know if this is a concern, but the define-curried form isn&#039;t quite right for suspended non-lambda value bindings. For instance, if you have (define-curried x 5), then it&#039;s rather hard to get the 5 out. One option for the first case of the curried macro is to check that &quot;body&quot; evaluates to a procedure, and then apply it to whatever args you&#039;re given (living with arity errors), while returning its normal form otherwise. One has to be careful to not evaluate &quot;body&quot; twice in case it&#039;s the side effect that matters. 
+
+One option might be,
+    ((_ () body) 
+     (λ args (let ((r body))
+                    (if (procedure? r)
+                        (apply r args)
+                        r))))
+
+Then I can have something like,
+(define-curried x (begin (printf &quot;hi~n&quot;) 5))
+that does the right thing, afaict.</description>
+		<content:encoded><![CDATA[<p>I don&#8217;t know if this is a concern, but the define-curried form isn&#8217;t quite right for suspended non-lambda value bindings. For instance, if you have (define-curried x 5), then it&#8217;s rather hard to get the 5 out. One option for the first case of the curried macro is to check that &#8220;body&#8221; evaluates to a procedure, and then apply it to whatever args you&#8217;re given (living with arity errors), while returning its normal form otherwise. One has to be careful to not evaluate &#8220;body&#8221; twice in case it&#8217;s the side effect that matters. </p>
+<p>One option might be,<br />
+    ((_ () body)<br />
+     (λ args (let ((r body))<br />
+                    (if (procedure? r)<br />
+                        (apply r args)<br />
+                        r))))</p>
+<p>Then I can have something like,<br />
+(define-curried x (begin (printf &#8220;hi~n&#8221;) 5))<br />
+that does the right thing, afaict.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Localized -->

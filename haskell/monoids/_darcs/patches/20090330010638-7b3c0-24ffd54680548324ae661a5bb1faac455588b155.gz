@@ -1,0 +1,5 @@
+[added Data.Reflection
+ekmett@gmail.com**20090330010638] {
+hunk ./monoids.cabal 58
++    Data.Reflection
+}

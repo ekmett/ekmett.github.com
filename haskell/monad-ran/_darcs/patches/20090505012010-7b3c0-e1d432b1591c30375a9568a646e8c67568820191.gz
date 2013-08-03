@@ -1,0 +1,130 @@
+[namespace cleanup, proper MonadFix instances
+ekmett@gmail.com**20090505012010
+ Ignore-this: 5eec2a51437973d9b97a4d07ceabb5ad
+] {
+hunk ./Control/Monad/Ran.hs 18
++    , returnRanCodensity
++    , bindRanCodensity
++    , apRanCodensity
++    , ranCodensity
++    , codensityRan
++    , liftRanCodensity
++    , lowerRanCodensity
++    , liftRanWorld
++    , lowerRanWorld
+hunk ./Control/Monad/Ran.hs 61
+-returnCodensity :: (RanIso m, G m ~ H m) => a -> Ran m a
+-returnCodensity a = Ran (\k -> k a)
++returnRanCodensity :: (RanIso m, G m ~ H m) => a -> Ran m a
++returnRanCodensity a = Ran (\k -> k a)
+hunk ./Control/Monad/Ran.hs 64
+-bindCodensity :: (RanIso m, G m ~ H m) => Ran m a -> (a -> Ran m b) -> Ran m b
+-bindCodensity (Ran m) k = Ran (\c -> m (\a -> getRan (k a) c))
++bindRanCodensity :: (RanIso m, G m ~ H m) => Ran m a -> (a -> Ran m b) -> Ran m b
++bindRanCodensity (Ran m) k = Ran (\c -> m (\a -> getRan (k a) c))
+hunk ./Control/Monad/Ran.hs 67
+-apCodensity :: (RanIso m, G m ~ H m) => Ran m (a -> b) -> Ran m a -> Ran m b
+-apCodensity (Ran f) (Ran x) = Ran (\k -> f (\f' -> x (k . f')))
++apRanCodensity :: (RanIso m, G m ~ H m) => Ran m (a -> b) -> Ran m a -> Ran m b
++apRanCodensity (Ran f) (Ran x) = Ran (\k -> f (\f' -> x (\x' -> k (f' x'))))
++
++liftRanCodensity :: (RanIso m, G m ~ H m, Monad (G m)) => G m a -> Ran m a
++liftRanCodensity f = Ran (f >>=)
++
++lowerRanCodensity :: (RanIso m, G m ~ H m, Monad (G m)) => Ran m a -> G m a 
++lowerRanCodensity (Ran f) = f return
++
++mfixRanCodensity :: (RanIso m, G m ~ H m, MonadFix (G m)) => (a -> Ran m a) -> Ran m a
++mfixRanCodensity f = liftRanCodensity $ mfix (lowerRanCodensity . f)
++
++mfixRan :: (RanIso m, MonadFix m) => (a -> Ran m a) -> Ran m a
++mfixRan f = liftRan $ mfix (lowerRan . f)
+hunk ./Control/Monad/Ran.hs 93
+-    liftRan (Codensity f) = Ran f
+-    lowerRan (Ran f) = Codensity f
++    liftRan = codensityRan
++    lowerRan = ranCodensity
+hunk ./Control/Monad/Ran.hs 97
+-ranCodensity = lowerRan
++ranCodensity (Ran f) = Codensity f
+hunk ./Control/Monad/Ran.hs 100
+-codensityRan = liftRan
+-
+-liftRanCodensity :: Monad f => f a -> Ran (Codensity f) a
+-liftRanCodensity f = Ran (f >>=)
+-
+-lowerRanCodensity :: Monad f => Ran (Codensity f) a -> f a 
+-lowerRanCodensity (Ran f) = f return
++codensityRan (Codensity f) = Ran f
+hunk ./Control/Monad/Ran.hs 103
+-    point = returnCodensity
++    point = returnRanCodensity
+hunk ./Control/Monad/Ran.hs 106
+-    pure = returnCodensity
+-    (<*>) = apCodensity
++    pure = returnRanCodensity
++    (<*>) = apRanCodensity
+hunk ./Control/Monad/Ran.hs 110
+-    return = returnCodensity
+-    (>>=) = bindCodensity
++    return = returnRanCodensity
++    (>>=) = bindRanCodensity
+hunk ./Control/Monad/Ran.hs 157
+-    point = returnCodensity
++    point = returnRanCodensity
+hunk ./Control/Monad/Ran.hs 160
+-    pure = returnCodensity
+-    (<*>) = apCodensity
++    pure = returnRanCodensity
++    (<*>) = apRanCodensity
+hunk ./Control/Monad/Ran.hs 164
+-    return = returnCodensity
+-    (>>=) = bindCodensity
++    return = returnRanCodensity
++    (>>=) = bindRanCodensity
+hunk ./Control/Monad/Ran.hs 190
+-    pure = returnCodensity
+-    (<*>) = apCodensity
++    pure = returnRanCodensity
++    (<*>) = apRanCodensity
+hunk ./Control/Monad/Ran.hs 194
+-    return = returnCodensity
+-    (>>=) = bindCodensity
++    return = returnRanCodensity
++    (>>=) = bindRanCodensity
+hunk ./Control/Monad/Ran.hs 200
++instance MonadFix (Ran IO) where
++    mfix = mfixRan
++
+hunk ./Control/Monad/Ran.hs 211
+-    pure = returnCodensity
+-    (<*>) = apCodensity
++    pure = returnRanCodensity
++    (<*>) = apRanCodensity
+hunk ./Control/Monad/Ran.hs 215
+-    return = returnCodensity
+-    (>>=) = bindCodensity
++    return = returnRanCodensity
++    (>>=) = bindRanCodensity
++
++instance MonadFix (Ran (ST s)) where
++    mfix f = liftRan $ fixST (lowerRan . f)
+hunk ./Control/Monad/Ran.hs 231
+-    pure = returnCodensity
+-    (<*>) = apCodensity
++    pure = returnRanCodensity
++    (<*>) = apRanCodensity
+hunk ./Control/Monad/Ran.hs 235
+-    return = returnCodensity
+-    (>>=) = bindCodensity
++    return = returnRanCodensity
++    (>>=) = bindRanCodensity
+hunk ./Control/Monad/Ran.hs 238
++-- why is there no MonadFix instance for STM?
+hunk ./Control/Monad/Ran.hs 267
++instance MonadFix (Ran Maybe) where
++    mfix f = m where
++        m = f (unJust m)
++        unJust (Ran r) = appEndo (r Identity) (error "mfix (Ran Maybe): Nothing")
++
+}

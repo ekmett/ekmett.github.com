@@ -1,0 +1,11 @@
+[bump
+ekmett@gmail.com**20090409090656
+ Ignore-this: ba9ef625f1987f3ef581edf308555914
+] {
+hunk ./monoids.cabal 2
+-version:	    0.1.35
++version:	    0.1.36
+hunk ./monoids.cabal 14
+-cabal-version:  >=1.2
++cabal-version:  >=1.2.3
+}

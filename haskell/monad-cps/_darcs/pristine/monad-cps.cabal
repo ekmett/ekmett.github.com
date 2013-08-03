@@ -1,0 +1,34 @@
+name:               monad-cps
+version:            0.0.3
+cabal-version:      >= 1.6
+build-type:         Simple
+license:            BSD3
+license-file:       LICENSE
+category:           Control
+author:             Matt Morrow, Edward Kmett
+copyright:          (c) Matt Morrow 2008, (c) Edward Kmett 2009
+maintainer:         Edward Kmett <ekmett@gmail.com>
+stability:          experimental
+synopsis:           CPS implementations of common monads.
+description:        .
+
+library
+  hs-source-dirs:   src
+  ghc-options:      -O2
+  build-depends:    mtl >= 1.1 && < 1.2
+  extensions:       MultiParamTypeClasses, 
+                    FlexibleContexts,
+                    FlexibleInstances,
+                    Rank2Types, 
+                    GeneralizedNewtypeDeriving
+  build-depends:    base
+  exposed-modules:  Control.Monad.CPS,
+                    Control.Monad.CPS.Codensity,
+                    Control.Monad.CPS.Cont,
+                    Control.Monad.CPS.Identity,
+                    Control.Monad.CPS.Maybe,
+                    Control.Monad.CPS.Ran,
+                    Control.Monad.CPS.Reader,
+                    Control.Monad.CPS.RWS,
+                    Control.Monad.CPS.State,
+                    Control.Monad.CPS.Writer

@@ -1,0 +1,567 @@
+[lexical-monoids package created
+ekmett@gmail.com**20090322151615] {
+adddir ./Data
+adddir ./Data/Monoid
+adddir ./Data/Monoid/Lexical
+adddir ./Data/Monoid/Lexical/UTF8
+addfile ./Data/Monoid/Lexical.hs
+hunk ./Data/Monoid/Lexical.hs 1
++{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}
++module Data.Monoid.Lexical
++    ( module Data.Monoid
++    , Lexer
++    , lex, affix, prefix
++    , Generator
++    , lexMany, affixMany, prefixMany
++    , CharLexer
++    , invalid_char
++    , WithLexer(WithLexer, runWithLexer)
++    , prelex
++    , unlex
++    ) where
++
++import Prelude hiding (lex)
++import Data.Monoid (Monoid, mempty, mappend)
++import Data.Word (Word8)
++import Data.Text (Text)
++import Data.FingerTree
++import Data.Foldable (fold,foldMap)
++import qualified Data.Text as Text
++import qualified Data.ByteString as Strict
++import qualified Data.ByteString.Lazy as Lazy
++import Control.Parallel.Strategies
++
++-- minimal definition affix or lex
++class Monoid m => c `Lexer` m where
++    lex :: c -> m 
++    affix :: m -> c -> m
++    prefix :: c -> m -> m 
++
++    lex = affix mempty 
++    affix m c = m `mappend` lex c
++    prefix c m = lex c `mappend` m
++
++class Lexer Char m => CharLexer m where
++    -- extra functionality used by the utf8-decoder monoid
++    invalid_char :: [Word8] -> m
++    invalid_char = const mempty
++
++instance (Lexer c m, Lexer c m') => Lexer c (m,m') where
++    lex x = (lex x,lex x)
++    affix (m,m') x = (affix m x, affix m' x)
++    prefix x (m,m') = (prefix x m, prefix x m')
++
++instance (Lexer c m, Lexer c m', Lexer c m'') => Lexer c (m,m',m'') where
++    lex x = (lex x,lex x, lex x)
++    affix (m,m',m'') x = (affix m x, affix m' x, affix m'' x)
++    prefix x (m,m',m'') = (prefix x m, prefix x m', prefix x m'')
++
++instance (Lexer c m, Lexer c m', Lexer c m'', Lexer c m''') => Lexer c (m,m',m'',m''') where
++    lex x = (lex x,lex x, lex x, lex x)
++    affix (m,m',m'',m''') x = (affix m x, affix m' x, affix m'' x, affix m''' x)
++    prefix x (m,m',m'',m''') = (prefix x m, prefix x m', prefix x m'', prefix x m''')
++
++instance (CharLexer m, CharLexer m') =>  CharLexer (m,m') where
++    invalid_char bs = (invalid_char bs, invalid_char bs)
++
++instance (CharLexer m, CharLexer m', CharLexer m'') =>  CharLexer (m,m',m'') where
++    invalid_char bs = (invalid_char bs, invalid_char bs, invalid_char bs)
++
++instance (CharLexer m, CharLexer m', CharLexer m'', CharLexer m''') =>  CharLexer (m,m',m'',m''') where
++    invalid_char bs = (invalid_char bs, invalid_char bs, invalid_char bs, invalid_char bs)
++
++class Monoid m => Generator c m where
++    lexMany :: c -> m
++    affixMany :: m -> c -> m
++    prefixMany :: c -> m -> m
++
++    lexMany = affixMany mempty
++    affixMany m c = m `mappend` lexMany c
++    prefixMany c m = lexMany c `mappend` m 
++
++instance Lexer Word8 m => Generator Strict.ByteString m where
++    affixMany = Strict.foldl' affix
++
++instance Lexer Word8 m => Generator Lazy.ByteString m where
++    lexMany = fold . parMap rwhnf lexMany . Lazy.toChunks
++
++instance Lexer Char m => Generator Text m where
++    affixMany = Text.foldl' affix
++
++instance Lexer c m => Generator [c] m where
++    lexMany = foldMap lex
++
++instance Measured v a => Generator (FingerTree v a) v where
++    lexMany = measure
++    affixMany m c = m `mappend` measure c
++    prefixMany c m = measure c `mappend` m
++
++snoc :: [a] -> a -> [a]
++snoc xs x = xs ++ [x]
++
++instance Lexer Char [Char] where
++    lex = return
++    prefix = (:)
++    affix = snoc
++
++instance CharLexer [Char]
++
++instance Lexer Word8 [Word8] where
++    lex = return
++    prefix = (:)
++    affix = snoc
++
++newtype c `WithLexer` m = WithLexer { runWithLexer :: (m,c) } 
++
++prelex :: (c `Lexer` m) => c -> c `WithLexer` m
++prelex x = d `seq` WithLexer (d, x) where d = lex x
++
++unlex :: c `WithLexer` m -> c
++unlex = snd . runWithLexer
++
++instance Lexer c m => Lexer (c `WithLexer` m) m where
++    lex = fst . runWithLexer 
++
++-- for finger tree compatibility
++instance Lexer c m => Measured m (c `WithLexer` m) where
++    measure = fst . runWithLexer
++
++-- instance Measured v a => Lexer v (FingerTree v a) where
++--     lex = measure
+addfile ./Data/Monoid/Lexical/SourcePosition.hs
+hunk ./Data/Monoid/Lexical/SourcePosition.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++module Data.Monoid.Lexical.SourcePosition
++    ( SourcePosition
++    , SourceLine
++    , SourceColumn
++    , sourceLine
++    , sourceColumn
++    , startOfFile
++    , showSourcePosition
++    ) where
++
++import Prelude hiding (lex)
++import Control.Functor.Extras
++import Control.Functor.Pointed
++import Data.Monoid.Lexical
++
++type SourceLine = Int
++type SourceColumn = Int
++
++data SourcePosition file = Pos file {-# UNPACK #-} !SourceLine !SourceColumn
++         | Lines {-# UNPACK #-} !SourceLine !SourceColumn
++         | Columns {-# UNPACK #-} !SourceColumn
++         | Tab {-# UNPACK #-} !SourceColumn !SourceColumn -- cols before and after an unresolved tab
++    deriving (Read,Show,Eq)
++
++nextTab :: Int -> Int
++nextTab x = x + (8 - (x-1) `mod` 8)
++
++instance Functor SourcePosition where
++    fmap g (Pos f l c) = Pos (g f) l c
++    fmap _ (Lines l c) = Lines l c
++    fmap _ (Columns c) = Columns c
++    fmap _ (Tab x y) = Tab x y
++
++instance Pointed SourcePosition where
++    point f = Pos f 1 1
++
++instance FunctorZero SourcePosition where
++    fzero = mempty
++
++instance FunctorPlus SourcePosition where
++    fplus = mappend
++
++instance Monoid (SourcePosition file) where
++    mempty = Columns 0
++
++    Pos f l _ `mappend` Lines m d = Pos f (l + m) d
++    Pos f l c `mappend` Columns d = Pos f l (c + d)
++    Pos f l c `mappend` Tab x y   = Pos f l (nextTab (c + x) + y)
++    Lines l _ `mappend` Lines m d = Lines (l + m) d
++    Lines l c `mappend` Columns d = Lines l (c + d)
++    Lines l c `mappend` Tab x y   = Lines l (nextTab (c + x) + y)
++    Columns c `mappend` Columns d  = Columns (c + d)
++    Columns c `mappend` Tab x y    = Tab (c + x) y
++    Tab _ _   `mappend` Lines m d  = Lines m d
++    Tab x y   `mappend` Columns d  = Tab x (y + d)
++    Tab x y   `mappend` Tab x' y'  = Tab x (nextTab (y + x') + y')
++    _         `mappend` pos        = pos
++
++instance Lexer Char (SourcePosition file) where
++    lex '\n' = Lines 1 0
++    lex '\t' = Tab 0 0 
++    lex _    = Columns 1
++
++instance CharLexer (SourcePosition file)
++    
++startOfFile :: f -> SourcePosition f
++startOfFile = point
++
++sourceColumn :: SourcePosition f -> Maybe SourceColumn
++sourceColumn (Pos _ _ c) = Just c
++sourceColumn (Lines _ c) = Just c
++sourceColumn _ = Nothing
++
++sourceLine :: SourcePosition f -> Maybe SourceLine
++sourceLine (Pos _ l _) = Just l
++sourceLine _ = Nothing
++
++showSourcePosition :: SourcePosition String -> String
++showSourcePosition pos = showSourcePosition' (point "-" `mappend` pos) where
++    showSourcePosition' (Pos f l c) = f ++ ":" ++ show l ++ ":" ++ show c
++    showSourcePosition' _ = undefined
+addfile ./Data/Monoid/Lexical/UTF8/Decoder.hs
+hunk ./Data/Monoid/Lexical/UTF8/Decoder.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++module Data.Monoid.Lexical.UTF8.Decoder 
++    ( UTF8
++    , runUTF8
++    ) where
++    
++import Prelude hiding (lex)
++
++import Data.Bits (shiftL,(.&.),(.|.))
++import Data.Word (Word8)
++
++import Control.Functor.Pointed
++
++import Data.Monoid.Lexical
++
++char :: CharLexer m => Char -> m
++char = lex
++
++-- Incrementally lex canonical RFC3629 UTF-8 Characters
++
++-- utf8 characters are at most 4 characters long, so we need only retain state for 3 of them
++-- moreover their length is able to be determined a priori, so lets store that intrinsically in the constructor
++data H = H0
++       | H2_1 !Word8 
++       | H3_1 !Word8
++       | H3_2 !Word8 !Word8
++       | H4_1 !Word8
++       | H4_2 !Word8 !Word8
++       | H4_3 !Word8 !Word8 !Word8
++
++-- words expressing the tail of a character, each between 0x80 and 0xbf
++-- this is arbitrary length to simplify making the parser truly monoidal
++-- this probably means we have O(n^2) worst case performance in the face of very long runs of chars that look like 10xxxxxx
++type T = [Word8]
++
++-- S is a segment that contains a possible tail of a character, the result of lexing some full characters, and the start of another character
++-- T contains a list of bytes each between 0x80 and 0xbf
++data UTF8 m = S T m !H
++            | T T
++
++-- flush any extra characters in a head, when the next character isn't between 0x80 and 0xbf
++flushH :: CharLexer m => H -> m
++flushH (H0) = mempty
++flushH (H2_1 x) = invalid_char [x]
++flushH (H3_1 x) = invalid_char [x]
++flushH (H3_2 x y) = invalid_char [x,y]
++flushH (H4_1 x) = invalid_char [x]
++flushH (H4_2 x y) = invalid_char [x,y]
++flushH (H4_3 x y z) = invalid_char [x,y,z]
++
++-- flush a character tail 
++flushT :: CharLexer m => [Word8] -> m
++flushT = invalid_char
++
++affixH :: CharLexer m => H -> Word8 -> (m -> H -> UTF8 m) -> m -> UTF8 m
++affixH H0 c k m 
++    | c < 0x80 = k (m `mappend` b1 c) H0
++    | c < 0xc0 = k (m `mappend` invalid_char [c]) H0
++    | c < 0xe0 = k m (H2_1 c)
++    | c < 0xf0 = k m (H3_1 c)
++    | c < 0xf5 = k m (H4_1 c)
++    | otherwise = k (m `mappend` invalid_char [c]) H0
++affixH (H2_1 c) d k m
++    | d >= 0x80 && d < 0xc0 = k (m `mappend` b2 c d) H0
++    | otherwise = k (m `mappend` invalid_char [c]) H0
++affixH (H3_1 c) d k m 
++    | d >= 0x80 && d < 0xc0 = k m (H3_2 c d)
++    | otherwise = k (m `mappend` invalid_char [c]) H0
++affixH (H3_2 c d) e k m 
++    | d >= 0x80 && d < 0xc0 = k (m `mappend` b3 c d e) H0
++    | otherwise = k (m `mappend` invalid_char [c,d]) H0
++affixH (H4_1 c) d k m 
++    | d >= 0x80 && d < 0xc0 = k m (H4_2 c d)
++    | otherwise = k (m `mappend` invalid_char [c,d]) H0
++affixH (H4_2 c d) e k m 
++    | d >= 0x80 && d < 0xc0 = k m (H4_3 c d e)
++    | otherwise = k (m `mappend` invalid_char [c,d,e]) H0
++affixH (H4_3 c d e) f k m 
++    | d >= 0x80 && d < 0xc0 = k (m `mappend` b4 c d e f) H0
++    | otherwise = k (m `mappend` invalid_char [c,d,e,f]) H0
++
++mask :: Word8 -> Word8 -> Int
++mask c m = fromEnum (c .&. m) 
++
++combine :: Int -> Word8 -> Int
++combine a r = shiftL a 6 .|. fromEnum (r .&. 0x3f)
++
++b1 :: CharLexer m => Word8 -> m
++b1 c | c < 0x80 = char . toEnum $ fromEnum c
++     | otherwise = invalid_char [c]
++
++b2 :: CharLexer m => Word8 -> Word8 -> m
++b2 c d | valid_b2 c d = char (toEnum (combine (mask c 0x1f) d))
++       | otherwise = invalid_char [c,d]
++
++b3 :: CharLexer m => Word8 -> Word8 -> Word8 -> m
++b3 c d e | valid_b3 c d e = char (toEnum (combine (combine (mask c 0x0f) d) e))
++         | otherwise = invalid_char [c,d,e]
++
++
++b4 :: CharLexer m => Word8 -> Word8 -> Word8 -> Word8 -> m
++b4 c d e f | valid_b4 c d e f = char (toEnum (combine (combine (combine (mask c 0x07) d) e) f))
++           | otherwise = invalid_char [c,d,e,f]
++
++valid_b2 :: Word8 -> Word8 -> Bool
++valid_b2 c d = (c >= 0xc2 && c <= 0xdf && d >= 0x80 && d <= 0xbf)
++
++valid_b3 :: Word8 -> Word8 -> Word8 -> Bool
++valid_b3 c d e = (c == 0xe0 && d >= 0xa0 && d <= 0xbf && e >= 0x80 && e <= 0xbf) || 
++                 (c >= 0xe1 && c <= 0xef && d >= 0x80 && d <= 0xbf && e >= 0x80 && e <= 0xbf)
++
++valid_b4 :: Word8 -> Word8 -> Word8 -> Word8 -> Bool
++valid_b4 c d e f = (c == 0xf0 && d >= 0x90 && d <= 0xbf && e >= 0x80 && e <= 0xbf && f >= 0x80 && f <= 0xbf) ||
++      (c >= 0xf1 && c <= 0xf3 && d >= 0x80 && d <= 0xbf && e >= 0x80 && e <= 0xbf && f >= 0x80 && f <= 0xbf) ||
++                   (c == 0xf4 && d >= 0x80 && d <= 0x8f && e >= 0x80 && e <= 0xbf && f >= 0x80 && f <= 0xbf)
++
++prefixT :: CharLexer m => Word8 -> T -> (H -> UTF8 m) -> (m -> UTF8 m) -> (T -> UTF8 m) -> UTF8 m
++prefixT c cs h m t
++             | c < 0x80 = m $ b1 c `mappend` invalid_chars cs
++             | c < 0xc0 = t (c:cs)
++             | c < 0xe0 = case cs of
++                        [] -> h $ H2_1 c
++                        (d:ds) -> m $ b2 c d `mappend` invalid_chars ds
++             | c < 0xf0 = case cs of
++                        [] -> h $ H3_1 c
++                        [d] -> h $ H3_2 c d
++                        (d:e:es) -> m $ b3 c d e `mappend` invalid_chars es
++             | c < 0xf5 = case cs of
++                        [] -> h $ H4_1 c
++                        [d] -> h $ H4_2 c d 
++                        [d,e] -> h $ H4_3 c d e 
++                        (d:e:f:fs) -> m $ b4 c d e f `mappend` invalid_chars fs
++             | otherwise = mempty
++
++invalid_chars :: CharLexer m => [Word8] -> m
++invalid_chars (x:xs) = invalid_char [x] `mappend` invalid_chars xs
++invalid_chars [] = mempty
++
++merge :: CharLexer m => H -> T -> (m -> a) -> (H -> a) -> a
++merge H0 cs k _               = k $ invalid_chars cs
++merge (H2_1 c) [] _ p         = p $ H2_1 c
++merge (H2_1 c) (d:ds) k _     = k $ b2 c d `mappend` invalid_chars ds
++merge (H3_1 c) [] _ p         = p $ H3_1 c
++merge (H3_1 c) [d] _ p        = p $ H3_2 c d
++merge (H3_1 c) (d:e:es) k _   = k $ b3 c d e `mappend` invalid_chars es
++merge (H3_2 c d) [] _ p       = p $ H3_2 c d
++merge (H3_2 c d) (e:es) k _   = k $ b3 c d e `mappend` invalid_chars es
++merge (H4_1 c) [] _ p         = p $ H4_1 c
++merge (H4_1 c) [d] _ p        = p $ H4_2 c d
++merge (H4_1 c) [d,e] _ p      = p $ H4_3 c d e
++merge (H4_1 c) (d:e:f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++merge (H4_2 c d) [] _ p       = p $ H4_2 c d 
++merge (H4_2 c d) [e] _ p      = p $ H4_3 c d e
++merge (H4_2 c d) (e:f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++merge (H4_3 c d e) [] _ p     = p $ H4_3 c d e
++merge (H4_3 c d e) (f:fs) k _ = k $ b4 c d e f `mappend` invalid_chars fs
++
++instance CharLexer m => Monoid (UTF8 m) where
++    mempty = T []
++    T c `mappend` T d = T (c ++ d)
++    T c `mappend` S l m r = S (c ++ l) m r
++    S l m c `mappend` S c' m' r = S l (m `mappend` merge c c' id flushH `mappend` m') r
++    s@(S _ _ _) `mappend` T [] = s
++    S l m c `mappend` T c' = merge c c' k (S l m) where
++        k m' = S l (m `mappend` m') H0
++
++instance CharLexer m => Lexer Word8 (UTF8 m) where
++    prefix c (T cs) = prefixT c cs (S [] mempty) (flip (S []) H0) T
++    prefix c (S cs m h) = prefixT c cs 
++        (\h' -> S [] (flushH h' `mappend` m) h)
++        (\m' -> S [] (m' `mappend` m) h)
++        (\t' -> S t' m h)
++    affix (S t m h) c = affixH h c (S t) m
++    affix (T t) c | c >= 0x80 && c < 0xc0 = T (t ++ [c])
++                  | otherwise = affixH H0 c (S t) mempty
++    
++instance Functor UTF8 where
++    fmap f (S t x h) = S t (f x) h
++    fmap _ (T t) = T t
++
++instance Pointed UTF8 where
++    point f = S [] f H0
++
++runUTF8 :: CharLexer m => UTF8 m -> m 
++runUTF8 (T t) = flushT t
++runUTF8 (S t m h) = flushT t `mappend` m `mappend` flushH h
+addfile ./Data/Monoid/Lexical/Words.hs
+hunk ./Data/Monoid/Lexical/Words.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, FlexibleContexts, GeneralizedNewtypeDeriving, ParallelListComp #-}
++module Data.Monoid.Lexical.Words 
++    ( Words
++    , runWords
++    , Lines
++    , runLines
++    , Unspaced(runUnspaced)
++    , wordsFrom
++    , linesFrom
++    ) where
++
++import Prelude hiding (lex)
++import Data.Monoid.Lexical
++import Data.Char (isSpace)
++import Data.Maybe (maybeToList)
++-- import Control.Arrow (second)
++import Control.Functor.Pointed
++
++data Words m = Chunk (Maybe m)
++             | Segment (Maybe m) [m] (Maybe m)
++    deriving (Show,Read)
++
++runWords :: Words m -> [m]
++runWords (Chunk m) = maybeToList m
++runWords (Segment l m r) = maybeToList l ++ m ++ maybeToList r
++
++instance Monoid m => Monoid (Words m) where
++    mempty = Chunk mempty
++    Chunk l `mappend` Chunk r = Chunk (l `mappend` r)
++    Chunk l `mappend` Segment l' m r = Segment (l `mappend` l') m r
++    Segment l m r `mappend` Chunk r' = Segment l m (r `mappend` r')
++    Segment l m r `mappend` Segment l' m' r' = Segment l (m ++ maybeToList (r `mappend` l') ++ m') r'
++
++instance Lexer Char m => Lexer Char (Words m) where
++    lex c | isSpace c = Segment (Just (lex c)) [] mempty
++          | otherwise = Chunk (Just (lex c))
++
++instance Functor Words where
++    fmap f (Chunk m) = Chunk (fmap f m)
++    fmap f (Segment m ms m') = Segment (fmap f m) (fmap f ms) (fmap f m')
++
++-- abuse the same machinery to handle lines as well
++
++newtype Lines m = Lines (Words m) deriving (Show,Read,Monoid,Functor)
++
++instance Lexer Char m => Lexer Char (Lines m) where
++    lex '\n' = Lines $ Segment (Just (lex '\n')) [] mempty
++    lex c = Lines $ Chunk (Just (lex c))
++
++runLines :: Lines m -> [m]
++runLines (Lines x) = runWords x
++
++newtype Unspaced m = Unspaced { runUnspaced :: m }  deriving (Eq,Ord,Show,Read,Monoid)
++
++instance Lexer Char m => Lexer Char (Unspaced m) where
++    lex c | isSpace c = mempty
++          | otherwise = Unspaced (lex c)
++
++instance CharLexer m => CharLexer (Unspaced m) where
++    invalid_char = Unspaced . invalid_char
++
++instance Functor Unspaced where
++    fmap f (Unspaced x) = Unspaced (f x)
++
++instance Pointed Unspaced where
++    point = Unspaced
++
++instance Copointed Unspaced where
++    extract = runUnspaced
++
++newtype Unlined m = Unlined { runUnlined :: m }  deriving (Eq,Ord,Show,Read,Monoid)
++
++instance Lexer Char m => Lexer Char (Unlined m) where
++    lex '\n' = mempty
++    lex c = Unlined (lex c)
++
++instance CharLexer m => CharLexer (Unlined m) where
++    invalid_char = Unlined . invalid_char
++
++instance Functor Unlined where
++    fmap f (Unlined x) = Unlined (f x)
++
++instance Pointed Unlined where
++    point = Unlined
++
++instance Copointed Unlined where
++    extract = runUnlined
++
++-- accumulator, per-word, and up-until-next-word monoids
++wordsFrom :: (Lexer Char m, Lexer Char n, Lexer Char o, Generator c (Words (m, Unspaced n, o))) => m -> c -> [(m,n,o)]
++wordsFrom s c = [(x,y,z) | x <- scanl mappend s ls | y <- map runUnspaced ms | z <- rs ] where
++    (ls,ms,rs) = unzip3 (runWords (lexMany c))
++
++-- accumulator, per-line, and up-until-next-line monoids
++linesFrom :: (Lexer Char m, Lexer Char n, Lexer Char o, Generator c (Lines (m, Unlined n, o))) => m -> c -> [(m,n,o)]
++linesFrom s c = [(x,y,z) | x <- scanl mappend s ls | y <- map runUnlined ms | z <- rs] where
++    (ls,ms,rs) = unzip3 (runLines (lexMany c))
+addfile ./LICENSE
+hunk ./LICENSE 1
++Copyright (c) 2009 Edward Kmett
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are
++met:
++
++    * Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++
++    * Redistributions in binary form must reproduce the above
++      copyright notice, this list of conditions and the following
++      disclaimer in the documentation and/or other materials provided
++      with the distribution.
++
++    * Neither the name of Isaac Jones nor the names of other
++      contributors may be used to endorse or promote products derived
++      from this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+addfile ./Setup.hs
+hunk ./Setup.hs 1
++module Main (main) where
++
++import Distribution.Simple
++
++main :: IO ()
++main = defaultMain
+addfile ./lexical-monoids.cabal
+hunk ./lexical-monoids.cabal 1
++name:		    lexical-monoids
++version:	    0.1.1
++license:	    BSD3
++license-file:   LICENSE
++author:		    Edward A. Kmett
++maintainer:	    Edward A. Kmett <ekmett@gmail.com>
++stability:	    experimental
++homepage:	    http://comonad.com/reader
++category:	    Data
++synopsis:	    Lexical monoids
++description:    Facilities for lexing using monoids
++copyright:      (c) 2009 Edward A. Kmett
++build-type:     Simple
++cabal-version:  >=1.2
++
++library
++  build-depends: base >= 4, text, fingertree, bytestring, category-extras, parallel
++  exposed-modules:
++    Data.Monoid.Lexical
++    Data.Monoid.Lexical.SourcePosition
++    Data.Monoid.Lexical.UTF8.Decoder
++    Data.Monoid.Lexical.Words
++  ghc-options: -Wall
+}

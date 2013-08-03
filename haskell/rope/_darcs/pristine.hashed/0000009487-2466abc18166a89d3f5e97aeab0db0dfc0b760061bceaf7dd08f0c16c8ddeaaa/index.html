@@ -1,0 +1,540 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+><HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Rope.Body</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Rope-Body.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>rope-0.3: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Rope-Body.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Rope.Body</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t:Body"
+><A NAME="t%3ABody"
+></A
+></A
+><B
+>Body</B
+> = FingerTree <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#Body"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t:Offset"
+><A NAME="t%3AOffset"
+></A
+></A
+><B
+>Offset</B
+>  </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#Offset"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Offset"
+><A NAME="v%3AOffset"
+></A
+></A
+><B
+>Offset</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:getOffset"
+><A NAME="v%3AgetOffset"
+></A
+></A
+><B
+>getOffset</B
+> :: <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Offset')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Offset" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> (<A HREF="Data-Rope-Annotated-Internal.html#t%3AA"
+>A</A
+> s a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t:Chunk"
+><A NAME="t%3AChunk"
+></A
+></A
+><B
+>Chunk</B
+>  </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#Chunk"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:Chunk"
+><A NAME="v%3AChunk"
+></A
+></A
+><B
+>Chunk</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v:unchunk"
+><A NAME="v%3Aunchunk"
+></A
+></A
+><B
+>unchunk</B
+> :: ByteString</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Chunk')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Chunk" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="/usr/share/doc/ghc6-doc/libraries/base/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope-Internal.html#t%3AUnpackable"
+>Unpackable</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope-Util-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="Data-Rope-Body.html#t%3AChunk"
+>Chunk</A
+> <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:measureBody"
+><A NAME="v%3AmeasureBody"
+></A
+></A
+><B
+>measureBody</B
+> :: Measured <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> a =&gt; FingerTree <A HREF="Data-Rope-Body.html#t%3AOffset"
+>Offset</A
+> a -&gt; <A HREF="/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#measureBody"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:cons'"
+><A NAME="v%3Acons%27"
+></A
+></A
+><B
+>cons'</B
+> :: ByteString -&gt; <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+> -&gt; <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#cons%27"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:snoc'"
+><A NAME="v%3Asnoc%27"
+></A
+></A
+><B
+>snoc'</B
+> :: <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+> -&gt; ByteString -&gt; <A HREF="Data-Rope-Body.html#t%3ABody"
+>Body</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Body.html#snoc%27"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+></HTML
+>

@@ -1,0 +1,623 @@
+[lots of cleanup
+ekmett@gmail.com**20090501052913
+ Ignore-this: ba81b1c639ee6344ffae30c05eb1adf5
+] {
+hunk ./Text/ParserCombinators/UU/BasicInstances.hs 12
+--- Module	: Text.ParserCombinators.UU.BasicInstances
+--- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
+--- License	: LGPL 
++-- Module	   : Text.ParserCombinators.UU.BasicInstances
++-- Copyright   : 2001-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License	   : LGPL 
+hunk ./Text/ParserCombinators/UU/BasicInstances.hs 16
+--- Maintainer	: Edward Kmett <ekmett@gmail.com>
+--- Stability	: experimental
+--- Portability	: non-portable (GADTs, MPTCs, Fundeps)
++-- Maintainer  : Edward Kmett <ekmett@gmail.com>
++-- Stability   : experimental
++-- Portability : non-portable (GADTs, MPTCs, Fundeps)
+hunk ./Text/ParserCombinators/UU/BasicInstances.hs 26
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Some Instances        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Some Instances
+hunk ./Text/ParserCombinators/UU/BasicInstances.hs 38
+-showError (DeletedAtEnd t) 
+-    = "\nThe token " ++ show t ++ " was not consumed by the parsing process." 
++showError (DeletedAtEnd t) = 
++    "\nThe token " ++ show t ++ " was not consumed by the parsing process." 
+hunk ./Text/ParserCombinators/UU/Examples.hs 8
+-              NoMonomorphismRestriction#-}
++              NoMonomorphismRestriction #-}
+hunk ./Text/ParserCombinators/UU/Examples.hs 12
+--- Module	: Text.ParserCombinators.UU.BasicInstances
+--- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
+--- License	: LGPL 
++-- Module      : Text.ParserCombinators.UU.BasicInstances
++-- Copyright   : 2001-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License     : LGPL 
+hunk ./Text/ParserCombinators/UU/Examples.hs 16
+--- Maintainer	: Edward Kmett <ekmett@gmail.com>
+--- Stability	: experimental
+--- Portability	: non-portable (GADTs, MPTCs, Fundeps)
++-- Maintainer  : Edward Kmett <ekmett@gmail.com>
++-- Stability   : experimental
++-- Portability : non-portable (GADTs, MPTCs, Fundeps)
+hunk ./Text/ParserCombinators/UU/Examples.hs 25
++import Data.Traversable
+hunk ./Text/ParserCombinators/UU/Examples.hs 29
+-type P b = Parser (Str Char) b -> String -> (b, [Error Char Char Int]) 
+-test :: P b
++test :: P (Str Char) b -> String -> (b, [Error Char Char Int]) 
+hunk ./Text/ParserCombinators/UU/Examples.hs 32
+-lift a = [a]
+-
+-pa, pb, paz :: Parser (Str Char) [Char] 
+-pa = lift <$> pSym 'a'
+-pb = lift <$> pSym 'b'
++pa, pb, paz :: P (Str Char) [Char] 
++pa = return <$> pSym 'a'
++pb = return <$> pSym 'b'
+hunk ./Text/ParserCombinators/UU/Examples.hs 36
+-pa2 =   pa <++> pa
+-pa3 =   pa <++> pa2
++pa2 = pa <++> pa
++pa3 = pa <++> pa2
+hunk ./Text/ParserCombinators/UU/Examples.hs 39
+-pCount p = (\ a b -> b+1) <$> p <*> pCount p <<|> pReturn 0
+-pExact 0 p = pReturn []
+-pExact n p = (:) <$> p <*> pExact (n-1) p
++count p = (\ a b -> b+1) <$> p <*> count p <<|> pure 0
++exact 0 p = pure []
++exact n p = (:) <$> p <*> exact (n-1) p
+hunk ./Text/ParserCombinators/UU/Examples.hs 43
+-paz = pMany (pSym ('a', 'z'))
++paz = pMany (pSym ('a','z'))
+hunk ./Text/ParserCombinators/UU/Examples.hs 47
+-printTest :: Show b => (b,[Error Char Char Int]) -> IO ()
+-printTest (b,e) = putStrLn ("Result: " ++ show b ++ concatMap showError e)
++printTest :: Show b => P (Str Char) b -> String -> IO ()
++printTest p inp = let (b,e) = test p inp in putStrLn ("Result: " ++ show b ++ concatMap showError e)
+hunk ./Text/ParserCombinators/UU/Examples.hs 52
+-    printTest $ test pa "a"
+-    printTest $ test pa "b"
+-    printTest $ test pa2 "bbab"
+-    printTest $ test pa "ba"
+-    printTest $ test pa "aa"
+-    printTest $ test (do  l <- pCount pa; pExact l pb) "aaacabbb"
+-    printTest $ test (amb ( (++) <$> pa2 <*> pa3 <|> (++) <$> pa3 <*> pa2)) "aaabaa"
+-    printTest $ test paz "ab1z7"
+-    printTest $ test paz' "m"
+-    printTest $ test paz' ""
++    printTest pa "a"
++    printTest pa "b"
++    printTest pa2 "bbab"
++    printTest pa "ba"
++    printTest pa "aa"
++    printTest (do l <- count pa; exact l pb) "aaacabbb"
++    printTest (amb ( (++) <$> pa2 <*> pa3 <|> (++) <$> pa3 <*> pa2)) "aaabaa"
++    printTest paz "ab1z7"
++    printTest paz' "m"
++    printTest paz' ""
+hunk ./Text/ParserCombinators/UU/Examples.hs 63
+-infixl 3 `opt`
+-p `opt` v = p <|> pReturn v 
++infixl 3 `pOpt`
++p `pOpt` v = p <|> pure v 
+hunk ./Text/ParserCombinators/UU/Examples.hs 66
+--- parsing many things
+-pMany p  = (:) <$> p <*> pMany p <|> pReturn []
++-- parsing pMany things
++pMany p  = ((:) <$> p <*> pMany p) <|> pure []
+hunk ./Text/ParserCombinators/UU/Examples.hs 69
+-pChoice = foldr (<|>) pFail
+-pSeq (p : pp ) = (:) <$> p <*> pSeq pp 
+-pSeq [ ] = pReturn [ ] 
+-pListSep p s = pListSep1 p s `opt` []
+-pListSep1 p s = (:) <$> p <*> pSepTail p s
+-   where pSepTail p s = pMany (s *> p)
++pChoice = foldr (<|>) empty
++listSep p s = listSep1 p s `pOpt` []
++listSep1 p s = (:) <$> p <*> sepTail p s
++   where sepTail p s = pMany (s *> p)
+hunk ./Text/ParserCombinators/UU/Examples.hs 75
+-pParens p = id <$ pSym '(' <*> p <* pSym ')'
+-pBracks p = id <$ pSym '[' <*> p <* pSym ']'
+-pCurlys p = id <$ pSym '{' <*> p <* pSym '}'
++parens   p = id <$ pSym '(' <*> p <* pSym ')'
++brackets p = id <$ pSym '[' <*> p <* pSym ']'
++curlies  p = id <$ pSym '{' <*> p <* pSym '}'
+hunk ./Text/ParserCombinators/UU/Examples.hs 80
+-pDigit = pSym ('0', '9')
+-pDigitAsInt = digit2Int <$> pDigit 
+-pNatural = foldl (\a b -> a * 10 + b ) 0 <$> pMany1 pDigitAsInt
+-digit2Int a = ord a - ord '0'
++digit = pSym ('0', '9')
++digitAsInt = digit2Int <$> digit where
++    digit2Int a = ord a - ord '0'
++natural = foldl (\a b -> a * 10 + b) 0 <$> pMany1 digitAsInt
+hunk ./Text/ParserCombinators/UU/Examples.hs 86
+-pLower  = pSym ('a','z')
+-pUpper  = pSym ('A','Z')
+-pLetter = pUpper <|> pLower
+-pVarId  = (:) <$> pLower <*> pMany pIdChar
+-pConId  = (:) <$> pUpper <*> pMany pIdChar
+-pIdChar = pLower <|> pUpper <|> pDigit <|> pSymIn "='"
++lower  = pSym ('a','z')
++upper  = pSym ('A','Z')
++letter = upper <|> lower
++varId  = (:) <$> lower <*> pMany idChar
++conId  = (:) <$> upper <*> pMany idChar
++idChar = lower <|> upper <|> digit <|> pSymIn "='"
+hunk ./Text/ParserCombinators/UU/Examples.hs 93
+-pKey str = pSeq (map pSym str)
++pKey str = sequenceA (map pSym str)
+hunk ./Text/ParserCombinators/UU/Examples.hs 96
+-run :: forall t. Parser (Str Char) t -> String -> t
++run :: P (Str Char) t -> String -> t
+hunk ./Text/ParserCombinators/UU/Examples.hs 100
+-exec :: Parser (Str Char) b -> String -> (b, [Error Char Char Int])
++exec :: P (Str Char) b -> String -> (b, [Error Char Char Int])
+hunk ./Text/ParserCombinators/UU/Examples.hs 104
+-pTest_MS :: Parser (Str Char) Char
+-pTest_MS = id <$ pSym 'u' <*> pSym '2'
++testMS :: P (Str Char) Char
++testMS = id <$ pSym 'u' <*> pSym '2'
+hunk ./Text/ParserCombinators/UU/Examples.hs 107
+-pOp (c, op) = op <$ pSym c
++pOp (c, o) = o <$ pSym c
+hunk ./Text/ParserCombinators/UU/Examples.hs 109
+-pChainl t op = applyall <$> t <*> pMany (flip <$> op <*> t)
+-applyall e [] = e
+-applyall e (f:fs) = applyall (f e) fs
++pChainl t pOp = applyAll <$> t <*> pMany (flip <$> pOp <*> t)
++applyAll e [] = e
++applyAll e (f:fs) = applyAll (f e) fs
+hunk ./Text/ParserCombinators/UU/Examples.hs 116
+-getal = pNatural
++getal = natural
+hunk ./Text/ParserCombinators/UU/Parsing.hs 8
+-              NoMonomorphismRestriction
+-	#-}
++              NoMonomorphismRestriction,
++              PatternGuards
++    #-}
+hunk ./Text/ParserCombinators/UU/Parsing.hs 14
+--- Module	: Text.ParserCombinators.UU.Parsing
+--- Copyright 	: 2007-2009 Doaitse Swierstra, 2009 Edward Kmett
+--- License	: LGPL 
++-- Module      : Text.ParserCombinators.UU.Parsing
++-- Copyright   : 2001-2009 Doaitse Swierstra, 2009 Edward Kmett
++-- License     : LGPL 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 18
+--- Maintainer	: Edward Kmett <ekmett@gmail.com>
+--- Stability	: experimental
+--- Portability	: non-portable (GADTs, MPTCs, Fundeps, RankNTypes)
++-- Maintainer  : Edward Kmett <ekmett@gmail.com>
++-- Stability   : experimental
++-- Portability : non-portable (GADTs, MPTCs, Fundeps, RankNTypes)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 38
+-    , Parsable, parse
++    , Parser, parse
+hunk ./Text/ParserCombinators/UU/Parsing.hs 41
+-    , Parser(..)
++    , P(..)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 48
+-    , eval, push, apply, norm
++    , eval, push, apply, normalize
+hunk ./Text/ParserCombinators/UU/Parsing.hs 55
+-    , Switch, pSwitch
++    , Switch, switch
+hunk ./Text/ParserCombinators/UU/Parsing.hs 60
+-
+hunk ./Text/ParserCombinators/UU/Parsing.hs 67
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Classes     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Classes
+hunk ./Text/ParserCombinators/UU/Parsing.hs 69
+-pReturn :: Applicative p => a -> p a 
++pReturn :: Applicative f => a -> f a
+hunk ./Text/ParserCombinators/UU/Parsing.hs 72
+-pFail :: Alternative p => p a 
++pFail :: Alternative f => f a 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 88
+-class Parsable p where
++class Parser p where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 91
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Steps      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Steps
+hunk ./Text/ParserCombinators/UU/Parsing.hs 97
+-    EndH :: [a] -> ([a] -> Steps r) -> Steps (a,r) -> Steps (a, r)
++    EndH :: [a] -> ([a] -> Steps r) -> Steps (a, r) -> Steps (a, r)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 119
+-norm :: Steps a -> Steps a
+-norm (Apply f x) = case x of
++normalize :: Steps a -> Steps a
++normalize (Apply f x) = case x of
+hunk ./Text/ParserCombinators/UU/Parsing.hs 123
+-    Apply g l  -> norm (Apply (f . g) l)
++    Apply g l  -> normalize (Apply (f . g) l)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 125
+-    EndH _ _ _ -> error "norm: Apply before EndH"
+-norm steps = steps
++    EndH _ _ _ -> error "normalize: Apply before EndH"
++normalize steps = steps
+hunk ./Text/ParserCombinators/UU/Parsing.hs 128
+--- fail' :: [String] -> (Steps b -> Steps c) -> Steps b -> Steps c
+-fail' m f ls = Fail m (map (\g -> second f . g) ls) where
+-    second h (a,b) = (a, h b)
++fail' :: [String] -> (Steps b -> Steps a) -> [[String] -> (Int, Steps b)] -> Steps a
++fail' m f ls = Fail m (map (\g ex -> let (c,l) = g ex in (c, f l)) ls)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 132
+-x `best` y = norm x `best'` norm y
++x `best` y = normalize x `best'` normalize y
+hunk ./Text/ParserCombinators/UU/Parsing.hs 135
+-Fail sl ll  `best'` Fail sr rr  = Fail (sl ++ sr) (ll++rr)
+-Fail _  _   `best'` r           = r
+-l           `best'` Fail _  _   = l
++Fail sl ll  `best'` Fail sr rr = Fail (sl ++ sr) (ll ++ rr)
++Fail _  _   `best'` r          = r
++l           `best'` Fail _  _  = l
+hunk ./Text/ParserCombinators/UU/Parsing.hs 141
+-    LT -> Step n (l `best'` Step (m - n)  r)
++    LT -> Step n (l `best'` Step (m - n) r)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 144
+-EndF as l   `best'` EndF bs r   = EndF (as++bs)  (l `best` r)
+-EndF as l   `best'` r           = EndF as        (l `best` r)
+-l           `best'` EndF bs r   = EndF bs        (l `best` r)
++EndF as l   `best'` EndF bs r   = EndF (as++bs) (l `best` r)
++EndF as l   `best'` r           = EndF as (l `best` r)
++l           `best'` EndF bs r   = EndF bs (l `best` r)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 154
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% History     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- History
+hunk ./Text/ParserCombinators/UU/Parsing.hs 157
+-newtype History st a = History 
+-    { unHistory :: (forall r. (a -> st -> Steps r) -> st -> Steps r) } 
++newtype History state a = History 
++    { unHistory :: (forall r. (a -> state -> Steps r) -> state -> Steps r) } 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 161
+-    fmap f (History p)      = History (\k -> p (\a -> k (f a))) 
++    fmap f p = History (\k -> unHistory p (k . f))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 164
+-    pure a                  = History (\k -> k a)
+-    History p <*> History q = History (\k -> p (\f -> q (\a -> k (f a)))) 
++    pure a  = History (\k -> k a)
++    p <*> q = History (\k -> unHistory p (\f -> unHistory q (k . f))) 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 168
+-    empty                     = History (\_ _   -> noAlts) 
+-    History p <|> History q = History (\k inp -> p k inp `best` q k inp) 
++    empty   = History (\_ _   -> noAlts) 
++    p <|> q = History (\k inp -> unHistory p k inp `best` unHistory q k inp) 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 179
+-instance (Provides state symbol token) => Symbol (History  state) symbol token where
++instance (Provides state symbol token) => Symbol (History state) symbol token where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 182
+-instance Parsable History where
+-    parse (History p) =  
+-        fst . eval . p  (\ a rest -> if eof rest then push a fail else error "pEnd missing?") 
++instance Parser History where
++    parse p =  
++        fst . eval . unHistory p (\a rest -> if eof rest then push a fail else error "History.parse: pEnd missing?") 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 186
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Future      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Future
+hunk ./Text/ParserCombinators/UU/Parsing.hs 189
+-newtype  Future st a  = Future 
+-    { unFuture :: forall r . (st -> Steps r) -> st -> Steps (a, r) } 
++newtype Future state a = Future 
++    { unFuture :: forall r . (state -> Steps r) -> state -> Steps (a, r) } 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 192
+-instance Functor (Future st) where
++instance Functor (Future state) where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 194
++ 
++instance Applicative (Future state) where
++    pure a  = Future (push a .)
++    p <*> q = Future ((apply .) . unFuture p . unFuture q)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 199
+-instance Applicative (Future st) where
+-    pure a                = Future ((push a).)
+-    Future p <*> Future q = Future ((apply .) . (p . q))
+-
+-instance Alternative (Future st) where
+-    empty                 = Future (\_ _   -> noAlts)
+-    Future p <|> Future q = Future (\k inp -> p k inp `best` q k inp)  
++instance Alternative (Future state) where
++    empty   = Future (\_ _   -> noAlts)
++    p <|> q = Future (\k inp -> unFuture p k inp `best` unFuture q k inp)  
+hunk ./Text/ParserCombinators/UU/Parsing.hs 204
+-    pSym a = Future (\k -> splitState a (\t inp' -> push t (k inp')))
++    pSym a = Future (\k -> splitState a (\t -> push t . k))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 206
+-instance Parsable Future where
+-    parse (Future p) = 
+-	fst . eval . p (\rest -> if eof rest then fail else error "pEnd missing")
++instance Parser Future where
++    parse p = 
++        fst . eval . unFuture p (\rest -> if eof rest then fail else error "Future.parse: pEnd missing")
+hunk ./Text/ParserCombinators/UU/Parsing.hs 210
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Monads      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Monads
+hunk ./Text/ParserCombinators/UU/Parsing.hs 220
+-    History p >>>= f = Future (\k st -> p (\pv st -> unFuture (f pv) k st) st)
++    h >>>= f = Future (\k -> unHistory h (\p -> unFuture (f p) k))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 222
++data P s a = P (History s a) (Future s a)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 224
+-data Parser s a = Parser
+-    { getHistory :: History s a
+-    , getFuture  :: Future s a 
+-    } 
++getHistory :: P state a -> (a -> state -> Steps r) -> state -> Steps r
++getHistory (P (History h) _) = h
+hunk ./Text/ParserCombinators/UU/Parsing.hs 227
+-instance Functor (Parser st) where
+-    fmap f (Parser x y) = Parser (fmap f x) (fmap f y)
++getFuture :: P state a -> (state -> Steps r) -> state -> Steps (a, r) 
++getFuture (P _ (Future f)) = f
+hunk ./Text/ParserCombinators/UU/Parsing.hs 230
+-instance Applicative (Parser st) where
+-    pure a                         = Parser (pReturn a) (pReturn a) 
+-    Parser hp fp <*> ~(Parser hq fq) = Parser (hp <*> hq) (fp <*> fq) 
++instance Functor (P state) where
++    fmap f (P x y) = P (fmap f x) (fmap f y)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 233
+-instance Alternative (Parser st) where
+-    Parser hp fp <|> Parser hq fq = Parser (hp <|> hq) (fp <|> fq)
+-    empty = Parser empty empty       
++instance Applicative (P state) where
++    pure a = P (pure a) (pure a) 
++    P hp fp <*> ~(P hq fq) = P (hp <*> hq) (fp <*> fq) 
++
++instance Alternative (P state) where
++    P hp fp <|> P hq fq = P (hp <|> hq) (fp <|> fq)
++    empty = P empty empty
+hunk ./Text/ParserCombinators/UU/Parsing.hs 241
+-instance (Provides state symbol token) => Symbol (Parser state) symbol token where
+-    pSym a = Parser (pSym a) (pSym a)
++instance (Provides state symbol token) => Symbol (P state) symbol token where
++    pSym a = P (pSym a) (pSym a)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 244
+-instance Parsable Parser where
+-    parse p = fst . eval . unFuture (getFuture p) (\rest -> if eof rest then fail else error "Parser.parse: EndF missing?") 
++instance Parser P where
++    parse p = 
++        fst . eval . getFuture p (\rest -> if eof rest then fail else error "P.parse: EndF missing?") 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 248
+-instance Monad (Parser st) where
+-    Parser (History h) _ >>= f = Parser (History (\k -> h (\a -> unHistory (getHistory (f a)) k)))
+-                                        (Future  (\k -> h (\a -> unFuture (getFuture  (f a)) k)))
+-    return  = pure
++instance Monad (P state) where
++    p >>= f = P 
++        (History (getHistory p . flip (getHistory . f)))
++        (Future  (getHistory p . flip (getFuture . f)))
++    return = pure
+hunk ./Text/ParserCombinators/UU/Parsing.hs 254
+-instance MonadPlus (Parser st) where
++instance MonadPlus (P state) where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 258
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Greedy      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Greedy
+hunk ./Text/ParserCombinators/UU/Parsing.hs 261
+-bestGreedy l@Step{} = const l 
+-bestGreedy l        = best l 
++bestGreedy l@(Step _ _) = const l 
++bestGreedy l            = best l 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 267
+-instance Greedy (History s)  where
+-    History p <<|> History q = History (\k st -> norm (p k st) `bestGreedy` norm (q k st))
++instance Greedy (History state)  where
++    p <<|> q = History (\k st -> normalize (unHistory p k st) `bestGreedy` normalize (unHistory q k st))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 270
+-instance Greedy (Future s)  where
+-    Future p <<|> Future q = Future (\k st -> norm (p k st) `bestGreedy` norm (q k st))
++instance Greedy (Future state)  where
++    p <<|> q = Future (\k st -> normalize (unFuture p k st) `bestGreedy` normalize (unFuture q k st))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 273
+-instance Greedy (Parser s) where
+-    Parser hp fp <<|> Parser hq fq = Parser (hp <<|> hq) (fp <<|> fq) 
++instance Greedy (P state) where
++    P hp fp <<|> P hq fq = P (hp <<|> hq) (fp <<|> fq) 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 276
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Ambiguous   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Ambiguous
+hunk ./Text/ParserCombinators/UU/Parsing.hs 281
+-instance Ambiguous (History s) where
+-    amb (History p) = History (\k -> removeEndH . p (\a st' -> EndH [a] (\as -> k as st') noAlts))
++instance Ambiguous (History state) where
++    amb p = History (\k -> removeEndH . unHistory p (\a st' -> EndH [a] (\as -> k as st') noAlts)) where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 287
+-removeEndH (Apply f l)   = error "removeEndH: unexpected Apply"
+hunk ./Text/ParserCombinators/UU/Parsing.hs 288
++removeEndH (Apply _ _)   = error "removeEndH: unexpected Apply"
++removeEndH (EndF _ _)    = error "removeEndH: unexpected EndF"
++
++instance Ambiguous (Future state) where
++    amb p = Future (\k -> combineValues . removeEndF . unFuture p (\st -> EndF [k st] noAlts)) where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 294
+-instance Ambiguous (Future s) where
+-    amb (Future p) = Future (\k inp -> combineValues . removeEndF $ p (\st -> EndF [k st] noAlts) inp) where
+hunk ./Text/ParserCombinators/UU/Parsing.hs 295
+-        combineValues lar = Apply (\lar -> (map fst lar, snd (head lar))) lar
++        combineValues = Apply (map fst &&& snd . head)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 297
+-removeEndF :: Steps r -> Steps [r]
+-removeEndF (Fail m ls)     = fail' m removeEndF ls
+-removeEndF (Step ps l)     = Step ps (removeEndF l)
+-removeEndF (Apply f l)     = Apply (map' f) (removeEndF l) where
+-    map' f ~(x:xs) = f x : map f xs
+-removeEndF (EndF (s:ss) r) = Apply (: map eval ss) s `best` removeEndF r
++        infixr 3 &&&
++        (&&&) :: (a -> b) -> (a -> c) -> a -> (b,c)
++        (f &&& g) a = (f a, g a)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 301
++        removeEndF :: Steps r -> Steps [r]
++        removeEndF (Fail m ls)     = fail' m removeEndF ls
++        removeEndF (Step ps l)     = Step ps (removeEndF l)
++        removeEndF (Apply f l)     = Apply (map' f) (removeEndF l) where
++            map' f ~(x:xs) = f x : map f xs
++        removeEndF (EndF (s:ss) r) = Apply (: map eval ss) s `best` removeEndF r
++        removeEndF (EndH _ _ _)    = error "removeEndF: unexpected EndH"
+hunk ./Text/ParserCombinators/UU/Parsing.hs 309
+-instance Ambiguous (Parser state) where
+-    amb (Parser hp fp) = Parser (amb hp) (amb fp)
++instance Ambiguous (P state) where
++    amb (P hp fp) = P (amb hp) (amb fp)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 312
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% getCheapest  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- getCheapest
+hunk ./Text/ParserCombinators/UU/Parsing.hs 315
+-getCheapest n = snd . foldr step (maxBound, error "getCheapest: no correcting alternative found") where        
++getCheapest _ [] = error "getCheapest: no correcting alternative found"
++getCheapest i ls = snd $ foldr step (maxBound, error "getCheapest: logic error") ls where        
+hunk ./Text/ParserCombinators/UU/Parsing.hs 318
+-        | w < c, new <- getCheapest' n ll w c, new < c = (new, ll)
++        | w < c, new <- getCheapest' i ll w c, new < c = (new, ll)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 321
+-getCheapest' :: Int -> Steps a -> Int -> Int -> Int
+-getCheapest' 0 _ v c = v
+-getCheapest' n (Step ps l) v c = getCheapest' (n-1) l v c
+-getCheapest' n (Apply _ l) v c = getCheapest' n l v c
+-getCheapest' n (Fail m m2ls) v c = foldr f c $map ($m) m2ls where
+-    f (w,l) c' 
+-        | v + w < c' = getCheapest' (n-1) l (v+w) c'
+-        | otherwise  = c'
+-getCheapest' n (EndH a lf r) v c  = getCheapest' n (lf a `best` removeEndH r) v c
+-getCheapest' n (EndF (l:_) r) v c = getCheapest' n (l `best` r) v c
++    -- arguments:
++    -- 1.) # of tree levels to inspect, 
++    -- 2.) the tree
++    -- 3.) accumulated cost from root
++    -- 4.) best value found for a tree thus far as bound
++    getCheapest' :: Int -> Steps a -> Int -> Int -> Int
++    getCheapest' 0 _ = const
++    getCheapest' n (Step ps l) = getCheapest' (n-1) l
++    getCheapest' n (Apply _ l) = getCheapest' n l
++    getCheapest' n (Fail m m2ls) = \v c -> 
++        let f (w,l) c' 
++                | v + w < c' = getCheapest' (n-1) l (v+w) c'
++                | otherwise  = c'
++        in foldr (\m2l -> f (m2l m)) c m2ls where
++    getCheapest' n (EndH a lf r) = getCheapest' n (lf a `best` removeEndH r)
++    getCheapest' n (EndF (l:_) r) = getCheapest' n (l `best` r)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 338
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% pErrors     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- pErrors
+hunk ./Text/ParserCombinators/UU/Parsing.hs 340
+-class state `Stores` errors where
+-    getErrors :: state -> (errors, state)
++class state `Stores` pErrors where
++    getErrors :: state -> (pErrors, state)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 349
+-    pEnd    = History (\k -> 
+-	let deleterest inp = case deleteAtEnd inp of
+-                Nothing        -> uncurry k (getErrors inp)
+-                Just (i, inp') -> Fail [] [const (i,  deleterest inp')]
+-        in deleterest)
++    pEnd    = History pEnd' where
++        pEnd' k inp = case deleteAtEnd inp of
++            Nothing        -> uncurry k (getErrors inp)
++            Just (i, inp') -> Fail [] [const (i, pEnd' k inp')]
+hunk ./Text/ParserCombinators/UU/Parsing.hs 354
+-push' :: (state -> Steps r) -> (v, state) -> Steps (v, r)
+-push' k (errors, state) = push errors (k state)
++pushErrors :: (state `Stores` errors) => (state -> Steps r) -> state -> Steps (errors, r)
++pushErrors k inp = let (errors, inp') = getErrors inp in push errors (k inp')
+hunk ./Text/ParserCombinators/UU/Parsing.hs 358
+-    pErrors = Future (\k -> push' k . getErrors)
+-    pEnd    = Future (\k -> 
+-	let deleterest inp = case deleteAtEnd inp of
+-               Nothing -> push' k (getErrors inp)
+-               Just (i, inp') -> Fail [] [const (i, deleterest inp')]
+-        in deleterest)
++    pErrors = Future pushErrors
++    pEnd    = Future pEnd' where
++        pEnd' k inp = case deleteAtEnd inp of
++            Nothing        -> pushErrors k inp
++            Just (i, inp') -> Fail [] [const (i, pEnd' k inp')]
+hunk ./Text/ParserCombinators/UU/Parsing.hs 364
+-instance (Eof state, state `Stores` errors) => AsksFor (Parser state) errors where
+-    pErrors = Parser pErrors pErrors
+-    pEnd    = Parser pEnd pEnd
++instance (Eof state, state `Stores` errors) => AsksFor (P state) errors where
++    pErrors = P pErrors pErrors
++    pEnd    = P pEnd pEnd
+hunk ./Text/ParserCombinators/UU/Parsing.hs 368
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% State Change          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- State Change
+hunk ./Text/ParserCombinators/UU/Parsing.hs 371
+-    pSwitch :: (st1 -> (st2, st2 -> st1)) -> p st2 a -> p st1 a
++    switch :: (st1 -> (st2, st2 -> st1)) -> p st2 a -> p st1 a
+hunk ./Text/ParserCombinators/UU/Parsing.hs 374
+---  pSwitch split (History p) = History (\k (split -> (st2,back)) -> p (\a -> k a . back)) st2)
+-    pSwitch split (History p) = History (\k st1 -> 
++    split `switch` History p = History (\k st1 -> 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 379
+---  pSwitch split (Future p) = Future (\k (split -> (st2, back)) -> p (k . back) st2)
+-    pSwitch split (Future p) = Future (\k st1 -> 
++    split `switch` Future p = Future (\k st1 -> 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 383
+-instance Switch Parser where
+-    pSwitch split (Parser p q) = Parser (pSwitch split p) (pSwitch split q)
++instance Switch P where
++    split `switch` P p q = P (split `switch` p) (split `switch` q)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 386
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%% Recognisers           %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++-- Recognisers
+hunk ./Text/ParserCombinators/UU/Parsing.hs 388
+-newtype R st a = R 
+-    { unR :: forall r . (st -> Steps r) -> st -> Steps r } 
++newtype R state a = R 
++    { unR :: forall r. (state -> Steps r) -> state -> Steps r } 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 392
+-    fmap f (R r) = R r 
++    fmap _ (R r) = R r 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 395
+-    pure a      = R id
++    pure _      = R id
+hunk ./Text/ParserCombinators/UU/Parsing.hs 411
+-    History p <* R r       = History (p . (r.)) 
++    History p <* R r       = History (\k -> p (r . k)) 
+hunk ./Text/ParserCombinators/UU/Parsing.hs 413
+-    f         <$ R r       = History (r . ($f))
++    f         <$ R r       = History (\k -> r (k f))
+hunk ./Text/ParserCombinators/UU/Parsing.hs 416
+-    Future p <* R r      = Future (\k -> p (r k))
+-    R r      *> Future p = Future (\k -> r (p k))
++    Future p <* R r      = Future (p . r)
++    R r      *> Future p = Future (r . p)
+hunk ./Text/ParserCombinators/UU/Parsing.hs 420
+-instance  ExtApplicative (Parser st) st where
+-    Parser h f <* r     = Parser (h <* r) (f <* r) 
+-    r     *> Parser h f = Parser (r *> h) (r *> f)
+-    f     <$ r          = Parser (f <$ r) (f <$ r)       
++instance  ExtApplicative (P st) st where
++    P h f <* r     = P (h <* r) (f <* r) 
++    r     *> P h f = P (r *> h) (r *> f)
++    f     <$ r     = P (f <$ r) (f <$ r)       
+hunk ./uu-parsinglib-alt.cabal 21
++    GHC-Options: -Wall
+}

@@ -1,0 +1,11 @@
+[license cleanup
+ekmett@gmail.com**20090330020139] {
+hunk ./LICENSE 2
++Copyright (c) 2004 Oleg Kiselyov and Chung-chieh Shan
+hunk ./LICENSE 17
+-    * Neither the name of Isaac Jones nor the names of other
++    * Neither the name of Edward Kmett nor the names of other
+hunk ./reflection.cabal 2
+-version:	    0.0
++version:	    0.0.0
+}

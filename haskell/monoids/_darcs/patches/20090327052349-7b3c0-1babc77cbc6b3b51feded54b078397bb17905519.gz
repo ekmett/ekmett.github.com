@@ -1,0 +1,38 @@
+[Seminearring Seq
+ekmett@gmail.com**20090327052349] {
+hunk ./Data/Monoid/Multiplicative.hs 37
++
++instance Monoid m => Seminearring (Seq m)
+hunk ./dist/doc/html/monoids/Data-Monoid-Multiplicative.html 337
++><TD CLASS="decl"
++><A HREF="/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
++>Monoid</A
++> m =&gt; <A HREF="Data-Monoid-Multiplicative.html#t%3ASeminearring"
++>Seminearring</A
++> (<A HREF="/usr/local/share/doc/ghc/libraries/containers/Data-Sequence.html#t%3ASeq"
++>Seq</A
++> m)</TD
++></TR
++><TR
+hunk ./dist/doc/html/monoids/src/Data-Monoid-Multiplicative.html 46
+-<a name="line-38"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Self</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-39"></a>    <span class='hs-varid'>one</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Self</span> <span class='hs-varid'>one</span>
+-<a name="line-40"></a>    <span class='hs-conid'>Self</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-conid'>Self</span> <span class='hs-varid'>b</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Self</span> <span class='hs-layout'>(</span><span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span>
+-<a name="line-41"></a>
+-<a name="line-42"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>FromString</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
+-<a name="line-43"></a>    <span class='hs-varid'>one</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>FromString</span> <span class='hs-varid'>one</span>
+-<a name="line-44"></a>    <span class='hs-conid'>FromString</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-conid'>FromString</span> <span class='hs-varid'>b</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>FromString</span> <span class='hs-layout'>(</span><span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span>
+-<a name="line-45"></a>
+-<a name="line-46"></a><span class='hs-comment'>-- class Absorbing m where isZero :: m -&gt; Bool</span>
++<a name="line-38"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Monoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Seminearring</span> <span class='hs-layout'>(</span><span class='hs-conid'>Seq</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span>
++<a name="line-39"></a>
++<a name="line-40"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Self</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-41"></a>    <span class='hs-varid'>one</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Self</span> <span class='hs-varid'>one</span>
++<a name="line-42"></a>    <span class='hs-conid'>Self</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-conid'>Self</span> <span class='hs-varid'>b</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Self</span> <span class='hs-layout'>(</span><span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span>
++<a name="line-43"></a>
++<a name="line-44"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>MultiplicativeMonoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>FromString</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-45"></a>    <span class='hs-varid'>one</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>FromString</span> <span class='hs-varid'>one</span>
++<a name="line-46"></a>    <span class='hs-conid'>FromString</span> <span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-conid'>FromString</span> <span class='hs-varid'>b</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>FromString</span> <span class='hs-layout'>(</span><span class='hs-varid'>a</span> <span class='hs-varop'>`times`</span> <span class='hs-varid'>b</span><span class='hs-layout'>)</span>
++<a name="line-47"></a>
++<a name="line-48"></a><span class='hs-comment'>-- class Absorbing m where isZero :: m -&gt; Bool</span>
+}

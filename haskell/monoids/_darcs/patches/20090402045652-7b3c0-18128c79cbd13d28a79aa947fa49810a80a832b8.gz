@@ -1,0 +1,280 @@
+[added fields, AD cleanups
+ekmett@gmail.com**20090402045652] {
+adddir ./Data/Group/Multiplicative
+addfile ./Data/Field.hs
+hunk ./Data/Field.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Field
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-----------------------------------------------------------------------------
++
++module Data.Field
++    ( module Data.Group.Multiplicative
++    , module Data.Ring
++    , Field
++    ) where
++
++import Data.Group.Multiplicative
++import Data.Ring
++
++class (Ring a, MultiplicativeGroup a) => Field a
+addfile ./Data/Group/Multiplicative.hs
+hunk ./Data/Group/Multiplicative.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Group.Multiplicative
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-----------------------------------------------------------------------------
++
++module Data.Group.Multiplicative 
++    ( module Data.Monoid.Multiplicative
++    , MultiplicativeGroup
++    , over
++    , under
++    , grecip
++    ) where
++
++import Data.Monoid.Multiplicative
++    
++-- | Minimal definition over or grecip
++class Multiplicative g => MultiplicativeGroup g where
++    -- | @x / y@
++    over :: g -> g -> g
++    -- | @x \ y@
++    under :: g -> g -> g
++    grecip :: g -> g
++
++    x `under` y = grecip x `times` y
++    x `over` y = x `times` grecip y
++    grecip x = one `over` x
+addfile ./Data/Group/Multiplicative/Sugar.hs
+hunk ./Data/Group/Multiplicative/Sugar.hs 1
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Group.Multiplicative.Sugar
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  portable
++--
++-- Syntactic sugar for working with groups that conflicts with names from the "Prelude".
++--
++-- > import Prelude hiding ((-), (+), (*), (/), negate, subtract, recip)
++-- > import Data.Group.Multiplicative.Sugar
++--
++-----------------------------------------------------------------------------
++
++module Data.Group.Multiplicative.Sugar 
++    ( module Data.Monoid.Multiplicative.Sugar
++    , module Data.Group.Multiplicative
++    , module Data.Group.Sugar
++    , (/)
++    , (\\)
++    , recip
++    ) where
++
++import Data.Group.Multiplicative
++import Data.Monoid.Multiplicative.Sugar
++import Data.Group.Sugar
++import Prelude hiding ((-), (+), (*), (/), negate, subtract, recip)
++
++infixl 7 /
++infixr 7 \\
++
++(/) :: MultiplicativeGroup g => g -> g -> g
++(/) = over
++
++(\\) :: MultiplicativeGroup g => g -> g -> g
++(\\) = under
++
++recip :: MultiplicativeGroup g => g -> g
++recip = grecip
+hunk ./Data/Monoid/Applicative.hs 56
+---   and asserts that any 'Alternative' applied to a 'Monoid' forms a 'LeftSemiNearRing' 
++--   and asserts that any 'Alternative' applied to a 'Monoid' forms a 'RightSemiNearRing' 
+hunk ./Data/Monoid/Applicative.hs 76
+-instance (Alternative f, Monoid a) => LeftSemiNearRing (Alt f a)
++instance (Alternative f, Monoid a) => RightSemiNearRing (Alt f a)
+hunk ./Data/Monoid/Monad.hs 59
+---   and asserts that any 'MonadPlus' applied to a 'Monoid' forms a 'LeftSemiNearRing' 
++--   and asserts that any 'MonadPlus' applied to a 'Monoid' forms a 'RightSemiNearRing' 
+hunk ./Data/Monoid/Monad.hs 86
+-instance (MonadPlus m, Monoid a) => LeftSemiNearRing (MonadSum m a)
++instance (MonadPlus m, Monoid a) => RightSemiNearRing (MonadSum m a)
+hunk ./Data/Monoid/Multiplicative.hs 25
+--- which can be extended if the 'Monad' is a 'MonadPlus' to yield a 'LeftSemiNearRing'
++-- which can be extended if the 'Monad' is a 'MonadPlus' to yield a 'RightSemiNearRing'
+hunk ./Data/Monoid/Multiplicative.hs 29
+--- yield a 'LeftSemiNearRing'
++-- yield a 'RightSemiNearRing'
+hunk ./Data/Monoid/Multiplicative.hs 225
+-
+hunk ./Data/Monoid/Multiplicative.hs 226
+-
+hunk ./Data/Monoid/Multiplicative.hs 230
+-
+hunk ./Data/Ring.hs 1
+-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, UndecidableInstances #-}
+-
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 1
+-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, RankNTypes, FunctionalDependencies, UndecidableInstances, FlexibleContexts #-}
++
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Data.Ring.Module.AutomaticDifferentiation
++-- Copyright   :  (c) Edward Kmett 2009
++-- License     :  BSD-style
++-- Maintainer  :  ekmett@gmail.com
++-- Stability   :  experimental
++-- Portability :  portable (instances use MPTCs)
++--
++-----------------------------------------------------------------------------
++
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 17
++    , d
++    , lift
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 21
+-import Prelude hiding ((*),(+),(-),subtract,negate)
+-import Data.Ring.Sugar
++import Prelude
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 27
+-data D r m = D r m
++data D s r m = D r m deriving (Show,Read)
++
++lift :: Monoid m => r -> D s r m
++lift x = D x zero
++
++infinitesimal :: (Monoid r, Multiplicative m) => D s r m
++infinitesimal = D zero one
++
++instance Eq r => Eq (D s r m) where
++    D x _ == D y _ = x == y
++
++instance Ord r => Ord (D s r m) where
++    D x _ `compare` D y _ = compare x y
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 41
+-instance (Monoid r, Monoid m) => Monoid (D r m) where
++instance (Monoid r, Monoid m) => Monoid (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 43
+-    D x m `mappend` D y n = D (x + y) (m + n)
++    D x m `mappend` D y n = D (x `mappend` y) (m `mappend` n)
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 45
+-instance (Module r m) => Multiplicative (D r m) where
++instance (r `Module` m) => Multiplicative (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 47
+-    D x m `times` D y n = D (x * y) (x *. n + m .* y)
++    D x m `times` D y n = D (x `times` y) (x *. n `plus` m .* y)
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 49
+-instance (Group r, Module r m, Group m) => Group (D r m) where
++instance (Group r, r `Module` m, Group m) => Group (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 54
+-instance (LeftSemiNearRing r, Module r m) => LeftSemiNearRing (D r m)
+-instance (RightSemiNearRing r, Module r m) => RightSemiNearRing (D r m)
+-instance (SemiRing r, Module r m) => SemiRing (D r m)
+-instance (Ring r, Module r m, Group m) => Ring (D r m)
++instance Num a => Num (D s a a) where
++    D x x' + D y y' = D (x + y) (x' + y')
++    D x x' * D y y' = D (x * y) (x * y' + x' * y)
++    D x x' - D y y' = D (x - y) (x' - y')
++    negate (D x x') = D (negate x) (negate x')
++    abs (D x x') = D (abs x) (signum x * x')
++    signum (D x _) = D (signum x) 0
++    fromInteger x = D (fromInteger x) 0
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 63
+-instance (c `Reducer` r, c `Reducer` m) => Reducer c (D r m) where
++instance Fractional a => Fractional (D s a a) where
++    recip (D x x') = D (recip x) (-x'/x/x)
++    fromRational x = D (fromRational x) 0
++
++instance (LeftSemiNearRing r, Module r m) => LeftSemiNearRing (D s r m)
++instance (RightSemiNearRing r, Module r m) => RightSemiNearRing (D s r m)
++instance (SemiRing r, Module r m) => SemiRing (D s r m)
++instance (Ring r, Module r m, Group m) => Ring (D s r m)
++
++instance (c `Reducer` r, c `Reducer` m) => Reducer c (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 77
+-instance (Arbitrary r, Arbitrary m) => Arbitrary (D r m) where
++instance (Arbitrary r, Arbitrary m) => Arbitrary (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 81
+-instance (CoArbitrary r, CoArbitrary m) => CoArbitrary (D r m) where
++instance (CoArbitrary r, CoArbitrary m) => CoArbitrary (D s r m) where
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 84
+-{--
+-infix 0 ><
+-
+-(><) :: Multiplicatve a => (a -> a) -> (AD a -> AD a) -> AD a -> AD a
+-(f >< f') a@(AD a0 a') = D (f a0) (a' * f' a)
+-
+-data AD r = AD r (Maybe (AD r))
+-
+-instance (Monoid r) => Monoid (AD r) where
+-    mempty = K mempty
+-    AD x m + AD y n = D (x + y) (m + n)
++d :: (Monoid r, Multiplicative m) => (forall s. D s r m -> D s r m) -> (r,m)
++d f = (y,y') where D y y' = f infinitesimal
+hunk ./Data/Ring/Module/AutomaticDifferentiation.hs 87
+-instance (c `Reducer` r) => Reducer c (AD r) where
+-    unit c = c' where c' = AD (unit c) c'
+---}
+hunk ./Data/Ring/Semi/Near.hs 63
+-instance (Measured v m, Monoid m) => LeftSemiNearRing (FingerTree v m)
++instance (Measured v m, Monoid m) => RightSemiNearRing (FingerTree v m)
+hunk ./Data/Ring/Semi/Near.hs 67
+--- for 'liftM2 mappend' is a 'LeftSemiNearRing' by 'MonadPlus' left-distributivity
++-- for 'liftM2 mappend' is a 'RightSemiNearRing' by 'MonadPlus' left-distributivity
+hunk ./Data/Ring/Semi/Near.hs 69
+-instance Monoid m => LeftSemiNearRing [m]
++instance Monoid m => RightSemiNearRing [m]
+hunk ./Data/Ring/Semi/Near.hs 71
+-instance Monoid m => LeftSemiNearRing (Maybe m)
++instance Monoid m => RightSemiNearRing (Maybe m)
+hunk ./Data/Ring/Semi/Near.hs 73
+-instance Monoid m => LeftSemiNearRing (Seq m)
++instance Monoid m => RightSemiNearRing (Seq m)
+hunk ./Data/Ring/Semi/Near.hs 75
+-instance (Stream s m t, Monoid a) => LeftSemiNearRing (ParsecT s u m a)
++instance (Stream s m t, Monoid a) => RightSemiNearRing (ParsecT s u m a)
+hunk ./Data/Ring/Semi/Near.hs 77
+-instance (MonadPlus m, Monoid n) => LeftSemiNearRing (SState.StateT s m n)
++instance (MonadPlus m, Monoid n) => RightSemiNearRing (SState.StateT s m n)
+hunk ./Data/Ring/Semi/Near.hs 79
+-instance (MonadPlus m, Monoid n) => LeftSemiNearRing (LState.StateT s m n)
++instance (MonadPlus m, Monoid n) => RightSemiNearRing (LState.StateT s m n)
+hunk ./Data/Ring/Semi/Near.hs 81
+-instance (MonadPlus m, Monoid n) => LeftSemiNearRing (ReaderT e m n)
++instance (MonadPlus m, Monoid n) => RightSemiNearRing (ReaderT e m n)
+hunk ./Data/Ring/Semi/Near.hs 83
+-instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (SRWS.RWST r w s m n)
++instance (MonadPlus m, Monoid w, Monoid n) => RightSemiNearRing (SRWS.RWST r w s m n)
+hunk ./Data/Ring/Semi/Near.hs 85
+-instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (LRWS.RWST r w s m n)
++instance (MonadPlus m, Monoid w, Monoid n) => RightSemiNearRing (LRWS.RWST r w s m n)
+hunk ./Data/Ring/Semi/Near.hs 87
+-instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (SWriter.WriterT w m n)
++instance (MonadPlus m, Monoid w, Monoid n) => RightSemiNearRing (SWriter.WriterT w m n)
+hunk ./Data/Ring/Semi/Near.hs 89
+-instance (MonadPlus m, Monoid w, Monoid n) => LeftSemiNearRing (LWriter.WriterT w m n)
++instance (MonadPlus m, Monoid w, Monoid n) => RightSemiNearRing (LWriter.WriterT w m n)
+hunk ./monoids.cabal 2
+-version:	    0.1.21
++version:	    0.1.22
+hunk ./monoids.cabal 35
++    Data.Group.Multiplicative
++    Data.Group.Multiplicative.Sugar
+hunk ./monoids.cabal 73
++    Data.Field
+}

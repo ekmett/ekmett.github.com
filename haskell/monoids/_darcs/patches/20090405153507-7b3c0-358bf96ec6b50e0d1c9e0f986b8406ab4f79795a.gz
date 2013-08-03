@@ -1,0 +1,6 @@
+[bump to work around hackage
+ekmett@gmail.com**20090405153507
+ Ignore-this: 9f73323671e74ddf280ea9d1c0ea4afb
+] hunk ./monoids.cabal 2
+-version:	    0.1.30
++version:	    0.1.31

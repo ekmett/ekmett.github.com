@@ -1,0 +1,209 @@
+[works now =)
+ekmett@gmail.com**20060803053217] {
+adddir ./src/Type/Binary
+hunk ./src/Type/Binary.hs 1
+-{-# OPTIONS -fglasgow-exts #-}
+-{-# OPTIONS -fallow-undecidable-instances #-}
+-{--# OPTIONS -fallow-incoherent-instances #-}
++{-# OPTIONS -fglasgow-exts #-}			-- MPTC, Fundeps
++{-# OPTIONS -fallow-undecidable-instances #-}	-- needed for all type LHSs
++{-# OPTIONS -fth #-}				-- needed for $(tBinary 24)
+hunk ./src/Type/Binary.hs 30
++--
++-- TODO: TDivMod, TImplies, TXOr (properly), TGCD, 
++-- a Template Haskell integer to type binary map
+hunk ./src/Type/Binary.hs 42
+-	TSucc, tSucc, tPred
++	TSucc, tSucc, tPred,
++	TAdd, tAdd, tSub,
++	TMul, tMul,
++	TPow, tPow,
++	TXOr', tXOr',
++	TNF, tNF
+hunk ./src/Type/Binary.hs 52
++import Language.Haskell.TH
+hunk ./src/Type/Binary.hs 79
+--- | assert 2n !=n
++-- | assert 2n != n
+hunk ./src/Type/Binary.hs 83
+--- | assert 2n+1 !=n
++-- | assert 2n+1 != n
+hunk ./src/Type/Binary.hs 120
++thBinary :: Integral a => a -> TypeQ
++thBinary n = case n of
++		0  -> conT $ mkName "F"
++		-1 -> conT $ mkName "T"
++		n  -> let tf = thBinary $ n `div` 2
++		          oi = conT $ mkName $ if (n `mod` 2) == 0 then "O" else "I" 
++	   	      in appT oi tf
++thNum :: Integral a => a -> ExpQ 
++thNum n = sigE (varE $ mkName "undefined") $ thBinary n
++
++
+hunk ./src/Type/Binary.hs 134
++-- ...
+hunk ./src/Type/Binary.hs 145
+-eight :: O(O(O(I F))); eight = undefined
++eight    = undefined :: O(O(O(I F)))
+hunk ./src/Type/Binary.hs 153
+-sixteen :: O(O(O(O(I F))));sixteen  = undefined
++sixteen  = undefined :: O(O(O(O(I F))))
+hunk ./src/Type/Binary.hs 157
+-twenty_  = undefined :: O(O(I(O(I F))))
+---twenty _ = undefined :: TAdd O(O(I(O(I F)))) a b => a -> b
++twenty  :: TAdd (O(O(I(O(I F))))) b c => b -> c;	    twenty  = undefined;
++thirty  :: TAdd (O(I(I(I(I F))))) b c => b -> c;	    thirty  = undefined;
++fourty  :: TAdd (O(O(O(I(O(I F)))))) b c => b -> c; 	    fourty  = undefined;
++fifty   :: TAdd (O(I(O(O(I(I F)))))) b c => b -> c; 	    fifty   = undefined;
++sixty   :: TAdd (O(O(I(I(I(I F)))))) b c => b -> c; 	    sixty   = undefined;
++seventy :: TAdd (O(I(I(O(O(O(I F))))))) b c => b -> c;      seventy = undefined;
++eighty  :: TAdd (O(O(O(O(I(O(I F))))))) b c => b -> c;      eighty  = undefined;
++ninety  :: TAdd (O(I(O(I(I(O(I F))))))) b c => b -> c;      ninety  = undefined;
++type Hundred =   O(O(I(O(O(I(I F))))))
++hundred :: (TAdd a' b c, TMul a Hundred a') => a -> b -> c;   hundred = undefined;
+hunk ./src/Type/Binary.hs 168
+-instance TEq (I m) (O n) F
++instance TEq (I m) (O n) F 
+hunk ./src/Type/Binary.hs 179
+-tNeg :: TNeg a b => a -> b
+-tNeg = undefined
++tNeg :: TNeg a b => a -> b; tNeg = undefined
+hunk ./src/Type/Binary.hs 216
+-instance (Trichotomy n s, TEq s IsPositive b)  => TIsPositive n b
++instance (Trichotomy n s, TEq s IsPositive b) => TIsPositive n b
+hunk ./src/Type/Binary.hs 220
+-instance (Trichotomy n s, TEq s IsNegative b)  => TIsNegative n b
++instance (Trichotomy n s, TEq s IsNegative b) => TIsNegative n b
+hunk ./src/Type/Binary.hs 224
+-instance (Trichotomy n s, TEq s IsZero b)  => TIsZero n b
++instance (Trichotomy n s, TEq s IsZero b) => TIsZero n b
+hunk ./src/Type/Binary.hs 279
++instance (TNF' (O a) c b) => TNF' (I (O a)) (I c) T
++instance (TNF' (I a) c b) => TNF' (O (I a)) (O c) T
+hunk ./src/Type/Binary.hs 283
+-instance (TNF' (O a) c b) 		   => TNF' (I (O a)) (I c) T
+-instance (TNF' (I a) c b) 		   => TNF' (O (I a)) (O c) T
+hunk ./src/Type/Binary.hs 286
+-tNF :: TNF a b => a -> b
+-tNF = undefined
+-tAdd :: (TAddC a b F d, TNF d d') => a -> b -> d'
+-tAdd = undefined
++tNF :: TNF a b => a -> b; tNF = undefined
++
++class TAdd a b c | a b -> c
++instance (TAddC a b F d, TNF d d') => TAdd a b d'
++tAdd :: (TAdd a b c ) => a -> b -> c; tAdd = undefined
++
++class TSub a b c | a b -> c
++instance (TNeg b b', TAdd a b' c) => TSub a b c
++tSub :: TSub a b c => a -> b -> c; tSub = undefined
++
++-- reversible addition and subtraction
++class TRAdd a b c | a b -> c, a c -> b, b c -> a
++instance (TAdd a b c, TNeg b b', TAdd c b' a, TNeg a a', TAdd c a' b) => TRAdd a b c
++tRAdd :: (TRAdd a b c) => a -> b -> c;tRAdd = undefined
++tRSub :: (TRAdd a b c) => c -> a -> b;tRSub = undefined
++
++class TMul a b c | a b -> c
++instance TMul a F F
++instance TNeg a b => TMul a T b
++instance (TMul (O a) b c) => TMul a (O b) c
++instance (TMul (O a) b c, TRAdd a c d) => TMul a (I b) d
++tMul :: TMul a b c => a -> b -> c
++tMul = undefined
++
++-- | for non-negative exponents
++class TPow a b c | a b -> c
++instance TPow a F (I F)
++instance (TPow a k c, TMul c c d) => TPow a (O k) d
++instance (TPow a k c, TMul c c d, TMul a d e) => TPow a (I k) e
++tPow :: TPow a b c => a -> b -> c
++tPow = undefined
++
++instance TAnd F (I b) F
++instance TAnd F (O b) F
++instance TAnd (I a) F F
++instance TAnd (O a) F F
++instance TAnd T (I b) (I b)
++instance TAnd T (O b) (O b)
++instance TAnd (I a) T (I a)
++instance TAnd (O a) T (O a)
++instance (TAnd a b c, TNF (I c) c') => TAnd (I a) (I b) c'
++instance (TAnd a b c, TNF (O c) c') => TAnd (O a) (I b) c'
++instance (TAnd a b c, TNF (O c) c') => TAnd (I a) (O b) c'
++instance (TAnd a b c, TNF (O c) c') => TAnd (O a) (O b) c'
++
++instance TOr F (I b) (I b)
++instance TOr F (O b) (O b)
++instance TOr (I a) F (I a)
++instance TOr (O a) F (I a)
++instance TOr T (I b) T
++instance TOr T (O b) T
++instance TOr (I a) T T
++instance TOr (O a) T T 
++instance (TOr a b c, TNF (I c) c') => TOr (I a) (I b) c'
++instance (TOr a b c, TNF (I c) c') => TOr (O a) (I b) c'
++instance (TOr a b c, TNF (I c) c') => TOr (I a) (O b) c'
++instance (TOr a b c, TNF (O c) c') => TOr (O a) (O b) c'
++
++-- does not satisfy the rest of the reversibility fundeps of TXOr
++class TXOr' a b c | a b -> c
++instance TXOr' T T F
++instance TXOr' F T T
++instance TXOr' T F T
++instance TXOr' F F F
++instance TXOr' F (I b) (I b)
++instance TXOr' F (O b) (O b)
++instance TXOr' (I b) F (I b)
++instance TXOr' (O b) F (O b)
++instance TNot b c => TXOr' T (I b) (O c)
++instance TNot b c => TXOr' T (O b) (I c)
++instance TNot b c => TXOr' (I b) T (O c)
++instance TNot b c => TXOr' (O b) T (I c)
++instance (TXOr' a b c, TNF (O c) c') => TXOr' (I a) (I b) c'
++instance (TXOr' a b c, TNF (I c) c') => TXOr' (I a) (O b) c'
++instance (TXOr' a b c, TNF (I c) c') => TXOr' (O a) (I b) c'
++instance (TXOr' a b c, TNF (O c) c') => TXOr' (O a) (O b) c'
++tXOr' :: TXOr' a b c => a -> b -> c
++tXOr' = undefined
+hunk ./src/Type/Binary.hs 365
++--test_twelve :: $(tBinary 12);
++--test_twelve = undefined
+addfile ./src/Type/Binary/TH.hs
+hunk ./src/Type/Binary/TH.hs 1
++{-# OPTIONS -fth #-}
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Binary.TH
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (Template Haskell)
++--
++-- Provides a simple way to construct type level binaries.
++-- $(binaryE 24) returns an undefined value with the same type as the 
++-- Type.Binary with value 24.
++-----------------------------------------------------------------------------
++module Type.Binary.TH (
++	binaryE, binaryT
++) where
++
++import Type.Binary
++import Language.Haskell.TH
++
++f = conT $ mkName "F"
++t = conT $ mkName "T"
++o = conT $ mkName "O"
++i = conT $ mkName "I"
++
++binaryT :: Integral a => a -> TypeQ
++binaryT n = case n of
++    0  -> f
++    -1 -> t
++    n  -> appT (if (n `mod` 2) == 0 then o else i)$ binaryT $ n `div` 2
++
++binaryE :: Integral a => a -> ExpQ
++binaryE n = sigE (varE $ mkName "undefined") $ binaryT n
+}

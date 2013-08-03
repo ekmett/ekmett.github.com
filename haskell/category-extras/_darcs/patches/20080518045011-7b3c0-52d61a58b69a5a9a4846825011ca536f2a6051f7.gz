@@ -1,0 +1,22 @@
+[Cont Patched
+ekmett@gmail.com**20080518045011
+ 
+ Unable to figure out a valid signature to make Indexed Cont into an instance of MonadCont
+ 
+] {
+hunk ./src/Control/Monad/Indexed/Cont.hs 21
+-import Control.Monad.Cont.Class
++-- import Control.Monad.Cont.Class
+hunk ./src/Control/Monad/Indexed/Cont.hs 29
++--	shift :: ((a -> m i i o) -> m r j j) -> m r o a
+hunk ./src/Control/Monad/Indexed/Cont.hs 66
+-instance Monad m => MonadCont (IxContT m i i) where 
+-	callCC = undefined -- shift (\k -> f k >>= k)
++--instance Monad m => MonadCont (IxContT m i i) where 
++--	callCC f = shift (\k -> f k >>>= k)
+hunk ./src/Control/Monad/Indexed/Cont.hs 95
+-instance MonadCont (IxCont i i) where 
+-	callCC = undefined -- shift (\k -> f k >>= k)
++-- instance MonadCont (IxCont i i) where 
++--	callCC f = shift (\k -> f k >>>= k)
+}

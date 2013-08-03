@@ -1,0 +1,463 @@
+[0.53.3a
+ekmett@gmail.com**20080617034444] {
+hunk ./category-extras.cabal 1
+-name:                   category-extras
+-category:               Control, Monads, Comonads
+-version:                0.53.1
+-license:                BSD3
+-cabal-version:          >= 1.2
+-license-file:           LICENSE
+-author:                 Edward A. Kmett, Dave Menendez
+-maintainer:             Edward A. Kmett <ekmett@gmail.com>
+-stability:              experimental
+-homepage:               http://comonad.com/reader/
+-synopsis:               Various modules and constructs inspired by category theory
+-copyright:              Copyright (C) 2008 Edward A. Kmett
+-                        Copyright (C) 2004--2008 Dave Menendez
+-                        Copyright (C) 2007 Iavor Diatchki
+-description:            A vastly expanded collection of modules implementing various
+-                        ideas from category theory. Notable bits include: comonads,
+-                        adjunctions, functor fixedpoints and various recursion
+-                        operaters ala /Functional Programming with Bananas, Lenses, Envelopes and Barbed Wire/.
+-build-type:             Simple
++name:          category-extras
++category:      Control, Monads, Comonads
++version:       0.53.3
++license:       BSD3
++cabal-version: >= 1.2
++license-file:  LICENSE
++author:        Edward A. Kmett, Dave Menendez
++maintainer:    Edward A. Kmett <ekmett@gmail.com>
++stability:     experimental
++homepage:      http://comonad.com/reader/
++synopsis:      Various modules and constructs inspired by category theory
++copyright:     Copyright (C) 2008 Edward A. Kmett, 
++               Copyright (C) 2004--2008 Dave Menendez, 
++               Copyright (C) 2007 Iavor Diatchki
++description:   A vastly expanded collection of modules implementing various
++               ideas from category theory. Notable bits include: comonads,
++               adjunctions, and various recursion schemes ala 
++               /Functional Programming with Bananas, Lenses, Envelopes and Barbed Wire/.
++build-type:    Simple
+hunk ./category-extras.cabal 22
+-        description:    Indicates Control.Category is available and that the standard library has
+-                        its arrows subclass Control.Category.Category
+-        default:        True
++  description: Indicates Control.Category is available and that the standard library has
++               its arrows subclass Control.Category.Category
++  default:     True
+hunk ./category-extras.cabal 27
+-        description:    Support for Type Families is available to us
++  description: Support for Type Families is available to us
+hunk ./category-extras.cabal 30
+-        description:    Enable optimizations
+-        default:        False
++  description: Enable optimizations
++  default:     False
+hunk ./category-extras.cabal 34
+-        build-depends:  mtl >= 1.1
+-        extensions:
+-                CPP,
+-                EmptyDataDecls,
+-                FlexibleContexts,
+-                FlexibleInstances,
+-                FunctionalDependencies,
+-                MultiParamTypeClasses,
+-                TypeOperators,
+-                TypeSynonymInstances
+-                UndecidableInstances,
+-                ExistentialQuantification,
+-                Rank2Types
++  build-depends:  mtl >= 1.1
++  extensions:
++    CPP,
++    EmptyDataDecls,
++    FlexibleContexts,
++    FlexibleInstances,
++    FunctionalDependencies,
++    MultiParamTypeClasses,
++    TypeOperators,
++    TypeSynonymInstances
++    UndecidableInstances,
++    ExistentialQuantification,
++    Rank2Types
+hunk ./category-extras.cabal 48
+-        other-modules:
+-                Control.Functor.Internal.Adjunction,
+-                Control.Functor.Internal.Ideal
++  other-modules:
++    Control.Functor.Internal.Adjunction,
++    Control.Functor.Internal.Ideal
+hunk ./category-extras.cabal 52
+-        exposed-modules:
+-                Control.Category.Monoidal,
+-                Control.Category.Cartesian,
+-                Control.Category.Cartesian.Closed,
+-                Control.Applicative.Parameterized,
+-                Control.Arrow.BiKleisli,
+-                Control.Arrow.CoKleisli,
+-                Control.Category.Associative,
+-                Control.Category.Braided,
+-                Control.Category.Discrete,
+-                Control.Category.Distributive,
+-                Control.Category.Dual,
+-                Control.Category.Hask,
+-                Control.Category.Object,
+-                Control.Comonad,
+-                Control.Comonad.Cofree,
+-                Control.Comonad.Context,
+-                Control.Comonad.Coideal,
+-                Control.Comonad.Density,
+-                Control.Comonad.Fix,
+-                Control.Comonad.Indexed,
+-                Control.Comonad.HigherOrder,
+-                Control.Comonad.Parameterized,
+-                Control.Comonad.Pointer,
+-                Control.Comonad.Reader,
+-                Control.Comonad.Stream,
+-                Control.Comonad.Supply,
+-                Control.Comonad.Trans,
+-                Control.Functor,
+-                Control.Functor.Adjunction,
+-                Control.Functor.Adjunction.HigherOrder,
+-                Control.Functor.Algebra,
+-                Control.Functor.Algebra.Elgot,
+-                Control.Functor.Categorical,
+-                Control.Functor.Cone,
+-                Control.Functor.Composition,
+-                Control.Functor.Combinators.Const,
+-                Control.Functor.Combinators.Lift,
+-                Control.Functor.Combinators.Join,
+-                Control.Functor.Combinators.Biff,
+-                Control.Functor.Combinators.Flip,
+-                Control.Functor.Combinators.Of,
+-                Control.Functor.Contra,
+-                Control.Functor.Extras,
+-                Control.Functor.Exponential,
+-                Control.Functor.Fix,
+-                Control.Functor.Full,
+-                Control.Functor.HigherOrder,
+-                Control.Functor.HigherOrder.Composition,
+-                Control.Functor.Indexed,
+-                Control.Functor.KanExtension,
+-                Control.Functor.KanExtension.Interpreter,
+-                Control.Functor.Lambek,
+-                Control.Functor.Limit,
+-                Control.Functor.Pointed,
+-                Control.Functor.Pointed.Composition,
+-                Control.Functor.Representable,
+-                Control.Functor.Strong,
+-                Control.Functor.Yoneda,
+-                Control.Functor.Zip,
+-                Control.Functor.Zap,
+-                Control.Monad.Categorical,
+-                Control.Monad.Codensity,
+-                Control.Monad.Free,
+-                Control.Monad.HigherOrder,
+-                Control.Monad.Ideal,
+-                Control.Monad.Indexed,
+-                Control.Monad.Indexed.Cont,
+-                Control.Monad.Indexed.Fix,
+-                Control.Monad.Indexed.State,
+-                Control.Monad.Indexed.Trans,
+-                Control.Monad.Parameterized,
+-                Control.Monad.Hyper,
+-                Control.Monad.Either,
+-                Control.Morphism.Ana,
+-                Control.Morphism.Apo,
+-                Control.Morphism.Build,
+-                Control.Morphism.Cata,
+-                Control.Morphism.Chrono,
+-                Control.Morphism.Destroy,
+-                Control.Morphism.Dyna,
+-                Control.Morphism.Exo,
+-                Control.Morphism.Futu,
+-                Control.Morphism.Histo,
+-                Control.Morphism.Hylo,
+-                Control.Morphism.Meta.Gibbons,
+-                Control.Morphism.Meta.Erwig,
+-                Control.Morphism.Para,
+-                Control.Morphism.Postpro,
+-                Control.Morphism.Prepro,
+-                Control.Morphism.Span,
+-                Control.Morphism.Synchro,
+-                Control.Morphism.Universal,
+-                Control.Morphism.Zygo,
+-                Data.Void
++  exposed-modules:
++    Control.Category.Monoidal,
++    Control.Category.Cartesian,
++    Control.Category.Cartesian.Closed,
++    Control.Applicative.Parameterized,
++    Control.Allegory,
++    Control.Arrow.BiKleisli,
++    Control.Arrow.CoKleisli,
++    Control.Category.Associative,
++    Control.Category.Braided,
++    Control.Category.Discrete,
++    Control.Category.Distributive,
++    Control.Category.Dual,
++    Control.Category.Hask,
++    Control.Category.Object,
++    Control.Comonad,
++    Control.Comonad.Cofree,
++    Control.Comonad.Context,
++    Control.Comonad.Coideal,
++    Control.Comonad.Density,
++    Control.Comonad.Exponent,
++    Control.Comonad.Fix,
++    Control.Comonad.Indexed,
++    Control.Comonad.HigherOrder,
++    Control.Comonad.Parameterized,
++    Control.Comonad.Pointer,
++    Control.Comonad.Reader,
++    Control.Comonad.Stream,
++    Control.Comonad.Supply,
++    Control.Comonad.Trans,
++    Control.Dyad,
++    Control.Functor,
++    Control.Functor.Adjunction,
++    Control.Functor.Adjunction.HigherOrder,
++    Control.Functor.Algebra,
++    Control.Functor.Algebra.Elgot,
++    Control.Functor.Categorical,
++    Control.Functor.Cone,
++    Control.Functor.Composition,
++    Control.Functor.Combinators.Const,
++    Control.Functor.Combinators.Lift,
++    Control.Functor.Combinators.Join,
++    Control.Functor.Combinators.Biff,
++    Control.Functor.Combinators.Flip,
++    Control.Functor.Combinators.Of,
++    Control.Functor.Contra,
++    Control.Functor.Extras,
++    Control.Functor.Exponential,
++    Control.Functor.Fix,
++    Control.Functor.Full,
++    Control.Functor.HigherOrder,
++    Control.Functor.HigherOrder.Composition,
++    Control.Functor.Indexed,
++    Control.Functor.KanExtension,
++    Control.Functor.KanExtension.Interpreter,
++    Control.Functor.Lambek,
++    Control.Functor.Limit,
++    Control.Functor.Pointed,
++    Control.Functor.Pointed.Composition,
++    Control.Functor.Representable,
++    Control.Functor.Strong,
++    Control.Functor.Yoneda,
++    Control.Functor.Zip,
++    Control.Functor.Zap,
++    Control.Monad.Categorical,
++    Control.Monad.Codensity,
++    Control.Monad.Free,
++    Control.Monad.HigherOrder,
++    Control.Monad.Ideal,
++    Control.Monad.Indexed,
++    Control.Monad.Indexed.Cont,
++    Control.Monad.Indexed.Fix,
++    Control.Monad.Indexed.State,
++    Control.Monad.Indexed.Trans,
++    Control.Monad.Parameterized,
++    Control.Monad.Hyper,
++    Control.Monad.Either,
++    Control.Morphism.Ana,
++    Control.Morphism.Apo,
++    Control.Morphism.Build,
++    Control.Morphism.Cata,
++    Control.Morphism.Chrono,
++    Control.Morphism.Destroy,
++    Control.Morphism.Dyna,
++    Control.Morphism.Exo,
++    Control.Morphism.Futu,
++    Control.Morphism.Histo,
++    Control.Morphism.Hylo,
++    Control.Morphism.Meta.Gibbons,
++    Control.Morphism.Meta.Erwig,
++    Control.Morphism.Para,
++    Control.Morphism.Postpro,
++    Control.Morphism.Prepro,
++    Control.Morphism.Span,
++    Control.Morphism.Synchro,
++    Control.Morphism.Universal,
++    Control.Morphism.Zygo,
++    Data.Void
+hunk ./category-extras.cabal 151
+-        hs-source-dirs:         src
+-        ghc-options:            -Wall 
++  hs-source-dirs:   src
++  ghc-options:      -Wall 
+hunk ./category-extras.cabal 154
+-        if flag(ArrowSubclassesCategory)
+-                build-depends: ghc >= 6.9, base > 3, array
+-                cpp-options: -D__ARROW_SUBCLASSES_CATEGORY__=1
+-        else
+-                build-depends: ghc < 6.9, base, array 
+-                hs-source-dirs: pre-6.9
+-                exposed-modules: Control.Category
++  if flag(ArrowSubclassesCategory)
++    build-depends: ghc >= 6.9, base > 3, array
++    cpp-options: -D__ARROW_SUBCLASSES_CATEGORY__=1
++  else
++    build-depends: ghc < 6.9, base, array 
++    hs-source-dirs: pre-6.9
++    exposed-modules: Control.Category
+hunk ./category-extras.cabal 162
+-        if flag(TypeFamilies)
+-                extensions: TypeFamilies
+-                cpp-options: -D__TYPE_FAMILIES__=1
++  if flag(TypeFamilies)
++    extensions: TypeFamilies
++    cpp-options: -D__TYPE_FAMILIES__=1
+hunk ./category-extras.cabal 166
+-        if flag(Optimize)
+-                ghc-options: -funbox-strict-fields -O2
++  if flag(Optimize)
++    ghc-options: -funbox-strict-fields -O2
+hunk ./src/Control/Comonad.hs 28
++import Data.Monoid
+hunk ./src/Control/Comonad.hs 65
++-- class Functor w => Extendable w where
++--        duplicate :: w a -> w (w a)
++--        extend :: (w a -> b) -> w a -> w b
++--        extend f = fmap f . duplicate
++--        duplicate = extend id
++-- class (Copointed w, Extendable w) => Comonad w
++-- instance (Copointed w, Extendable w) => Comonad w
++
+hunk ./src/Control/Comonad.hs 118
++-- the anonymous exponent comonad
++instance Monoid m => Copointed ((->)m) where
++        extract f = f mempty
++
++instance Monoid m => Comonad ((->)m) where
++        duplicate f m = f . mappend m
+hunk ./src/Control/Functor/Algebra.hs 34
+--- | F,G-dialgebras generalize algebras and coalgebraas
+-type Dialgebra f g a = f a -> g a
+-
+-type GDialgebra f g w m a = f (w a) -> g (m a)
+hunk ./src/Control/Functor/Algebra.hs 75
++-- | F,G-dialgebras generalize algebras and coalgebras
++-- NB: these definitions are actually wrong.
++type Dialgebra f g a = f a -> g a
++type GDialgebra f g w m a = f (w a) -> g (m a)
++
+hunk ./src/Control/Functor/Categorical.hs 15
++	, CPointed (creturn)
++	, CCopointed (cextract)
++	, CBind (cbind, cjoin)
++	, CExtend (cextend, cduplicate)
++	, CDistributes (cdist)
++	, CMonad
++	, CComonad
+hunk ./src/Control/Functor/Categorical.hs 73
++class CFunctor m (~>) (~>) => CBind m (~>) where
++        cjoin :: m (m a) ~> m a
++        cbind :: (a ~> m b) -> (m a ~> m b)
++
++        cjoin = cbind id
++        cbind f = cjoin . cmap f
++
++class CFunctor w (~>) (~>) => CExtend w (~>) where
++        cduplicate :: w a ~> w (w a)
++        cextend :: (w a ~> b) -> (w a ~> w b)
++
++        cduplicate = cextend id
++        cextend f = cmap f . cduplicate
++
++class CFunctor m (~>) (~>) => CPointed m (~>) where
++	creturn :: a ~> m a
++
++class CFunctor w (~>) (~>) => CCopointed w (~>) where
++	cextract :: w a ~> a
++
++class (CFunctor f (~>) (~>), CFunctor g (~>) (~>)) => CDistributes f g (~>) where
++	cdist :: f (g a) ~> g (f a)
++
++class (CPointed m (~>), CBind m (~>)) => CMonad m (~>) 
++instance (CPointed m (~>), CBind m (~>)) => CMonad m (~>) 
++
++class (CCopointed m (~>), CExtend m (~>)) => CComonad m (~>) 
++instance (CCopointed m (~>), CExtend m (~>)) => CComonad m (~>) 
++
+hunk ./src/Control/Functor/Fix.hs 23
++	-- Final and initial dialgebras 
++	-- , NuD(..)
++	-- , MuD(..)
+hunk ./src/Control/Functor/Fix.hs 31
++import Control.Functor.Limit
+hunk ./src/Control/Functor/Fix.hs 77
++{-
++-- data NuF f = forall a. NuF (a -> f a) a
++-- data NuB f b = forall b. NuF (a -> f b a) a
++-- data NuDT f g a b = NuDT (f a -> g b) b
++-- type NuD f g = Coend (NuDT f g)
++data NuD f g = forall a. NuD (f a -> g a) a
++outD :: (Functor f, Functor g) => NuD f g -> Colimit f -> g (NuD f g)
++outD (NuD f a) (Colim bs) = fmap (NuD f) (f (fmap (const a) bs))
++
++outD :: (Functor f, Functor g) => f (NuD f g) -> g (NuD f g)
++
++
++diana :: (f a -> g a) -> a -> NuD f g 
++diana = NuD
++
++-- newtype MuF f g = MuF (forall a. (f a -> a) -> a)
++-- newtype MuDT f g a b = MuDT ((f b -> g a) -> b)
++-- type NuD f g = End (MuDT f g)
++newtype MuD f g = MuD (forall a. (f a -> g a) -> a)
++inD :: f (MuD f g) -> g (MuD f g)
++inD 
++inD :: MuD f g -> Limit f -> g (MuD f g)
++
++dicata :: (f a -> g a) -> MuD f g -> a
++dicata = MuD
++-}
+hunk ./src/Control/Functor.hs 17
++	, dimap
+hunk ./src/Control/Functor.hs 22
++import Control.Category.Dual
+hunk ./src/Control/Functor.hs 64
++-- map for difunctors
++dimap :: Bifunctor f (Dual k) k k => k b a -> k c d -> k (f a c) (f b d)
++dimap f = bimap (Dual f)
++
+hunk ./src/Control/Monad/Categorical.hs 1
+-module Control.Monad.Categorical where
++module Control.Monad.Categorical 
++	(CMonad, CBind(..), CPointed(..)) where
++
+hunk ./src/Control/Monad/Categorical.hs 5
+-import Control.Category
+hunk ./src/Control/Monad/Categorical.hs 7
+-class CFunctor m c d => CPointed m c d where
+-	creturn :: d a (m a)
+-
+--- class CPointed m (~>) => CApplicative m (~>) where
+---	cap :: m (a ~> b) ~> m a ~> m b
+-
+-class CPointed m (~>) (~>) => CMonad m (~>) where
+-	cbind :: (a ~> m b) -> m a ~> m b
+-	cjoin :: m (m a) ~> m a 
+-
+-	cbind f = cjoin . cmap f 
+-	cjoin = cbind id 
+-
+hunk ./src/Control/Morphism/Prepro.hs 31
+--- | @cascade f = biprepro InB (first f)@
+--- | @cascade f = x where x = InB . bimap id (x . fmap f) . outB@
+--- | @cascade f = x where x = InB . bimap id (fmap f . x) . outB@
++--
++-- @cascade f = biprepro InB (first f)@
++--
++-- @cascade f = x where x = InB . bimap id (x . fmap f) . outB@
++--
++-- @cascade f = x where x = InB . bimap id (fmap f . x) . outB@
++
++-- @cascade f = biprepro InB (first f)@
+hunk ./src/Control/Morphism/Prepro.hs 40
+--- cascade f = biprepro InB (first f)
+hunk ./src/Control/Morphism/Prepro.hs 41
+--- equivalently: @cascade f = InB . bimap id (fmap f . cascade f) . outB@
+}

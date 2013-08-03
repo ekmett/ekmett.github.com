@@ -1,0 +1,567 @@
+[Cleaned up Type.Binary. Added bit reversal and TAbs
+ekmett@gmail.com**20060805220059] {
+hunk ./jugs.cabal 23
+-	Type.Binary.Hex,
+-	Type.Binary.Names,
+hunk ./src/Type/Binary.hs 12
+--- Portability :  non-portable (MPTC, FD, TH, undecidable instances, and no constructors)
++-- Portability :  non-portable (MPTC, FD, TH, undecidable instances, and missing constructors)
+hunk ./src/Type/Binary.hs 14
+--- Simple type-level binary numbers, positive and negative with infinite 
++-- Simple type-level binary numbers, positive and negative with infinite
+hunk ./src/Type/Binary.hs 18
+--- The numbers are represented as a Boolean Ring over a countable set of 
++-- The numbers are represented as a Boolean Ring over a countable set of
+hunk ./src/Type/Binary.hs 21
+--- 
++--
+hunk ./src/Type/Binary.hs 24
+--- a fundep would be implied, we obtain it by combining semi-operations that 
++-- a fundep would be implied, we obtain it by combining semi-operations that
+hunk ./src/Type/Binary.hs 28
+--- various sources, and sprinkle a two's complement negative number 
++-- various sources, and sprinkle a two's complement negative number
+hunk ./src/Type/Binary.hs 31
+--- Reuses T and F from the Type.Boolean as the infinite tail of the 2s 
++-- Reuses T and F from the Type.Boolean as the infinite tail of the 2s
+hunk ./src/Type/Binary.hs 39
+-	O, I, 				   -- zero or one digit
+-	TBinary, fromTBinary,		   -- Infinite precision binary
+-	TIsZero, TIsPositive, TIsNegative, -- Trichotomy
++	O, I,
++	TBinary, fromTBinary,
++	TIsZero, TIsPositive, TIsNegative,
+hunk ./src/Type/Binary.hs 43
+-	LSB, tLSB, 
++	LSB, tLSB,
+hunk ./src/Type/Binary.hs 51
++	TAbs, tAbs,
+hunk ./src/Type/Binary.hs 59
+-	T, F,
++	T, tT,
++	F, tF,
+hunk ./src/Type/Binary.hs 75
+-	-- re-exported from Type.Binary.Names
+hunk ./src/Type/Binary.hs 77
+-import Type.Binary.Internals
+-import Type.Binary.TH
+-import Type.Binary.Names
+hunk ./src/Type/Binary.hs 79
+-import Language.Haskell.TH
++import Type.Binary.Internals
++import Type.Binary.TH
+hunk ./src/Type/Binary/Hex.hs 1
+-module Type.Binary.Hex (
+-	Ox0, Ox1, Ox2, Ox3, 
+-	Ox4, Ox5, Ox6, Ox7,
+-	Ox8, Ox9, OxA, OxB,
+-	OxC, OxD, OxE, OxF
+-) where
+-
+-import Type.Binary (O(..), I(..))
+-
+-type Ox0 a = O (O (O (O a)))
+-type Ox1 a = I (O (O (O a)))
+-type Ox2 a = O (I (O (O a)))
+-type Ox3 a = I (I (O (O a)))
+-type Ox4 a = O (O (I (O a)))
+-type Ox5 a = I (O (I (O a)))
+-type Ox6 a = O (I (I (O a)))
+-type Ox7 a = I (I (I (O a)))
+-type Ox8 a = O (O (O (I a)))
+-type Ox9 a = I (O (O (I a)))
+-type OxA a = O (I (O (I a)))
+-type OxB a = I (I (O (I a)))
+-type OxC a = O (O (I (I a)))
+-type OxD a = I (O (I (I a)))
+-type OxE a = O (I (I (I a)))
+-type OxF a = I (I (I (I a)))
+-
+rmfile ./src/Type/Binary/Hex.hs
+hunk ./src/Type/Binary/Internals.hs 13
+--- Simple type-level binary numbers, positive and negative with infinite 
++-- Simple type-level binary numbers, positive and negative with infinite
+hunk ./src/Type/Binary/Internals.hs 17
+--- The numbers are represented as a Boolean Ring over a countable set of 
++-- The numbers are represented as a Boolean Ring over a countable set of
+hunk ./src/Type/Binary/Internals.hs 20
+--- 
++--
+hunk ./src/Type/Binary/Internals.hs 23
+--- a fundep would be implied, we obtain it by combining semi-operations that 
++-- a fundep would be implied, we obtain it by combining semi-operations that
+hunk ./src/Type/Binary/Internals.hs 26
+--- The goal here was to pull together many of the good ideas I've seen from
+--- various sources, and sprinkle a two's complement negative number 
+--- representation on top.
+---
+--- Reuses T and F from the Type.Boolean as the infinite tail of the 2s 
+--- complement binary number. I'm particularly fond of the symmetry exhibited
+--- in the full adder.
++-- Reuses T and F from the Type.Boolean as the infinite tail of the 2s
++-- complement binary number. 
+hunk ./src/Type/Binary/Internals.hs 29
+--- TODO: TDivMod, TImplies, TGCD, TBit, TComplementBit, TSetBit
++-- TODO: TDivMod, TGCD
+hunk ./src/Type/Binary/Internals.hs 33
+-	O, 
+-	I, 
++	O,
++	I,
+hunk ./src/Type/Binary/Internals.hs 39
+-	TNot, 
++	TNot,
+hunk ./src/Type/Binary/Internals.hs 43
+-	TIsZero, tIsZero,        
++	TIsZero, tIsZero,
+hunk ./src/Type/Binary/Internals.hs 58
++	TTReverse, tReverse,
++	TAbs, tAbs,
+hunk ./src/Type/Binary/Internals.hs 75
+-	XI, XO			-- indicates that the number can be extended 
++	XI, XO			-- indicates that the number can be extended
+hunk ./src/Type/Binary/Internals.hs 91
++-- | Extracts the least significant bit of a as d and returns a'.
++-- Can also be used to prepend bit d onto a' obtaining a.
+hunk ./src/Type/Binary/Internals.hs 118
++-- | Finds the unique successor for any normalized binary number
+hunk ./src/Type/Binary/Internals.hs 126
+-tSucc :: TSucc n m => n -> m
+-tSucc = undefined
+-tPred :: TSucc n m => m -> n
+-tPred = undefined
+-
+-instance Show (O F) where show n = "({-error-} O F)";
+-instance Show (I T) where show n = "({-error-} I T)";
+-instance Show (I F) where show n = "I F";
+-instance Show (O T) where show n = "O T";
+-instance (Show (I t)) => Show (O (I t)) where show n = "O (" ++ show (undefined::I t) ++ ")"
+-instance (Show (I t)) => Show (I (I t)) where show n = "I (" ++ show (undefined::I t) ++ ")" 
+-instance (Show (O t)) => Show (O (O t)) where show n = "O (" ++ show (undefined::O t) ++ ")"
+-instance (Show (O t)) => Show (I (O t)) where show n = "I (" ++ show (undefined::O t) ++ ")"
++tSucc :: TSucc n m => n -> m; tSucc = undefined
++tPred :: TSucc n m => m -> n; tPred = undefined
+hunk ./src/Type/Binary/Internals.hs 129
++-- | Our set of digits is closed to retain the properties needed for most of the classes herein
+hunk ./src/Type/Binary/Internals.hs 136
+-class TCBinary Closure a => TBinary a 		where fromTBinary :: Integral b => a -> b 
++-- | We don't want to have to carry the closure parameter around explicitly everywhere, so we
++--   shed it here.
++class TCBinary Closure a => TBinary a 		where fromTBinary :: Integral b => a -> b
+hunk ./src/Type/Binary/Internals.hs 144
++-- | Show should express a value as legal haskell.
++instance TBinary (O a) => Show (O a) where show n = "$(binaryE "++(show $fromTBinary n)++")"
++instance TBinary (I a) => Show (I a) where show n = "$(binaryE "++(show $fromTBinary n)++")"
++
++{-
++instance Show (O F) where show n = "({-error-} O F)";
++instance Show (I T) where show n = "({-error-} I T)";
++instance Show (I F) where show n = "I F";
++instance Show (O T) where show n = "O T";
++instance (Show (I t)) => Show (O (I t)) where show n = "O (" ++ show (undefined::I t) ++ ")"
++instance (Show (I t)) => Show (I (I t)) where show n = "I (" ++ show (undefined::I t) ++ ")"
++instance (Show (O t)) => Show (O (O t)) where show n = "O (" ++ show (undefined::O t) ++ ")"
++instance (Show (O t)) => Show (I (O t)) where show n = "I (" ++ show (undefined::O t) ++ ")"
++-}
++
++-- | TNot preserves normalization trivially
+hunk ./src/Type/Binary/Internals.hs 163
+-instance TEq (I m) (O n) F 
+-instance TEq (O m) (I n) F
+-instance TEq (O m) F F
+-instance TEq (O m) T F
+-instance TEq (I m) T F
+-instance TEq (I m) F F
+-instance (TEq m n b) => TEq (I m) (I n) b
+-instance (TEq m n b) => TEq (O m) (O n) b
+-
++-- | TNeg obtains the 2s complement of a number and is reversible
+hunk ./src/Type/Binary/Internals.hs 168
+-{-
+-data Negative
+-data SignZero
+-data Positive
+-
+-class TCSign c a | a -> c
+-instance TCSign Closure Negative
+-instance TCSign Closure Positive
+-instance TCSign Closure SignZero
+-
+-class TCSign Closure s => TIs s
+-instance TIs Negative
+-instance TIs SignZero
+-instance TIs Positive
+-
+-instance TEq Negative Negative T
+-instance TEq Negative SignZero F
+-instance TEq Negative Positive F
+-instance TEq SignZero Negative F
+-instance TEq SignZero SignZero T
+-instance TEq SignZero Positive F
+-instance TEq Positive Negative F
+-instance TEq Positive SignZero F
+-instance TEq Positive Positive T
+--}
++-- | Express a corrolary to the trichotomy law, every number is either negative, positive or zero.
+hunk ./src/Type/Binary/Internals.hs 179
++-- | Returns true if the number is greater than zero
+hunk ./src/Type/Binary/Internals.hs 182
+-tIsPositive :: TIsPositive n b => n -> b; tIsPositive = undefined 
++tIsPositive :: TIsPositive n b => n -> b; tIsPositive = undefined
+hunk ./src/Type/Binary/Internals.hs 184
++-- | Returns true if the number is less than zero
+hunk ./src/Type/Binary/Internals.hs 189
++-- | Returns true if the number is equal to zero
+hunk ./src/Type/Binary/Internals.hs 192
+-tIsZero :: TIsZero n b => n -> b; tIsZero = undefined 
++tIsZero :: TIsZero n b => n -> b; tIsZero = undefined
+hunk ./src/Type/Binary/Internals.hs 194
++-- | Returns true if the lsb of the number is true
+hunk ./src/Type/Binary/Internals.hs 199
++-- | Returns true if the lsb of the number if false
+hunk ./src/Type/Binary/Internals.hs 204
+--- | nice adder with carry. does not yield normal form answers.
++-- | A symmetrical full adder, that does not yield normal form answers.
+hunk ./src/Type/Binary/Internals.hs 206
+-instance TAddC' F F F F 
++instance TAddC' F F F F
+hunk ./src/Type/Binary/Internals.hs 208
+-instance TAddC' F T F T 
++instance TAddC' F T F T
+hunk ./src/Type/Binary/Internals.hs 212
+-instance TAddC' F F T (I F) 
++instance TAddC' F F T (I F)
+hunk ./src/Type/Binary/Internals.hs 214
+-instance TAddC' F (O a) F (O a) 
++instance TAddC' F (O a) F (O a)
+hunk ./src/Type/Binary/Internals.hs 216
+-instance TAddC' F (I a) F (I a) 
++instance TAddC' F (I a) F (I a)
+hunk ./src/Type/Binary/Internals.hs 218
+-instance TAddC' (O a) F F (O a) 
++instance TAddC' (O a) F F (O a)
+hunk ./src/Type/Binary/Internals.hs 220
+-instance TAddC' (I a) F F (I a) 
++instance TAddC' (I a) F F (I a)
+hunk ./src/Type/Binary/Internals.hs 222
+-instance TAddC' F (O a) T (I a) 
++instance TAddC' F (O a) T (I a)
+hunk ./src/Type/Binary/Internals.hs 224
+-instance TAddC' (O a) F T (I a) 
++instance TAddC' (O a) F T (I a)
+hunk ./src/Type/Binary/Internals.hs 226
+-instance TSucc a b => TAddC' F (I a) T (O b) 
++instance TSucc a b => TAddC' F (I a) T (O b)
+hunk ./src/Type/Binary/Internals.hs 228
+-instance TSucc a b => TAddC' (I a) F T (O b) 
++instance TSucc a b => TAddC' (I a) F T (O b)
+hunk ./src/Type/Binary/Internals.hs 230
+-instance TAddC' a b F c => TAddC' (O a) (O b) F (O c) 
++instance TAddC' a b F c => TAddC' (O a) (O b) F (O c)
+hunk ./src/Type/Binary/Internals.hs 232
+-instance TAddC' a b F c => TAddC' (I a) (O b) F (I c) 
++instance TAddC' a b F c => TAddC' (I a) (O b) F (I c)
+hunk ./src/Type/Binary/Internals.hs 234
+-instance TAddC' a b F c => TAddC' (O a) (I b) F (I c) 
++instance TAddC' a b F c => TAddC' (O a) (I b) F (I c)
+hunk ./src/Type/Binary/Internals.hs 236
+-instance TAddC' a b T c => TAddC' (I a) (I b) F (O c) 
++instance TAddC' a b T c => TAddC' (I a) (I b) F (O c)
+hunk ./src/Type/Binary/Internals.hs 239
++-- | Transform a number into normal form, but track whether further reductions
++-- may be necessary if this number is extended for efficiency.
+hunk ./src/Type/Binary/Internals.hs 253
+-instance (TBool d, TNeg b b', TAdd' a b' c, TIsNegative c d) => TLt a b d
+-
++-- | Shed the additional reduction parameter from TNF'
+hunk ./src/Type/Binary/Internals.hs 256
+-tNF   :: TNF a b => a -> b;     tNF = undefined
++tNF   :: TNF a b => a -> b; tNF = undefined
+hunk ./src/Type/Binary/Internals.hs 260
++-- | Equality comparison. Note this does not equate numbers that
++-- are non-normalized with their normalized kin.
++instance TEq (I m) (O n) F
++instance TEq (O m) (I n) F
++instance TEq (O m) F F
++instance TEq (O m) T F
++instance TEq (I m) T F
++instance TEq (I m) F F
++instance (TEq m n b) => TEq (I m) (I n) b
++instance (TEq m n b) => TEq (O m) (O n) b
++
++-- | We have a total order.
++instance (TBool d, TNeg b b', TAdd' a b' c, TIsNegative c d) => TLt a b d
++
++-- | Non-reversible addition. Kept for efficiency purposes.
+hunk ./src/Type/Binary/Internals.hs 279
++-- | Non-reversible subtraction. Kept for efficiency purposes.
+hunk ./src/Type/Binary/Internals.hs 284
+--- reversible addition and subtraction, not the default for efficiency reasons.
++-- | Reversible adder with extra fundeps.
+hunk ./src/Type/Binary/Internals.hs 287
+-tAdd :: (TAdd a b c) => a -> b -> c;tAdd = undefined
+-tSub :: (TAdd a b c) => c -> a -> b;tSub = undefined
++tAdd :: (TAdd a b c) => a -> b -> c; tAdd = undefined
++tSub :: (TAdd a b c) => c -> a -> b; tSub = undefined
+hunk ./src/Type/Binary/Internals.hs 290
++-- | Multiplication: a * b = c
+hunk ./src/Type/Binary/Internals.hs 296
+-tMul :: TMul a b c => a -> b -> c
+-tMul = undefined
++tMul :: TMul a b c => a -> b -> c; tMul = undefined
+hunk ./src/Type/Binary/Internals.hs 298
+--- | for non-negative exponents
++-- | Exponentiation: a^b = c (only defined for non-negative exponents)
+hunk ./src/Type/Binary/Internals.hs 303
+-tPow :: TPow a b c => a -> b -> c
+-tPow = undefined
++tPow :: TPow a b c => a -> b -> c; tPow = undefined
++
++-- | Reverse the finite head of the number. non-normalizing, needs seed sign
++class TReverse'' a b c | a b -> b
++instance TReverse'' F b b
++instance TReverse'' T b b
++instance TReverse'' a (O b) c => TReverse (O a) b c
++instance TReverse'' a (I b) c => TReverse (I a) b c
++
++-- | Reverse the finite head of a number yielding a normal form answer
++class TReverse' a b | a -> b
++instance (IsNegative a b, TReverse' a b c, TNF c c') => TReverse' a c'
++
++-- | Reverse the finite head of a number, invertably
++class TReverse a b | a -> b, b -> a
++instance (TReverse' a b, TReverse' b a) => TReverse a b
++tReverse :: TReverse a b => a -> b; tReverse = undefined
++
++-- | Return the absolute value of a
++class TAbs a b | a -> b
++instance (TIsNegative a s, TNeg a a', TIf s a' a a'') => TAbs a a''
++tAbs :: TAbs a b => a -> b; tAbs = undefined
+hunk ./src/Type/Binary/Internals.hs 346
+-instance TOr (O a) T T 
++instance TOr (O a) T T
+hunk ./src/Type/Binary/Internals.hs 378
++-- | Shift a right b places obtaining c. If b is negative then we shift left.
++-- | TShift' does not yield normal form answers.
+hunk ./src/Type/Binary/Internals.hs 392
++-- | Shift a right b places obtaining c in normal form.
++-- | If b is negative then we shift left.
+hunk ./src/Type/Binary/Internals.hs 396
+-tShift :: TShift a b c => a -> b -> c
+-tShift = undefined
++tShift :: TShift a b c => a -> b -> c; tShift = undefined
+hunk ./src/Type/Binary/Internals.hs 401
+-tGetBit :: TGetBit a b c => a -> b -> c
+-tGetBit = undefined
++tGetBit :: TGetBit a b c => a -> b -> c; tGetBit = undefined
+hunk ./src/Type/Binary/Internals.hs 403
+--- | set bit #b in a to c in {T,F}, yielding d.
++-- | set bit #b in a to T, yielding c.
+hunk ./src/Type/Binary/Internals.hs 406
+-tSetBit :: TSetBit a b c => a -> b -> c
+-tSetBit = undefined
++tSetBit :: TSetBit a b c => a -> b -> c; tSetBit = undefined
+hunk ./src/Type/Binary/Internals.hs 408
++-- | set bit #b in a to F, yielding c
+hunk ./src/Type/Binary/Internals.hs 411
+-tUnSetBit :: TUnSetBit a b c => a -> b -> c
+-tUnSetBit = undefined
++tUnSetBit :: TUnSetBit a b c => a -> b -> c; tUnSetBit = undefined
+hunk ./src/Type/Binary/Internals.hs 413
++-- | change bit #b in a to c in {T,F}, yielding d.
+hunk ./src/Type/Binary/Internals.hs 416
+-tChangeBit :: TChangeBit a b c d => a -> b -> c -> d
+-tChangeBit = undefined
++tChangeBit :: TChangeBit a b c d => a -> b -> c -> d; tChangeBit = undefined
+hunk ./src/Type/Binary/Internals.hs 419
+-class TComplementBit a b c | a b -> c 
++class TComplementBit a b c | a b -> c
+hunk ./src/Type/Binary/Internals.hs 421
+-tComplementBit :: TComplementBit a b c => a -> b -> c
+-tComplementBit = undefined
++tComplementBit :: TComplementBit a b c => a -> b -> c; tComplementBit = undefined
+hunk ./src/Type/Binary/Internals.hs 423
++-- | Count the number of bits set, but track whether the number is positive or negative
++-- to simplify casing. Since we may have an infinite tail of 1s, we return a negative
++-- number in such cases indicating how many bits are NOT set.
+hunk ./src/Type/Binary/Internals.hs 434
+--- | If infinite tail is all 1s, it counts 0 bits, and returns that as a negative number.
++-- | Count the number of bits set. Since we may have an infinite tail of 1s, we return
++-- a negative number in such cases indicating how many bits are NOT set.
+hunk ./src/Type/Binary/Names.hs 1
+-module Type.Binary.Names (
+-	neg_two, neg_one, zero, one, two, three, four, five, six, seven, eight, nine, ten,
+-	eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen,
+-	twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety, hundred,
+-	twenty_, thirty_, forty_, fifty_, sixty_, seventy_, eighty_, ninety_
+-) where
+-import Type.Binary.Internals
+-import Type.Boolean
+-
+-neg_two  = undefined :: O T
+-neg_one	 = undefined :: T
+-zero 	 = undefined :: F
+-one 	 = undefined :: I F
+-two 	 = undefined :: O(I F)
+-three	 = undefined :: I(I F)
+-four 	 = undefined :: O(O(I F))
+-five     = undefined :: I(O(I F))
+-six  	 = undefined :: O(I(I F))
+-seven 	 = undefined :: I(I(I F))
+-eight    = undefined :: O(O(O(I F)))
+-nine     = undefined :: I(O(O(I F)))
+-ten      = undefined :: O(I(O(I F)))
+-eleven   = undefined :: I(I(O(I F)))
+-twelve   = undefined :: O(O(I(I F)))
+-thirteen = undefined :: I(O(I(I F)))
+-fourteen = undefined :: O(O(I(I F)))
+-fifteen  = undefined :: I(O(I(I F)))
+-sixteen  = undefined :: O(O(O(O(I F))))
+-seventeen= undefined :: I(O(O(O(I F))))
+-eighteen = undefined :: O(I(O(O(I F))))
+-nineteen = undefined :: I(I(O(O(I F))))
+-twenty  :: TAdd (O(O(I(O(I F))))) b c => b -> c;	    twenty  = undefined; twenty_ = twenty zero
+-thirty  :: TAdd (O(I(I(I(I F))))) b c => b -> c;	    thirty  = undefined; thirty_ = thirty zero
+-forty   :: TAdd (O(O(O(I(O(I F)))))) b c => b -> c; 	    forty   = undefined; forty_ = forty zero
+-fifty   :: TAdd (O(I(O(O(I(I F)))))) b c => b -> c; 	    fifty   = undefined; fifty_ = fifty zero
+-sixty   :: TAdd (O(O(I(I(I(I F)))))) b c => b -> c; 	    sixty   = undefined; sixty_ = sixty zero
+-seventy :: TAdd (O(I(I(O(O(O(I F))))))) b c => b -> c;      seventy = undefined; seventy_ = seventy zero
+-eighty  :: TAdd (O(O(O(O(I(O(I F))))))) b c => b -> c;      eighty  = undefined; eighty_ = eighty zero
+-ninety  :: TAdd (O(I(O(I(I(O(I F))))))) b c => b -> c;      ninety  = undefined; ninety_ = ninety zero
+-hundred :: (TAdd a' b c, TMul a (O(O(I(O(O(I(I F))))))) a') => a -> b -> c
+-hundred = undefined;
+rmfile ./src/Type/Binary/Names.hs
+hunk ./src/Type/Boolean.hs 12
+--- Simple closed type-level booleans. 
++-- Simple closed type-level booleans.
+hunk ./src/Type/Boolean.hs 16
+-    TBool, 
+-    F, T, 
++    TBool,
++    F, T,
+hunk ./src/Type/Boolean.hs 42
+-instance Show T where show _ = "T"
+-instance Show F where show _ = "F"
++instance Show T where show _ = "tT"
++instance Show F where show _ = "tF"
+hunk ./src/Type/Boolean.hs 52
+-tAnd = undefined 
++tAnd = undefined
+hunk ./src/Type/Boolean.hs 76
+-instance (TXOr' a b c, TXOr' b c a, TXOr' c a b) => TXOr a b c 
++instance (TXOr' a b c, TXOr' b c a, TXOr' c a b) => TXOr a b c
+hunk ./src/Type/Boolean.hs 89
+--- | Type-Level: not a 
++-- | Type-Level: not a
+hunk ./src/Type/Hex.hs 14
+--- Type-level hexadecimal numbers, positive and negative with infinite 
++-- Type-level hexadecimal numbers, positive and negative with infinite
+hunk ./src/Type/Hex.hs 25
+-	LSN, tLSN, 
++	LSN, tLSN,
+hunk ./src/Type/Hex/Stage1.hs 3
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Hex.Stage1
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTC, FD, TH, undecidable instances, missing constructors)
++--
++-- Stage1: Lay the ground work for all sorts of template haskell hackery 
++-- in the later stages. Only a handful of class specifications in this file
++-- are for later public consumption, and none of those are fleshed out here.
++--
++-- This multiple-stage implementation is necessitated by the way Template 
++-- Haskell is implemented in GHC.
++----------------------------------------------------------------------------
+hunk ./src/Type/Hex/Stage2.hs 5
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Hex.Stage2
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTC, FD, TH, undecidable instances, missing constructors)
++--
++-- Stage2: Create the D0 and H0 data elements that will be used later.
++-- Define utility classes, some classes defined here can not be fleshed 
++-- out until Stage3.
++--
++-- This multiple-stage implementation is necessitated by the way Template 
++-- Haskell is implemented in GHC.
++----------------------------------------------------------------------------
+hunk ./src/Type/Hex/Stage2.hs 34
+--- for testing purposes only, not used in code
+-d0 :: a -> D0 a; d0 = undefined
+-d1 :: a -> D1 a; d1 = undefined
+-d2 :: a -> D2 a; d2 = undefined
+-d3 :: a -> D3 a; d3 = undefined
+-d4 :: a -> D4 a; d4 = undefined
+-d5 :: a -> D5 a; d5 = undefined
+-d6 :: a -> D6 a; d6 = undefined
+-d7 :: a -> D7 a; d7 = undefined
+-d8 :: a -> D8 a; d8 = undefined
+-d9 :: a -> D9 a; d9 = undefined
+-dA :: a -> DA a; dA = undefined
+-dB :: a -> DB a; dB = undefined
+-dC :: a -> DC a; dC = undefined
+-dD :: a -> DD a; dD = undefined
+-dE :: a -> DE a; dE = undefined
+-dF :: a -> DF a; dF = undefined
+-
+hunk ./src/Type/Hex/Stage3.hs 3
++-----------------------------------------------------------------------------
++-- |
++-- Module      :  Type.Hex.Stage2
++-- Copyright   :  (C) 2006 Edward Kmett
++-- License     :  BSD-style (see the file libraries/base/LICENSE)
++--
++-- Maintainer  :  Edward Kmett <ekmett@gmail.com>
++-- Stability   :  experimental
++-- Portability :  non-portable (MPTC, FD, TH, undecidable instances, missing constructors)
++--
++-- Stage3: Define everything else. The juicier bits are then exposed via
++-- Type.Hex
++-----------------------------------------------------------------------------
++
+hunk ./src/Type/Hex/Stage3.hs 46
+---class Trichotomy n s | n -> s
+hunk ./src/Type/Hex/Stage3.hs 75
+--- output several hundred instances for a full hex adder
+hunk ./src/Type/Hex/Stage3.hs 119
+--- reversible addition and subtraction
+hunk ./src/Type/Hex/Stage3.hs 152
+-
+hunk ./src/Type/Hex/Stage3.hs 176
+--- | A simple peasant multiplier
++-- | A simple peasant multiplier. TODO: exploit 2s complement and reverse the worst cases
+hunk ./src/Type/Hex/Stage3.hs 266
+--- doesn't normalize
+hunk ./src/Type/Hex/Stage3.hs 294
+--- reversible version.
+hunk ./src/Type/Hex/Stage3.hs 297
+--- | peasant exponentiator with Binary exponent
++-- | peasant exponentiator with explicit binary exponent
+hunk ./src/Type/Hex/Stage3.hs 303
++-- | peasant exponentiator
+hunk ./src/Type/Hex/Stage3.hs 309
+--- TODO: And, Or, XOr, Implies
+-
+hunk ./src/Type/Ord.hs 19
+-module Type.Ord 
++module Type.Ord
+hunk ./src/Type/Ord.hs 25
+-) where 
++) where
+hunk ./src/Type/Ord.hs 35
+-instance TEq T T T 
++instance TEq T T T
+hunk ./src/Type/Ord.hs 39
+-tEq :: TEq x y b => x -> y -> b; 
++tEq :: TEq x y b => x -> y -> b;
+}

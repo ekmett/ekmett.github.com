@@ -1,0 +1,547 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Generatingfunctorology</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Generatingfunctorology Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Towards Formal Power Series for Functors' href='../towards-formal-power-series-for-functors/index.html' />
+<link rel='next' title='Forgetful Laziness' href='../forgetful-laziness/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Wed 14 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Generatingfunctorology">Generatingfunctorology</a></h2>
+Posted by Edward Kmett under <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../category/type-theory/index.html" title="View all posts in Type Theory" rel="category tag">Type Theory</a> <br/><a href="index.html#comments" title="Comment on Generatingfunctorology">[11] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Ok, I decided to take a step back from my flawed approach in the <a href="../towards-formal-power-series-for-functors/index.html">last post</a> and play with the idea of power series of functors from a different perspective.</p>
+<p>I dusted off my copy of Herbert Wilf's <a href="http://www.math.upenn.edu/~wilf/DownldGF.html">generatingfunctionology</a> and switched goals to try to see some well known recursive functors or <a href="http://www.cas.mcmaster.ca/~carette/species/msfp08_species.pdf">species</a> as formal power series. It appears that we can pick a few things out about the generating functions of polynomial functors.</p>
+<p>As an example:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> x = <span style="color: red;">1</span> + x
+&nbsp;</pre>
+<p>Ok. We're done. Thank you very much. I'll be here all week. Try the veal... </p>
+<p>For a more serious example, the formal power series for the list [x] is just a <a href="http://en.wikipedia.org/wiki/Geometric_series">geometric series</a>:</p>
+<p><span id="more-58"></span></p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span> = mu y . <span style="color: red;">1</span> + x y  <span style="color: #5d478b; font-style: italic;">-- the mu here is a pleasant fiction, more below</span>
+    = <span style="color: red;">1</span> + x <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    = <span style="color: red;">1</span> + x + x^<span style="color: red;">2</span> + x^<span style="color: red;">3</span> + ...
+    = <span style="color: red;">1</span>/<span style="color: green;">&#40;</span><span style="color: red;">1</span>-x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Given the power series of a functor, its nth coefficient * n! tells you how many distinguishable ways its constructors can house n values. If we see that a list of n values can be permuted n! ways this has some interesting possibilities for linearizing the storage of some functors. The list case is boring, we can store a <i>finite</i> list of n elements by supplying the length of the array and an array of n elements, hence (among other reasons) the mu above.</p>
+<p>Lets try decorated binary trees:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Tree x = Leaf | Node <span style="color: green;">&#40;</span>Tree x<span style="color: green;">&#41;</span> x <span style="color: green;">&#40;</span>Tree x<span style="color: green;">&#41;</span>
+&nbsp;
+Tree x = mu y. <span style="color: red;">1</span> + x * y * y
+       = <span style="color: red;">1</span> + x * <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x * <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span>^<span style="color: red;">2</span><span style="color: green;">&#41;</span>^<span style="color: red;">2</span>
+       = <span style="color: red;">1</span> + x + 2x^<span style="color: red;">2</span> + 5x^<span style="color: red;">3</span> + 14x^<span style="color: red;">4</span> + 42x^<span style="color: red;">5</span> + ...
+&nbsp;</pre>
+<p>It turns out the coefficients of our generating function are the <a href="http://en.wikipedia.org/wiki/Catalan_number">Catalan numbers</a>, <a href="http://www.research.att.com/~njas/sequences/A000108">A000108</a>, commonly denoted C(n), which happen to be well known for among other things, being the number of ways you can build a binary tree of n nodes.</p>
+<p>This tells us we could store a tree by storing a number <em>n</em> of nodes it contains, an array of that many nodes, and an index 0 < = i < C(n) to tell you which particular tree you selected. Not that this is likely to be an incredibly time-efficient encoding, but you could then fmap over the tree by just fmapping over your array.</p>
+<p>For a formal power series,</p>
+<p><img src='../../../latex/7b6fb5aa61c9491ac598d6ebbfcfe5c9.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' align=absmiddle></p>
+<p>its derivative is given by differentiating the series term by term:</p>
+<p><img src='../../../latex/da09bd9c7661fddc0b0d62cfd6f139b8.png' title='$f&#039;(x) = \sum_{i=1}^{\infty} n a_n x^{n - 1} = a_1 + 2 a_2 x + 3 a_3 x^2 + ...$' alt='$f&#039;(x) = \sum_{i=1}^{\infty} n a_n x^{n - 1} = a_1 + 2 a_2 x + 3 a_3 x^2 + ...$' align=absmiddle></p>
+<p>Consequently we can take the derivative of a list:</p>
+<p>([]') x = 1 + 2x + 3x^2 + ... = 1/(1-x)^2 = ([] :*: []) x</p>
+<p>and rederive the notion that a derivative/one hole context of a list can be represented by a pair of lists.</p>
+<p>If we step slightly outside of the Haskell users' comfort zone and notion of a Functor and allow other Species, we get (as noted by apfelmus the other day) that Exp a is just a bag of elements with no predetermined order.</p>
+<pre class="haskell">&nbsp;
+Exp x = <span style="color: red;">1</span> + x + x^<span style="color: red;">2</span>/<span style="color: red;">2</span>! + x^<span style="color: red;">3</span>/<span style="color: red;">3</span>! + ... = Bag x
+&nbsp;
+Since there are n! ways to order n elements <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:and"><span style="font-weight: bold;">and</span></a> Bag manages to forget that information, we can get a feeling for the meaning <span style="color: #06c; font-weight: bold;">of</span> division <span style="color: #06c; font-weight: bold;">in</span> this setting.
+&nbsp;
+Similarly we can define:
+&lt;pre lang=<span style="color: #3c7331;">&quot;haskell&quot;</span>&gt;
+Sinh x = x + x^<span style="color: red;">3</span>/<span style="color: red;">3</span>! + ... <span style="color: #5d478b; font-style: italic;">-- a Bag of some odd number of elements.</span>
+Cosh x = <span style="color: red;">1</span> + x^<span style="color: red;">2</span>/<span style="color: red;">2</span>! + ... <span style="color: #5d478b; font-style: italic;">--  a Bag of some even number of elements.</span>
+&nbsp;</pre>
+<p>Then by construction:</p>
+<pre class="haskell">&nbsp;
+Exp = Cosh :+: Sinh
+&nbsp;</pre>
+<p>The derivative of Exp is Exp, of Cosh is Sinh, of Sinh is Cosh, all as you would expect.</p>
+<p>We can handle other species as well:</p>
+<pre class="haskell">&nbsp;
+Cycle a = <span style="color: red;">1</span> + x^<span style="color: red;">2</span>/<span style="color: red;">2</span> + x^<span style="color: red;">3</span>/<span style="color: red;">3</span> + x^<span style="color: red;">4</span>/<span style="color: red;">4</span> + ... <span style="color: #5d478b; font-style: italic;">-- cycles</span>
+Cycle_n a = x^n/n <span style="color: #5d478b; font-style: italic;">-- cycles of n elements</span>
+Bag_n a = x^n/n!  <span style="color: #5d478b; font-style: italic;">-- bags of n elements</span>
+&nbsp;</pre>
+<p>That said, there seem to be some problems, not every functor is well behaved in this way. Lets take for instance the type of natural numbers given by the functor:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Nat a = S <span style="color: green;">&#40;</span>Nat a<span style="color: green;">&#41;</span> | Z
+&nbsp;</pre>
+<p>Then the recurrence blows up, the coefficient for 0 is <img src='../../../latex/05337ee7dbe333d118d371bc95c44f7a.png' title='$\aleph_0$' alt='$\aleph_0$' align=absmiddle>!</p>
+<p>Similarly, if we parameterized a functor on another value we have to deal with the number of cases that other value can denote.</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a x = |a| + x
+<span style="color: green;">&#40;</span>a,x<span style="color: green;">&#41;</span> = |a| x
+&nbsp;</pre>
+<p>This is both good and bad, using the above, we can quickly establish an isomorphism between Either () and the Maybe Functor, but we blow up again for Either Integer. This gets even worse if we allow 'functors in space.' (i.e. functors that can contain functions)</p>
+<p>On the other extreme, we might modify our tree example and remove the leaves, yielding infinite decorated cotrees.</p>
+<pre class="haskell">&nbsp;
+Tree x = nu y. x * y * y
+       = x * <span style="color: green;">&#40;</span>x * <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span>^<span style="color: red;">2</span><span style="color: green;">&#41;</span>^<span style="color: red;">2</span>
+       = <span style="color: red;">0</span> + 0x + 0x^<span style="color: red;">2</span> + 0x^<span style="color: red;">3</span> + ...
+&nbsp;</pre>
+<p>Then a_n = 0 for all n in the natural numbers, so you can't use the coefficients of the generating function to tell you about the behavior of an infinite structure! It would appear that the generating function of a functor does not capture what happens in the greatest fixed point case, so we can only use generating functions to describe the behavior of data defined with mu, not in general codata defined by nu.</p>
+<p>The Bags and Cycles above are nice examples, but if we wanted to rule out the non-polynomial Functors (from the Haskell perspective) in the above then we can simply limit ourselves to <a href="http://en.wikipedia.org/wiki/Generating_function#Ordinary_generating_function_2">ordinary generating functions</a> with natural number coefficients, that is to say generating functions of the form:</p>
+<p><img src='../../../latex/7b6fb5aa61c9491ac598d6ebbfcfe5c9.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' align=absmiddle></p>
+<p>To choose to admit bags,  cycles and other species etc. then you need merely also permit <a href="http://en.wikipedia.org/wiki/Generating_function#Exponential_generating_function_2">exponential generating functions</a> with natural coefficients, that is to say, generating functions of the form:</p>
+<p><img src='../../../latex/c30686528791fe1a38720bf5006b81a3.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n / n! = a_0 + a_1 x / 1! + a_2 x^2 / 2! + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n / n! = a_0 + a_1 x / 1! + a_2 x^2 / 2! + ... $' align=absmiddle></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">11 Responses to &#8220;Generatingfunctorology&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1305">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=ee90fb07f04ffd2d7b93a67456671787&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>aed</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1305" title="">May 14th, 2008 at 3:35 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Flajolet and Sedgewick have a book called &#8220;Analytic Combinatorics&#8221; along these lines.  It was available as a free pdf download for a while, but may actually be published at this point.</p>
+<p>Your work on this is really interesting.  I have, for years, had the damnedest time wrapping my head around generating functions.  This presentation of Haskellisms as generating functions seems very interesting, and might be helpful in gaining an intuition in this area.</p>
+<p>How would you model &#8220;evaluation&#8221; of your generating functions?  I know how a Maybe monad behaves in the Haskell interpreter.  Having defined it as you do, how do you combine it with other types and values?  What does an expression look like, and what does reduction of one expression to a simpler express look like?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1307">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1307" title="">May 14th, 2008 at 3:53 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Well, a naive implementation for the ordinary generating function case is to just allocate an array of values the size of your structure, and store its size, and an &#8216;index&#8217; into the possible structures of that size. This manipulates very poorly, but does allow for a linear time (heck, data parallel!) implementation of fmap. =)</p>
+<p>A more practical implementation would necessarily want to take a generating function and generate a recurrence. This should give you a refolded version of the functor, like running the derivation for  the list and tree functors backwards. This would let you do a transformation like turning the functor &#8216;Either Bool&#8217; into a ternary constructor, which would then permit the use of partial-tagging to do dispatch with one case rather than two.</p>
+<p>At this point though, I am still working on how to use these to model isomorphic structures, modeling contracts by division and subtraction, and what the right way is to extend it to cover codata. </p>
+<p>Unfortunately, if we allow arbitrarily complex generating functions the comparison of the resulting streams requires an oracle for the halting problem, so, so far this is just a reasoning tool.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1311">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8daf174e400f51951ed6e9ab912bbc17&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://sigfpe.blogspot.com' rel='external nofollow' class='url'>Dan P</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1311" title="">May 14th, 2008 at 6:24 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Edward,</p>
+<p>Did you ever read <a href="http://sigfpe.blogspot.com/2006/06/taylor-series-for-types.html" rel="nofollow">this</a> or <a href="http://sigfpe.blogspot.com/2006/09/infinitesimal-types.html" rel="nofollow">this</a>? I spent lots of time thinking similar thoughts but eventually got stuck.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1317">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=3352d7b7b661c84c5b888312397efc76&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>Pseudonym</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1317" title="">May 15th, 2008 at 12:40 am</a> </small>
+			<br clear="all"/>
+
+			<p>In fact, that <i>is</i> a fairly efficient representation for trees.  I&#8217;ve used something very close to it before, in C.<br />
+You have to remember that C(n) is 4^n/n^1.5 times some constant.  So to store a number between 0 and C(n), you need 2n &#8211; 1.5 log n bits.<br />
+If you think about that for a moment, it&#8217;s easy to do with exactly 2n bits: Introduce a parallel array of 2n bits, each element of which represents whether or not each node has a left or right child.<br />
+If you were compressing this bit vector, you could get closer to the asymptotic behaviour by noting that there&#8217;s some redundancy: In your array of 2n bits, exactly n-1 of them will be 1 and the remaining n+1 of them will be 0.  It&#8217;s probably not hard to exploit this and recover a representation that&#8217;s optimal in an asymptotic sense.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1318">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1318" title="">May 15th, 2008 at 1:11 am</a> </small>
+			<br clear="all"/>
+
+			<p>Ah, nice. My &#8216;naive encoding&#8217; was apparently better than I thought =)</p>
+<p>Currently mining the material written on species and what is in that Flajolet/Sedgewick book. </p>
+<p>Awesome link, aed. Thanks!</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1341">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1341" title="">May 16th, 2008 at 12:31 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Dan, </p>
+<p>I love the notion of D as a singleton type.</p>
+<p>I&#8217;ve been thinking about the idea of trying to represent the infinite cases using bivariate generating functions.</p>
+<p>The idea would be that you &#8216;hang up on the number line&#8217; quantities based on two parameters. One the number of traversals of the structure of size >= m that touch n values to give you an idea of the branching structure. Then clearly for n > m, the tail of the series = 0.</p>
+<p>You then count the number of cases involved in using productive corecursion to visit n values in the structure rather than the number of distinct ways you can use well-founded recursion to build a structure of a given size.</p>
+<p>I haven&#8217;t had time in the last couple of days to investigate the idea any further though. </p>
+<p>[Edit: this doesn't appear to be sufficient and I haven't been able to find any good closed forms this way yet]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1345">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1345" title="">May 16th, 2008 at 2:14 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Hrmm. Just an observation:</p>
+<p>If D^2 = 0, then given a functor F described by a generating function </p>
+<p>F x = a_0 + a_1*x + a_2*x^2 + &#8230;</p>
+<p>then </p>
+<p>F D = a_0 + a_1*D</p>
+<p>cuts off the series. </p>
+<p>It also seems that D as a &#8217;singleton pattern&#8217; is affine (permits weakening), because nothing currently prevents you from &#8216;not using&#8217; the D, as evidenced by the possibility of a_0 being non-zero.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1353">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8daf174e400f51951ed6e9ab912bbc17&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://sigfpe.blogspot.com' rel='external nofollow' class='url'>Dan P</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1353" title="">May 16th, 2008 at 10:11 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Ah&#8230;it&#8217;s called affine logic. I don&#8217;t know the terminology.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1355">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1355" title="">May 16th, 2008 at 11:06 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Well, D is affine, as well as being singular in the fashion described.</p>
+<p>Also, I think some of the usual isomorphisms such as the x^2 -> 2*x^2/2 one break down for the same reason the connection between ~~a and a breaks down, because we are working in an intuitionistic setting.</p>
+<p>(At least my hand-wavy attempts to try to realize negative values as continuations accepting a given value type seemed to run into that)</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1366">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=ee90fb07f04ffd2d7b93a67456671787&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite>aed</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1366" title="">May 17th, 2008 at 6:35 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Oh &#8212; I think I should stop seeing &#8220;+&#8221; as addition, and more as algabraic union &#8212; the possible values of Maybe x are 1 or x.  So generating fuctions enumerate out the return values of a function (the &#8220;clothesline&#8221; upon which we hang numbers), but also can be composed together and manipulated with finite calculus and such.</p>
+<p>Ach!  So confusing.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1504">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=0da270872e1b3ded916e0b99a19d3e44&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://pozorvlak.livejournal.com' rel='external nofollow' class='url'>pozorvlak</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1504" title="">May 28th, 2008 at 8:20 pm</a> </small>
+			<br clear="all"/>
+
+			<p>aed: it&#8217;s common in category theory to use + for coproduct, which in the category of sets is indeed disjoint union. If you allow a natural number n to be represented by the finite set {1, 2, &#8230; n}, then + becomes ordinary addition :-)</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="58" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Wednesday, May 14th, 2008 at 2:45 am</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> and  <a href="../../category/type-theory/index.html" title="View all posts in Type Theory" rel="category tag">Type Theory</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

@@ -1,0 +1,60 @@
+[lz78 strictness fix
+ekmett@gmail.com**20090329095458] {
+hunk ./Data/Monoid/Generator/LZ78.hs 26
+-    , LZ78(LZ78, getLZ78)
++    , LZ78
+hunk ./Data/Monoid/Generator/LZ78.hs 40
++import Data.Foldable
+hunk ./Data/Monoid/Generator/LZ78.hs 45
+-newtype LZ78 a = LZ78 { getLZ78 :: [(Int,a)] } 
++data Token a = Token a {-# UNPACK #-} !Int 
++    deriving (Eq,Ord,Show,Read)
++
++-- after using the Functor instance the encoding may no longer be minimal
++instance Functor Token where
++    fmap f (Token a n) = Token (f a) n
++
++newtype LZ78 a = LZ78 { getLZ78 :: [Token a] } 
++    deriving (Eq,Ord,Show)
+hunk ./Data/Monoid/Generator/LZ78.hs 62
+-mapTo' :: (e `Reducer` m) => (a -> e) -> m -> Seq m -> [(Int,a)] -> m
+-mapTo' _ m _   []         = m
+-mapTo' f m s ((w,c):ws) = mapTo' f (m `mappend` v) (s |> v) ws 
++instance Functor LZ78 where
++    fmap f = LZ78 . fmap (fmap f) . getLZ78
++
++instance Foldable LZ78 where
++    foldMap f = getSelf . mapReduce f
++    fold = getSelf . reduce
++    
++mapTo' :: (e `Reducer` m) => (a -> e) -> m -> Seq m -> [Token a] -> m
++mapTo' _ m _ [] = m
++mapTo' f m s (Token c w:ws) = m `mappend` mapTo' f v (s |> v) ws 
+hunk ./Data/Monoid/Generator/LZ78.hs 85
+-encode' :: Ord a => Map (Int,a) Int -> Int -> Int -> [a] -> [(Int,a)]
+-encode' _ _ p [c] = [(p,c)]
+-encode' d f p (c:cs) = case Map.lookup (p,c) d of
++encode' :: Ord a => Map (Token a) Int -> Int -> Int -> [a] -> [Token a]
++encode' _ _ p [c] = [Token c p]
++encode' d f p (c:cs) = let t = Token c p in case Map.lookup t d of
+hunk ./Data/Monoid/Generator/LZ78.hs 89
+-    Nothing -> (p,c):encode' (Map.insert (p,c) f d) (succ f) 0 cs
++    Nothing -> t : encode' (Map.insert t f d) (succ f) 0 cs
+hunk ./Data/Monoid/Generator/LZ78.hs 97
+-encodeEq' :: Eq a => [((Int,a),Int)] -> Int -> Int -> [a] -> [(Int,a)]
+-encodeEq' _ _ p [c] = [(p,c)]
+-encodeEq' d f p (c:cs) = case List.lookup (p,c) d of
++encodeEq' :: Eq a => [(Token a,Int)] -> Int -> Int -> [a] -> [Token a]
++encodeEq' _ _ p [c] = [Token c p]
++encodeEq' d f p (c:cs) = let t = Token c p in case List.lookup t d of
+hunk ./Data/Monoid/Generator/LZ78.hs 101
+-    Nothing -> (p,c):encodeEq' (((p,c),f):d) (succ f) 0 cs
++    Nothing -> t : encodeEq' ((t,f):d) (succ f) 0 cs
+hunk ./Data/Monoid/Generator.hs 83
+-    mapReduce f = foldMap (unit . f)
++    mapReduce f = foldr (cons . f) mempty
++    -- mapReduce f = foldMap (unit . f)
+hunk ./monoids.cabal 2
+-version:	    0.1.10
++version:	    0.1.11
+}

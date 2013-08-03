@@ -1,0 +1,5 @@
+[Trying to get the IsString instance to show up
+ekmett@gmail.com**20090327001629] {
+hunk ./Data/Monoid/Reducer/Sugar.hs 9
++import GHC.Exts hiding (IsString, fromString)
+}

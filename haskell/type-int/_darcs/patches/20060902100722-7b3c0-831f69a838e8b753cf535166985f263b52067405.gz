@@ -1,0 +1,28 @@
+[Moved into new repository. Cleaned up cabal
+ekmett@gmail.com**20060902100722] {
+move ./jugs.cabal ./type-int.cabal
+hunk ./type-int.cabal 1
+-name:			jugs
+-version:		0.1
+-license:		OtherLicense
++name:			type-int
++version:		0.2
++license:		BSD3
+hunk ./type-int.cabal 9
+-synopsis:		ECMAScript 4 Language Tools for Haskell
++synopsis:		Type Level 2s- and 16s- Complement Integers
+hunk ./type-int.cabal 11
+-description: 		Exposes a ECMAScript 4 implementation to Haskell.
+-build-depends:		plugins>=1.0
+-extensions:		MultiParamTypeClasses, FunctionalDependencies, Arrows, TemplateHaskell, CPP
+-exposed-modules:	
+-	Data.Hashable,
+-	Data.THash,
+-	Data.THash.THT,
++description: 		Type Level 2s- and 16s- Complement Integers 
++extensions:		MultiParamTypeClasses, FunctionalDependencies, TemplateHaskell, CPP
++exposed-modules:
+hunk ./type-int.cabal 22
+-	Type.Hex.Stage3,
++	Type.Hex.Stage3
+}

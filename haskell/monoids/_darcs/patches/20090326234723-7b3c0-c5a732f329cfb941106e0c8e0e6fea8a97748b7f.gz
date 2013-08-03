@@ -1,0 +1,14 @@
+[exposed Mon from Data.Monoid.Categorical
+ekmett@gmail.com**20090326234723] {
+hunk ./Data/Monoid/Categorical.hs 5
++    , Mon(Mon)
++    , runMon
+hunk ./Data/Monoid/Categorical.hs 21
+--- try to ignore the phantom type parameter available through 'a'
+-data Mon m a b where
++data Mon m n o where
+hunk ./Data/Monoid/Categorical.hs 24
++runMon :: Mon m m m -> m 
++runMon (Mon m) = m
++
+}

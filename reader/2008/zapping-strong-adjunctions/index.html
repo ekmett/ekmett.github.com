@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>The Comonad.Reader &raquo; Zapping Adjunctions</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css );</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(../../pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php.html" />
+    	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Zapping Adjunctions Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc-rsd.php.html" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Representing Adjunctions' href='../representing-adjunctions/index.html' />
+<link rel='next' title='Still Alive' href='../still-alive/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source/index-item=libraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 5 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Zapping Adjunctions">Zapping Adjunctions</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="index.html#comments" title="Comment on Zapping Adjunctions">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>As you may recall, every functor in Haskell is strong, in the sense that if you provided an instance of Monad for that functor the following definition would satisfy the requirements mentioned <a href="http://en.wikipedia.org/wiki/Strong_monad">here</a>:</p>
+<pre class="haskell">&nbsp;
+strength :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; a -&gt; f b -&gt; f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+strength = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>In an earlier post about <a href="../the-cofree-comonad-and-the-expression-problem/index.html">the cofree comonad and the expression problem</a>, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in <a href="../zipping-and-unzipping-functors/index.html">Zipping and Unzipping Functors</a>, I have since remodeled that class slightly:</p>
+<p><span id="more-68"></span></p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Zap f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+	zapWith :: <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; f a -&gt; g b -&gt; c
+	zap :: f <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; g a -&gt; b
+	zap = zapWith <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>Interestingly, we can use the fact that every functor in Haskell is strong to derive not only one instance of <code>Zap</code>, but two, given any <code>Adjunction</code> <img src='../../../latex/e0edd4e054355b0c1e7c7c75a7b59336.png' title='$f \dashv g$' alt='$f \dashv g$' align=absmiddle>.</p>
+<p>I'll give one instance here:</p>
+<pre class="haskell">&nbsp;
+zapWithAdjunctionGF :: <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> g f =&gt;
+    <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; f a -&gt; g b -&gt; c
+zapWithAdjunctionGF f a b =
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> f<span style="color: green;">&#41;</span> . <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> strength<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> $
+    strength a b
+&nbsp;</pre>
+<p>And I'll leave the substantially similar derivation of the following to the reader:</p>
+<pre class="haskell">&nbsp;
+zapWithAdjunctionFG :: <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; f a -&gt; g b -&gt; c
+&nbsp;</pre>
+<p>Now, we would like to do the same thing we did with <code>Representable</code> <a href="../representing-adjunctions/index.html">last time</a>, and just require the user of the <code>Adjunction</code> class to provide us with more instances, something like:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Zap f g, Zap g f, Representable g <span style="color: green;">&#40;</span>f Void<span style="color: green;">&#41;</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+        ...
+&nbsp;</pre>
+<p>But there is a problem: Adjunction composition.</p>
+<p>If you will recall from before, we were able to define an instance for an <code>Adjunction</code> for a composition of two adjunctions:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> O f g a = Compose <span style="color: green;">&#123;</span> decompose :: f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . decompose
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f1 g1, <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f2 g2<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> <span style="color: green;">&#40;</span>f2 `O` f1<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g1 `O` g2<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> =
+               <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> .
+               <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> decompose<span style="color: green;">&#41;</span> .
+               decompose
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> =
+               Compose .
+               <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> Compose . <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a><span style="color: green;">&#41;</span> .
+               <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>
+&nbsp;</pre>
+<p>The problem is that we have <strong>three</strong> different ways to build an instance of <code>Zap</code> for this composition and we would need to define two of them that conflict!</p>
+<p>We would need both of these, which would lead to ambiguous instance heads:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f1 g1, <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f2 g2<span style="color: green;">&#41;</span> =&gt;
+    Zap <span style="color: green;">&#40;</span>f2 `O` f1<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g1 `O` g2<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zapWith = zapWithAdjunctionFG
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f1 g1, <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f2 g2<span style="color: green;">&#41;</span> =&gt;
+    Zap <span style="color: green;">&#40;</span>g1 `O` g2<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f2 `O` f1<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        zapWith = zapWithAdjunctionGF
+&nbsp;</pre>
+<p>Furthermore, we can also define a third instance of <code>Zap</code> over composition, which doesn't even care about <code>Adjunction</code>, which also conflicts with the above:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Zap f g, Zap h k<span style="color: green;">&#41;</span> =&gt; Zap <span style="color: green;">&#40;</span>f `O` h<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g `O` k<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    zapWith f a b =
+        zapWith <span style="color: green;">&#40;</span>zapWith f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>decompose a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>decompose b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We could use the standard Haskell trick of making different compositions based on which instance of <code>Zap</code> you want to support, but the combinatorial explosion of constructors here when combined with the other reasons you may want to compose a pair of functors leads to a bit of absurdity, especially since I'm using it to capture a relationship no one cares about.</p>
+<p>Consequently, <a href="../../../haskell/category-extras/index.html">category-extras</a> does not capture this constraint.</p>
+<p><b>Cozapping</b></p>
+<p>As a final aside, we noted previously that <code>Traversable</code> functors were costrong. If a strong <code>Adjunction</code> gives rise to a couple of instances of <code>Zap</code>, we'd expect a similar relationship between a notion of <code>Cozap</code> and a costrong <code>Adjunction</code>.</p>
+<p>But what would cozapping be?</p>
+<p>First lets take a step back and break down zipWith into a couple of steps. If we note that <code>zapWith (,)</code> looks like:</p>
+<pre class="haskell">&nbsp;
+prezapAdjunctionGF :: <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> g f =&gt; f a -&gt; g b -&gt; <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+prezapAdjunctionGF a b =
+    swap . <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> strength . swap<span style="color: green;">&#41;</span> $ strength a b
+    <span style="color: #06c; font-weight: bold;">where</span> swap ~<span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Whereupon we can run the output through the canonical eval morphism for exponentials in <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle>:</p>
+<pre class="haskell">&nbsp;
+eval :: <span style="color: green;">&#40;</span>a -&gt; b, a<span style="color: green;">&#41;</span> -&gt; b
+eval <span style="color: green;">&#40;</span>f,a<span style="color: green;">&#41;</span> = f a
+&nbsp;</pre>
+<p>We can run everything backwards (modulo the noise caused by currying) in the first definition above and get:</p>
+<pre class="haskell">&nbsp;
+precozapAdjunctionFG ::
+    <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g, Traversable f, Traversable g<span style="color: green;">&#41;</span> =&gt;
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span>
+precozapAdjunctionFG =
+    costrength . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>swap . costrength<span style="color: green;">&#41;</span> . <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> . swap
+&nbsp;</pre>
+<p>However, we lack a <code>coeval</code> morphism for <a href="http://citeseer.ist.psu.edu/filinski89declarative.html">coexponentials</a>, since <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> lacks coexponentials -- with good reason! If <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> was a co-CCC then it would degenerate to a rather boring poset.</p>
+<p>But that said, even getting this far, how many adjunctions are there between <code>Traversable</code> functors in Haskell, really?</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">2 Responses to &#8220;Zapping Adjunctions&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1718">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=8e7ad908eef1b8a0e8286571cc907ca4&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='http://-' rel='external nofollow' class='url'>sr</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1718" title="">June 18th, 2008 at 11:42 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Off-topic, but it looks like Allegory.hs and Dyad.hs have not been added to darcs in category-extras?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1719">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&rating=R&size=40&d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1719" title="">June 19th, 2008 at 1:10 am</a> </small>
+			<br clear="all"/>
+
+			<p>Good catch. </p>
+<p>I added Control.Comonad.Exponent in response to a comment over on Dan Piponi&#8217;s blog and forgot that I had those in progress at the time.</p>
+<p>Fixed and uploading to hackage as I write this.</p>
+<p>I may drop Dyad though, since it doesn&#8217;t add much value. As near as I can tell there are no interesting dyads in Haskell that aren&#8217;t just monads or comonads, and they force a profusion of typeclasses to define that lack other uses. This may also explain why there has been no followup to Fokkinga&#8217;s paper on them in the last 14 years. The distributive law is required to be a natural isomorphism, which seems to be too strong to be practical.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="68" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Jun 5th, 2008 at 2:29 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki/index-item=October%202006_August%202006_July%202006.html">Old Journal</a></li>
+    <li><a href="../../source/index-item=libraries.html">Source</a>
+    <li><a href="../../wiki/index-item=Harmless+Algorithms_fine-occlusion+culling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (31)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (12)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (57)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (1)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (15)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (6)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (10)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+</html>
+
+<!-- Localized -->

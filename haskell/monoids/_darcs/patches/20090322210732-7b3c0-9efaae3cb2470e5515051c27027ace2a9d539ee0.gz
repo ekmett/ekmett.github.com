@@ -1,0 +1,1197 @@
+[added syntax highlighted documentation to archive
+ekmett@gmail.com**20090322210732] {
+adddir ./dist/doc/html/lexical-monoids/src
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 24
++><A HREF="src/Data-Monoid-Generator.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 72
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 85
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#Generator"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 108
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 119
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#Elem"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 142
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 155
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreduce"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 168
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 181
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 194
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 207
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreducel"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 271
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 286
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreduce"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 299
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 314
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 327
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Generator.html 342
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Generator.html#mapreducel"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 24
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 82
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 93
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourcePosition"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 207
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 220
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourceLine"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 233
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 246
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourceColumn"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 259
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 274
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#sourceLine"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 287
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 302
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#sourceColumn"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 315
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 326
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#startOfFile"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 339
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-SourcePosition.html 354
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#showSourcePosition"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-UTF8-Decoder.html 24
++><A HREF="src/Data-Monoid-Lexical-UTF8-Decoder.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-UTF8-Decoder.html 82
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-UTF8-Decoder.html 93
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-UTF8-Decoder.html#UTF8"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-UTF8-Decoder.html 161
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-UTF8-Decoder.html 174
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-UTF8-Decoder.html#runUTF8"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 24
++><A HREF="src/Data-Monoid-Lexical-Words.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 82
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 93
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#Words"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 177
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 188
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#runWords"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 201
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 212
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#Lines"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 296
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 307
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#runLines"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 320
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 331
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#Unspaced"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 457
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 468
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#Unlined"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 594
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 621
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#wordsFrom"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 634
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Lexical-Words.html 661
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Lexical-Words.html#linesFrom"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 24
++><A HREF="src/Data-Monoid-Reducer-Char.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 82
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 99
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-Char.html#CharReducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 122
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 133
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-Char.html#reduceChar"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 146
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 157
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-Char.html#invalidChar"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 271
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 284
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-Char.html#invalidChar"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 297
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-Char.html 310
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-Char.html#reduceChar"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 24
++><A HREF="src/Data-Monoid-Reducer-With.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 82
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 93
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-With.html#WithReducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 143
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 156
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-With.html#withReducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 169
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer-With.html 180
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer-With.html#withoutReducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 24
++><A HREF="src/Data-Monoid-Reducer.html"
++>Source code</A
++></TD
++><TD CLASS="topbut"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 72
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 87
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#Reducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 110
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 119
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reduce"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 132
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 141
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 154
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 163
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reducel"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 413
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 424
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reduce"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 437
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 448
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reducer"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 461
+-><TD CLASS="decl"
++><TD CLASS="topdecl"
++><TABLE CLASS="declbar"
++><TR
++><TD CLASS="declname"
+hunk ./dist/doc/html/lexical-monoids/Data-Monoid-Reducer.html 472
++><TD CLASS="declbut"
++><A HREF="src/Data-Monoid-Reducer.html#reducel"
++>Source</A
++></TD
++></TR
++></TABLE
++></TD
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Generator.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Generator.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Generator.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeFamilies #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Generator</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Elem</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>mapreduce</span>
++<a name="line-7"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>mapreducer</span>
++<a name="line-8"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>mapreducel</span>
++<a name="line-9"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-10"></a>
++<a name="line-11"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Prelude</span> <span class='hs-varid'>hiding</span> <span class='hs-layout'>(</span><span class='hs-varid'>lex</span><span class='hs-layout'>)</span>
++<a name="line-12"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Word</span> <span class='hs-layout'>(</span><span class='hs-conid'>Word8</span><span class='hs-layout'>)</span>
++<a name="line-13"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Text</span> <span class='hs-layout'>(</span><span class='hs-conid'>Text</span><span class='hs-layout'>)</span>
++<a name="line-14"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Foldable</span> <span class='hs-layout'>(</span><span class='hs-varid'>fold</span><span class='hs-layout'>,</span><span class='hs-varid'>foldMap</span><span class='hs-layout'>)</span>
++<a name="line-15"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Text</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>Text</span>
++<a name="line-16"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>Strict</span>
++<a name="line-17"></a><span class='hs-keyword'>import</span> <span class='hs-keyword'>qualified</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span><span class='hs-varop'>.</span><span class='hs-conid'>Lazy</span> <span class='hs-keyword'>as</span> <span class='hs-conid'>Lazy</span>
++<a name="line-18"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Parallel</span><span class='hs-varop'>.</span><span class='hs-conid'>Strategies</span>
++<a name="line-19"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span>
++<a name="line-20"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-21"></a>
++<a name="line-22"></a><span class='hs-comment'>-- minimal definition mapreduce or affixMapReduce</span>
++<a name="line-23"></a><span class='hs-keyword'>class</span> <span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span> <span class='hs-keyword'>where</span>
++<a name="line-24"></a>    <span class='hs-keyword'>type</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>::</span> <span class='hs-varop'>*</span> 
++<a name="line-25"></a>    <span class='hs-varid'>mapreduce</span>   <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-varid'>e</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-26"></a>    <span class='hs-varid'>mapreducer</span>  <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-varid'>e</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> 
++<a name="line-27"></a>    <span class='hs-varid'>mapreducel</span>  <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-varid'>e</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-28"></a>
++<a name="line-29"></a>    <span class='hs-varid'>mapreduce</span>  <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mapreducer</span> <span class='hs-varid'>f</span> <span class='hs-varid'>mempty</span>
++<a name="line-30"></a>    <span class='hs-varid'>mapreducer</span> <span class='hs-varid'>f</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mappend</span> <span class='hs-varid'>m</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapreduce</span> <span class='hs-varid'>f</span>
++<a name="line-31"></a>    <span class='hs-varid'>mapreducel</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mappend</span> <span class='hs-varop'>.</span> <span class='hs-varid'>mapreduce</span> <span class='hs-varid'>f</span>
++<a name="line-32"></a>
++<a name="line-33"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Generator</span> <span class='hs-conid'>Strict</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span> <span class='hs-keyword'>where</span>
++<a name="line-34"></a>    <span class='hs-keyword'>type</span> <span class='hs-conid'>Elem</span> <span class='hs-conid'>Strict</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Word8</span>
++<a name="line-35"></a>    <span class='hs-varid'>mapreducer</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Strict</span><span class='hs-varop'>.</span><span class='hs-varid'>foldl'</span> <span class='hs-layout'>(</span><span class='hs-keyglyph'>\</span><span class='hs-varid'>a</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>a</span> <span class='hs-varop'>.</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span>
++<a name="line-36"></a>
++<a name="line-37"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Generator</span> <span class='hs-conid'>Lazy</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span> <span class='hs-keyword'>where</span>
++<a name="line-38"></a>    <span class='hs-keyword'>type</span> <span class='hs-conid'>Elem</span> <span class='hs-conid'>Lazy</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Elem</span> <span class='hs-conid'>Strict</span><span class='hs-varop'>.</span><span class='hs-conid'>ByteString</span>
++<a name="line-39"></a>    <span class='hs-varid'>mapreduce</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>fold</span> <span class='hs-varop'>.</span> <span class='hs-varid'>parMap</span> <span class='hs-varid'>rwhnf</span> <span class='hs-layout'>(</span><span class='hs-varid'>mapreduce</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span> <span class='hs-varop'>.</span> <span class='hs-conid'>Lazy</span><span class='hs-varop'>.</span><span class='hs-varid'>toChunks</span>
++<a name="line-40"></a>
++<a name="line-41"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Generator</span> <span class='hs-conid'>Text</span> <span class='hs-keyword'>where</span>
++<a name="line-42"></a>    <span class='hs-keyword'>type</span> <span class='hs-conid'>Elem</span> <span class='hs-conid'>Text</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Char</span>
++<a name="line-43"></a>    <span class='hs-varid'>mapreducer</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Text</span><span class='hs-varop'>.</span><span class='hs-varid'>foldl'</span> <span class='hs-layout'>(</span><span class='hs-keyglyph'>\</span><span class='hs-varid'>a</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>a</span> <span class='hs-varop'>.</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span>
++<a name="line-44"></a>
++<a name="line-45"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Generator</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>where</span>
++<a name="line-46"></a>    <span class='hs-keyword'>type</span> <span class='hs-conid'>Elem</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>c</span>
++<a name="line-47"></a>    <span class='hs-varid'>mapreduce</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>foldMap</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varop'>.</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-SourcePosition.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-SourcePosition.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Lexical/SourcePosition.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Lexical</span><span class='hs-varop'>.</span><span class='hs-conid'>SourcePosition</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>SourcePosition</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>SourceLine</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>SourceColumn</span>
++<a name="line-7"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>sourceLine</span>
++<a name="line-8"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>sourceColumn</span>
++<a name="line-9"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>startOfFile</span>
++<a name="line-10"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>showSourcePosition</span>
++<a name="line-11"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-12"></a>
++<a name="line-13"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Prelude</span> <span class='hs-varid'>hiding</span> <span class='hs-layout'>(</span><span class='hs-varid'>lex</span><span class='hs-layout'>)</span>
++<a name="line-14"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Functor</span><span class='hs-varop'>.</span><span class='hs-conid'>Extras</span>
++<a name="line-15"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Functor</span><span class='hs-varop'>.</span><span class='hs-conid'>Pointed</span>
++<a name="line-16"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-17"></a>
++<a name="line-18"></a><a name="SourceLine"></a><span class='hs-keyword'>type</span> <span class='hs-conid'>SourceLine</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Int</span>
++<a name="line-19"></a><a name="SourceColumn"></a><span class='hs-keyword'>type</span> <span class='hs-conid'>SourceColumn</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Int</span>
++<a name="line-20"></a>
++<a name="line-21"></a><a name="SourcePosition"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>file</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-varid'>file</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceLine</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceColumn</span>
++<a name="line-22"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Lines</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceLine</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceColumn</span>
++<a name="line-23"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Columns</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceColumn</span>
++<a name="line-24"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Tab</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceColumn</span> <span class='hs-varop'>!</span><span class='hs-conid'>SourceColumn</span> <span class='hs-comment'>-- cols before and after an unresolved tab</span>
++<a name="line-25"></a>    <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Eq</span><span class='hs-layout'>)</span>
++<a name="line-26"></a>
++<a name="line-27"></a><a name="nextTab"></a><span class='hs-definition'>nextTab</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Int</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span>
++<a name="line-28"></a><span class='hs-definition'>nextTab</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>x</span> <span class='hs-varop'>+</span> <span class='hs-layout'>(</span><span class='hs-num'>8</span> <span class='hs-comment'>-</span> <span class='hs-layout'>(</span><span class='hs-varid'>x</span><span class='hs-comment'>-</span><span class='hs-num'>1</span><span class='hs-layout'>)</span> <span class='hs-varop'>`mod`</span> <span class='hs-num'>8</span><span class='hs-layout'>)</span>
++<a name="line-29"></a>
++<a name="line-30"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-keyword'>where</span>
++<a name="line-31"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>g</span> <span class='hs-layout'>(</span><span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-layout'>(</span><span class='hs-varid'>g</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span>
++<a name="line-32"></a>    <span class='hs-varid'>fmap</span> <span class='hs-keyword'>_</span> <span class='hs-layout'>(</span><span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span>
++<a name="line-33"></a>    <span class='hs-varid'>fmap</span> <span class='hs-keyword'>_</span> <span class='hs-layout'>(</span><span class='hs-conid'>Columns</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Columns</span> <span class='hs-varid'>c</span>
++<a name="line-34"></a>    <span class='hs-varid'>fmap</span> <span class='hs-keyword'>_</span> <span class='hs-layout'>(</span><span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>
++<a name="line-35"></a>
++<a name="line-36"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-keyword'>where</span>
++<a name="line-37"></a>    <span class='hs-varid'>point</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-num'>1</span> <span class='hs-num'>1</span>
++<a name="line-38"></a>
++<a name="line-39"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>FunctorZero</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-keyword'>where</span>
++<a name="line-40"></a>    <span class='hs-varid'>fzero</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mempty</span>
++<a name="line-41"></a>
++<a name="line-42"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>FunctorPlus</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-keyword'>where</span>
++<a name="line-43"></a>    <span class='hs-varid'>fplus</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mappend</span>
++<a name="line-44"></a>
++<a name="line-45"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>file</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-46"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Columns</span> <span class='hs-num'>0</span>
++<a name="line-47"></a>
++<a name="line-48"></a>    <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-keyword'>_</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-varid'>l</span> <span class='hs-varop'>+</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span>
++<a name="line-49"></a>    <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Columns</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-50"></a>    <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>   <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>nextTab</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-varop'>+</span> <span class='hs-varid'>y</span><span class='hs-layout'>)</span>
++<a name="line-51"></a>    <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-keyword'>_</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-layout'>(</span><span class='hs-varid'>l</span> <span class='hs-varop'>+</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span>
++<a name="line-52"></a>    <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Columns</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-53"></a>    <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>   <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>nextTab</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-varop'>+</span> <span class='hs-varid'>y</span><span class='hs-layout'>)</span>
++<a name="line-54"></a>    <span class='hs-conid'>Columns</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Columns</span> <span class='hs-varid'>d</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Columns</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-55"></a>    <span class='hs-conid'>Columns</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Tab</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>+</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-varid'>y</span>
++<a name="line-56"></a>    <span class='hs-conid'>Tab</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span>   <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-varid'>d</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-varid'>d</span>
++<a name="line-57"></a>    <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>   <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Columns</span> <span class='hs-varid'>d</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-layout'>(</span><span class='hs-varid'>y</span> <span class='hs-varop'>+</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-58"></a>    <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span>   <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x'</span> <span class='hs-varid'>y'</span>  <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Tab</span> <span class='hs-varid'>x</span> <span class='hs-layout'>(</span><span class='hs-varid'>nextTab</span> <span class='hs-layout'>(</span><span class='hs-varid'>y</span> <span class='hs-varop'>+</span> <span class='hs-varid'>x'</span><span class='hs-layout'>)</span> <span class='hs-varop'>+</span> <span class='hs-varid'>y'</span><span class='hs-layout'>)</span>
++<a name="line-59"></a>    <span class='hs-keyword'>_</span>         <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>pos</span>        <span class='hs-keyglyph'>=</span> <span class='hs-varid'>pos</span>
++<a name="line-60"></a>
++<a name="line-61"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>file</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-62"></a>    <span class='hs-varid'>reduce</span> <span class='hs-chr'>'\n'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-num'>1</span> <span class='hs-num'>1</span>
++<a name="line-63"></a>    <span class='hs-varid'>reduce</span> <span class='hs-chr'>'\t'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Tab</span> <span class='hs-num'>0</span> <span class='hs-num'>0</span> 
++<a name="line-64"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyword'>_</span>    <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Columns</span> <span class='hs-num'>1</span>
++<a name="line-65"></a>
++<a name="line-66"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>file</span><span class='hs-layout'>)</span>
++<a name="line-67"></a>    
++<a name="line-68"></a><a name="startOfFile"></a><span class='hs-definition'>startOfFile</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>f</span>
++<a name="line-69"></a><span class='hs-definition'>startOfFile</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>point</span>
++<a name="line-70"></a>
++<a name="line-71"></a><a name="sourceColumn"></a><span class='hs-definition'>sourceColumn</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Maybe</span> <span class='hs-conid'>SourceColumn</span>
++<a name="line-72"></a><span class='hs-definition'>sourceColumn</span> <span class='hs-layout'>(</span><span class='hs-conid'>Pos</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Just</span> <span class='hs-varid'>c</span>
++<a name="line-73"></a><span class='hs-definition'>sourceColumn</span> <span class='hs-layout'>(</span><span class='hs-conid'>Lines</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Just</span> <span class='hs-varid'>c</span>
++<a name="line-74"></a><span class='hs-definition'>sourceColumn</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Nothing</span>
++<a name="line-75"></a>
++<a name="line-76"></a><a name="sourceLine"></a><span class='hs-definition'>sourceLine</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Maybe</span> <span class='hs-conid'>SourceLine</span>
++<a name="line-77"></a><span class='hs-definition'>sourceLine</span> <span class='hs-layout'>(</span><span class='hs-conid'>Pos</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>l</span> <span class='hs-keyword'>_</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Just</span> <span class='hs-varid'>l</span>
++<a name="line-78"></a><span class='hs-definition'>sourceLine</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Nothing</span>
++<a name="line-79"></a>
++<a name="line-80"></a><a name="showSourcePosition"></a><span class='hs-definition'>showSourcePosition</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>SourcePosition</span> <span class='hs-conid'>String</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>String</span>
++<a name="line-81"></a><span class='hs-definition'>showSourcePosition</span> <span class='hs-varid'>pos</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>showSourcePosition'</span> <span class='hs-layout'>(</span><span class='hs-varid'>point</span> <span class='hs-str'>"-"</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>pos</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-82"></a>    <span class='hs-varid'>showSourcePosition'</span> <span class='hs-layout'>(</span><span class='hs-conid'>Pos</span> <span class='hs-varid'>f</span> <span class='hs-varid'>l</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>f</span> <span class='hs-varop'>++</span> <span class='hs-str'>":"</span> <span class='hs-varop'>++</span> <span class='hs-varid'>show</span> <span class='hs-varid'>l</span> <span class='hs-varop'>++</span> <span class='hs-str'>":"</span> <span class='hs-varop'>++</span> <span class='hs-varid'>show</span> <span class='hs-varid'>c</span>
++<a name="line-83"></a>    <span class='hs-varid'>showSourcePosition'</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>undefined</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-UTF8-Decoder.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-UTF8-Decoder.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Lexical/UTF8/Decoder.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Lexical</span><span class='hs-varop'>.</span><span class='hs-conid'>UTF8</span><span class='hs-varop'>.</span><span class='hs-conid'>Decoder</span> 
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>UTF8</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>runUTF8</span>
++<a name="line-6"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-7"></a>    
++<a name="line-8"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Bits</span> <span class='hs-layout'>(</span><span class='hs-varid'>shiftL</span><span class='hs-layout'>,</span><span class='hs-layout'>(</span><span class='hs-varop'>.&amp;.</span><span class='hs-layout'>)</span><span class='hs-layout'>,</span><span class='hs-layout'>(</span><span class='hs-varop'>.|.</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-9"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Word</span> <span class='hs-layout'>(</span><span class='hs-conid'>Word8</span><span class='hs-layout'>)</span>
++<a name="line-10"></a>
++<a name="line-11"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Functor</span><span class='hs-varop'>.</span><span class='hs-conid'>Pointed</span>
++<a name="line-12"></a>
++<a name="line-13"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-14"></a>
++<a name="line-15"></a><span class='hs-comment'>-- Incrementally reduce canonical RFC3629 UTF-8 Characters</span>
++<a name="line-16"></a>
++<a name="line-17"></a><a name="H"></a><span class='hs-comment'>-- utf8 characters are at most 4 characters long, so we need only retain state for 3 of them</span>
++<a name="line-18"></a><a name="H"></a><span class='hs-comment'>-- moreover their length is able to be determined a priori, so lets store that intrinsically in the constructor</span>
++<a name="line-19"></a><a name="H"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>H</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>H0</span>
++<a name="line-20"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H2_1</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span> 
++<a name="line-21"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H3_1</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span>
++<a name="line-22"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H3_2</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span>
++<a name="line-23"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H4_1</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span>
++<a name="line-24"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H4_2</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span>
++<a name="line-25"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-conid'>H4_3</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span> <span class='hs-varop'>!</span><span class='hs-conid'>Word8</span>
++<a name="line-26"></a>
++<a name="line-27"></a><a name="T"></a><span class='hs-comment'>-- words expressing the tail of a character, each between 0x80 and 0xbf</span>
++<a name="line-28"></a><a name="T"></a><span class='hs-comment'>-- this is arbitrary length to simplify making the parser truly monoidal</span>
++<a name="line-29"></a><a name="T"></a><span class='hs-comment'>-- this probably means we have O(n^2) worst case performance in the face of very long runs of chars that look like 10xxxxxx</span>
++<a name="line-30"></a><a name="T"></a><span class='hs-keyword'>type</span> <span class='hs-conid'>T</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Word8</span><span class='hs-keyglyph'>]</span>
++<a name="line-31"></a>
++<a name="line-32"></a><a name="UTF8"></a><span class='hs-comment'>-- S is a segment that contains a possible tail of a character, the result of reduceing some full characters, and the start of another character</span>
++<a name="line-33"></a><a name="UTF8"></a><span class='hs-comment'>-- T contains a list of bytes each between 0x80 and 0xbf</span>
++<a name="line-34"></a><a name="UTF8"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-conid'>T</span> <span class='hs-varid'>m</span> <span class='hs-varop'>!</span><span class='hs-conid'>H</span>
++<a name="line-35"></a>            <span class='hs-keyglyph'>|</span> <span class='hs-conid'>T</span> <span class='hs-conid'>T</span>
++<a name="line-36"></a>
++<a name="line-37"></a><a name="flushH"></a><span class='hs-comment'>-- flush any extra characters in a head, when the next character isn't between 0x80 and 0xbf</span>
++<a name="line-38"></a><span class='hs-definition'>flushH</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-39"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H0</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mempty</span>
++<a name="line-40"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H2_1</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-keyglyph'>]</span>
++<a name="line-41"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-keyglyph'>]</span>
++<a name="line-42"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_2</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>y</span><span class='hs-keyglyph'>]</span>
++<a name="line-43"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-keyglyph'>]</span>
++<a name="line-44"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>y</span><span class='hs-keyglyph'>]</span>
++<a name="line-45"></a><span class='hs-definition'>flushH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_3</span> <span class='hs-varid'>x</span> <span class='hs-varid'>y</span> <span class='hs-varid'>z</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>y</span><span class='hs-layout'>,</span><span class='hs-varid'>z</span><span class='hs-keyglyph'>]</span>
++<a name="line-46"></a>
++<a name="line-47"></a><a name="flushT"></a><span class='hs-comment'>-- flush a character tail </span>
++<a name="line-48"></a><span class='hs-definition'>flushT</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Word8</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-49"></a><span class='hs-definition'>flushT</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span>
++<a name="line-50"></a>
++<a name="line-51"></a><a name="reducerH"></a><span class='hs-definition'>reducerH</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span>
++<a name="line-52"></a><span class='hs-definition'>reducerH</span> <span class='hs-conid'>H0</span> <span class='hs-varid'>c</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-53"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0x80</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>b1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-54"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-55"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xe0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span>
++<a name="line-56"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xf0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span>
++<a name="line-57"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xf5</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span>
++<a name="line-58"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-59"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span>
++<a name="line-60"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-61"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-62"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-63"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-64"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-65"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-varid'>e</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-66"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-67"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-68"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-69"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-70"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-71"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-varid'>e</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-72"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span>
++<a name="line-73"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-74"></a><span class='hs-definition'>reducerH</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-varid'>f</span> <span class='hs-varid'>k</span> <span class='hs-varid'>m</span> 
++<a name="line-75"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-76"></a>    <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-layout'>,</span><span class='hs-varid'>f</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-77"></a>
++<a name="line-78"></a><a name="mask"></a><span class='hs-definition'>mask</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span>
++<a name="line-79"></a><span class='hs-definition'>mask</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>fromEnum</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>.&amp;.</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> 
++<a name="line-80"></a>
++<a name="line-81"></a><a name="combine"></a><span class='hs-definition'>combine</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Int</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Int</span>
++<a name="line-82"></a><span class='hs-definition'>combine</span> <span class='hs-varid'>a</span> <span class='hs-varid'>r</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>shiftL</span> <span class='hs-varid'>a</span> <span class='hs-num'>6</span> <span class='hs-varop'>.|.</span> <span class='hs-varid'>fromEnum</span> <span class='hs-layout'>(</span><span class='hs-varid'>r</span> <span class='hs-varop'>.&amp;.</span> <span class='hs-num'>0x3f</span><span class='hs-layout'>)</span>
++<a name="line-83"></a>
++<a name="line-84"></a><a name="b1"></a><span class='hs-definition'>b1</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-85"></a><span class='hs-definition'>b1</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0x80</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduceChar</span> <span class='hs-varop'>.</span> <span class='hs-varid'>toEnum</span> <span class='hs-varop'>$</span> <span class='hs-varid'>fromEnum</span> <span class='hs-varid'>c</span>
++<a name="line-86"></a>     <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span>
++<a name="line-87"></a>
++<a name="line-88"></a><a name="b2"></a><span class='hs-definition'>b2</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-89"></a><span class='hs-definition'>b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>valid_b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduceChar</span> <span class='hs-layout'>(</span><span class='hs-varid'>toEnum</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>mask</span> <span class='hs-varid'>c</span> <span class='hs-num'>0x1f</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-90"></a>       <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span>
++<a name="line-91"></a>
++<a name="line-92"></a><a name="b3"></a><span class='hs-definition'>b3</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-93"></a><span class='hs-definition'>b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>valid_b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduceChar</span> <span class='hs-layout'>(</span><span class='hs-varid'>toEnum</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>mask</span> <span class='hs-varid'>c</span> <span class='hs-num'>0x0f</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-94"></a>         <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-keyglyph'>]</span>
++<a name="line-95"></a>
++<a name="line-96"></a>
++<a name="line-97"></a><a name="b4"></a><span class='hs-definition'>b4</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-98"></a><span class='hs-definition'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>valid_b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduceChar</span> <span class='hs-layout'>(</span><span class='hs-varid'>toEnum</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>combine</span> <span class='hs-layout'>(</span><span class='hs-varid'>mask</span> <span class='hs-varid'>c</span> <span class='hs-num'>0x07</span><span class='hs-layout'>)</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-varid'>f</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-99"></a>           <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-layout'>,</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-layout'>,</span><span class='hs-varid'>f</span><span class='hs-keyglyph'>]</span>
++<a name="line-100"></a>
++<a name="line-101"></a><a name="valid_b2"></a><span class='hs-definition'>valid_b2</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-102"></a><span class='hs-definition'>valid_b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0xc2</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xdf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span>
++<a name="line-103"></a>
++<a name="line-104"></a><a name="valid_b3"></a><span class='hs-definition'>valid_b3</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-105"></a><span class='hs-definition'>valid_b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>==</span> <span class='hs-num'>0xe0</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0xa0</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span> <span class='hs-varop'>||</span> 
++<a name="line-106"></a>                 <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0xe1</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xef</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span>
++<a name="line-107"></a>
++<a name="line-108"></a><a name="valid_b4"></a><span class='hs-definition'>valid_b4</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>Bool</span>
++<a name="line-109"></a><span class='hs-definition'>valid_b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>==</span> <span class='hs-num'>0xf0</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x90</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span> <span class='hs-varop'>||</span>
++<a name="line-110"></a>      <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0xf1</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xf3</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span> <span class='hs-varop'>||</span>
++<a name="line-111"></a>                   <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>==</span> <span class='hs-num'>0xf4</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>d</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0x8f</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>e</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>f</span> <span class='hs-varop'>&lt;=</span> <span class='hs-num'>0xbf</span><span class='hs-layout'>)</span>
++<a name="line-112"></a>
++<a name="line-113"></a><a name="reducelT"></a><span class='hs-definition'>reducelT</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Word8</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>T</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>T</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span>
++<a name="line-114"></a><span class='hs-definition'>reducelT</span> <span class='hs-varid'>c</span> <span class='hs-varid'>cs</span> <span class='hs-varid'>h</span> <span class='hs-varid'>m</span> <span class='hs-varid'>t</span>
++<a name="line-115"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0x80</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>m</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b1</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>cs</span>
++<a name="line-116"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>t</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span><span class='hs-conop'>:</span><span class='hs-varid'>cs</span><span class='hs-layout'>)</span>
++<a name="line-117"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xe0</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>case</span> <span class='hs-varid'>cs</span> <span class='hs-keyword'>of</span>
++<a name="line-118"></a>                        <span class='hs-conid'>[]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span>
++<a name="line-119"></a>                        <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>ds</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>ds</span>
++<a name="line-120"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xf0</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>case</span> <span class='hs-varid'>cs</span> <span class='hs-keyword'>of</span>
++<a name="line-121"></a>                        <span class='hs-conid'>[]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span>
++<a name="line-122"></a>                        <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span>
++<a name="line-123"></a>                        <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>es</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>es</span>
++<a name="line-124"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xf5</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyword'>case</span> <span class='hs-varid'>cs</span> <span class='hs-keyword'>of</span>
++<a name="line-125"></a>                        <span class='hs-conid'>[]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span>
++<a name="line-126"></a>                        <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> 
++<a name="line-127"></a>                        <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>h</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> 
++<a name="line-128"></a>                        <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>f</span><span class='hs-conop'>:</span><span class='hs-varid'>fs</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>fs</span>
++<a name="line-129"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mempty</span>
++<a name="line-130"></a>
++<a name="line-131"></a><a name="invalidChars"></a><span class='hs-definition'>invalidChars</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Word8</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-132"></a><span class='hs-definition'>invalidChars</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>foldr</span> <span class='hs-layout'>(</span><span class='hs-varid'>mappend</span> <span class='hs-varop'>.</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varop'>.</span> <span class='hs-varid'>return</span><span class='hs-layout'>)</span> <span class='hs-varid'>mempty</span>
++<a name="line-133"></a>
++<a name="line-134"></a><a name="merge"></a><span class='hs-definition'>merge</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-conid'>T</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-layout'>(</span><span class='hs-conid'>H</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>a</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>a</span>
++<a name="line-135"></a><span class='hs-definition'>merge</span> <span class='hs-conid'>H0</span> <span class='hs-varid'>cs</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span>               <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>cs</span>
++<a name="line-136"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>         <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span>
++<a name="line-137"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H2_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>ds</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>ds</span>
++<a name="line-138"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>         <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span>
++<a name="line-139"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>        <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span>
++<a name="line-140"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>es</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span>   <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>es</span>
++<a name="line-141"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>       <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span>
++<a name="line-142"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H3_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>es</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span>   <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>es</span>
++<a name="line-143"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>         <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span>
++<a name="line-144"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>        <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span>
++<a name="line-145"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span><span class='hs-varid'>e</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>      <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span>
++<a name="line-146"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_1</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-conop'>:</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>f</span><span class='hs-conop'>:</span><span class='hs-varid'>fs</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>fs</span>
++<a name="line-147"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>       <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> 
++<a name="line-148"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>e</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>      <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span>
++<a name="line-149"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_2</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>e</span><span class='hs-conop'>:</span><span class='hs-varid'>f</span><span class='hs-conop'>:</span><span class='hs-varid'>fs</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>fs</span>
++<a name="line-150"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-keyword'>_</span> <span class='hs-varid'>p</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>p</span> <span class='hs-varop'>$</span> <span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span>
++<a name="line-151"></a><span class='hs-definition'>merge</span> <span class='hs-layout'>(</span><span class='hs-conid'>H4_3</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span><span class='hs-conop'>:</span><span class='hs-varid'>fs</span><span class='hs-layout'>)</span> <span class='hs-varid'>k</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>k</span> <span class='hs-varop'>$</span> <span class='hs-varid'>b4</span> <span class='hs-varid'>c</span> <span class='hs-varid'>d</span> <span class='hs-varid'>e</span> <span class='hs-varid'>f</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>invalidChars</span> <span class='hs-varid'>fs</span>
++<a name="line-152"></a>
++<a name="line-153"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-154"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span> <span class='hs-conid'>[]</span>
++<a name="line-155"></a>    <span class='hs-conid'>T</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>T</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>++</span> <span class='hs-varid'>d</span><span class='hs-layout'>)</span>
++<a name="line-156"></a>    <span class='hs-conid'>T</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>++</span> <span class='hs-varid'>l</span><span class='hs-layout'>)</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span>
++<a name="line-157"></a>    <span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>S</span> <span class='hs-varid'>c'</span> <span class='hs-varid'>m'</span> <span class='hs-varid'>r</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>merge</span> <span class='hs-varid'>c</span> <span class='hs-varid'>c'</span> <span class='hs-varid'>id</span> <span class='hs-varid'>flushH</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-varid'>r</span>
++<a name="line-158"></a>    <span class='hs-varid'>s</span><span class='hs-keyglyph'>@</span><span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span><span class='hs-layout'>)</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>T</span> <span class='hs-conid'>[]</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>s</span>
++<a name="line-159"></a>    <span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>T</span> <span class='hs-varid'>c'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>merge</span> <span class='hs-varid'>c</span> <span class='hs-varid'>c'</span> <span class='hs-varid'>k</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-160"></a>        <span class='hs-varid'>k</span> <span class='hs-varid'>m'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span>
++<a name="line-161"></a>
++<a name="line-162"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Word8</span> <span class='hs-layout'>(</span><span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-163"></a>    <span class='hs-conid'>S</span> <span class='hs-varid'>t</span> <span class='hs-varid'>m</span> <span class='hs-varid'>h</span> <span class='hs-varop'>`reducer`</span> <span class='hs-varid'>c</span>        <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reducerH</span> <span class='hs-varid'>h</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-varid'>t</span><span class='hs-layout'>)</span> <span class='hs-varid'>m</span>
++<a name="line-164"></a>    <span class='hs-conid'>T</span> <span class='hs-varid'>t</span>     <span class='hs-varop'>`reducer`</span> <span class='hs-varid'>c</span>        <span class='hs-keyglyph'>|</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&gt;=</span> <span class='hs-num'>0x80</span> <span class='hs-varop'>&amp;&amp;</span> <span class='hs-varid'>c</span> <span class='hs-varop'>&lt;</span> <span class='hs-num'>0xc0</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span> <span class='hs-layout'>(</span><span class='hs-varid'>t</span> <span class='hs-varop'>++</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span><span class='hs-layout'>)</span>
++<a name="line-165"></a>                               <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reducerH</span> <span class='hs-conid'>H0</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-varid'>t</span><span class='hs-layout'>)</span> <span class='hs-varid'>mempty</span>
++<a name="line-166"></a>
++<a name="line-167"></a>    <span class='hs-varid'>c</span>       <span class='hs-varop'>`reducel`</span> <span class='hs-conid'>T</span> <span class='hs-varid'>cs</span>     <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reducelT</span> <span class='hs-varid'>c</span> <span class='hs-varid'>cs</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-conid'>[]</span> <span class='hs-varid'>mempty</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>flip</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-conid'>[]</span><span class='hs-layout'>)</span> <span class='hs-conid'>H0</span><span class='hs-layout'>)</span> <span class='hs-conid'>T</span>
++<a name="line-168"></a>    <span class='hs-varid'>c</span>       <span class='hs-varop'>`reducel`</span> <span class='hs-conid'>S</span> <span class='hs-varid'>cs</span> <span class='hs-varid'>m</span> <span class='hs-varid'>h</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reducelT</span> <span class='hs-varid'>c</span> <span class='hs-varid'>cs</span> <span class='hs-varid'>k1</span> <span class='hs-varid'>k2</span> <span class='hs-varid'>k3</span> <span class='hs-keyword'>where</span>
++<a name="line-169"></a>        <span class='hs-varid'>k1</span> <span class='hs-varid'>h'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-conid'>[]</span> <span class='hs-layout'>(</span><span class='hs-varid'>flushH</span> <span class='hs-varid'>h'</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-varid'>h</span>
++<a name="line-170"></a>        <span class='hs-varid'>k2</span> <span class='hs-varid'>m'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-conid'>[]</span> <span class='hs-layout'>(</span><span class='hs-varid'>m'</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-varid'>h</span>
++<a name="line-171"></a>        <span class='hs-varid'>k3</span> <span class='hs-varid'>t'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-varid'>t'</span> <span class='hs-varid'>m</span> <span class='hs-varid'>h</span>
++<a name="line-172"></a>    
++<a name="line-173"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>UTF8</span> <span class='hs-keyword'>where</span>
++<a name="line-174"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-varid'>t</span> <span class='hs-varid'>x</span> <span class='hs-varid'>h</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-varid'>t</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-varid'>h</span>
++<a name="line-175"></a>    <span class='hs-varid'>fmap</span> <span class='hs-keyword'>_</span> <span class='hs-layout'>(</span><span class='hs-conid'>T</span> <span class='hs-varid'>t</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>T</span> <span class='hs-varid'>t</span>
++<a name="line-176"></a>
++<a name="line-177"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>UTF8</span> <span class='hs-keyword'>where</span>
++<a name="line-178"></a>    <span class='hs-varid'>point</span> <span class='hs-varid'>f</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>S</span> <span class='hs-conid'>[]</span> <span class='hs-varid'>f</span> <span class='hs-conid'>H0</span>
++<a name="line-179"></a>
++<a name="line-180"></a><a name="runUTF8"></a><span class='hs-definition'>runUTF8</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>UTF8</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> 
++<a name="line-181"></a><span class='hs-definition'>runUTF8</span> <span class='hs-layout'>(</span><span class='hs-conid'>T</span> <span class='hs-varid'>t</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>flushT</span> <span class='hs-varid'>t</span>
++<a name="line-182"></a><span class='hs-definition'>runUTF8</span> <span class='hs-layout'>(</span><span class='hs-conid'>S</span> <span class='hs-varid'>t</span> <span class='hs-varid'>m</span> <span class='hs-varid'>h</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>flushT</span> <span class='hs-varid'>t</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>m</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>flushH</span> <span class='hs-varid'>h</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-Words.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Lexical-Words.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Lexical/Words.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, FlexibleContexts, GeneralizedNewtypeDeriving, ParallelListComp, TypeFamilies #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Lexical</span><span class='hs-varop'>.</span><span class='hs-conid'>Words</span> 
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Words</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>runWords</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Lines</span>
++<a name="line-7"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>runLines</span>
++<a name="line-8"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Unspaced</span><span class='hs-layout'>(</span><span class='hs-varid'>runUnspaced</span><span class='hs-layout'>)</span>
++<a name="line-9"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Unlined</span><span class='hs-layout'>(</span><span class='hs-varid'>runUnlined</span><span class='hs-layout'>)</span>
++<a name="line-10"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>wordsFrom</span>
++<a name="line-11"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>linesFrom</span>
++<a name="line-12"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-13"></a>
++<a name="line-14"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-varid'>isSpace</span><span class='hs-layout'>)</span>
++<a name="line-15"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Maybe</span> <span class='hs-layout'>(</span><span class='hs-varid'>maybeToList</span><span class='hs-layout'>)</span>
++<a name="line-16"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-17"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Generator</span>
++<a name="line-18"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Control</span><span class='hs-varop'>.</span><span class='hs-conid'>Functor</span><span class='hs-varop'>.</span><span class='hs-conid'>Pointed</span>
++<a name="line-19"></a>
++<a name="line-20"></a><a name="Words"></a><span class='hs-keyword'>data</span> <span class='hs-conid'>Words</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Chunk</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span>
++<a name="line-21"></a>             <span class='hs-keyglyph'>|</span> <span class='hs-conid'>Segment</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>m</span><span class='hs-keyglyph'>]</span> <span class='hs-layout'>(</span><span class='hs-conid'>Maybe</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span>
++<a name="line-22"></a>    <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>)</span>
++<a name="line-23"></a>
++<a name="line-24"></a><a name="runWords"></a><span class='hs-definition'>runWords</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Words</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>m</span><span class='hs-keyglyph'>]</span>
++<a name="line-25"></a><span class='hs-definition'>runWords</span> <span class='hs-layout'>(</span><span class='hs-conid'>Chunk</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>maybeToList</span> <span class='hs-varid'>m</span>
++<a name="line-26"></a><span class='hs-definition'>runWords</span> <span class='hs-layout'>(</span><span class='hs-conid'>Segment</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>maybeToList</span> <span class='hs-varid'>l</span> <span class='hs-varop'>++</span> <span class='hs-varid'>m</span> <span class='hs-varop'>++</span> <span class='hs-varid'>maybeToList</span> <span class='hs-varid'>r</span>
++<a name="line-27"></a>
++<a name="line-28"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Monoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Words</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-29"></a>    <span class='hs-varid'>mempty</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Chunk</span> <span class='hs-varid'>mempty</span>
++<a name="line-30"></a>    <span class='hs-conid'>Chunk</span> <span class='hs-varid'>l</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Chunk</span> <span class='hs-varid'>r</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Chunk</span> <span class='hs-layout'>(</span><span class='hs-varid'>l</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>r</span><span class='hs-layout'>)</span>
++<a name="line-31"></a>    <span class='hs-conid'>Chunk</span> <span class='hs-varid'>l</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Segment</span> <span class='hs-varid'>l'</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Segment</span> <span class='hs-layout'>(</span><span class='hs-varid'>l</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>l'</span><span class='hs-layout'>)</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span>
++<a name="line-32"></a>    <span class='hs-conid'>Segment</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Chunk</span> <span class='hs-varid'>r'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Segment</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-varid'>r</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>r'</span><span class='hs-layout'>)</span>
++<a name="line-33"></a>    <span class='hs-conid'>Segment</span> <span class='hs-varid'>l</span> <span class='hs-varid'>m</span> <span class='hs-varid'>r</span> <span class='hs-varop'>`mappend`</span> <span class='hs-conid'>Segment</span> <span class='hs-varid'>l'</span> <span class='hs-varid'>m'</span> <span class='hs-varid'>r'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Segment</span> <span class='hs-varid'>l</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span> <span class='hs-varop'>++</span> <span class='hs-varid'>maybeToList</span> <span class='hs-layout'>(</span><span class='hs-varid'>r</span> <span class='hs-varop'>`mappend`</span> <span class='hs-varid'>l'</span><span class='hs-layout'>)</span> <span class='hs-varop'>++</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-varid'>r'</span>
++<a name="line-34"></a>
++<a name="line-35"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-conid'>Words</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-36"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>isSpace</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Segment</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-varid'>mempty</span>
++<a name="line-37"></a>          <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Chunk</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-38"></a>
++<a name="line-39"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>Words</span> <span class='hs-keyword'>where</span>
++<a name="line-40"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Chunk</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Chunk</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span>
++<a name="line-41"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Segment</span> <span class='hs-varid'>m</span> <span class='hs-varid'>ms</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Segment</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>ms</span><span class='hs-layout'>)</span> <span class='hs-layout'>(</span><span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span>
++<a name="line-42"></a>
++<a name="line-43"></a><span class='hs-comment'>-- abuse the same machinery to handle lines as well</span>
++<a name="line-44"></a>
++<a name="line-45"></a><a name="Lines"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-layout'>(</span><span class='hs-conid'>Words</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Monoid</span><span class='hs-layout'>,</span><span class='hs-conid'>Functor</span><span class='hs-layout'>)</span>
++<a name="line-46"></a>
++<a name="line-47"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-48"></a>    <span class='hs-varid'>reduce</span> <span class='hs-chr'>'\n'</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varop'>$</span> <span class='hs-conid'>Segment</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-chr'>'\n'</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span> <span class='hs-conid'>[]</span> <span class='hs-varid'>mempty</span>
++<a name="line-49"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Lines</span> <span class='hs-varop'>$</span> <span class='hs-conid'>Chunk</span> <span class='hs-layout'>(</span><span class='hs-conid'>Just</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-50"></a>
++<a name="line-51"></a><a name="runLines"></a><span class='hs-definition'>runLines</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Lines</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>m</span><span class='hs-keyglyph'>]</span>
++<a name="line-52"></a><span class='hs-definition'>runLines</span> <span class='hs-layout'>(</span><span class='hs-conid'>Lines</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>runWords</span> <span class='hs-varid'>x</span>
++<a name="line-53"></a>
++<a name="line-54"></a><a name="Unspaced"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Unspaced</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unspaced</span> <span class='hs-layout'>{</span> <span class='hs-varid'>runUnspaced</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>m</span> <span class='hs-layout'>}</span>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Monoid</span><span class='hs-layout'>)</span>
++<a name="line-55"></a>
++<a name="line-56"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unspaced</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-57"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>isSpace</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mempty</span>
++<a name="line-58"></a>          <span class='hs-keyglyph'>|</span> <span class='hs-varid'>otherwise</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unspaced</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span>
++<a name="line-59"></a>
++<a name="line-60"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unspaced</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-61"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unspaced</span> <span class='hs-varop'>.</span> <span class='hs-varid'>invalidChar</span>
++<a name="line-62"></a>
++<a name="line-63"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>Unspaced</span> <span class='hs-keyword'>where</span>
++<a name="line-64"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unspaced</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unspaced</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-65"></a>
++<a name="line-66"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>Unspaced</span> <span class='hs-keyword'>where</span>
++<a name="line-67"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unspaced</span>
++<a name="line-68"></a>
++<a name="line-69"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Copointed</span> <span class='hs-conid'>Unspaced</span> <span class='hs-keyword'>where</span>
++<a name="line-70"></a>    <span class='hs-varid'>extract</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>runUnspaced</span>
++<a name="line-71"></a>
++<a name="line-72"></a><a name="Unlined"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>Unlined</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unlined</span> <span class='hs-layout'>{</span> <span class='hs-varid'>runUnlined</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>m</span> <span class='hs-layout'>}</span>  <span class='hs-keyword'>deriving</span> <span class='hs-layout'>(</span><span class='hs-conid'>Eq</span><span class='hs-layout'>,</span><span class='hs-conid'>Ord</span><span class='hs-layout'>,</span><span class='hs-conid'>Show</span><span class='hs-layout'>,</span><span class='hs-conid'>Read</span><span class='hs-layout'>,</span><span class='hs-conid'>Monoid</span><span class='hs-layout'>)</span>
++<a name="line-73"></a>
++<a name="line-74"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unlined</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-75"></a>    <span class='hs-varid'>reduce</span> <span class='hs-chr'>'\n'</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mempty</span>
++<a name="line-76"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unlined</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span>
++<a name="line-77"></a>
++<a name="line-78"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unlined</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-79"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unlined</span> <span class='hs-varop'>.</span> <span class='hs-varid'>invalidChar</span>
++<a name="line-80"></a>
++<a name="line-81"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Functor</span> <span class='hs-conid'>Unlined</span> <span class='hs-keyword'>where</span>
++<a name="line-82"></a>    <span class='hs-varid'>fmap</span> <span class='hs-varid'>f</span> <span class='hs-layout'>(</span><span class='hs-conid'>Unlined</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unlined</span> <span class='hs-layout'>(</span><span class='hs-varid'>f</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-83"></a>
++<a name="line-84"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Pointed</span> <span class='hs-conid'>Unlined</span> <span class='hs-keyword'>where</span>
++<a name="line-85"></a>    <span class='hs-varid'>point</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>Unlined</span>
++<a name="line-86"></a>
++<a name="line-87"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Copointed</span> <span class='hs-conid'>Unlined</span> <span class='hs-keyword'>where</span>
++<a name="line-88"></a>    <span class='hs-varid'>extract</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>runUnlined</span>
++<a name="line-89"></a>
++<a name="line-90"></a><a name="wordsFrom"></a><span class='hs-comment'>-- accumulator, inside-word, and until-next-word monoids</span>
++<a name="line-91"></a><span class='hs-definition'>wordsFrom</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>~</span> <span class='hs-conid'>Char</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>n</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>o</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>n</span><span class='hs-layout'>,</span><span class='hs-varid'>o</span><span class='hs-layout'>)</span><span class='hs-keyglyph'>]</span>
++<a name="line-92"></a><span class='hs-definition'>wordsFrom</span> <span class='hs-varid'>s</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>runUnlined</span> <span class='hs-varid'>y</span><span class='hs-layout'>,</span><span class='hs-varid'>z</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>scanl</span> <span class='hs-varid'>mappend</span> <span class='hs-varid'>s</span> <span class='hs-varid'>ls</span> <span class='hs-keyglyph'>|</span> <span class='hs-layout'>(</span><span class='hs-varid'>y</span><span class='hs-layout'>,</span><span class='hs-varid'>z</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>rs</span> <span class='hs-keyglyph'>]</span> <span class='hs-keyword'>where</span>
++<a name="line-93"></a>    <span class='hs-layout'>(</span><span class='hs-varid'>ls</span><span class='hs-layout'>,</span><span class='hs-varid'>rs</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>unzip</span> <span class='hs-layout'>(</span><span class='hs-varid'>runWords</span> <span class='hs-layout'>(</span><span class='hs-varid'>mapreduce</span> <span class='hs-varid'>id</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++<a name="line-94"></a>
++<a name="line-95"></a><a name="linesFrom"></a><span class='hs-comment'>-- accumulator, inside-line, and until-next-line monoids</span>
++<a name="line-96"></a><span class='hs-definition'>linesFrom</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-conid'>Generator</span> <span class='hs-varid'>c</span><span class='hs-layout'>,</span> <span class='hs-conid'>Elem</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>~</span> <span class='hs-conid'>Char</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>n</span><span class='hs-layout'>,</span> <span class='hs-conid'>Char</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>o</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>n</span><span class='hs-layout'>,</span><span class='hs-varid'>o</span><span class='hs-layout'>)</span><span class='hs-keyglyph'>]</span>
++<a name="line-97"></a><span class='hs-definition'>linesFrom</span> <span class='hs-varid'>s</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>=</span> <span class='hs-keyglyph'>[</span><span class='hs-layout'>(</span><span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>runUnlined</span> <span class='hs-varid'>y</span><span class='hs-layout'>,</span><span class='hs-varid'>z</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>|</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>scanl</span> <span class='hs-varid'>mappend</span> <span class='hs-varid'>s</span> <span class='hs-varid'>ls</span> <span class='hs-keyglyph'>|</span> <span class='hs-layout'>(</span><span class='hs-varid'>y</span><span class='hs-layout'>,</span><span class='hs-varid'>z</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>&lt;-</span> <span class='hs-varid'>rs</span> <span class='hs-keyglyph'>]</span> <span class='hs-keyword'>where</span>
++<a name="line-98"></a>    <span class='hs-layout'>(</span><span class='hs-varid'>ls</span><span class='hs-layout'>,</span><span class='hs-varid'>rs</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>unzip</span> <span class='hs-layout'>(</span><span class='hs-varid'>runLines</span> <span class='hs-layout'>(</span><span class='hs-varid'>mapreduce</span> <span class='hs-varid'>id</span> <span class='hs-varid'>c</span><span class='hs-layout'>)</span><span class='hs-layout'>)</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer-Char.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer-Char.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Reducer/Char.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE UndecidableInstances, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>Char</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>reduceChar</span>
++<a name="line-7"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-8"></a>
++<a name="line-9"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-10"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Word</span> <span class='hs-layout'>(</span><span class='hs-conid'>Word8</span><span class='hs-layout'>)</span>
++<a name="line-11"></a>
++<a name="line-12"></a><a name="CharReducer"></a><span class='hs-keyword'>class</span> <span class='hs-conid'>Reducer</span> <span class='hs-conid'>Char</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span> <span class='hs-keyword'>where</span>
++<a name="line-13"></a>    <span class='hs-varid'>reduceChar</span> <span class='hs-keyglyph'>::</span> <span class='hs-conid'>Char</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> 
++<a name="line-14"></a>    <span class='hs-varid'>reduceChar</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduce</span>
++<a name="line-15"></a>
++<a name="line-16"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>::</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Word8</span><span class='hs-keyglyph'>]</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-17"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>const</span> <span class='hs-varid'>mempty</span>
++<a name="line-18"></a>
++<a name="line-19"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span>  <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-20"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>)</span>
++<a name="line-21"></a>
++<a name="line-22"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span>  <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-23"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>)</span>
++<a name="line-24"></a>
++<a name="line-25"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m''</span><span class='hs-layout'>,</span> <span class='hs-conid'>CharReducer</span> <span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span>  <span class='hs-conid'>CharReducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>,</span><span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-26"></a>    <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>,</span> <span class='hs-varid'>invalidChar</span> <span class='hs-varid'>bs</span><span class='hs-layout'>)</span>
++<a name="line-27"></a>
++<a name="line-28"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-keyglyph'>[</span><span class='hs-conid'>Char</span><span class='hs-keyglyph'>]</span>
++<a name="line-29"></a>
++<a name="line-30"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>CharReducer</span> <span class='hs-conid'>()</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer-With.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer-With.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Reducer/With.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE UndecidableInstances, TypeOperators, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span><span class='hs-varop'>.</span><span class='hs-conid'>With</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>WithReducer</span><span class='hs-layout'>(</span><span class='hs-varid'>runWithReducer</span><span class='hs-layout'>)</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>withReducer</span>
++<a name="line-6"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>withoutReducer</span>
++<a name="line-7"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-8"></a>
++<a name="line-9"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-10"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>FingerTree</span>
++<a name="line-11"></a>
++<a name="line-12"></a><a name="WithReducer"></a><span class='hs-keyword'>newtype</span> <span class='hs-conid'>WithReducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>WithReducer</span> <span class='hs-layout'>{</span> <span class='hs-varid'>runWithReducer</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>c</span><span class='hs-layout'>)</span> <span class='hs-layout'>}</span> 
++<a name="line-13"></a>
++<a name="line-14"></a><a name="withReducer"></a><span class='hs-definition'>withReducer</span> <span class='hs-keyglyph'>::</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`WithReducer`</span> <span class='hs-varid'>m</span>
++<a name="line-15"></a><span class='hs-definition'>withReducer</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>d</span> <span class='hs-varop'>`seq`</span> <span class='hs-conid'>WithReducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>d</span><span class='hs-layout'>,</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span> <span class='hs-varid'>d</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span>
++<a name="line-16"></a>
++<a name="line-17"></a><a name="withoutReducer"></a><span class='hs-definition'>withoutReducer</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>c</span> <span class='hs-varop'>`WithReducer`</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span>
++<a name="line-18"></a><span class='hs-definition'>withoutReducer</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>snd</span> <span class='hs-varop'>.</span> <span class='hs-varid'>runWithReducer</span>
++<a name="line-19"></a>
++<a name="line-20"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`WithReducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-varid'>m</span> <span class='hs-keyword'>where</span>
++<a name="line-21"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>fst</span> <span class='hs-varop'>.</span> <span class='hs-varid'>runWithReducer</span> 
++<a name="line-22"></a>
++<a name="line-23"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`Reducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Measured</span> <span class='hs-varid'>m</span> <span class='hs-layout'>(</span><span class='hs-varid'>c</span> <span class='hs-varop'>`WithReducer`</span> <span class='hs-varid'>m</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-24"></a>    <span class='hs-varid'>measure</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>fst</span> <span class='hs-varop'>.</span> <span class='hs-varid'>runWithReducer</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer.html
+hunk ./dist/doc/html/lexical-monoids/src/Data-Monoid-Reducer.html 1
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
++<html>
++<head>
++<!-- Generated by HsColour, http://www.cs.york.ac.uk/fp/darcs/hscolour/ -->
++<title>Data/Monoid/Reducer.hs</title>
++<link type='text/css' rel='stylesheet' href='hscolour.css' />
++</head>
++<body>
++<pre><a name="line-1"></a><span class='hs-comment'>{-# LANGUAGE UndecidableInstances, FlexibleContexts, MultiParamTypeClasses, FlexibleInstances #-}</span>
++<a name="line-2"></a><span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span><span class='hs-varop'>.</span><span class='hs-conid'>Reducer</span>
++<a name="line-3"></a>    <span class='hs-layout'>(</span> <span class='hs-keyword'>module</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span>
++<a name="line-4"></a>    <span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span>
++<a name="line-5"></a>    <span class='hs-layout'>,</span> <span class='hs-varid'>reduce</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span>
++<a name="line-6"></a>    <span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-7"></a>
++<a name="line-8"></a><span class='hs-keyword'>import</span> <span class='hs-conid'>Data</span><span class='hs-varop'>.</span><span class='hs-conid'>Monoid</span> <span class='hs-layout'>(</span><span class='hs-conid'>Monoid</span><span class='hs-layout'>,</span> <span class='hs-varid'>mempty</span><span class='hs-layout'>,</span> <span class='hs-varid'>mappend</span><span class='hs-layout'>)</span>
++<a name="line-9"></a>
++<a name="line-10"></a><a name="Reducer"></a><span class='hs-comment'>-- minimal definition reduce or reducer</span>
++<a name="line-11"></a><a name="Reducer"></a><span class='hs-keyword'>class</span> <span class='hs-conid'>Monoid</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span> <span class='hs-keyword'>where</span>
++<a name="line-12"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> 
++<a name="line-13"></a>    <span class='hs-varid'>reducer</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span>
++<a name="line-14"></a>    <span class='hs-varid'>reducel</span> <span class='hs-keyglyph'>::</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>-&gt;</span> <span class='hs-varid'>m</span> 
++<a name="line-15"></a>
++<a name="line-16"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>mempty</span> 
++<a name="line-17"></a>    <span class='hs-varid'>reducer</span> <span class='hs-varid'>m</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mappend</span> <span class='hs-varid'>m</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-18"></a>    <span class='hs-varid'>reducel</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>mappend</span> <span class='hs-varop'>.</span> <span class='hs-varid'>reduce</span>
++<a name="line-19"></a>
++<a name="line-20"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-21"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-22"></a>    <span class='hs-varid'>reducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducer</span> <span class='hs-varid'>m</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m'</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-23"></a>    <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m'</span><span class='hs-layout'>)</span>
++<a name="line-24"></a>
++<a name="line-25"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-26"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-27"></a>    <span class='hs-varid'>reducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducer</span> <span class='hs-varid'>m</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m'</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m''</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-28"></a>    <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m''</span><span class='hs-layout'>)</span>
++<a name="line-29"></a>
++<a name="line-30"></a><span class='hs-keyword'>instance</span> <span class='hs-layout'>(</span><span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m''</span><span class='hs-layout'>,</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=&gt;</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>,</span><span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-keyword'>where</span>
++<a name="line-31"></a>    <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span><span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reduce</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-32"></a>    <span class='hs-varid'>reducer</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>,</span><span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducer</span> <span class='hs-varid'>m</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m'</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m''</span> <span class='hs-varid'>x</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducer</span> <span class='hs-varid'>m'''</span> <span class='hs-varid'>x</span><span class='hs-layout'>)</span>
++<a name="line-33"></a>    <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-layout'>(</span><span class='hs-varid'>m</span><span class='hs-layout'>,</span><span class='hs-varid'>m'</span><span class='hs-layout'>,</span><span class='hs-varid'>m''</span><span class='hs-layout'>,</span><span class='hs-varid'>m'''</span><span class='hs-layout'>)</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m'</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m''</span><span class='hs-layout'>,</span> <span class='hs-varid'>reducel</span> <span class='hs-varid'>x</span> <span class='hs-varid'>m'''</span><span class='hs-layout'>)</span>
++<a name="line-34"></a>
++<a name="line-35"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>c</span><span class='hs-keyglyph'>]</span> <span class='hs-keyword'>where</span>
++<a name="line-36"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>return</span>
++<a name="line-37"></a>    <span class='hs-varid'>reducel</span> <span class='hs-keyglyph'>=</span> <span class='hs-layout'>(</span><span class='hs-conop'>:</span><span class='hs-layout'>)</span>
++<a name="line-38"></a>    <span class='hs-varid'>reducer</span> <span class='hs-varid'>xs</span> <span class='hs-varid'>x</span> <span class='hs-keyglyph'>=</span> <span class='hs-varid'>xs</span> <span class='hs-varop'>++</span> <span class='hs-keyglyph'>[</span><span class='hs-varid'>x</span><span class='hs-keyglyph'>]</span>
++<a name="line-39"></a>
++<a name="line-40"></a><span class='hs-keyword'>instance</span> <span class='hs-conid'>Reducer</span> <span class='hs-varid'>c</span> <span class='hs-conid'>()</span> <span class='hs-keyword'>where</span>
++<a name="line-41"></a>    <span class='hs-varid'>reduce</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>()</span>
++<a name="line-42"></a>    <span class='hs-varid'>reducer</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>()</span>
++<a name="line-43"></a>    <span class='hs-varid'>reducel</span> <span class='hs-keyword'>_</span> <span class='hs-keyword'>_</span> <span class='hs-keyglyph'>=</span> <span class='hs-conid'>()</span>
++</pre></body>
++</html>
+addfile ./dist/doc/html/lexical-monoids/src/hscolour.css
+hunk ./dist/doc/html/lexical-monoids/src/hscolour.css 1
++.hs-keyglyph, .hs-layout {color: red;}
++.hs-keyword {color: blue;}
++.hs-comment, .hs-comment a {color: green;}
++.hs-str, .hs-chr {color: teal;}
++.hs-keyword, .hs-conid, .hs-varid, .hs-conop, .hs-varop, .hs-num, .hs-cpp, .hs-sel, .hs-definition {}
+}

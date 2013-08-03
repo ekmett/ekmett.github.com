@@ -1,0 +1,13 @@
+digraph g {
+graph [rankdir=LR, splines=true];
+node [label="\N", shape=none, fontcolor=blue, fontname=courier];
+edge [color=black, style=dotted, fontname=courier, arrowname=onormal];
+
+    "IntBin|0" -> {"IntBin|1","IntBin|2"}
+    "IntBin|1" -> {"IntTip|3","IntTip|3"}
+    "IntBin|2" -> {"IntBin|4","IntBin|5"}
+    "IntTip|3" -> {}
+    "IntBin|4" -> {"IntTip|3","IntTip|3"}
+    "IntBin|5" -> {"IntTip|3","IntTip|3"}
+}
+

@@ -1,0 +1,179 @@
+[tweaks
+ekmett@gmail.com**20080518052440] {
+hunk ./CHANGELOG 6
++* Added Instances for Kan Extensions
++
++0.50.0
++------
++* Moved back to type families
+hunk ./src/Control/Comonad/Cofree.hs 23
+-type Cofree f = FixB (PCofree f)
++type Cofree f = Fix (PCofree f)
+hunk ./src/Control/Functor/Fix.hs 11
++-- Since in Hask, Mu = Nu, we don't bother to distinguish them here
+hunk ./src/Control/Functor/Fix.hs 14
+-	( Fix(InF,outF)
++	( 
++	-- * Functor fixpoint
++	  FixF(InF,outF)
+hunk ./src/Control/Functor/Fix.hs 18
+-	, FixB(InB,outB)
++	-- * Bifunctor fixpoint
++	, Fix(InB,outB)
+hunk ./src/Control/Functor/Fix.hs 32
+-newtype Fix f = InF { outF :: f (Fix f) }
++newtype FixF f = InF { outF :: f (FixF f) }
+hunk ./src/Control/Functor/Fix.hs 34
+-outM :: (Functor f, Monad m) => CoAlgM f m (Fix f)
++outM :: (Functor f, Monad m) => CoAlgM f m (FixF f)
+hunk ./src/Control/Functor/Fix.hs 37
+-inW :: (Functor f, Comonad w) => AlgW f w (Fix f)
++inW :: (Functor f, Comonad w) => AlgW f w (FixF f)
+hunk ./src/Control/Functor/Fix.hs 42
+-newtype FixB s a = InB { outB :: s a (FixB s a) }
++newtype Fix s a = InB { outB :: s a (Fix s a) }
+hunk ./src/Control/Functor/Fix.hs 44
+-instance Bifunctor s Hask Hask Hask => Functor (FixB s) where
++instance Bifunctor s Hask Hask Hask => Functor (Fix s) where
+hunk ./src/Control/Functor/Fix.hs 47
+-instance (Bifunctor f Hask Hask Hask, PCopointed f) => Copointed (FixB f) where
++instance (Bifunctor f Hask Hask Hask, PCopointed f) => Copointed (Fix f) where
+hunk ./src/Control/Functor/Fix.hs 50
+-instance (Bifunctor f Hask Hask Hask, PPointed f) => Pointed (FixB f) where
++instance (Bifunctor f Hask Hask Hask, PPointed f) => Pointed (Fix f) where
+hunk ./src/Control/Functor/Fix.hs 53
+-instance (Bifunctor f Hask Hask Hask, PComonad f) => Comonad (FixB f) where
++instance (Bifunctor f Hask Hask Hask, PComonad f) => Comonad (Fix f) where
+hunk ./src/Control/Functor/Fix.hs 56
+-instance (Bifunctor f Hask Hask Hask, PMonad f) => Monad (FixB f) where
++instance (Bifunctor f Hask Hask Hask, PMonad f) => Monad (Fix f) where
+hunk ./src/Control/Functor/Fix.hs 60
+-paugment :: PMonad f => (forall c. (f a c -> c) -> c) -> (a -> FixB f b) -> FixB f b
++paugment :: PMonad f => (forall c. (f a c -> c) -> c) -> (a -> Fix f b) -> Fix f b
+hunk ./src/Control/Functor/Fix.hs 63
+-pcoaugment :: PComonad f => ((FixB f a -> f b (FixB f a)) -> FixB f b) -> (FixB f a -> b) -> FixB f b
++pcoaugment :: PComonad f => ((Fix f a -> f b (Fix f a)) -> Fix f b) -> (Fix f a -> b) -> Fix f b
+hunk ./src/Control/Functor/Zip.hs 89
+-instance Bizip p => Zip (FixB p) where
++instance Bizip p => Zip (Fix p) where
+hunk ./src/Control/Monad/Free.hs 33
+-type Free f a = FixB (PFree f) a
++type Free f a = Fix (PFree f) a
+hunk ./src/Control/Monad/Hyper.hs 19
+-	, HyperB(..)
++	, PHyper(..)
+hunk ./src/Control/Monad/Hyper.hs 29
+-newtype HyperB h a b = HyperB { runHyperB :: h b -> a } 
++newtype PHyper h a b = PHyper { runPHyper :: h b -> a } 
+hunk ./src/Control/Monad/Hyper.hs 31
+-instance PFunctor (HyperB h) Hask Hask where
+-	first f h = HyperB (f . runHyperB h)
++instance PFunctor (PHyper h) Hask Hask where
++	first f h = PHyper (f . runPHyper h)
+hunk ./src/Control/Monad/Hyper.hs 34
+-instance ContraFunctor h => QFunctor (HyperB h) Hask Hask where
+-	second g h = HyperB (runHyperB h . contramap g)
++instance ContraFunctor h => QFunctor (PHyper h) Hask Hask where
++	second g h = PHyper (runPHyper h . contramap g)
+hunk ./src/Control/Monad/Hyper.hs 37
+-instance ContraFunctor h => Bifunctor (HyperB h) Hask Hask Hask where
+-	bimap f g h = HyperB (f . runHyperB h . contramap g)
++instance ContraFunctor h => Bifunctor (PHyper h) Hask Hask Hask where
++	bimap f g h = PHyper (f . runPHyper h . contramap g)
+hunk ./src/Control/Monad/Hyper.hs 40
+-instance ContraFunctor h => PPointed (HyperB h) where
+-	preturn = HyperB . const
++instance ContraFunctor h => PPointed (PHyper h) where
++	preturn = PHyper . const
+hunk ./src/Control/Monad/Hyper.hs 43
+-instance ContraFunctor h => PApplicative (HyperB h) where
++instance ContraFunctor h => PApplicative (PHyper h) where
+hunk ./src/Control/Monad/Hyper.hs 46
+-instance ContraFunctor h => PMonad (HyperB h) where
+-	pbind k (HyperB h) = HyperB (k . h >>= runHyperB)
++instance ContraFunctor h => PMonad (PHyper h) where
++	pbind k (PHyper h) = PHyper (k . h >>= runPHyper)
+hunk ./src/Control/Monad/Hyper.hs 50
+-type Hyper h a = FixB (HyperB h)
++type Hyper h a = Fix (PHyper h)
+hunk ./src/Control/Monad/Hyper.hs 55
+-
+hunk ./src/Control/Morphism/Ana.hs 25
+-ana :: Functor f => CoAlg f a -> a -> Fix f
++ana :: Functor f => CoAlg f a -> a -> FixF f
+hunk ./src/Control/Morphism/Ana.hs 30
+-g_ana :: (Functor f, Monad m) => Dist m f -> CoAlgM f m a -> a -> Fix f
++g_ana :: (Functor f, Monad m) => Dist m f -> CoAlgM f m a -> a -> FixF f
+hunk ./src/Control/Morphism/Ana.hs 38
+-biana :: Bifunctor f Hask Hask Hask => CoAlg (f b) a -> a -> FixB f b
++biana :: Bifunctor f Hask Hask Hask => CoAlg (f b) a -> a -> Fix f b
+hunk ./src/Control/Morphism/Ana.hs 41
+-g_biana :: (Bifunctor f Hask Hask Hask, Monad m) => Dist m (f b) -> CoAlgM (f b) m a -> a -> FixB f b
++g_biana :: (Bifunctor f Hask Hask Hask, Monad m) => Dist m (f b) -> CoAlgM (f b) m a -> a -> Fix f b
+hunk ./src/Control/Morphism/Apo.hs 27
+-apo :: Functor f => CoAlgM f (Apo f) a -> a -> Fix f
++apo :: Functor f => CoAlgM f (Apo f) a -> a -> FixF f
+hunk ./src/Control/Morphism/Apo.hs 30
+-g_apo :: Functor f => CoAlg f b -> CoAlgM f (GApo b) a -> a -> Fix f
++g_apo :: Functor f => CoAlg f b -> CoAlgM f (GApo b) a -> a -> FixF f
+hunk ./src/Control/Morphism/Apo.hs 33
+-type Apo f a 		= Either (Fix f) a
+-type ApoT f m a 	= EitherT (Fix f) m a
++type Apo f a 		= Either (FixF f) a
++type ApoT f m a 	= EitherT (FixF f) m a
+hunk ./src/Control/Morphism/Cata.hs 25
+-cata :: Functor f => Alg f a -> Fix f -> a
+--- cata f = g_cata distCata (liftAlg f)
++cata :: Functor f => Alg f a -> FixF f -> a
+hunk ./src/Control/Morphism/Cata.hs 27
++-- cata f = g_cata distCata (liftAlg f)
+hunk ./src/Control/Morphism/Cata.hs 29
+-g_cata :: (Functor f, Comonad w) => Dist f w -> AlgW f w a -> Fix f -> a
+--- g_cata k f = g_hylo k distAna f id outM
++g_cata :: (Functor f, Comonad w) => Dist f w -> AlgW f w a -> FixF f -> a
+hunk ./src/Control/Morphism/Cata.hs 31
++-- g_cata k f = g_hylo k distAna f id outM
+hunk ./src/Control/Morphism/Cata.hs 36
+-bicata :: Bifunctor f Hask Hask Hask => Alg (f b) a -> FixB f b -> a
++bicata :: Bifunctor f Hask Hask Hask => Alg (f b) a -> Fix f b -> a
+hunk ./src/Control/Morphism/Cata.hs 39
+-g_bicata :: (Bifunctor f Hask Hask Hask, Comonad w) => Dist (f b) w -> AlgW (f b) w a -> FixB f b -> a
++g_bicata :: (Bifunctor f Hask Hask Hask, Comonad w) => Dist (f b) w -> AlgW (f b) w a -> Fix f b -> a
+hunk ./src/Control/Morphism/Futu.hs 23
+-futu :: Functor f => CoAlgM f (Free f) a -> a -> Fix f
++futu :: Functor f => CoAlgM f (Free f) a -> a -> FixF f
+hunk ./src/Control/Morphism/Futu.hs 26
+-g_futu :: (Functor f, Functor h) => Dist h f -> CoAlgM f (Free h) a -> a -> Fix f
++g_futu :: (Functor f, Functor h) => Dist h f -> CoAlgM f (Free h) a -> a -> FixF f
+hunk ./src/Control/Morphism/Histo.hs 23
+-histo :: Functor f => AlgW f (Cofree f) a -> Fix f -> a
++histo :: Functor f => AlgW f (Cofree f) a -> FixF f -> a
+hunk ./src/Control/Morphism/Histo.hs 26
+-g_histo :: (Functor f, Functor h) => Dist f h -> AlgW f (Cofree h) a -> Fix f -> a
++g_histo :: (Functor f, Functor h) => Dist f h -> AlgW f (Cofree h) a -> FixF f -> a
+hunk ./src/Control/Morphism/Meta.hs 27
+-	  CoAlg f b -> (a -> b) -> Alg g a -> Fix g -> Fix f
++	  CoAlg f b -> (a -> b) -> Alg g a -> FixF g -> FixF f
+hunk ./src/Control/Morphism/Meta.hs 31
+-	  Dist m f -> Dist g w -> CoAlgM f m b -> (a -> b) -> AlgW g w a -> Fix g -> Fix f
++	  Dist m f -> Dist g w -> CoAlgM f m b -> (a -> b) -> AlgW g w a -> FixF g -> FixF f
+hunk ./src/Control/Morphism/Meta.hs 34
+-
+hunk ./src/Control/Morphism/Para.hs 25
+-para :: Functor f => AlgW f (Para f) a -> Fix f -> a
++para :: Functor f => AlgW f (Para f) a -> FixF f -> a
+hunk ./src/Control/Morphism/Para.hs 28
+-g_para :: (Functor f, Comonad w) => Dist f w -> AlgW f (ParaT w f) a -> Fix f -> a
++g_para :: (Functor f, Comonad w) => Dist f w -> AlgW f (ParaT w f) a -> FixF f -> a
+hunk ./src/Control/Morphism/Para.hs 31
+-type Para f a 		= (Fix f, a)
+-type ParaT w f a 	= CoreaderT w (Fix f) a
++type Para f a 		= (FixF f, a)
++type ParaT w f a 	= CoreaderT w (FixF f) a
+hunk ./src/Control/Morphism/Zygo.hs 25
+-zygo :: Functor f => Alg f b -> AlgW f (Zygo b) a -> Fix f -> a
++zygo :: Functor f => Alg f b -> AlgW f (Zygo b) a -> FixF f -> a
+hunk ./src/Control/Morphism/Zygo.hs 28
+-g_zygo :: (Functor f, Comonad w) => AlgW f w b -> Dist f w -> AlgW f (CoreaderT w b) a -> Fix f -> a
++g_zygo :: (Functor f, Comonad w) => AlgW f w b -> Dist f w -> AlgW f (CoreaderT w b) a -> FixF f -> a
+}

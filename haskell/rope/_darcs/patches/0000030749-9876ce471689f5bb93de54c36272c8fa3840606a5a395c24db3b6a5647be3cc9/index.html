@@ -1,0 +1,783 @@
+[lobotomy to remove comonadic argument. to be brought back in the form of a fancy cps transformed comonad as time permits
+ekmett@gmail.com**20100323005422
+ Ignore-this: b4c25087bbabcb732bbcd8464b21831f
+] hunk ./Data/Rope.hs 1
+-module Data.Rope 
+-    ( 
++module Data.Rope ( 
+hunk ./Data/Rope.hs 4
+-    , length    -- :: Rope m -> Int
+-    , null      -- :: Rope m -> Bool
+-    -- * Splicing
+-    , Reducer(..)
++    , length    -- :: Rope -> Int
++    , null      -- :: Rope -> Bool
+hunk ./Data/Rope.hs 7
+-    , Annotation(..)
+-    , elide     -- :: Annotation m => Int -> Int -> Rope m -> Rope m
+-    , splitAt   -- :: Annotation m => Int -> Rope m -> (Rope m, Rope m)
+-    , take      -- :: Annotation m => Int -> Rope m -> Rope m
+-    , drop      -- :: Annotation m => Int -> Rope m -> Rope m
++    , Breakable(..)
++    , splitAt   -- :: Int -> Rope -> (Rope, Rope)
++    , take      -- :: Int -> Rope -> Rope
++    , drop      -- :: Int -> Rope -> Rope
+hunk ./Data/Rope.hs 12
+-    , Unpackable(..)
+-    -- * Packing 'Rope'
+-    -- ** Polymorphic construction
+-    , Packable(..)
+-    -- ** Explicit construction
+-    , empty              -- :: Monoid m => Rope m
+-    , fromByteString     -- :: Annotation m => ByteString -> Rope m
+-    , fromChunks         -- :: Annotation m => [ByteString] -> Rope m
+-    , fromLazyByteString -- :: Annotation m => L.ByteString -> Rope m
+-    , fromWords          -- :: Annotation m => [Word8] -> Rope m
+-    , fromChar           -- :: Annotation m => Char -> Rope m
+-    , fromWord8          -- :: Annotation m => Word8 -> Rope m
+-    , fromString         -- :: Annotation m => String -> Rope m
++    -- ** construction
++    , Reducer(..)
++    , empty              -- :: Rope
++    , fromByteString     -- :: ByteString -> Rope
++    , fromChunks         -- :: [ByteString] -> Rope
++    , fromLazyByteString -- :: L.ByteString -> Rope
++    , fromWords          -- :: [Word8] -> Rope
++    , fromChar           -- :: Char -> Rope
++    , fromWord8          -- :: Word8 -> Rope
++    , fromString         -- :: String -> Rope
+hunk ./Data/Rope.hs 23
+-    , toChunks           -- :: Rope m -> [ByteString]
+-    , toLazyByteString   -- :: Rope m -> L.ByteString
+-    , toString           -- :: Rope m -> String
++    , Unpackable(..)
++    , toChunks           -- :: Rope -> [ByteString]
++    , toLazyByteString   -- :: Rope -> L.ByteString
++    , toString           -- :: Rope -> String
+hunk ./Data/Rope.hs 30
++import Data.Rope.Util.Reducer (Reducer(..))
+hunk ./Data/Rope.hs 43
++    , toString
++    , toChunks
+hunk ./Data/Rope.hs 46
+-    , Packable(..)
+-    , Annotation(..)
+-    , elide, splitAt, take, drop)
+-import Data.Rope.Unpackable (Unpackable(..))
+-import Data.Rope.Util.Reducer (Reducer(..))
+-import Data.ByteString (ByteString)
+-
+-toString :: Rope m -> String
+-toString = unpack
+-
+-toChunks :: Rope m -> [ByteString]
+-toChunks = unpack
++    , Breakable(..)
++    , Unpackable(..)
++    , splitAt
++    , take
++    , drop)
+hunk ./Data/Rope/Body.hs 4
+-    , Count(..)
++    , Offset(..)
+hunk ./Data/Rope/Body.hs 19
+-newtype Count = Count { getCount :: Int } deriving (Eq,Ord,Num,Show,Read,Enum,Data,Typeable)
++newtype Offset = Offset { getOffset :: Int } deriving (Eq,Ord,Num,Show,Read,Enum,Data,Typeable)
+hunk ./Data/Rope/Body.hs 21
+-instance Monoid Count where
++instance Monoid Offset where
+hunk ./Data/Rope/Body.hs 27
+-instance Measured Count Chunk where
+-    measure = Count . length . unchunk
++instance Measured Offset Chunk where
++    measure = Offset . length . unchunk
+hunk ./Data/Rope/Body.hs 30
+-type Body = FingerTree Count Chunk 
++type Body = FingerTree Offset Chunk 
+hunk ./Data/Rope/Body.hs 32
+-measureBody :: Measured Count a => FingerTree Count a -> Int
+-measureBody = getCount . measure
++measureBody :: Measured Offset a => FingerTree Offset a -> Int
++measureBody = getOffset . measure
+hunk ./Data/Rope/Internal.hs 1
+-{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances, MultiParamTypeClasses, UndecidableInstances, TypeOperators #-}
++{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances, MultiParamTypeClasses, UndecidableInstances, TypeOperators, DeriveDataTypeable #-}
+hunk ./Data/Rope/Internal.hs 5
+-    , cons8                 -- :: (ByteString `Reducer` m) => Word8 -> Rope m -> Rope m
+-    , empty                 -- :: Monoid m => Rope m 
+-    , fromChunks            -- :: (ByteString `Reducer` m) => [ByteString] -> Rope m
+-    , fromByteString        -- :: (ByteString `Reducer` m) => ByteString -> Rope m 
+-    , fromLazyByteString    -- :: (ByteString `Reducer` m) => L.ByteString -> Rope m 
+-    , fromString            -- :: (ByteString `Reducer` m) => String -> Rope m
+-    , fromWords             -- :: (ByteString `Reducer` m) => [Word8] -> Rope m
+-    , fromChar              -- :: (ByteString `Reducer` m) => Char -> Rope m
+-    , fromWord8             -- :: (ByteString `Reducer` m) => Word8 -> Rope m
++    , pack                  -- :: a `Reducer` Rope => a -> Roe
++    , empty                 -- :: Rope
++    , fromChunks            -- :: [ByteString] -> Rope
++    , fromByteString        -- :: ByteString -> Rope
++    , fromLazyByteString    -- :: L.ByteString -> Rope
++    , fromString            -- :: String -> Rope
++    , fromWords             -- :: [Word8] -> Rope
++    , fromChar              -- :: Char -> Rope
++    , fromWord8             -- :: Word8 -> Rope
+hunk ./Data/Rope/Internal.hs 15
+-    , length                -- :: Rope m -> Int
+-    , null                  -- :: Rope m -> Bool
+-    , body                  -- :: Rope a -> Body
++    , length                -- :: Rope -> Int
++    , null                  -- :: Rope -> Bool
+hunk ./Data/Rope/Internal.hs 18
+-    , toChunks              -- :: Rope m -> [S.ByteString]
+-    , toLazyByteString      -- :: Rope m -> L.ByteString
++    , toChunks              -- :: Rope -> [ByteString]
++    , toString              -- :: Rope -> String
++    , toLazyByteString      -- :: Rope -> L.ByteString
+hunk ./Data/Rope/Internal.hs 22
+-    , Annotation(..)
+-    , elide
+hunk ./Data/Rope/Internal.hs 25
+-    , uncons8
+-    , unsnoc8
++    -- * Unpacking
++    , Unpackable(..)
++    , Breakable(..)
++    -- Utility 
+hunk ./Data/Rope/Internal.hs 30
+-    -- * Pasting
+-    , Packable(..)
+-    , break8
+-    , findIndexOrEnd
++    , findIndexOrEnd        -- :: (Word8 -> Bool) -> ByteString -> Int
+hunk ./Data/Rope/Internal.hs 33
+-import Prelude hiding (length, foldl, null, length, splitAt, take, drop, fst, snd)
++
++import Prelude hiding (head, last, length, foldl, null, length, splitAt, take, drop, break, span)
++import qualified Prelude
+hunk ./Data/Rope/Internal.hs 38
+-import Control.Monad.Writer.Class (MonadWriter, tell, pass, listen)
+hunk ./Data/Rope/Internal.hs 39
+-import Data.Data (Data(..), DataType, Constr, Fixity(..), mkConstr, mkDataType, constrIndex, gcast1)
+-import Data.Typeable (TyCon, Typeable1(..), mkTyCon, mkTyConApp)
++import Data.Data (Data(..), DataType, Constr, Fixity(..), mkConstr, mkDataType, constrIndex)
++import Data.Typeable (Typeable(..))
+hunk ./Data/Rope/Internal.hs 45
+-import Data.Foldable (Foldable, foldl)
+hunk ./Data/Rope/Internal.hs 47
+-import Data.Traversable (Traversable)
+-import qualified Data.Traversable as T
+-
+hunk ./Data/Rope/Internal.hs 50
+--- import Data.Rope.Util.Bifunctor
+-import Data.Rope.Util.Comonad
+hunk ./Data/Rope/Internal.hs 51
+-import Data.Rope.Util.Product
+--- import Data.Rope.Util.Coproduct
+hunk ./Data/Rope/Internal.hs 54
+--- import Codec.Binary.UTF8.Generic (UTF8Bytes)
+--- import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
+-
+hunk ./Data/Rope/Internal.hs 55
+--- import GHC.IOBase
+--- import GHC.Ptr (Ptr(..))
+hunk ./Data/Rope/Internal.hs 60
+-import qualified Data.ByteString as S (null, splitAt, take, drop, length, singleton)
++import qualified Data.ByteString as S (null, splitAt, take, drop, length, singleton, unpack, last)
+hunk ./Data/Rope/Internal.hs 63
+-import qualified Data.ByteString.UTF8 as U
+--- import qualified Data.ByteString.Char8 as SC (pack)
+-import qualified Data.ByteString.Lazy as L (ByteString, pack, fromChunks, drop, take, splitAt, toChunks)
+-import qualified Data.ByteString.Lazy.UTF8 as LU
++import qualified Data.ByteString.UTF8 as U (fromString)
++import qualified Data.ByteString.Lazy as L (ByteString, pack, fromChunks, toChunks, elemIndex)
++import qualified Data.ByteString.Lazy.UTF8 as LU (fromString, toString)
+hunk ./Data/Rope/Internal.hs 67
+--- a Buffer is a fingertree of non-empty chunks
+-data Rope a = Rope !Body a
+-    deriving (Show)
++import Codec.Binary.UTF8.Generic (UTF8Bytes)
++import qualified Codec.Binary.UTF8.Generic as UTF8Bytes
+hunk ./Data/Rope/Internal.hs 70
+-body :: Rope a -> Body
+-body (Rope b _) = b
+-{-# INLINE body #-}
++-- a Buffer is a fingertree of non-empty chunks
++newtype Rope = Rope { body :: Body } 
++    deriving (Show, Typeable)
+hunk ./Data/Rope/Internal.hs 74
+-instance Monoid a => Monoid (Rope a) where
++instance Monoid Rope where
+hunk ./Data/Rope/Internal.hs 76
+-    Rope t m `mappend` Rope t' m' = Rope (t >< t') (m `mappend` m')
++    Rope t `mappend` Rope t' = Rope (t >< t')
+hunk ./Data/Rope/Internal.hs 78
+-instance Eq a => Eq (Rope a) where
++instance Eq Rope where
+hunk ./Data/Rope/Internal.hs 81
+-          && extract a == extract b
+-
+-instance Measured Count (Rope a) where
+-    measure (Rope m _) = measure m 
+hunk ./Data/Rope/Internal.hs 82
+-instance Functor Rope where
+-    fmap f (Rope b a) = Rope b (f a)
++instance Ord Rope where
++    a `compare` b = toLazyByteString a `compare` toLazyByteString b
+hunk ./Data/Rope/Internal.hs 85
+--- monadic and applicative rope actions build up a fingertree as a result, and can be used like a fast string writer
+-instance Applicative Rope where
+-    pure = Rope mempty
+-    Rope m f <*> Rope m' a = Rope (m `mappend` m') (f a)
++instance Measured Offset Rope where
++    measure = measure . body
+hunk ./Data/Rope/Internal.hs 88
+-instance Monad Rope where
+-    return = Rope mempty
+-    Rope m a >>= f = let Rope m' b = f a in Rope (m `mappend` m') b
+-    
+-instance MonadWriter (Rope ()) Rope where
+-    tell (Rope m _) = Rope m ()
+-    listen (Rope m a) = Rope m (a, Rope m ())
+-    pass (Rope m (a,f)) = Rope (body (f (Rope m ()))) a
++pack :: Reducer a Rope => a -> Rope
++pack = unit
++{-# INLINE pack #-}
+hunk ./Data/Rope/Internal.hs 92
+--- on the other hand, the context-comonadic actions on ropes can be used to provide slicing of annotated ropes
+--- however, these two structures are largely unrelated, so make sure you know the purpose of your rope!
++empty :: Rope
++empty = Rope F.empty
++{-# INLINE empty #-}
+hunk ./Data/Rope/Internal.hs 96
+-instance Comonad Rope where
+-    extract (Rope _ a) = a 
+-    duplicate (Rope b a) = Rope b (Rope b a)
+-    extend f r = Rope (body r) (f r)
+-
+-instance Foldable Rope where
+-    foldr f z (Rope _ a) = f a z
+-    foldr1 _ (Rope _ a) = a 
+-    foldl f z (Rope _ a) = f z a
+-    foldl1 _ (Rope _ a) = a
+-    foldMap f (Rope _ a) = f a
+-
+-instance Traversable Rope where
+-    traverse f (Rope b a) = Rope b <$> f a
+-
+-empty :: Monoid m => Rope m
+-empty = Rope F.empty mempty
+-
+-fromChunks :: (ByteString `Reducer` m) => [ByteString] -> Rope m
+-fromChunks = foldr (\l (Rope t m) -> Rope (l `cons'` t) (l `cons` m)) mempty
++fromChunks :: [ByteString] -> Rope
++fromChunks = foldr (\l (Rope t) -> Rope (l `cons'` t)) mempty
+hunk ./Data/Rope/Internal.hs 100
+-toChunks :: Rope m -> [ByteString]
++toChunks :: Rope -> [ByteString]
+hunk ./Data/Rope/Internal.hs 104
+-toLazyByteString :: Rope m -> L.ByteString
++toLazyByteString :: Rope -> L.ByteString
+hunk ./Data/Rope/Internal.hs 108
+-length :: Rope m -> Int
++toString :: Rope -> String
++toString = unpack
++
++length :: Rope -> Int
+hunk ./Data/Rope/Internal.hs 115
+-null :: Rope m -> Bool
++null :: Rope -> Bool
+hunk ./Data/Rope/Internal.hs 119
+-fromByteString :: (ByteString `Reducer` m) => ByteString -> Rope m 
++fromByteString :: ByteString -> Rope
+hunk ./Data/Rope/Internal.hs 121
+-                 | otherwise = Rope (F.singleton (Chunk b)) (unit b)
++                 | otherwise = Rope (F.singleton (Chunk b))
+hunk ./Data/Rope/Internal.hs 125
+-fromLazyByteString :: (ByteString `Reducer` m) => L.ByteString -> Rope m 
+-fromLazyByteString = foldr (\l (Rope t m) -> Rope (Chunk l <| t) (l `cons` m)) mempty . L.toChunks
++fromLazyByteString :: L.ByteString -> Rope
++fromLazyByteString = foldr (\l (Rope t) -> Rope (Chunk l <| t)) mempty . L.toChunks
+hunk ./Data/Rope/Internal.hs 130
+-fromString :: (ByteString `Reducer` m) => String -> Rope m
++fromString :: String -> Rope
+hunk ./Data/Rope/Internal.hs 134
+-fromWords :: (ByteString `Reducer` m) => [Word8] -> Rope m
++fromWords :: [Word8] -> Rope
+hunk ./Data/Rope/Internal.hs 138
+-fromChar :: (ByteString `Reducer` m) => Char -> Rope m
+-fromChar c = Rope (F.singleton (Chunk b)) (unit b)
+-    where b = U.fromString [c]
++fromChar :: Char -> Rope
++fromChar c = Rope (F.singleton (Chunk (U.fromString [c])))
+hunk ./Data/Rope/Internal.hs 142
+-fromWord8 :: (ByteString `Reducer` m) => Word8 -> Rope m
+-fromWord8 b = Rope (F.singleton (Chunk s)) (unit s)
+-    where s = S.singleton b
++fromWord8 :: Word8 -> Rope
++fromWord8 b = Rope (F.singleton (Chunk (S.singleton b)))
+hunk ./Data/Rope/Internal.hs 146
+-cons8 :: (ByteString `Reducer` m) => Word8 -> Rope m -> Rope m
+-cons8 a (Rope t m) = case viewl t of
+-    Chunk c :< cs | S.length c < 16 -> Rope (Chunk (mappend b c) <| cs) (cons b m)
+-    _                               -> Rope (Chunk b <| t) (cons b m)
++cons8 :: Word8 -> Rope -> Rope
++cons8 a (Rope t) = case viewl t of
++    Chunk c :< cs | S.length c < 16 -> Rope (Chunk (mappend b c) <| cs)
++    _                               -> Rope (Chunk b <| t)
+hunk ./Data/Rope/Internal.hs 153
+-instance (Annotation a, Data a) => Data (Rope a) where
++instance Data Rope where
+hunk ./Data/Rope/Internal.hs 168
+-    dataCast1 f = gcast1 f
+hunk ./Data/Rope/Internal.hs 176
+-ropeTc :: TyCon
+-ropeTc = mkTyCon "Rope"
+-
+-instance Typeable1 Rope  where 
+-    typeOf1 _ = mkTyConApp ropeTc []
+-
+--- HTTP
+--- import Network.BufferType
+--- import Network.TCP
+-
+-class (ByteString `Reducer` a) => Annotation a where
+-    elide' :: Int -> Int -> Rope a -> a
+--- TODO
+---    elide' f l ra = fst (extract rlmr) `mappend` drop l (snd <$> rlmr) where
+---        rlmr = splitAt f (duplicate ra)
+-
+-    splitAt' :: Int -> Rope a -> (a, a)
+-
+-    take' :: Int -> Rope a -> a
+-    take' n = fst . splitAt' n
+-
+-    drop' :: Int -> Rope a -> a
+-    drop' n = snd . splitAt' n 
+-
+-elide :: Annotation a => Int -> Int -> Rope a -> Rope a
+-elide f l = elide' f l . duplicate
+-
+-splitAt :: Annotation a => Int -> Rope a -> (Rope a, Rope a)
+-splitAt n = splitAt' n . duplicate
+-
+-take :: Annotation a => Int -> Rope a -> Rope a
+-take n = take' n . duplicate
+-
+-drop :: Annotation a => Int -> Rope a -> Rope a
+-drop n = drop' n . duplicate
+-
+-instance Annotation () where
+-    elide' _ _ _ = () 
+-    splitAt' _ _ = ((),())
+-    take' _ _ = ()
+-    drop' _ _ = ()
+-
+--- Int -> Int -> Rope (a,b) -> (a,b))
+--- Int -> Int -> Rope (a,b) -> ((a,a),(b,b))
+-instance (Annotation a, Annotation b) => Annotation (a, b) where
+-    elide' x y = bothC (elide' x y) (elide' x y)
+-    splitAt' x (Rope t (a,b)) = ((a',b'),(a'',b'')) where
+-        (a',a'') = splitAt' x (Rope t a)
+-        (b',b'') = splitAt' x (Rope t b)
+-    take' x = bothC (take' x) (take' x) 
+-    drop' x = bothC (drop' x) (drop' x)
+-
+-instance (Annotation a, Annotation b) => Annotation (a :*: b) where
+-    elide' x y = bothC (elide' x y) (elide' x y)
+-    splitAt' x (Rope t (a :*: b)) = ((a' :*: b'),(a'' :*: b'')) where
+-        (a',a'') = splitAt' x (Rope t a)
+-        (b',b'') = splitAt' x (Rope t b)
+-    take' x = bothC (take' x) (take' x) 
+-    drop' x = bothC (drop' x) (drop' x)
+-{-
+--- relies on the fact that ropes are cozippable having only one 'hole'
+-eitherC :: Coproduct s => (Rope a -> b) -> (Rope c -> d) -> Rope (s a c) -> s b d
+-eitherC f g (Rope t sab) = bimap (f . Rope t) (g . Rope t) sab
+-
+--- TODO
+-
+-
+-instance (Annotation a, Annotation b) => Annotation (Either a b) where
+-    elide' x y = eitherC (elide' x y) (elide' x y)
+-    splitAt' x = eitherC (splitAt' x) (splitAt' x)
+-    take' x = eitherC (take' x) (take' x)
+-    drop' x = eitherC (drop' x) (drop' x)
+-
+-instance (Annotation a, Annotation b) => Annotation (a :+ b) where
+-    elide' x y = eitherC (elide' x y) (elide' x y)
+-    splitAt' x = eitherC (splitAt' x) (splitAt' x)
+-    take' x = eitherC (take' x) (take' x)
+-    drop' x = eitherC (drop' x) (drop' x)
+-
+-instance (Annotation a, Annotation b) => Annotation (a :+: b) where
+-    elide' x y = eitherC (elide' x y) (elide' x y)
+-    splitAt' x = eitherC (splitAt' x) (splitAt' x)
+-    take' x = eitherC (take' x) (take' x)
+-    drop' x = eitherC (drop' x) (drop' x)
+--}
+-
+-instance Annotation ByteString where
+-    elide' = undefined
+-    splitAt' n rb = S.splitAt n (extract rb)
+-    take' n rb = S.take n (extract rb)
+-    drop' n rb = S.drop n (extract rb)
+-
+-instance Annotation L.ByteString where
+-    elide' = undefined
+-    splitAt' n rb = L.splitAt (fromIntegral n) (extract rb)
+-    take' n rb = L.take (fromIntegral n) (extract rb)
+-    drop' n rb = L.drop (fromIntegral n) (extract rb)
+-
+-instance Annotation Body where
+-    elide' = undefined
+-    splitAt' 0 rf = (mempty, extract rf)
+-    splitAt' n rf 
+-        | n >= measureBody f = (f, mempty)
+-        | otherwise = (x `snoc'` y', y'' `cons'` z)
++splitAt :: Int -> Rope -> (Rope,Rope)
++splitAt n (Rope f)
++        | n <= 0 = (mempty, Rope f)
++        | n >= measureBody f = (Rope f, mempty)
++        | otherwise = (Rope (x `snoc'` y'), Rope (y'' `cons'` z))
+hunk ./Data/Rope/Internal.hs 182
+-            f = extract rf
+-            (x,yz) = F.split (> Count n) (extract rf)
++            (x,yz) = F.split (> Offset n) f
+hunk ./Data/Rope/Internal.hs 186
+-instance Annotation a => Annotation (Rope a) where
+-    elide' = undefined
+-    splitAt' n rra = (Rope t a, Rope t' a') where
+-        (t,t') = splitAt' n (body <$> rra)
+-        (a,a') = splitAt' n (extract rra)
++take :: Int -> Rope -> Rope
++take n = fst . splitAt n
++{-# INLINE take #-}
++
++drop :: Int -> Rope -> Rope
++drop n = snd . splitAt n
++{-# INLINE drop #-}
+hunk ./Data/Rope/Internal.hs 194
+-{-
+--- DO NOT USE! For testing purposes only. You'll have terrible O(n^2) asymptotics!
+-instance Ord k => Annotation (Map Int v) where
+-    splitAt k a = (l, M.mapKeysMonotonic (subtract k) $ maybe id (M.insert k) r) where (l,m,r) = M.splitLookup k (extract a)
++class Breakable a where
++    break :: (a -> Bool) -> Rope -> (Rope, Rope)
++    span :: (a -> Bool) -> Rope -> (Rope, Rope)
++    takeWhile :: (a -> Bool) -> Rope -> Rope
++    dropWhile :: (a -> Bool) -> Rope -> Rope
+hunk ./Data/Rope/Internal.hs 200
+--- DO NOT USE! For testing purposes only. You'll have terrible O(n^2) asymptotics!
+-instance Ord k => Annotation (Set Int) where
+-    splitAt k s = (l, S.mapKeysMonotonic (subtract k) $ maybe id S.insert r) where
+-        (l,m,r) = S.splitLookup k (extract a)
+--}
++    span f = break (not . f)
++    takeWhile f = fst . span f
++    dropWhile f = snd . span f
+hunk ./Data/Rope/Internal.hs 204
+-break8 :: Annotation m => (Word8 -> Bool) -> Rope m -> (Rope m, Rope m)
+-break8 f r = (Rope t' a', Rope t'' a'')
++break8 :: (Word8 -> Bool) -> Rope -> (Rope, Rope)
++break8 f r = (Rope t', Rope t'')
+hunk ./Data/Rope/Internal.hs 208
+-        (a',a'') = splitAt' (measureBody t') r 
+hunk ./Data/Rope/Internal.hs 215
++{-# INLINE break8 #-}
++
++instance Breakable Word8 where
++    break = break8
+hunk ./Data/Rope/Internal.hs 231
+-uncons8 :: Annotation m => Rope m -> Maybe (Word8, Rope m)
++uncons8 :: Rope -> Maybe (Word8, Rope)
+hunk ./Data/Rope/Internal.hs 233
+-    Chunk c :< cs -> Just (S.unsafeHead c, Rope (S.unsafeTail c `cons'` cs) (drop' 1 r))
++    Chunk c :< cs -> Just (S.unsafeHead c, Rope (S.unsafeTail c `cons'` cs))
+hunk ./Data/Rope/Internal.hs 235
++{-# INLINE uncons8 #-}
+hunk ./Data/Rope/Internal.hs 237
+-unsnoc8 :: Annotation m => Rope m -> Maybe (Rope m, Word8)
++unsnoc8 :: Rope -> Maybe (Rope, Word8)
+hunk ./Data/Rope/Internal.hs 239
+-    cs :> Chunk c -> Just (Rope (cs `snoc'` S.unsafeTail c) (take' (length r - 1) r), S.unsafeHead c)
++    cs :> Chunk c -> Just (Rope (cs `snoc'` S.unsafeTail c), S.unsafeHead c)
+hunk ./Data/Rope/Internal.hs 241
+-
+-
+-{-
+-instance Annotation m => UTF8Bytes (Rope m) Int where
+-    bsplit n = splitAt n
+-    bdrop n = drop n 
+-    buncons = uncons8
+-    elemIndex = undefined
+-    null = undefined
+-    pack = undefined
+-    tail r = case viewl (body r) of
+-        Chunk a :< as -> Rope (S.unsafeTail a `cons'` as) (drop' 1 r)
+-        EmptyL -> error "Codec.Binary.UTF8.Generic.UTF8Bytes.tail (Kata.Rope m): error empty list"
+--}
++{-# INLINE unsnoc8 #-}
+hunk ./Data/Rope/Internal.hs 245
++{-# INLINE w2c #-}
+hunk ./Data/Rope/Internal.hs 247
+-{-
+--- towards interoperating directly with Network.HTTP
+--- unfortunately the machinery needed to implement HStream isn't exported, so this doesn't get us anywhere
+-instance Annotation m => BufferType (Rope m) where
+-    bufferOps = BufferOp
+-        { buf_hGet = \h i -> singleton <$> buf_hGet lazyBufferOp h i
+-        , buf_hGetContents = \h -> singleton <$> buf_hGetContents lazyBufferOp h
+-        , buf_hPut = \h b -> buf_hPut lazyBufferOp h (toLazy b)
+-        , buf_hGetLine = \h -> singleton <$> buf_hGetLine lazyBufferOp h
+-        , buf_empty = mempty
+-        , buf_append = mappend
+-        , buf_concat = mconcat
+-        , buf_fromStr = fromLazyByteString . buf_fromStr lazyBufferOp
+-        , buf_toStr = buf_toStr lazyBufferOp . toLazy
+-        , buf_snoc = snoc
+-        , buf_splitAt = splitAt
+-        , buf_span = \f -> break8 (not . f . w2c)
+-        , buf_isLineTerm = (unit (SC.pack "\r\n") ==)
+-        , buf_isEmpty = null
+-        }
+--}
++instance Reducer Char Rope where
++    unit = fromChar
++    cons a (Rope t) = case viewl t of
++        Chunk c :< cs | S.length c < 16 -> Rope (Chunk (mappend b c) <| cs)
++        _ -> Rope (Chunk b <| t)
++        where b = U.fromString [a]
++    snoc (Rope t) a = case viewr t of
++        cs :> Chunk c | S.length c < 16 -> Rope (cs |> Chunk (mappend c b))
++        _ -> Rope (t |> Chunk b)
++        where b = U.fromString [a]
+hunk ./Data/Rope/Internal.hs 258
+-class Packable a where
+-    pack  :: Annotation m => a -> Rope m
+-    packl :: Annotation m => a -> Rope m -> Rope m
+-    packr :: Annotation m => Rope m -> a -> Rope m
++instance Reducer Word8 Rope where
++    unit = fromWord8
++    cons = cons8 
++    snoc (Rope t) a = case viewr t of
++        cs :> Chunk c | S.length c < 16 -> Rope (cs |> Chunk (mappend c b))
++        _ -> Rope (t |> Chunk b)
++        where b = S.singleton a
+hunk ./Data/Rope/Internal.hs 266
+-    packl a r = pack a `mappend` r
+-    packr r a = r `mappend` pack a
++instance Reducer Rope Rope where
++    unit = id
+hunk ./Data/Rope/Internal.hs 269
+-instance Packable Char where
+-    pack = fromChar
+-    packl a (Rope t m) = case viewl t of
+-        Chunk c :< cs | S.length c < 16 -> Rope (Chunk (mappend b c) <| cs) (cons b m)
+-        _ -> Rope (Chunk b <| t) (cons b m)
+-        where b = U.fromString [a]
++instance Reducer String Rope where
++    unit = fromString
+hunk ./Data/Rope/Internal.hs 272
+-    packr (Rope t m) a = case viewr t of
+-        cs :> Chunk c | S.length c < 16 -> Rope (cs |> Chunk (mappend c b)) (snoc m b)
+-        _ -> Rope (t |> Chunk b) (snoc m b)
+-        where b = U.fromString [a]
++instance Reducer [Word8] Rope where
++    unit = fromWords
+hunk ./Data/Rope/Internal.hs 275
+-instance Packable Word8 where
+-    pack = fromWord8
+-    packl = cons8 
++instance Reducer ByteString Rope where
++    unit = fromByteString
+hunk ./Data/Rope/Internal.hs 278
+-    packr (Rope t m) a = case viewr t of
+-        cs :> Chunk c | S.length c < 16 -> Rope (cs |> Chunk (mappend c b)) (snoc m b)
+-        _ -> Rope (t |> Chunk b) (snoc m b)
+-        where b = S.singleton a
++instance Reducer L.ByteString Rope where
++    unit = fromLazyByteString
++
++instance Reducer Chunk Rope where
++    unit = fromByteString . unchunk 
++
++
++instance UTF8Bytes Rope Int where
++    bsplit = splitAt 
++    bdrop = drop 
++    buncons f = case viewl (body f) of
++        Chunk c :< cs -> Just (S.unsafeHead c, Rope (S.unsafeTail c `cons' ` cs))
++        EmptyL -> Nothing
++    tail (Rope f) = case viewl f of
++        Chunk c :< cs -> Rope (S.unsafeTail c `cons'`cs)
++        EmptyL -> errorEmptyList "tail"
++    elemIndex b = fmap fromIntegral . L.elemIndex b . L.fromChunks . map unchunk . F.toList . body
++    pack = Rope . foldr (\l r -> Chunk l <| r) F.empty . L.toChunks . L.pack
++    empty = Rope F.empty
++    null = F.null . body
++
++
++class Unpackable a where
++    unpack :: Rope -> [a]
++
++    head :: Rope -> a
++    head = Prelude.head . unpack
+hunk ./Data/Rope/Internal.hs 306
+--- note this isn't a no-op, you can change annotations!
+-instance Annotation n => Packable (Rope n) where
+-    pack (Rope t _) = Rope t (foldl (\a b -> a `snoc` unchunk b) mempty t)
++    last :: Rope -> a
+hunk ./Data/Rope/Internal.hs 308
+-instance Packable String where
+-    pack = fromString
++    uncons :: Rope -> Maybe (a, Rope)
++    unsnoc :: Rope -> Maybe (Rope, a)
+hunk ./Data/Rope/Internal.hs 311
+-instance Packable [Word8] where
+-    pack = fromWords
++instance Unpackable Word8 where
++    unpack = concatMap (S.unpack . unchunk) . F.toList . body
++    head t = case viewl (body t) of
++        Chunk a :< _ -> S.unsafeHead a
++        EmptyL -> errorEmptyList "head"
++    last t = case viewr (body t) of
++        _ :> Chunk a -> S.last a
++        EmptyR -> errorEmptyList "last"
++    uncons = uncons8
++    unsnoc = unsnoc8
+hunk ./Data/Rope/Internal.hs 322
+-instance Packable ByteString where
+-    pack = fromByteString
++instance Unpackable Char where
++    unpack = LU.toString . toLazyByteString
++    head = Prelude.head . unpack
++    last = undefined -- TODO
++    uncons r@(Rope t) = case UTF8Bytes.decode (Rope t) of 
++        Nothing -> Nothing
++        Just (a,n) -> Just (a, drop n r)
++    unsnoc = undefined -- TODO
+hunk ./Data/Rope/Internal.hs 331
+-instance Packable L.ByteString where
+-    pack = fromLazyByteString
++instance Unpackable ByteString where
++    unpack = map unchunk . F.toList . body
++    head r = case viewl (body r) of
++        Chunk a :< _ -> a
++        _ -> errorEmptyList "head"
++    last r = case viewr (body r) of
++        _ :> Chunk a -> a
++        _ -> errorEmptyList "last" 
++    uncons r = case viewl (body r) of
++        Chunk a :< as -> Just (a, Rope as)
++        EmptyL -> Nothing
++    unsnoc r = case viewr (body r) of
++        as :> Chunk a -> Just (Rope as, a)
++        EmptyR -> Nothing
+hunk ./Data/Rope/Internal.hs 346
+-instance Packable Chunk where
+-    pack = fromByteString . unchunk 
++instance Unpackable Chunk where
++    unpack = F.toList . body
++    head r = case viewl (body r) of
++        a :< _ -> a
++        _ -> errorEmptyList "head"
++    last r = case viewr (body r) of
++        _ :> a -> a
++        _ -> errorEmptyList "last"
++    uncons r = case viewl (body r) of
++        Chunk a :< as -> Just (Chunk a, Rope as)
++        EmptyL -> Nothing
++    unsnoc r = case viewr (body r) of
++        as :> Chunk a -> Just (Rope as, Chunk a)
++        EmptyR -> Nothing
+hunk ./Data/Rope/Internal.hs 361
+-instance (Packable a, Annotation m) => Reducer a (Rope m) where
+-    unit = pack
+-    cons = packl
+-    snoc = packr
++errorEmptyList :: String -> a
++errorEmptyList t = error $ "Data.Rope.Unpackable." ++ t ++ ": empty list"  
+hunk ./Data/Rope/Unpackable.hs 5
+-
+hunk ./Data/Rope/Unpackable.hs 21
+-import Data.Rope.Body (Count(..), Chunk(..), cons', snoc', measureBody) -- Chunk
++import Data.Rope.Body (Offset(..), Chunk(..), cons', snoc', measureBody) -- Chunk
+hunk ./Data/Rope/Unpackable.hs 27
+-    unpack :: Rope m -> [a]
++    unpack :: Rope -> [a]
+hunk ./Data/Rope/Unpackable.hs 29
+-    head :: Rope m -> a
++    head :: Rope -> a
+hunk ./Data/Rope/Unpackable.hs 32
+-    last :: Rope m -> a
+-
+-    uncons :: Annotation m => Rope m -> Maybe (a, Rope m)
+-    unsnoc :: Annotation m => Rope m -> Maybe (Rope m, a)
+-
+-newtype F = F { runF :: FingerTree Count Chunk } 
+-
+-instance Monoid F where
+-    mempty = F F.empty
+-    F a `mappend` F b = F (a >< b)
+-
+-instance UTF8Bytes F Int where
+-    bsplit 0 (F f) = (mempty, F f)
+-    bsplit n (F f)
+-        | n >= measureBody f = (F f, mempty)
+-        | otherwise = (F (x `snoc'` y'), F (y'' `cons'` z))
+-        where
+-            (x, yz) = F.split (> Count n) f
+-            Chunk y :< z = viewl yz
+-            (y', y'') = S.splitAt (n - measureBody x) y
+-    bdrop n = snd . UTF8Bytes.bsplit n
+-    buncons f = case viewl (runF f) of
+-        Chunk c :< cs -> Just (S.unsafeHead c, F (S.unsafeTail c `cons' ` cs))
+-        EmptyL -> Nothing
+-    tail (F f) = case viewl f of
+-        Chunk c :< cs -> F (S.unsafeTail c `cons'`cs)
+-        EmptyL -> errorEmptyList "tail"
+-    elemIndex b = fmap fromIntegral . L.elemIndex b . L.fromChunks . map unchunk . F.toList . runF
+-    pack = F . foldr (\l r -> Chunk l <| r) F.empty . L.toChunks . L.pack
+-    empty = F F.empty
+-    null = F.null . runF
+-
+--- w2c :: Word8 -> Char
+--- w2c = unsafeChr . fromIntegral
++    last :: Rope -> a
+hunk ./Data/Rope/Unpackable.hs 34
++    uncons :: Rope -> Maybe (a, Rope)
++    unsnoc :: Rope -> Maybe (Rope, a)
+hunk ./Data/Rope/Unpackable.hs 52
+-    uncons r@(Rope t _) = case UTF8Bytes.decode (F t) of 
++    uncons r@(Rope t _) = case UTF8Bytes.decode (Rope t) of 
+hunk ./Data/Rope/Unpackable.hs 66
+-        Chunk a :< as -> Just (a, Rope as (drop' (S.length a) r))
++        Chunk a :< as -> Just (a, Rope as)
+hunk ./Data/Rope/Unpackable.hs 69
+-        as :> Chunk a -> Just (Rope as (take' (measureBody as) r), a)
++        as :> Chunk a -> Just (Rope as, a)
+hunk ./Data/Rope/Unpackable.hs 81
+-        Chunk a :< as -> Just (Chunk a, Rope as (drop' (S.length a) r))
++        Chunk a :< as -> Just (Chunk a, Rope as)
+hunk ./Data/Rope/Unpackable.hs 84
+-        as :> Chunk a -> Just (Rope as (take' (measureBody as) r), Chunk a)
++        as :> Chunk a -> Just (Rope as, Chunk a)
+hunk ./Data/Rope/Unpackable.hs 88
+-errorEmptyList t = error $ "Kata.Rope.Unpackable." ++ t ++ ": empty list"  
++errorEmptyList t = error $ "Data.Rope.Unpackable." ++ t ++ ": empty list"  
+hunk ./rope.cabal 2
+-version:        0.1.1
++version:        0.2
+hunk ./rope.cabal 10
+-synopsis:       Tools for manipulating annotated ropes of bytestrings
+-description:    Tools for manipulating annotated ropes of bytestrings
++synopsis:       Tools for manipulating fingertrees of bytestrings
++description:    Tools for manipulating fingertrees of bytestrings
+hunk ./rope.cabal 22
+-    mtl >= 1.1 && < 1.2,
+hunk ./rope.cabal 27
+-    Data.Rope.Unpackable
+-    Data.Rope.Util.Bifunctor
+-    Data.Rope.Util.Comonad
+-    Data.Rope.Util.Coproduct
+-    Data.Rope.Util.Product

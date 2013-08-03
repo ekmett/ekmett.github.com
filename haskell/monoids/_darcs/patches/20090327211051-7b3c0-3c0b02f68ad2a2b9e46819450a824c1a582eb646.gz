@@ -1,0 +1,60 @@
+[added parsing monoid
+ekmett@gmail.com**20090327211051] {
+adddir ./Data/Monoid/Lexical/Parser
+addfile ./Data/Monoid/Lexical/Parser/Simple.hs
+hunk ./Data/Monoid/Lexical/Parser/Simple.hs 1
++module Data.Monoid.Lexical.Parser.Simple
++    ( module Data.Monoid.Multiplicative
++    , Parser(Parser, getParser) 
++    , State (Parsing, Success, Failure)
++    ) where
++
++import Data.Monoid.Multiplicative
++
++data State g s 
++    = Parsing g s 
++    | Success s
++    | Failure
++
++newtype Parser g s = Parser { getParser :: State g s -> State g s } 
++
++instance Monoid (Parser g s) where
++    mempty = Parser (const Failure)
++    a `mappend` b = Parser $ \s -> case getParser a s of 
++         Failure -> getParser b s
++         s' -> s'
++
++instance Monoid s => MultiplicativeMonoid (Parser g s) where
++    one = Parser id
++    a `times` b = Parser $ \s -> case getParser a s of
++         p@(Parsing _ _) -> getParser b p
++         _ -> Failure
+addfile ./Data/Monoid/Lexical/RunLengthEncoding.hs
+hunk ./Data/Monoid/Lexical/RunLengthEncoding.hs 1
++{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
++module Data.Monoid.Lexical.RunLengthEncoding 
++    ( module Data.Monoid.Reducer
++    , RLE(RLE,getRLE) 
++    ) where
++
++import Prelude hiding (replicate)
++import Data.Monoid.Reducer
++import Data.Monoid.Combinators (replicate)
++
++newtype RLE n m = RLE { getRLE :: m } 
++
++instance (Integral n, Monoid m) => Monoid (RLE n m) where
++    mempty = RLE mempty
++    RLE a `mappend` RLE b = RLE (a `mappend` b)
++
++-- instance (Integral n, Reducer c m) => Reducer c (RLE n m) where
++--    unit = getRLE . unit
++
++instance (Integral n, Reducer c m) => Reducer (n,c) (RLE n m) where
++    unit ~(n,c) = RLE $ replicate (unit c) n
+hunk ./monoids.cabal 2
+-version:	    0.1.3
++version:	    0.1.4
+hunk ./monoids.cabal 30
++    Data.Monoid.Lexical.Parser.Simple
+}

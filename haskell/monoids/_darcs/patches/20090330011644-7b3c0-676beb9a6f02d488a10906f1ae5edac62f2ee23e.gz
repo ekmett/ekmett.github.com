@@ -1,0 +1,110 @@
+[data reflection added
+ekmett@gmail.com**20090330011644] {
+addfile ./Data/Reflection.hs
+hunk ./Data/Reflection.hs 1
++{-# LANGUAGE RankNTypes, ScopedTypeVariables, EmptyDataDecls, TypeFamilies, MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
++
++module Data.Reflection 
++    ( 
++    -- * Reflecting Integrals
++      ReflectNum
++    , reflectNum
++    , reifyIntegral
++    -- * Reflecting Lists of Integrals
++    , ReflectNums
++    , reifyIntegrals
++    -- * Reflecting Storables
++    , ReflectStorable
++    , reflectStorable
++    , reifyStorable
++    ) where
++
++import Foreign.C.Types
++import Foreign.Marshal.Alloc
++import Foreign.Marshal.Array
++import Foreign.Marshal.Utils
++import Foreign.Ptr
++import Foreign.StablePtr
++import Foreign.Storable
++import System.IO.Unsafe
++
++data Zero
++data Twice s
++data Succ s
++data Pred s
++
++class ReflectNum s where
++    reflectNum :: Num a => s -> a
++
++instance ReflectNum Zero where
++    reflectNum _ = 0
++
++instance ReflectNum s => ReflectNum (Twice s) where
++    reflectNum _ = reflectNum (undefined :: s) * 2
++
++instance ReflectNum s => ReflectNum (Succ s) where
++    reflectNum _ = reflectNum (undefined :: s) + 1
++
++instance ReflectNum s => ReflectNum (Pred s) where
++    reflectNum _ = reflectNum (undefined :: s) - 1
++
++reifyIntegral :: Integral a => a -> (forall s. ReflectNum s => s -> w) -> w
++reifyIntegral i k = case quotRem i 2 of
++    (0, 0) -> k (undefined :: Zero)
++    (j, 0) -> reifyIntegral j (\(_ :: s) -> k (undefined :: Twice s))
++    (j, 1) -> reifyIntegral j (\(_ :: s) -> k (undefined :: Succ (Twice s)))
++    (j,-1) -> reifyIntegral j (\(_ :: s) -> k (undefined :: Pred (Twice s)))
++    _      -> undefined
++
++data Nil
++data Cons s ss
++
++class ReflectNums ss where
++    reflectNums :: Num a => ss -> [a]
++
++instance ReflectNums Nil where
++    reflectNums _ = []
++
++instance (ReflectNum s, ReflectNums ss) => ReflectNums (Cons s ss) where
++    reflectNums _ = reflectNum (undefined :: s) : reflectNums (undefined :: ss)
++
++reifyIntegrals :: Integral a => [a] -> (forall ss. ReflectNums ss => ss -> w) -> w
++reifyIntegrals [] k = k (undefined :: Nil)
++reifyIntegrals (i:ii) k = 
++    reifyIntegral i (\(_ :: s) -> 
++    reifyIntegrals ii (\(_ :: ss) -> 
++    k (undefined :: Cons s ss)))
++
++data Store s a 
++
++class ReflectStorable s where
++    reflectStorable :: Storable a => s a -> a
++
++instance ReflectNums s => ReflectStorable (Store s) where
++    {-# NOINLINE reflectStorable #-}
++    reflectStorable _ = unsafePerformIO . alloca $ \p -> do 
++            pokeArray (castPtr p) bytes
++            peek p 
++        where 
++            bytes = reflectNums (undefined :: s) :: [CChar]
++
++reifyStorable :: Storable a => a -> (forall s. ReflectStorable s => s a -> w) -> w
++reifyStorable a k = reifyIntegrals (bytes :: [CChar]) (\(_ :: s) -> k (undefined :: Store s a))
++  where
++    bytes = unsafePerformIO $ with a (peekArray (sizeOf a) . castPtr) 
++{-# NOINLINE reifyStorable #-}
++
++
++class Reflect s a | s -> a where 
++    reflect :: s -> a
++
++data Stable (s :: * -> *) a
++
++instance ReflectStorable s => Reflect (Stable s a) a where
++    reflect = unsafePerformIO . fmap const . deRefStablePtr $ reflectStorable (undefined :: s p) 
++
++reify :: a -> (forall s. Reflect s a => s -> w) -> w
++reify (a :: a) k = unsafePerformIO $ do
++        p <- newStablePtr a
++        reifyStorable p (\(_ :: s (StablePtr a)) -> return (k (undefined :: Stable s a)))
+}

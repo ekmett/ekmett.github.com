@@ -1,0 +1,29 @@
+name:           security-policy
+category:	Control, Monads
+version:        0.0.1
+synopsis:       Type-parameterized Security Monads
+description:	Implements a little library for implementing a security monad that checks security at compile time.
+stability:      alpha
+author:         Edward Kmett <ekmett@gmail.com>
+maintainer:     Edward Kmett <ekmett@gmail.com>
+copyright:      Copyright (C) 2006-2007, Edward Kmett
+homepage:       http://comonad.com/haskell/security-policy/dist/doc/html/Control-Monad-Security.html
+package-url:    http://comonad.com/haskell/security-policy
+build-depends:  base -any, readline -any
+cabal-version:  -any
+license:        BSD3
+license-file:	LICENSE
+buildable:      True
+extensions:     MultiParamTypeClasses 
+                FunctionalDependencies 
+                EmptyDataDecls
+exposed-modules:
+		Control.Monad.Security
+ghc-options:    -funbox-strict-fields -threaded -fasm -fglasgow-exts
+hs-source-dirs: src
+
+executable:	policy-test
+main-is:	Main.hs
+other-modules:  Policy Control.Monad.Security
+hs-source-dirs: src test 
+ghc-options:    -funbox-strict-fields -threaded -fasm -fglasgow-exts

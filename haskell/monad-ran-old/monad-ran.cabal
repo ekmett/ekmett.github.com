@@ -1,0 +1,35 @@
+name:               monad-ran
+version:            0.0.5
+cabal-version:      >= 1.6
+build-type:         Simple
+license:            BSD3
+license-file:       LICENSE
+category:           Control
+author:             Matt Morrow, Edward Kmett
+copyright:          (c) Matt Morrow 2008, (c) Edward Kmett 2009
+maintainer:         Edward Kmett <ekmett@gmail.com>
+stability:          experimental
+synopsis:           Implementations of common monads and monad transformers as right-kan extensions
+description:        .
+
+library
+  hs-source-dirs:   src
+  ghc-options:      -O2
+  build-depends:    mtl >= 1.1 && < 1.2
+  extensions:       MultiParamTypeClasses, 
+                    FlexibleContexts,
+                    FlexibleInstances,
+                    Rank2Types, 
+                    TypeOperators,
+                    FunctionalDependencies,
+                    GeneralizedNewtypeDeriving
+  build-depends:    base
+  exposed-modules:  Control.Monad.Ran,
+                    Control.Monad.Ran.Codensity,
+                    Control.Monad.Ran.Cont,
+                    Control.Monad.Ran.Identity,
+                    Control.Monad.Ran.Maybe,
+                    Control.Monad.Ran.Reader,
+                    Control.Monad.Ran.RWS,
+                    Control.Monad.Ran.State,
+                    Control.Monad.Ran.Writer

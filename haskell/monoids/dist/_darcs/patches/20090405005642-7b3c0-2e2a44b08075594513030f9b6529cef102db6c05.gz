@@ -1,0 +1,11 @@
+[auto
+ekmett@gmail.com**20090405005642
+ Ignore-this: 67de85a2ca4016e8609079a323ca215e
+] {
+hunk ./doc/html/monoids/src/Data-Ring-Semi-BitSet.html 41
+-<a name="line-33"></a>        <span class='hs-layout'>,</span> <span class='hs-varid'>exponent</span>      <span class='hs-keyglyph'>::</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Int</span>       <span class='hs-comment'>-- ^ low water mark</span>
++<a name="line-33"></a>        <span class='hs-layout'>,</span> <span class='hs-varid'>exponent</span>       <span class='hs-keyglyph'>::</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Int</span>       <span class='hs-comment'>-- ^ low water mark</span>
+hunk ./doc/html/monoids/src/Data-Ring-Semi-BitSet.html 43
+-<a name="line-35"></a>        <span class='hs-layout'>,</span> <span class='hs-varid'>mantissa</span>      <span class='hs-keyglyph'>::</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Integer</span>   <span class='hs-comment'>-- ^ the set of bits. TODO: negative mantissa = complement</span>
++<a name="line-35"></a>        <span class='hs-layout'>,</span> <span class='hs-varid'>mantissa</span>       <span class='hs-keyglyph'>::</span> <span class='hs-comment'>{-# UNPACK #-}</span> <span class='hs-varop'>!</span><span class='hs-conid'>Integer</span>   <span class='hs-comment'>-- ^ the set of bits. TODO: negative mantissa = complement</span>
+}

@@ -1,0 +1,301 @@
+[better instances
+ekmett@gmail.com**20090407062818
+ Ignore-this: bce8a04f694cd3eff630954aca9b950c
+] {
+hunk ./Benchmark.hs 4
++import Control.Parallel.Strategies
+hunk ./Benchmark.hs 11
+-forceList m = eval m . foldr seq ()
++forceList m l = eval m (l `using` parList rnf)
+hunk ./Benchmark.hs 23
++instance (Random x, Random y,Random z) => Random (x,y,z) where
++    random g = ((a,b,c),g''') where
++        (a,g') = random g
++        (b,g'') = random g'
++        (c,g''') = random g''
++    randomR ((la,lb,lc),(ha,hb,hc)) g = ((a,b,c),g''') where
++        (a,g') = randomR (la,ha) g
++        (b,g'') = randomR (lb,hb) g'
++        (c,g''') = randomR (lc,hc) g''
++
++instance (Random w, Random x, Random y,Random z) => Random (w,x,y,z) where
++    random g = ((a,b,c,d),g'''') where
++        (a,g') = random g
++        (b,g'') = random g'
++        (c,g''') = random g''
++        (d,g'''') = random g'''
++    randomR ((la,lb,lc,ld),(ha,hb,hc,hd)) g = ((a,b,c,d),g'''') where
++        (a,g') = randomR (la,ha) g
++        (b,g'') = randomR (lb,hb) g'
++        (c,g''') = randomR (lc,hc) g''
++        (d,g'''') = randomR (ld,hd) g'''
++
+hunk ./Data/Set/Unboxed.hs 3
+-
+-{------------------------------------------------------------------------------
++-----------------------------------------------------------------------------
+hunk ./Data/Set/Unboxed.hs 6
+--- Copyright   :  (c) Edward Kmett 2009
+---                (c) Daan Leijen 2002
++-- Copyright   :  (c) Edward Kmett 2009 (c) Daan Leijen 2002
+hunk ./Data/Set/Unboxed.hs 40
+--}
+hunk ./Data/Set/Unboxed.hs 43
+-              USet          -- instance Eq,Ord,Show,Read,Data,Typeable
++              USet          -- instance Eq,Ord,Show,Read
+hunk ./Data/Set/Unboxed.hs 45
+-            , Boxed(Boxed)
++            , Boxed(Boxed, getBoxed)
++            , Size
+hunk ./Data/Set/Unboxed.hs 116
++import Data.Complex
+hunk ./Data/Set/Unboxed.hs 150
+-
+hunk ./Data/Set/Unboxed.hs 1110
+-{-
+-{-# SPECIALIZE INLINE insert :: Int -> USet Int -> USet Int #-}
+-{-# SPECIALIZE INLINE insert :: Integer -> USet Integer -> USet Integer #-}
+-{-# SPECIALIZE INLINE insert :: Char -> USet Char -> USet Char #-}
+-{-# SPECIALIZE INLINE insert :: Int8 -> USet Int8 -> USet Int8 #-}
+-{-# SPECIALIZE INLINE insert :: Int16 -> USet Int16 -> USet Int16 #-}
+-{-# SPECIALIZE INLINE insert :: Int32 -> USet Int32 -> USet Int32 #-}
+-{-# SPECIALIZE INLINE insert :: Int64 -> USet Int64 -> USet Int64 #-}
+-{-# SPECIALIZE INLINE insert :: Word8 -> USet Word8 -> USet Word8 #-}
+-{-# SPECIALIZE INLINE insert :: Word16 -> USet Word16 -> USet Word16 #-}
+-{-# SPECIALIZE INLINE insert :: Word32 -> USet Word32 -> USet Word32 #-}
+-{-# SPECIALIZE INLINE insert :: Word64 -> USet Word64 -> USet Word64 #-}
+-{-# SPECIALIZE INLINE insert :: Double -> USet Double -> USet Double #-}
+-{-# SPECIALIZE INLINE insert :: Float -> USet Float -> USet Float #-}
+-{-# SPECIALIZE INLINE insert :: (Int,Int)-> USet (Int,Int) -> USet (Int,Int) #-}
+--}
+hunk ./Data/Set/Unboxed.hs 1113
+-{-
+-{-# SPECIALIZE INLINE bin_ :: Int -> USet Int -> USet Int -> USet Int #-}
+-{-# SPECIALIZE INLINE bin_ :: Integer -> USet Integer -> USet Integer -> USet Integer #-}
+-{-# SPECIALIZE INLINE bin_ :: Char -> USet Char -> USet Char -> USet Char #-}
+-{-# SPECIALIZE INLINE bin_ :: Int8 -> USet Int8 -> USet Int8 -> USet Int8 #-}
+-{-# SPECIALIZE INLINE bin_ :: Int16 -> USet Int16 -> USet Int16 -> USet Int16 #-}
+-{-# SPECIALIZE INLINE bin_ :: Int32 -> USet Int32 -> USet Int32 -> USet Int32 #-}
+-{-# SPECIALIZE INLINE bin_ :: Int64 -> USet Int64 -> USet Int64 -> USet Int64 #-}
+-{-# SPECIALIZE INLINE bin_ :: Word8 -> USet Word8 -> USet Word8 -> USet Word8 #-}
+-{-# SPECIALIZE INLINE bin_ :: Word16 -> USet Word16 -> USet Word16 -> USet Word16 #-}
+-{-# SPECIALIZE INLINE bin_ :: Word32 -> USet Word32 -> USet Word32 -> USet Word32 #-}
+-{-# SPECIALIZE INLINE bin_ :: Word64 -> USet Word64 -> USet Word64 -> USet Word64 #-}
+-{-# SPECIALIZE INLINE bin_ :: Double -> USet Double -> USet Double -> USet Double #-}
+-{-# SPECIALIZE INLINE bin_ :: Float -> USet Float -> USet Float -> USet Float #-}
+-{-# SPECIALIZE INLINE bin_ :: (Int,Int)-> USet (Int,Int) -> USet (Int,Int) -> USet (Int,Int) #-}
+--}
+hunk ./Data/Set/Unboxed.hs 1114
+-newtype Boxed a = Boxed a deriving (Eq,Ord,Show,Read,Bounded)
++newtype Boxed a = Boxed { getBoxed :: a } deriving (Eq,Ord,Show,Read,Bounded)
+hunk ./Data/Set/Unboxed.hs 1118
+-instance US Int where
+-    data USet Int = IntTip | IntBin {-# UNPACK #-} !Size {-# UNPACK #-} !Int !(USet Int) !(USet Int)
+-    view IntTip = Tip
+-    view (IntBin s i l r) = Bin s i l r
+-    tip = IntTip
+-    bin = IntBin
+-
+-instance US Char where
+-    data USet Char = CharTip | CharBin {-# UNPACK #-} !Size {-# UNPACK #-} !Char !(USet Char) !(USet Char)
+-    view CharTip = Tip
+-    view (CharBin s i l r) = Bin s i l r
+-    tip = CharTip
+-    bin = CharBin
+-
+-instance US Int8 where
+-    data USet Int8 = Int8Tip | Int8Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Int8 !(USet Int8) !(USet Int8)
+-    view Int8Tip = Tip
+-    view (Int8Bin s i l r) = Bin s i l r
+-    tip = Int8Tip
+-    bin = Int8Bin
+-
+-instance US Int16 where
+-    data USet Int16 = Int16Tip | Int16Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Int16 !(USet Int16) !(USet Int16)
+-    view Int16Tip = Tip
+-    view (Int16Bin s i l r) = Bin s i l r
+-    tip = Int16Tip
+-    bin = Int16Bin
+-
+-instance US Int32 where
+-    data USet Int32 = Int32Tip | Int32Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Int32 !(USet Int32) !(USet Int32)
+-    view Int32Tip = Tip
+-    view (Int32Bin s i l r) = Bin s i l r
+-    tip = Int32Tip
+-    bin = Int32Bin
+-
+-instance US Int64 where
+-    data USet Int64 = Int64Tip | Int64Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Int64 !(USet Int64) !(USet Int64)
+-    view Int64Tip = Tip
+-    view (Int64Bin s i l r) = Bin s i l r
+-    tip = Int64Tip
+-    bin = Int64Bin
+-
+-instance US Word8 where
+-    data USet Word8 = Word8Tip | Word8Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Word8 !(USet Word8) !(USet Word8)
+-    view Word8Tip = Tip
+-    view (Word8Bin s i l r) = Bin s i l r
+-    tip = Word8Tip
+-    bin = Word8Bin
+-
+-instance US Word16 where
+-    data USet Word16 = Word16Tip | Word16Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Word16 !(USet Word16) !(USet Word16)
+-    view Word16Tip = Tip
+-    view (Word16Bin s i l r) = Bin s i l r
+-    tip = Word16Tip
+-    bin = Word16Bin
+-
+-instance US Word32 where
+-    data USet Word32 = Word32Tip | Word32Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Word32 !(USet Word32) !(USet Word32)
+-    view Word32Tip = Tip
+-    view (Word32Bin s i l r) = Bin s i l r
+-    tip = Word32Tip
+-    bin = Word32Bin
+-
+-instance US Word64 where
+-    data USet Word64 = Word64Tip | Word64Bin {-# UNPACK #-} !Size {-# UNPACK #-} !Word64 !(USet Word64) !(USet Word64)
+-    view Word64Tip = Tip
+-    view (Word64Bin s i l r) = Bin s i l r
+-    tip = Word64Tip
+-    bin = Word64Bin
+-
+-instance US Double where
+-    data USet Double = DoubleTip | DoubleBin {-# UNPACK #-} !Size {-# UNPACK #-} !Double !(USet Double) !(USet Double)
+-    view DoubleTip = Tip
+-    view (DoubleBin s i l r) = Bin s i l r
+-    tip = DoubleTip
+-    bin = DoubleBin
+-
+-instance US Float where
+-    data USet Float = FloatTip | FloatBin {-# UNPACK #-} !Size {-# UNPACK #-} !Float !(USet Float) !(USet Float)
+-    view FloatTip = Tip
+-    view (FloatBin s i l r) = Bin s i l r
+-    tip = FloatTip
+-    bin = FloatBin
+-
+-instance US Integer where
+-    data USet Integer = IntegerTip | IntegerBin {-# UNPACK #-} !Size {-# UNPACK #-} !Integer !(USet Integer) !(USet Integer)
+-    view IntegerTip = Tip
+-    view (IntegerBin s i l r) = Bin s i l r
+-    tip = IntegerTip
+-    bin = IntegerBin
+-
+-instance US (Boxed a) where
+-    data USet (Boxed a) = BoxedTip | BoxedBin {-# UNPACK #-} !Size (Boxed a) !(USet (Boxed a)) !(USet (Boxed a))
+-    view BoxedTip = Tip
+-    view (BoxedBin s i l r) = Bin s i l r
+-    tip = BoxedTip
+-    bin = BoxedBin
++#include "UnboxedInstances.hs"
+hunk ./Makefile 4
+-Benchmark: Data/Set/Unboxed.hs Benchmark.hs Makefile
+-	ghc --make Benchmark -O2 -fdicts-cheap 
++Data/Set/UnboxedInstances.hs: instances.pl
++	./instances.pl > Data/Set/UnboxedInstances.hs
++	touch Data/Set/Unboxed.hs
++
++Benchmark: Data/Set/Unboxed.hs Benchmark.hs Makefile Data/Set/UnboxedInstances.hs
++	/usr/bin/time -a -p ghc --make Benchmark -O2 -fdicts-cheap 
+hunk ./Makefile 12
+-	rm -f Benchmark.hi Benchmark.o Benchmark Data/Set/Unboxed.hi Data/Set/Unboxed.o
++	rm -f Benchmark.hi Benchmark.o Benchmark Data/Set/Unboxed.hi Data/Set/Unboxed.o Data/Set/UnboxedInstances.hs
+hunk ./instances.pl 3
++use strict qw(vars);
+hunk ./instances.pl 7
+-    return ("Boxed $var","(Boxed $var)","(Boxed $var)") if $type eq "Boxed";
+-    return ($type,$type,"{-# UNPACK #-} !$type");
++    return ("Boxed $var","(Boxed $var)","(Boxed $var)",$var) if $type eq "Boxed";
++    return ("Complex $1","(Complex $1)","{-# UNPACK #-} !(Complex $1)",$var) if $type =~ m/Complex(.*)/;
++    return ($type,$type,"{-# UNPACK #-} !$type",$var);
+hunk ./instances.pl 12
+-our @types = qw(Int Char Int8 Int16 Int32 Int64 Word8 Word16 Word32 Word64 Double Float Integer Boxed);
+-
+-foreach my $type (@types) {
+-    my ($poly,$qpoly,$member) = poly $type, "a";
+-    my $tag = "$type";
+-
++sub instance {
++    my ($types) = @_;
++    my $var = 97;
++    my @typeinfo = map { [poly $_, chr($var++)] } @$types;
++    my $tag = join '', @$types;
++    my $tuple = scalar @$types == 1 ? $typeinfo[0][1] : '(' .  join(',', map { $_->[0] } @typeinfo) . ')';
++    my $members = join '', map { $_->[2] } @typeinfo;
++    my $vartuple = '(' . join(',', map { $_->[3] } @typeinfo) . ')';
++    my $varlist = join(' ', map { $_->[3] } @typeinfo);
+hunk ./instances.pl 23
+-instance US $qpoly where
+-    data USet $qpoly = ${tag}Tip | ${tag}Bin {-# UNPACK #-} !Size ${member} !(USet $qpoly) !(USet $qpoly)
+-    view ${tag}Tip = Tip
+-    view (${tag}Bin s i l r) = Bin s i l r
+-    tip = ${tag}Tip
+-    bin = ${tag}Bin);
+-
+-    foreach my $type2 (@types) {
+-
+-=for pairs
+-        my ($poly2,$qpoly2,$member2) = poly $type2, "b";
+-        my $tuple = "($poly,$poly2)";
+-        my $tag = "$type$type2";
+-        print qq(
+-    
+hunk ./instances.pl 24
+-    data USet $tuple = ${tag}Tip | ${tag}Bin {-# UNPACK #-} !Size ${member} ${member2} !(USet $tuple) !(USet $tuple)
++    data USet $tuple = ${tag}Tip | ${tag}Bin {-# UNPACK #-} !Size ${members} !(USet $tuple) !(USet $tuple)
+hunk ./instances.pl 26
+-    view (${tag}Bin s i j l r) = Bin s (i,j) l r
++    view (${tag}Bin s $varlist l r) = Bin s $vartuple l r
+hunk ./instances.pl 28
+-    bin s (i,j) = ${tag}Bin s i j);
++    bin s $vartuple = ${tag}Bin s $varlist);
++}
+hunk ./instances.pl 31
+-=cut
++our @types = qw(Int Char Int8 Int16 Int32 Int64 Word8 Word16 Word32 Word64 Double Float Integer Boxed);
++our @common = qw(Int Char Int32 Int64 Integer Boxed Double Word32 Word64);
+hunk ./instances.pl 34
+-=for triples
+-        foreach my $type3 (@types) {
+-            my ($poly3,$qpoly3,$member3) = poly $type3, "c";
+-            my $tuple = "($poly,$poly2,$poly3)";
+-            my $tag = "$type$type2$type3";
+-            print qq(
+-    
+-instance US $tuple where
+-    data USet $tuple = ${tag}Tip | ${tag}Bin {-# UNPACK #-} !Size ${member} ${member2} ${member3} !(USet $tuple) !(USet $tuple)
+-    view ${tag}Tip = Tip
+-    view (${tag}Bin s i j k l r) = Bin s (i,j,k) l r
+-    tip = ${tag}Tip
+-    bin s (i,j,k) = ${tag}Bin s i j k);
++foreach my $type (@types) { 
++    instance [$type];
++}
+hunk ./instances.pl 38
+-        }
+-=cut
++# n^2 seems to be too slow, so omit the stuff that could just be contained in larger types
++#foreach my $type1 (@common) {
++#    foreach my $type2 (@common) { 
++#        instance [$type1,$type2];
++#    }
++#}
+hunk ./instances.pl 45
+-    }
++# n^9 is way to slow. just include repetitions.
++foreach my $type (@types) { 
++    instance [$type,$type];
++    instance [$type,$type,$type];
++    instance [$type,$type,$type,$type];
++    instance [$type,$type,$type,$type,$type];
++    instance [$type,$type,$type,$type,$type,$type];
++    instance [$type,$type,$type,$type,$type,$type,$type];
++    instance [$type,$type,$type,$type,$type,$type,$type,$type];
++    instance [$type,$type,$type,$type,$type,$type,$type,$type,$type];
+hunk ./instances.pl 58
+-
+hunk ./unboxed-containers.cabal 2
+-version:	    0.0.1
++version:	    0.0.2
+hunk ./unboxed-containers.cabal 18
++    Data/Set/UnboxedInstances.hs
+}

@@ -1,0 +1,6 @@
+[split base fixed
+ekmett@gmail.com**20080523022730] {
+hunk ./category-extras.cabal 137
+-                build-depends: ghc < 6.9, base
++                build-depends: ghc < 6.9, base, array 
+}
