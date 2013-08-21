@@ -1,0 +1,919 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Cartesian.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:50 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Cartesian</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Cartesian</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Pre-(Co)Cartesian categories
+</A
+></DT
+><DT
+><A HREF="#2"
+>(Co)Cartesian categories
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Category-Associative.html"
+>Control.Category.Associative</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Category-Monoidal.html"
+>Control.Category.Monoidal</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> k p, <A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> k p, <A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+> k p) =&gt; <A HREF="#t%3APreCartesian"
+>PreCartesian</A
+> k p | k -&gt; p <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afst"
+>fst</A
+> ::  k (p a b) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asnd"
+>snd</A
+> ::  k (p a b) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adiag"
+>diag</A
+> ::  k a (p a a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%26%26%26"
+>(&amp;&amp;&amp;)</A
+> ::  k a b -&gt; k a c -&gt; k a (p b c)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AbimapPreCartesian"
+>bimapPreCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k a c -&gt; k b d -&gt; k (p a b) (p c d)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AbraidPreCartesian"
+>braidPreCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p a b) (p b a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AassociatePreCartesian"
+>associatePreCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p (p a b) c) (p a (p b c))</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcoassociatePreCartesian"
+>coassociatePreCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p a (p b c)) (p (p a b) c)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> k s, <A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> k s, <A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+> k s) =&gt; <A HREF="#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s | k -&gt; s <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainl"
+>inl</A
+> ::  k a (s a b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainr"
+>inr</A
+> ::  k b (s a b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acodiag"
+>codiag</A
+> ::  k (s a a) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%7C%7C%7C"
+>(|||)</A
+> ::  k a c -&gt; k b c -&gt; k (s a b) c</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AbimapPreCoCartesian"
+>bimapPreCoCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k a c -&gt; k b d -&gt; k (s a b) (s c d)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AbraidPreCoCartesian"
+>braidPreCoCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s a b) (s b a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AassociatePreCoCartesian"
+>associatePreCoCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s (s a b) c) (s a (s b c))</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcoassociatePreCoCartesian"
+>coassociatePreCoCartesian</A
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s a (s b c)) (s (s a b) c)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> k p i, <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p) =&gt; <A HREF="#t%3ACartesian"
+>Cartesian</A
+> k p i | k -&gt; p i</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> k s i, <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s) =&gt; <A HREF="#t%3ACoCartesian"
+>CoCartesian</A
+> k s i | k -&gt; s i</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Category-Associative.html"
+>Control.Category.Associative</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Category-Monoidal.html"
+>Control.Category.Monoidal</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Pre-(Co)Cartesian categories
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> k p, <A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> k p, <A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+> k p) =&gt; <A NAME="t%3APreCartesian"
+></A
+><B
+>PreCartesian</B
+> k p | k -&gt; p <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>NB: This is weaker than traditional category with products! That is Cartesian, below.
+The problem is <TT
+>(-&gt;)</TT
+> lacks an initial object, since every type is inhabited in Haskell.
+Consequently its coproduct is merely a semigroup, not a monoid as it has no identity, and 
+since we want to be able to describe its dual category, which has this non-traditional 
+form being built over a category with an associative bifunctor rather than as a monoidal category
+for the product monoid.
+</P
+><P
+>Minimum definition: 
+</P
+><PRE
+> fst, snd, diag 
+ fst, snd, (&amp;&amp;&amp;)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Afst"
+></A
+><B
+>fst</B
+> ::  k (p a b) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Asnd"
+></A
+><B
+>snd</B
+> ::  k (p a b) b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Adiag"
+></A
+><B
+>diag</B
+> ::  k a (p a a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%26%26%26"
+></A
+><B
+>(&amp;&amp;&amp;)</B
+> ::  k a b -&gt; k a c -&gt; k a (p b c)</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AbimapPreCartesian"
+></A
+><B
+>bimapPreCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k a c -&gt; k b d -&gt; k (p a b) (p c d)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> for the product <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Prod k</TT
+> if <TT
+>(&amp;&amp;&amp;)</TT
+> is known
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AbraidPreCartesian"
+></A
+><B
+>braidPreCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p a b) (p b a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+></TT
+> for the product <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Prod k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AassociatePreCartesian"
+></A
+><B
+>associatePreCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p (p a b) c) (p a (p b c))</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+></TT
+> for the product <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Prod k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcoassociatePreCartesian"
+></A
+><B
+>coassociatePreCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p =&gt; k (p a (p b c)) (p (p a b) c)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+></TT
+> for the product <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Prod k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> k s, <A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> k s, <A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+> k s) =&gt; <A NAME="t%3APreCoCartesian"
+></A
+><B
+>PreCoCartesian</B
+> k s | k -&gt; s <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ainl"
+></A
+><B
+>inl</B
+> ::  k a (s a b)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ainr"
+></A
+><B
+>inr</B
+> ::  k b (s a b)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acodiag"
+></A
+><B
+>codiag</B
+> ::  k (s a a) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%7C%7C%7C"
+></A
+><B
+>(|||)</B
+> ::  k a c -&gt; k b c -&gt; k (s a b) c</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AbimapPreCoCartesian"
+></A
+><B
+>bimapPreCoCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k a c -&gt; k b d -&gt; k (s a b) (s c d)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> for the coproduct <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Sum k</TT
+> if <TT
+>(|||)</TT
+> is known
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AbraidPreCoCartesian"
+></A
+><B
+>braidPreCoCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s a b) (s b a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Braided.html#t%3ABraided"
+>Braided</A
+></TT
+> for the coproduct <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Sum k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AassociatePreCoCartesian"
+></A
+><B
+>associatePreCoCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s (s a b) c) (s a (s b c))</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+></TT
+> for the coproduct <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Sum k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcoassociatePreCoCartesian"
+></A
+><B
+>coassociatePreCoCartesian</B
+> :: <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s =&gt; k (s a (s b c)) (s (s a b) c)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free construction of <TT
+><A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+></TT
+> for the coproduct <TT
+><A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> <TT
+>Sum k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>(Co)Cartesian categories
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> k p i, <A HREF="Control-Category-Cartesian.html#t%3APreCartesian"
+>PreCartesian</A
+> k p) =&gt; <A NAME="t%3ACartesian"
+></A
+><B
+>Cartesian</B
+> k p i | k -&gt; p i</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> k s i, <A HREF="Control-Category-Cartesian.html#t%3APreCoCartesian"
+>PreCoCartesian</A
+> k s) =&gt; <A NAME="t%3ACoCartesian"
+></A
+><B
+>CoCartesian</B
+> k s i | k -&gt; s i</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Cartesian.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:50 GMT -->
+</HTML
+>

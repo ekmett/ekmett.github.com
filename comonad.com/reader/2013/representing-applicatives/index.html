@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2013/representing-applicatives/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:06:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Representing Applicatives</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../05/index.html' />
+	<link rel='archives' title='April 2013' href='../04/index.html' />
+	<link rel='archives' title='January 2013' href='../01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Representing Applicatives Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Japanese &#8220;ekmett&#8221; Workshop (Part 1 of 2)' href='../japanese-workshop-1/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 2 May 2013</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Representing Applicatives">Representing Applicatives</a></h2>
+Posted by Gershom Bazerman under <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="index.html#respond" title="Comment on Representing Applicatives">No Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>In the <a href="../../2012/abstracting-with-applicatives/index.html">previous</a> <a href="../algebras-of-applicatives/index.html">two</a> posts, we've built up a whole range of applicatives, out of Const, Identity, Reader, Compose, Product, Sum, and Fix (and some higher-order analogues). Sum has given us the most trouble, but in some sense has been the most powerful, letting us write things like possibly eventually terminating lists, or trees, or in fact any sort of structure with branching alternatives. In this post, I want to think a bit more about why it is that Sum is the trickiest of the bunch, and more generally, what we can say about when two applicative structures are the "same". In the process of doing so, we'll invent something a lot like Traversable en passant.</p>
+<p>Let's do some counting exercises. <code>Product Identity Identity</code> holds exactly two things. It is therefore isomorphic to <code>((->) Bool)</code>, or if we prefer, <code>((->) Either () ())</code>. That is to say that a pair that <i>holds</i> two values of type <code>a</code> is the same as a function that <i>takes a two-valued type</i> and <i>yields</i> a value of type <code>a</code>. A product of more functors in turn is isomorphic to the reader of the sum of each of the datatypes that "represent" them. E.g. <code>Product (Product Identity Identity) (Product (Const ()) Identity)</code> is iso to <code>((->) (Either (Either () ()) ())</code>, i.e. a data type with three possible inhabitants. In making this move we took Product to Either -- multiplication to sum. We can pull a similar trick with Compose. <code>Compose (Product Identity Identity) (Product Identity Identity)</code> goes to ((->) (Either () (),Either () ())). So again we took Product to a sum type, but now we took Compose to a pair -- a product type! The intuition is that composition <i>multiplies</i> the possibilities of spaces in each nested functor.</p>
+<p>Hmm.. products go to sums, composition goes to multiplication, etc. This should remind us of something -- these rules are exactly the rules for working with exponentials. x^n * x^m = x^(n + m). (x^n)^m = x^(n*m). x^0 = 1, x^1 = x.</p>
+<p>Seen from the right standpoint, this isn't surprising at all, but almost inevitable. The functors we're describing are known as "representable," a term which derives from category theory. (See appendix on representable functors below).</p>
+<p>In Haskell-land, a "representable functor" is just any functor isomorphic to the reader functor <code>((->) a)</code> for some appropriate a. Now if we think back to our algebraic representations of data types, we call the arrow type constructor an exponential. We can "count" <code>a -> x</code> as x^a, since e.g. there are 3^2 distinct functions that inhabit the type 2 -> 3. The intuition for this is that for each input we pick one of the possible results, so as the number of inputs goes up by one, the number of functions goes up by multiplying through by the set of possible results. 1 -> 3 = 3, 2 -> 3 = 3 * 3, (n + 1) -> 3 = 3 * (n -> 3).</p>
+<p>Hence, if we "represent" our functors by exponentials, then we can work with them directly as exponentials as well, with all the usual rules. Edward Kmett has a <a href="http://hackage.haskell.org/packages/archive/representable-functors/3.0.0.1/doc/html/Data-Functor-Representable.html">library encoding representable functors in Haskell</a>.</p>
+<p>Meanwhile, Peter Hancock prefers to call such functors <a href="http://sneezy.cs.nott.ac.uk/containers/blog/?p=14">"Naperian"</a> after John Napier, inventor of the logarithm (See also <a href="http://stackoverflow.com/a/13100857/371753">here</a>). Why Naperian? Because if our functors are isomorphic to exponentials, then we can take their logs! And that brings us back to the initial discussion of type mathematics. We have some functor F, and claim that it is isomorphic to -^R for some concrete data type R. Well, this means that R is the logarithm of F. E.g. <code>(R -> a, S -> a) =~ Either R S -> a</code>, which is to say that if log F = R and log G =~ S, then log (F * G) = log F + log G. Similarly, for any other data type n, again with log F = R, we have  <code>n -> F a =~ n -> R -> a =~ (n * R) -> a</code>, which is to say that log (F^n) =~ n * log F.</p>
+<p>This gives us one intuition for why the sum functor is not generally representable -- it is very difficult to decompose log (F + G) into some simpler compound expression of logs.</p>
+<p>So what functors are Representable? Anything that can be seen as a fixed shape with some index. Pairs, fixed-size vectors, fixed-size matrices, any nesting of fixed vectors and matricies. But also infinite structures of regular shape! However, not things whose shape can vary -- not lists, not sums. Trees of fixed depth or infinite binary trees therefore, but not trees of arbitrary depth or with ragged structure, etc.</p>
+<p>Representable functors turn out to be extremely powerful tools. Once we know a functor is representable, we know exactly what its applicative instance must be, and that its applicative instance will be "zippy" -- i.e. acting pointwise across the structure. We also know that it has a monad instance! And, unfortunately, that this monad instance is typically fairly useless (in that it is also "zippy" -- i.e. the monad instance on a pair just acts on the two elements pointwise, without ever allowing anything in the first slot to affect anything in the second slot, etc.). But we know more than that. We know that a representable functor, by virtue of being a reader in disguise, cannot have effects that migrate outwards. So any two actions in a representable functor are commutative. And more than that, they are entirely independent.</p>
+<p>This means that all representable functors are "<a href="http://hackage.haskell.org/packages/archive/distributive/0.3.1/doc/html/Data-Distributive.html">distributive</a>"! Given any functor f, and any data type r, then we have </p>
+<pre class="haskell">&nbsp;
+distributeReader :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; f <span style="color: green;">&#40;</span>r -&gt; a<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>r -&gt; f a<span style="color: green;">&#41;</span>
+distributeReader fra = \r -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>$r<span style="color: green;">&#41;</span> fra
+&nbsp;</pre>
+<p>That is to say, given an arrow "inside" a functor, we can always pull the arrow out, and "distribute" application across the contents of the functor. A list of functions from <code>Int -> Int</code> becomes a single function from <code>Int</code> to a list of <code>Int</code>, etc. More generally, since all representable functors are isomorphic to reader, given g representable, and f any functor, then we have: <code>distribute :: (Functor f, Representable g) => f (g a) -> g (f a).</code></p>
+<p>This is pretty powerful sauce! And if f and g are <i>both</i> representable, then we get the transposition isomorphism, witnessed by <code>flip</code>! That's just the beginning of the good stuff. If we take functions and "unrepresent" them back to functors (i.e. take their logs), then we can do things like move from <code>((->) Bool)</code> to pairs, etc. Since we're in a pervasively lazy language, we've just created a library for <a href="http://hackage.haskell.org/packages/archive/representable-tries/3.0.2/doc/html/Data-Functor-Representable-Trie.html">memoization</a>! This is because we've gone from a function to a data structure we can index into, representing each possible argument to this function as a "slot" in the structure. And the laziness pays off because we only need to evaluate the contents of each slot on demand (otherwise we'd have a precomputed lookup table rather than a dynamically-evaluated memo table). </p>
+<p>And now suppose we take our representable functor in the form <code>s -> a</code> and paired it with an "index" into that function, in the form of a concrete <code>s</code>. Then we'd be able to step that <code>s</code> forward or backwards and navigate around our structure of <code>a</code>s. And this is precisely the <a href="http://hackage.haskell.org/packages/archive/comonads-fd/3.0.1/doc/html/Control-Comonad-Store.html">Store Comonad</a>! And this in turn gives a <a href="http://patternsinfp.wordpress.com/2011/01/31/lenses-are-the-coalgebras-for-the-costate-comonad/">characterization of the lens laws</a>.</p>
+<p>What this all gives us a tiny taste of, in fact, is the tremendous power of the <a href="http://blog.sigfpe.com/2006/11/yoneda-lemma.html">Yoneda lemma</a>, which, in Haskell, is all about going between values and functions, and in fact captures the important universality and uniqueness properties that make working with representable functors tractable. A further tiny taste of Yoneda comes from a nice <a href="http://conal.net/blog/posts/memoizing-polymorphic-functions-via-unmemoization">blog post</a> by Conal Elliott on memoization.</p>
+<p><strong>Extra Credit on Sum Functors</strong></p>
+<p>There in fact is a log identity on sums. It goes like this:</p>
+<pre>
+log(a + c) = log a + log (1 + c/a)
+</pre>
+<p>Do you have a useful computational interpretation of this? I've got the inklings of one, but not much else.</p>
+<p><strong>Appendix: Notes on Representable Functors in Hask.</strong></p>
+<p>The way to think about this is to take some arbitrary category C, and some category that's basically Set (in our case, Hask. In fact, in our case, C is Hask too, and we're just talking about endofunctors on Hask). Now, we take some functor F : C -> Set, and some A which is an element of C. The set of morphisms originating at A (denoted by Hom(A,-)) constitutes a functor called the "hom functor." For any object X in C, we can "plug it in" to Hom(A,-), to then get the set of all arrows from A to X. And for any morphism X -> Y in C, we can derive a morphism from Hom(A,X) to Hom(A,Y), by composition. This is equivalent to, in Haskell-land, using a function <code>f :: x -> y</code> to send <code>g :: a -> x</code> to <code>a -> y</code> by writing "functionAToY = f . g".</p>
+<p>So, for any A in C, we have a hom functor on C, which is C -> Set, where the elements of the resultant Set are homomorphisms in C. Now, we have this other arbitrary functor F, which is also C -> Set. Now, if there is an isomorphism of functors between F, and Hom(A,_), then we say F is "representable". A representable functor is thus one that can be worked with entirely as an appropriate hom-functor.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+
+   
+		<!-- If comments are open, but there are no comments. -->
+		
+	 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="907" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, May 2nd, 2013 at 9:19 am</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733/index.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2013/representing-applicatives/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:06:24 GMT -->
+</html>

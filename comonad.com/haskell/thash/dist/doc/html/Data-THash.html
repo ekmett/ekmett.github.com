@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-THash.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.THash</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>thash-0.1</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.THash</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (requires STM)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A simple <A HREF="STM.html"
+>STM</A
+> based transactional linear hash table based on Witold 1980.
+ This wraps a <A HREF="Data-THash-THT.html"
+>Data.THash.THT</A
+> in an simple container. It may be
+ more appropriate to use the underlying <A HREF="THT.html"
+>THT</A
+> structure directly if you are
+ nesting these. The performance hit hasn't yet been measured.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A HREF="#t%3ATHash"
+>THash</A
+> k v</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anew"
+>new</A
+> :: (k -&gt; Int) -&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewH"
+>newH</A
+> :: <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> k =&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromList"
+>fromList</A
+> :: Eq k =&gt; (k -&gt; Int) -&gt; [(k, v)] -&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainsert"
+>insert</A
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; v -&gt; STM Bool</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aupdate"
+>update</A
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; v -&gt; STM ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amodify"
+>modify</A
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; (Maybe v -&gt; v) -&gt; STM ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adelete"
+>delete</A
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; STM Bool</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Alookup"
+>lookup</A
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; STM (Maybe v)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapH"
+>mapH</A
+> :: ((k, v) -&gt; r) -&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [r]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aeach"
+>each</A
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [(k, v)]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Akeys"
+>keys</A
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [k]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Avalues"
+>values</A
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [v]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhashInt"
+>hashInt</A
+> :: Int -&gt; Int</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3ATHash"
+></A
+><B
+>THash</B
+> k v</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A hash with keys of type k to values of type v
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Anew"
+></A
+><B
+>new</B
+> :: (k -&gt; Int) -&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Build an empty hash table
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AnewH"
+></A
+><B
+>newH</B
+> :: <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> k =&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Build an empty hash table using the default hash function for the key type.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromList"
+></A
+><B
+>fromList</B
+> :: Eq k =&gt; (k -&gt; Int) -&gt; [(k, v)] -&gt; STM (<A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Build a hash table from a list of <TT
+>(key,value)</TT
+> pairs
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ainsert"
+></A
+><B
+>insert</B
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; v -&gt; STM Bool</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Insert a value into the hash table. If a value with the key is present
+ then nothing is changed and False is returned.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aupdate"
+></A
+><B
+>update</B
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; v -&gt; STM ()</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Insert a value into the hash table, replacing any value with the same key that is present.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Amodify"
+></A
+><B
+>modify</B
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; (Maybe v -&gt; v) -&gt; STM ()</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Update a value in the hash table using the supplied function. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Adelete"
+></A
+><B
+>delete</B
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; STM Bool</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Remove a value from the hash table. Returns True to indicate success.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Alookup"
+></A
+><B
+>lookup</B
+> :: Eq k =&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; k -&gt; STM (Maybe v)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Lookup a value in the hash table. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmapH"
+></A
+><B
+>mapH</B
+> :: ((k, v) -&gt; r) -&gt; <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [r]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Map a function over all <TT
+>(key,value)</TT
+> functions in the hash table.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aeach"
+></A
+><B
+>each</B
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [(k, v)]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>each = mapH id</TT
+> and returns all <TT
+>(key,value)</TT
+> pairs in the hash.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Akeys"
+></A
+><B
+>keys</B
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [k]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>each = mapH fst</TT
+> and returns all keys in the hash.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Avalues"
+></A
+><B
+>values</B
+> :: <A HREF="Data-THash.html#t%3ATHash"
+>THash</A
+> k v -&gt; STM [v]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>each = mapH snd</TT
+> and returns all values present in the hash.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AhashInt"
+></A
+><B
+>hashInt</B
+> :: Int -&gt; Int</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Thomas Wang's 32 bit mix function; more effective than a prime modulus for 
+ declustering a linear hash, but not good against an adversary, since its easily 
+ reversed.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.7</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-THash.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:56 GMT -->
+</HTML
+>

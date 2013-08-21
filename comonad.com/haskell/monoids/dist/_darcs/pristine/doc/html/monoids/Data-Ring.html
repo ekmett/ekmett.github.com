@@ -1,0 +1,1707 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Ring.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:08 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Ring</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Ring.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Ring</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable (instances use MPTCs)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Defines left- and right- seminearrings. Every <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> wrapped around
+ a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> qualifies due to the distributivity of (&gt;&gt;=) over <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#v%3Amplus"
+>mplus</A
+></TT
+>.
+</P
+><P
+>See <A HREF="http://conway.rutgers.edu/~ccshan/wiki/blog/posts/WordNumbers1/"
+>http://conway.rutgers.edu/~ccshan/wiki/blog/posts/WordNumbers1/</A
+>
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Group.html"
+>Data.Group</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Monoid-Multiplicative.html#t%3AMultiplicative"
+>Multiplicative</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A HREF="#t%3ARingoid"
+>Ringoid</A
+> m </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> m </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> m </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> a, <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> a) =&gt; <A HREF="#t%3ASemiRing"
+>SemiRing</A
+> a </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Group.html#t%3AGroup"
+>Group</A
+> a, <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> a) =&gt; <A HREF="#t%3ARing"
+>Ring</A
+> a </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> a, <A HREF="Data-Group.html#t%3AMultiplicativeGroup"
+>MultiplicativeGroup</A
+> a) =&gt; <A HREF="#t%3ADivisionRing"
+>DivisionRing</A
+> a </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> a, <A HREF="Data-Group.html#t%3AMultiplicativeGroup"
+>MultiplicativeGroup</A
+> a) =&gt; <A HREF="#t%3AField"
+>Field</A
+> a </TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Group.html"
+>Data.Group</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Monoid-Multiplicative.html#t%3AMultiplicative"
+>Multiplicative</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A NAME="t%3ARingoid"
+></A
+><B
+>Ringoid</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#Ringoid"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><TT
+>0</TT
+> annihilates <TT
+><A HREF="Data-Monoid-Multiplicative.html#v%3Atimes"
+>times</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Ringoid')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Ringoid" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> Integer</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> ([] m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Boolean.html#t%3ABoolean"
+>Boolean</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Semi-BitSet.html#t%3ABitSet"
+>BitSet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3AOrder"
+>Order</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Semi-Tropical.html#t%3ATropical"
+>Tropical</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Measured v m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (FingerTree v m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> m s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Monoid-Applicative.html#t%3AAlt"
+>Alt</A
+> f a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Monoid-Monad.html#t%3AMonadSum"
+>MonadSum</A
+> m a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring-ModularArithmetic.html#t%3AModular"
+>Modular</A
+> s a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-ModularArithmetic.html#t%3AMod"
+>Mod</A
+> a s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> r, <A HREF="Data-Ring-Module.html#t%3ABimodule"
+>Bimodule</A
+> r m) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-Module-AutomaticDifferentiation.html#t%3AD"
+>D</A
+> s r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Stream s m t, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (ParsecT s u m a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m n)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A NAME="t%3ALeftSemiNearRing"
+></A
+><B
+>LeftSemiNearRing</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#LeftSemiNearRing"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><PRE
+>a * (b + c) = (a * b) + (a * c)</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:LeftSemiNearRing')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:LeftSemiNearRing" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Boolean.html#t%3ABoolean"
+>Boolean</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-BitSet.html#t%3ABitSet"
+>BitSet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3AOrder"
+>Order</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Tropical.html#t%3ATropical"
+>Tropical</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> m s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring-ModularArithmetic.html#t%3AModular"
+>Modular</A
+> s a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-ModularArithmetic.html#t%3AMod"
+>Mod</A
+> a s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> r, <A HREF="Data-Ring-Module.html#t%3ABimodule"
+>Bimodule</A
+> r m) =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-Module-AutomaticDifferentiation.html#t%3AD"
+>D</A
+> s r m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> m =&gt; <A NAME="t%3ARightSemiNearRing"
+></A
+><B
+>RightSemiNearRing</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#RightSemiNearRing"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><PRE
+>(a + b) * c = (a * c) + (b * c)</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:RightSemiNearRing')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:RightSemiNearRing" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> ([] m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Boolean.html#t%3ABoolean"
+>Boolean</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-BitSet.html#t%3ABitSet"
+>BitSet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3AOrder"
+>Order</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Semi-Tropical.html#t%3ATropical"
+>Tropical</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Measured v m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (FingerTree v m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> m =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> m s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Monoid-Applicative.html#t%3AAlt"
+>Alt</A
+> f a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Monoid-Monad.html#t%3AMonadSum"
+>MonadSum</A
+> m a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring-ModularArithmetic.html#t%3AModular"
+>Modular</A
+> s a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-ModularArithmetic.html#t%3AMod"
+>Mod</A
+> a s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> r, <A HREF="Data-Ring-Module.html#t%3ABimodule"
+>Bimodule</A
+> r m) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-Module-AutomaticDifferentiation.html#t%3AD"
+>D</A
+> s r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Stream s m t, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (ParsecT s u m a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> n) =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m n)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> a, <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> a) =&gt; <A NAME="t%3ASemiRing"
+></A
+><B
+>SemiRing</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#SemiRing"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+></TT
+> is an instance of both <TT
+><A HREF="Data-Monoid-Multiplicative.html#t%3AMultiplicative"
+>Multiplicative</A
+></TT
+> and <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> where 
+   <TT
+><A HREF="Data-Monoid-Multiplicative.html#v%3Atimes"
+>times</A
+></TT
+> distributes over <TT
+><A HREF="Data-Monoid-Additive.html#v%3Aplus"
+>plus</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SemiRing')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SemiRing" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Boolean.html#t%3ABoolean"
+>Boolean</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Semi-BitSet.html#t%3ABitSet"
+>BitSet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Semi-Ord.html#t%3AOrder"
+>Order</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Semi-Tropical.html#t%3ATropical"
+>Tropical</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> r s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring-ModularArithmetic.html#t%3AModular"
+>Modular</A
+> s a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-ModularArithmetic.html#t%3AMod"
+>Mod</A
+> a s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> r, <A HREF="Data-Ring-Module.html#t%3ABimodule"
+>Bimodule</A
+> r m) =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-Module-AutomaticDifferentiation.html#t%3AD"
+>D</A
+> s r m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Group.html#t%3AGroup"
+>Group</A
+> a, <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> a) =&gt; <A NAME="t%3ARing"
+></A
+><B
+>Ring</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#Ring"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Ring')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Ring" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Ring-Boolean.html#t%3ABoolean"
+>Boolean</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> r s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring-ModularArithmetic.html#t%3AModular"
+>Modular</A
+> s a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a) =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Ring-ModularArithmetic.html#t%3AMod"
+>Mod</A
+> a s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> r, <A HREF="Data-Ring-Module.html#t%3ABimodule"
+>Bimodule</A
+> r m, <A HREF="Data-Group.html#t%3AGroup"
+>Group</A
+> m) =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Ring-Module-AutomaticDifferentiation.html#t%3AD"
+>D</A
+> s r m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> a, <A HREF="Data-Group.html#t%3AMultiplicativeGroup"
+>MultiplicativeGroup</A
+> a) =&gt; <A NAME="t%3ADivisionRing"
+></A
+><B
+>DivisionRing</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#DivisionRing"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:DivisionRing')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:DivisionRing" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> r =&gt; <A HREF="Data-Ring.html#t%3ADivisionRing"
+>DivisionRing</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> r s)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> a, <A HREF="Data-Group.html#t%3AMultiplicativeGroup"
+>MultiplicativeGroup</A
+> a) =&gt; <A NAME="t%3AField"
+></A
+><B
+>Field</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring.html#Field"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Field')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Field" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> f =&gt; <A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3ADual"
+>Dual</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> f =&gt; <A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> (<A HREF="Data-Monoid-Self.html#t%3ASelf"
+>Self</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> f =&gt; <A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> (<A HREF="Data-Monoid-FromString.html#t%3AFromString"
+>FromString</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> f =&gt; <A HREF="Data-Ring.html#t%3AField"
+>Field</A
+> (<A HREF="Data-Monoid-Reducer.html#t%3AReducedBy"
+>ReducedBy</A
+> f s)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Ring.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:08 GMT -->
+</HTML
+>

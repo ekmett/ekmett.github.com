@@ -1,0 +1,1202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:56 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Generator</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Generator.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Generator</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Generators
+</A
+></DT
+><DT
+><A HREF="#2"
+>Generator Transformers
+</A
+></DT
+><DT
+><A HREF="#3"
+>Combinators
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> <TT
+>c</TT
+> is a possibly-specialized container, which contains values of 
+ type <TT
+><A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+></TT
+> <TT
+>c</TT
+>, and which knows how to efficiently apply a <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> to extract
+ an answer.
+</P
+><P
+>Since a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> is not polymorphic in its contents, it is more specialized
+ than <A HREF="Data-Foldable-Foldable.html"
+>Data.Foldable.Foldable</A
+>, and a <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> may supply efficient left-to-right
+ and right-to-left reduction strategies that a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> may avail itself of.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AGenerator"
+>Generator</A
+> c  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AElem"
+>Elem</A
+> c :: *</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapReduce"
+>mapReduce</A
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapTo"
+>mapTo</A
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; m -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapFrom"
+>mapFrom</A
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m -&gt; m</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapReduce"
+>mapReduce</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapTo"
+>mapTo</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; m -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapFrom"
+>mapFrom</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AKeys"
+>Keys</A
+> c = <A HREF="#v%3AKeys"
+>Keys</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetKeys"
+>getKeys</A
+> :: c</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AValues"
+>Values</A
+> c = <A HREF="#v%3AValues"
+>Values</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetValues"
+>getValues</A
+> :: c</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AChar8"
+>Char8</A
+> c = <A HREF="#v%3AChar8"
+>Char8</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetChar8"
+>getChar8</A
+> :: c</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areduce"
+>reduce</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapReduceWith"
+>mapReduceWith</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (m -&gt; n) -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AreduceWith"
+>reduceWith</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (m -&gt; n) -&gt; c -&gt; n</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Generators
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3AGenerator"
+></A
+><B
+>Generator</B
+> c  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#Generator"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>minimal definition <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> or <TT
+><A HREF="Data-Generator.html#v%3AmapTo"
+>mapTo</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Associated Types</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AElem"
+></A
+><B
+>Elem</B
+> c :: *</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#Elem"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapReduce"
+></A
+><B
+>mapReduce</B
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapReduce"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapTo"
+></A
+><B
+>mapTo</B
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; m -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapTo"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapFrom"
+></A
+><B
+>mapFrom</B
+> :: <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapFrom"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Generator')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Generator" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Lazy-Internal.html#t%3AByteString"
+>ByteString</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Internal.html#t%3AByteString"
+>ByteString</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> Text</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> ([] c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator.html#t%3AChar8"
+>Char8</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Lazy-Internal.html#t%3AByteString"
+>ByteString</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator.html#t%3AChar8"
+>Char8</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Internal.html#t%3AByteString"
+>ByteString</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator-Free.html#t%3AFree"
+>Free</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Ring-Semi-BitSet.html#t%3ABitSet"
+>BitSet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Measured v e =&gt; <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (FingerTree v e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Foldable.html#t%3AFoldable"
+>Foldable</A
+> f =&gt; <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator-Compressive-RLE.html#t%3ARLE"
+>RLE</A
+> f a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapReduce"
+></A
+><B
+>mapReduce</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapReduce"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapTo"
+></A
+><B
+>mapTo</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; m -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapTo"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapFrom"
+></A
+><B
+>mapFrom</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; m -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapFrom"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Generator Transformers
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AKeys"
+></A
+><B
+>Keys</B
+> c </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#Keys"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> transformer that asks only for the keys of an indexed container
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AKeys"
+></A
+><B
+>Keys</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetKeys"
+></A
+><B
+>getKeys</B
+> :: c</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AValues"
+></A
+><B
+>Values</B
+> c </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#Values"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> transformer that asks only for the values contained in an indexed container
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AValues"
+></A
+><B
+>Values</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetValues"
+></A
+><B
+>getValues</B
+> :: c</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AChar8"
+></A
+><B
+>Char8</B
+> c </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#Char8"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> transformer that treats <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+> as <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+>
+ This lets you use a ByteString as a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+> source without going through a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> transformer like UTF8
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AChar8"
+></A
+><B
+>Char8</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetChar8"
+></A
+><B
+>getChar8</B
+> :: c</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Char8')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Char8" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator.html#t%3AChar8"
+>Char8</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Lazy-Internal.html#t%3AByteString"
+>ByteString</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator.html#t%3AChar8"
+>Char8</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Internal.html#t%3AByteString"
+>ByteString</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Combinators
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Areduce"
+></A
+><B
+>reduce</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#reduce"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Apply a <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> directly to the elements of a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapReduceWith"
+></A
+><B
+>mapReduceWith</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> e m) =&gt; (m -&gt; n) -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; e) -&gt; c -&gt; n</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#mapReduceWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AreduceWith"
+></A
+><B
+>reduceWith</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (m -&gt; n) -&gt; c -&gt; n</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator.html#reduceWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:56 GMT -->
+</HTML
+>

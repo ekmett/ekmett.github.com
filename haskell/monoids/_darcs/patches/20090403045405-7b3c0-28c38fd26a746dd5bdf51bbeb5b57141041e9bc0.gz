@@ -1,5 +1,0 @@
-[removed spurious import
-ekmett@gmail.com**20090403045405] {
-hunk ./Data/Monoid/Combinators.hs 30
--import Control.Monad (MonadPlus)
-}

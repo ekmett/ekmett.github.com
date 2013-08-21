@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2011/a-parsec-full-of-rats/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; A Parsec Full of Rats, Part 1</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../12/index.html' />
+	<link rel='archives' title='November 2011' href='../11/index.html' />
+	<link rel='archives' title='October 2011' href='../10/index.html' />
+	<link rel='archives' title='September 2011' href='../09/index.html' />
+	<link rel='archives' title='July 2011' href='../07/index.html' />
+	<link rel='archives' title='June 2011' href='../06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; A Parsec Full of Rats, Part 1 Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Free Modules and Functional Linear Functionals' href='../free-modules-and-functional-linear-functionals/index.html' />
+<link rel='next' title='A Parsec Full of Rats, Part 2' href='../a-parsec-full-of-rats-part-2/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Fri 23 Sep 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: A Parsec Full of Rats, Part 1">A Parsec Full of Rats, Part 1</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../../category/parsing/index.html" title="View all posts in Parsing" rel="category tag">Parsing</a> ,  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="index.html#comments" title="Comment on A Parsec Full of Rats, Part 1">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<blockquote><p>You never heard of the Millenium Falcon? It's the ship that made the Kessel Run in 12 parsecs.</p></blockquote>
+<p>I've been working on a parser combinator library called <a href="http://hackage.haskell.org/package/trifecta">trifecta</a>, and so I decided I'd share some thoughts on parsing. </p>
+<p><a href="http://pdos.csail.mit.edu/~baford/packrat/">Packrat parsing</a> (as provided by <a href="http://hackage.haskell.org/package/frisby">frisby</a>, <a href="http://hackage.haskell.org/package/pappy">pappy</a>, <a href="http://cs.nyu.edu/rgrimm/xtc/">rats!</a> and the Scala parsing combinators) and more traditional recursive descent parsers (like Parsec) are often held up as somehow different. </p>
+<p>Today I'll show that you can add monadic parsing to a packrat parser, sacrificing asymptotic guarantees in exchange for the convenient context sensitivity, and conversely how you can easily add packrat parsing to a traditional monadic parser combinator library.</p>
+<p><span id="more-380"></span></p>
+<p>To keep this post self-contained, I'm going to start by defining a small packrat parsing library by hand, which acts rather like parsec in its backtracking behavior. First, some imports:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# LANGUAGE RecordWildCards, ViewPatterns, DeriveFunctor #-}</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>MonadPlus<span style="color: green;">&#40;</span>..<span style="color: green;">&#41;</span>, guard<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Fix <span style="color: green;">&#40;</span>fix<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: green;">&#40;</span>isDigit, digitToInt, isSpace<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Second, we'll define a bog simple parser, which consumes an input stream of type d, yielding a possible answer and telling us whether or not it has actually consumed any input as it went.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Rat d a = Rat <span style="color: green;">&#123;</span> runRat :: d -&gt; Result d a <span style="color: green;">&#125;</span>
+  <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Result d a
+  = Pure a             <span style="color: #5d478b; font-style: italic;">-- didn't consume anything, can backtrack</span>
+  | Commit d a      <span style="color: #5d478b; font-style: italic;">-- consumed input</span>
+  | Fail <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #5d478b; font-style: italic;">-- failed, flagged if consumed</span>
+  <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>
+&nbsp;</pre>
+<p>Now, we can finally implement some type classes:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  pure a = Rat $ \ _ -&gt; Pure a
+  Rat mf &lt; *&gt; Rat ma = Rat $ \ d -&gt; <span style="color: #06c; font-weight: bold;">case</span> mf d <span style="color: #06c; font-weight: bold;">of</span>
+    Pure f      -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>ma d<span style="color: green;">&#41;</span>
+    Fail s c    -&gt; Fail s c
+    Commit d' f -&gt; <span style="color: #06c; font-weight: bold;">case</span> ma d' <span style="color: #06c; font-weight: bold;">of</span>
+      Pure a       -&gt; Commit d' <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+      Fail s _     -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+      Commit d'' a -&gt; Commit d'' <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>including an instance of Alternative that behaves like parsec, only backtracking on failure if no input was unconsumed.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Alternative <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Rat ma &lt; |&gt; Rat mb = Rat $ \ d -&gt; <span style="color: #06c; font-weight: bold;">case</span> ma d <span style="color: #06c; font-weight: bold;">of</span>
+    Fail _ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a> -&gt; mb d
+    x            -&gt; x
+  empty = Rat $ \ _ -&gt; Fail <span style="color: #3c7331;">&quot;empty&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;</pre>
+<p>For those willing to forego the asymptotic guarantees of packrat, we'll offer a monad.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Rat $ \_ -&gt; Pure a
+  Rat m &gt;&gt;= k = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+    Pure a -&gt; runRat <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> d
+    Commit d' a -&gt; <span style="color: #06c; font-weight: bold;">case</span> runRat <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> d' <span style="color: #06c; font-weight: bold;">of</span>
+      Pure b -&gt; Commit d' b
+      Fail s _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+      commit -&gt; commit
+    Fail s c -&gt; Fail s c
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fail"><span style="font-weight: bold;">fail</span></a> s = Rat $ \ _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadPlus <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  mplus = <span style="color: green;">&#40;</span>&lt; |&gt;<span style="color: green;">&#41;</span>
+  mzero = empty
+&nbsp;</pre>
+<p>and a Parsec-style "try", which rewinds on failure, so that < |> can try again.</p>
+<pre class="haskell">&nbsp;
+try :: Rat d a -&gt; Rat d a
+try <span style="color: green;">&#40;</span>Rat m<span style="color: green;">&#41;</span> = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+  Fail s _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+  x        -&gt; x
+&nbsp;</pre>
+<p>Since we've consumed < |> with parsec semantics. Let's give a PEG-style backtracking (< />).</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>&lt; /&gt;<span style="color: green;">&#41;</span> :: Rat d a -&gt; Rat d a -&gt; Rat d a
+p &lt; /&gt; q = try p &lt; |&gt; q
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">3</span> &lt; /&gt;
+&nbsp;</pre>
+<p>So far nothing we have done involves packrat at all. These are all general purpose recursive descent combinators.</p>
+<p>We can define an input stream and a number of combinators to read input.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Stream d <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar :: Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+&nbsp;
+whiteSpace :: Stream d =&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+whiteSpace = <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> &lt; $ many <span style="color: green;">&#40;</span>satisfy isSpace<span style="color: green;">&#41;</span>
+phrase :: Stream d =&gt; Rat d a -&gt; Rat d a
+phrase m = whiteSpace *&gt; m &lt; * eof
+&nbsp;
+notFollowedBy :: Rat d a -&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+notFollowedBy <span style="color: green;">&#40;</span>Rat m<span style="color: green;">&#41;</span> = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+  Fail<span style="color: green;">&#123;</span><span style="color: green;">&#125;</span> -&gt; Pure <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+  _      -&gt; Fail <span style="color: #3c7331;">&quot;unexpected&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;
+eof :: Stream d =&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+eof = notFollowedBy anyChar
+&nbsp;
+satisfy :: Stream d =&gt; <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a><span style="color: green;">&#41;</span> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+satisfy p = try $ <span style="color: #06c; font-weight: bold;">do</span>
+  x &lt; - anyChar
+  x &lt;$ guard <span style="color: green;">&#40;</span>p x<span style="color: green;">&#41;</span>
+&nbsp;
+char :: Stream d =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+char c = satisfy <span style="color: green;">&#40;</span>c ==<span style="color: green;">&#41;</span>
+&nbsp;
+lexeme :: Stream d =&gt; Rat d a -&gt; Rat d a
+lexeme m = m &lt; * whiteSpace
+&nbsp;
+symbol :: Stream d =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+symbol c = lexeme <span style="color: green;">&#40;</span>char c<span style="color: green;">&#41;</span>
+&nbsp;
+digit :: Stream d =&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+digit = digitToInt &lt; $&gt; satisfy isDigit
+&nbsp;</pre>
+<p>And we can of course use a string as our input stream:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Stream <span style="color: green;">&#91;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar = Rat $ \s -&gt; <span style="color: #06c; font-weight: bold;">case</span> s <span style="color: #06c; font-weight: bold;">of</span>
+    <span style="color: green;">&#40;</span>x:xs<span style="color: green;">&#41;</span> -&gt; Commit xs x
+    <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> -&gt; Fail <span style="color: #3c7331;">&quot;EOF&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;</pre>
+<p>Now that we've built a poor man's Parsec, let's do something more interesting. Instead of just using String as out input stream, let's include slots for use in memoizing the results from our various parsers at each location. To keep things concrete, we'll memoize the ArithPackrat.hs example that Bryan Ford used in his initial packrat presentation enriched with some whitespace handling.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> D = D
+  <span style="color: green;">&#123;</span> _add        :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _mult       :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _primary    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _decimal    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , anyCharD    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+  <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>If you look at the type of each of those functions you'll see that <code>_add :: D -> Result D Int</code>, which is exactly our Rat newtype expects as its argument, we we can bundle them directly:</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+add, mult, primary, decimal :: Rat D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+add     = Rat _add
+mult    = Rat _mult
+primary = Rat _primary
+decimal = Rat _decimal
+&nbsp;</pre>
+<p>We can similarly juse use the character parse result.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Stream D <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar = Rat anyCharD
+&nbsp;</pre>
+<p>Now we just need to build a D from a String. I'm using view patterns and record wildcards to shrink the amount of repetitive naming.</p>
+<pre class="haskell">&nbsp;
+parse :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; D
+parse s = fix $ \d -&gt; <span style="color: #06c; font-weight: bold;">let</span>
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _add<span style="color: green;">&#41;</span> =
+        <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> &lt; $&gt; mult &lt; * symbol '+' &lt;*&gt; add
+     &lt; /&gt; mult
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _mult<span style="color: green;">&#41;</span> =
+        <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> &lt; $&gt; primary &lt; * symbol '*' &lt;*&gt; mult
+    &lt; /&gt; primary
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _primary<span style="color: green;">&#41;</span> =
+        symbol '<span style="color: green;">&#40;</span>' *&gt; add &lt; * symbol '<span style="color: green;">&#41;</span>'
+    &lt;/&gt; decimal
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _decimal<span style="color: green;">&#41;</span> =
+     <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:foldl"><span style="font-weight: bold;">foldl</span></a>' <span style="color: green;">&#40;</span>\b a -&gt; b * <span style="color: red;">10</span> + a<span style="color: green;">&#41;</span> <span style="color: red;">0</span> &lt; $&gt; lexeme <span style="color: green;">&#40;</span>some digit<span style="color: green;">&#41;</span>
+  anyCharD = <span style="color: #06c; font-weight: bold;">case</span> s <span style="color: #06c; font-weight: bold;">of</span>
+    <span style="color: green;">&#40;</span>x:xs<span style="color: green;">&#41;</span> -&gt; Commit <span style="color: green;">&#40;</span>parse xs<span style="color: green;">&#41;</span> x
+    <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span>     -&gt; Fail <span style="color: #3c7331;">&quot;EOF&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+  <span style="color: #06c; font-weight: bold;">in</span> D <span style="color: green;">&#123;</span> .. <span style="color: green;">&#125;</span>
+&nbsp;
+dv :: d -&gt; <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> -&gt; b
+dv d f = f d
+&nbsp;</pre>
+<p>Note that we didn't really bother factoring the grammar, since packrat will take care of memoizing the redundant calls!</p>
+<p>And with that, we can define an evaluator.</p>
+<pre class="haskell">&nbsp;
+eval :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+eval s = <span style="color: #06c; font-weight: bold;">case</span> runRat <span style="color: green;">&#40;</span>whiteSpace *&gt; add &lt; * eof<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>parse s<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">of</span>
+  Pure a -&gt; a
+  Commit _ a -&gt; a
+  Fail s _ -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:error"><span style="font-weight: bold;">error</span></a> s
+&nbsp;</pre>
+<p>Note that because the input stream D contains the result directly and parse is the only thing that ever generates a D, and it does so when we start up, it should be obvious that the parse results for each location can't depend on any additional information smuggled in via our monad.</p>
+<p>Next time, we'll add a packratted Stream type directly to Parsec, which will necessitate some delicate handling of user state.</p>
+<p>The small parser implemented here can be <a href="https://github.com/ekmett/trifecta/blob/master/wip/Rat.hs">found on my github account</a>, where it hasn't been adulterated with unnecessary spaces by my blog software.</p>
+<p>P.S. To explain the quote, had I thought of it earlier, I could have named my parsing combinator library "Kessel Run" as by the time I'm done with it "it will contain at least 12 parsecs" between its different parser implementations.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">2 Responses to &#8220;A Parsec Full of Rats, Part 1&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-75955">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9263e46c5bab9ddc567350da8c3ab1df&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://github.com/sviperll' rel='external nofollow' class='url'>Victor Nazarov</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-75955" title="">September 24th, 2011 at 7:20 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Is there a tutorial-style documentation for trifecta that can be used to build Haskell 2010 parser with layout rule and fixity resolution using explicitly-lazy/iteratee/coroutine-style IO?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-75969">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-75969" title="">September 24th, 2011 at 9:41 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Victor: </p>
+<p>Not yet. </p>
+<p>Haskell is one of my use cases though, which is why the Literate and Layout parser transformers exist in the first place. My current focus has been on getting a usable C preprocessing parser transformer and rudimentary packrat support (because otherwise layout parsing is particularly expensive re-playing the &#8216;whiteSpace/virtual semicolon/virtual right brace&#8217; parser at the same location over and over. </p>
+<p>This is what led to this pair of articles.</p>
+<p>I do have a small prototype implementation of Daan Leijen&#8217;s HMF which uses trifecta to parse. Once I&#8217;m happier with it and obtain final permission to release it, that may serve as such a tutorial.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="380" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Friday, Sep 23rd, 2011 at 9:10 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> and  <a href="../../category/parsing/index.html" title="View all posts in Parsing" rel="category tag">Parsing</a> and  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733/index.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2011/a-parsec-full-of-rats/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:42 GMT -->
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/mini_Data-Buffer-Word8.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:37 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Buffer.Word8</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><DIV CLASS="outer"
+><DIV CLASS="mini-topbar"
+>Data.Buffer.Word8</DIV
+><DIV CLASS="mini-synopsis"
+><H1
+>The <TT
+>Buffer</TT
+> type
+</H1
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>&nbsp;<A HREF="Data-Buffer-Word8.html#t%3ABuffer" TARGET="main"
+>Buffer</A
+> </DIV
+> <H1
+>Introducing and eliminating <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aempty" TARGET="main"
+>empty</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Asingleton" TARGET="main"
+>singleton</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Apack" TARGET="main"
+>pack</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aunpack" TARGET="main"
+>unpack</A
+></DIV
+> <H1
+>Basic interface
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Acons" TARGET="main"
+>cons</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Asnoc" TARGET="main"
+>snoc</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aappend" TARGET="main"
+>append</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ahead" TARGET="main"
+>head</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Auncons" TARGET="main"
+>uncons</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aunsnoc" TARGET="main"
+>unsnoc</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Alast" TARGET="main"
+>last</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Atail" TARGET="main"
+>tail</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ainit" TARGET="main"
+>init</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Anull" TARGET="main"
+>null</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Alength" TARGET="main"
+>length</A
+></DIV
+> <H1
+>Transforming Buffers
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Amap" TARGET="main"
+>map</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Areverse" TARGET="main"
+>reverse</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aintersperse" TARGET="main"
+>intersperse</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aintercalate" TARGET="main"
+>intercalate</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Atranspose" TARGET="main"
+>transpose</A
+></DIV
+> <H1
+>Reducing <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s (folds)
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldl" TARGET="main"
+>foldl</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldl%27" TARGET="main"
+>foldl'</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldl1" TARGET="main"
+>foldl1</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldl1%27" TARGET="main"
+>foldl1'</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldr" TARGET="main"
+>foldr</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldr%27" TARGET="main"
+>foldr'</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldr1" TARGET="main"
+>foldr1</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afoldr1%27" TARGET="main"
+>foldr1'</A
+></DIV
+> <H2
+>Special folds
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aconcat" TARGET="main"
+>concat</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AconcatMap" TARGET="main"
+>concatMap</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aany" TARGET="main"
+>any</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aall" TARGET="main"
+>all</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Amaximum" TARGET="main"
+>maximum</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aminimum" TARGET="main"
+>minimum</A
+></DIV
+> <H1
+>Building Buffers
+</H1
+> <H2
+>Scans
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ascanl" TARGET="main"
+>scanl</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ascanl1" TARGET="main"
+>scanl1</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ascanr" TARGET="main"
+>scanr</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ascanr1" TARGET="main"
+>scanr1</A
+></DIV
+> <H2
+>Accumulating maps
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AmapAccumL" TARGET="main"
+>mapAccumL</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AmapAccumR" TARGET="main"
+>mapAccumR</A
+></DIV
+> <H2
+>Generating and unfolding Buffers
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Areplicate" TARGET="main"
+>replicate</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aunfoldr" TARGET="main"
+>unfoldr</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AunfoldrN" TARGET="main"
+>unfoldrN</A
+></DIV
+> <H1
+>Substrings
+</H1
+> <H2
+>Breaking strings
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Atake" TARGET="main"
+>take</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Adrop" TARGET="main"
+>drop</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AsplitAt" TARGET="main"
+>splitAt</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AtakeWhile" TARGET="main"
+>takeWhile</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AdropWhile" TARGET="main"
+>dropWhile</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aspan" TARGET="main"
+>span</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AspanEnd" TARGET="main"
+>spanEnd</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Abreak" TARGET="main"
+>break</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AbreakEnd" TARGET="main"
+>breakEnd</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Agroup" TARGET="main"
+>group</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AgroupBy" TARGET="main"
+>groupBy</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ainits" TARGET="main"
+>inits</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Atails" TARGET="main"
+>tails</A
+></DIV
+> <H2
+>Breaking into many substrings
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Asplit" TARGET="main"
+>split</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AsplitWith" TARGET="main"
+>splitWith</A
+></DIV
+> <H1
+>Predicates
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AisPrefixOf" TARGET="main"
+>isPrefixOf</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AisSuffixOf" TARGET="main"
+>isSuffixOf</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AisInfixOf" TARGET="main"
+>isInfixOf</A
+></DIV
+> <H2
+>Search for arbitrary substrings
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AbreakSubstring" TARGET="main"
+>breakSubstring</A
+></DIV
+> <H1
+>Searching Buffers
+</H1
+> <H2
+>Searching by equality
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aelem" TARGET="main"
+>elem</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AnotElem" TARGET="main"
+>notElem</A
+></DIV
+> <H2
+>Searching with a predicate
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afind" TARGET="main"
+>find</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Afilter" TARGET="main"
+>filter</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Apartition" TARGET="main"
+>partition</A
+></DIV
+> <H1
+>Indexing Buffers
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aindex" TARGET="main"
+>index</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AelemIndex" TARGET="main"
+>elemIndex</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AelemIndices" TARGET="main"
+>elemIndices</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AelemIndexEnd" TARGET="main"
+>elemIndexEnd</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AfindIndex" TARGET="main"
+>findIndex</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AfindIndices" TARGET="main"
+>findIndices</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Acount" TARGET="main"
+>count</A
+></DIV
+> <H1
+>Zipping and unzipping Buffers
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Azip" TARGET="main"
+>zip</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AzipWith" TARGET="main"
+>zipWith</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Aunzip" TARGET="main"
+>unzip</A
+></DIV
+> <H1
+>Ordered Buffers
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Asort" TARGET="main"
+>sort</A
+></DIV
+> <H1
+>Low level conversions
+</H1
+> <H2
+>Copying Buffers
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Acopy" TARGET="main"
+>copy</A
+></DIV
+> <H2
+>Packing <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+></TT
+>s and pointers
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3ApackCString" TARGET="main"
+>packCString</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3ApackCStringLen" TARGET="main"
+>packCStringLen</A
+></DIV
+> <H2
+>Using Buffers as <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+></TT
+>s
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AuseAsCString" TARGET="main"
+>useAsCString</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AuseAsCStringLen" TARGET="main"
+>useAsCStringLen</A
+></DIV
+> <H1
+>I/O with <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</H1
+> <H2
+>Standard input and output
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AgetLine" TARGET="main"
+>getLine</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AgetContents" TARGET="main"
+>getContents</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AputStr" TARGET="main"
+>putStr</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AputStrLn" TARGET="main"
+>putStrLn</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3Ainteract" TARGET="main"
+>interact</A
+></DIV
+> <H2
+>Files
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AreadFile" TARGET="main"
+>readFile</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AwriteFile" TARGET="main"
+>writeFile</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AappendFile" TARGET="main"
+>appendFile</A
+></DIV
+> <H2
+>I/O with Handles
+</H2
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhGetLine" TARGET="main"
+>hGetLine</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhGetContents" TARGET="main"
+>hGetContents</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhGet" TARGET="main"
+>hGet</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhGetNonBlocking" TARGET="main"
+>hGetNonBlocking</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhPut" TARGET="main"
+>hPut</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhPutStr" TARGET="main"
+>hPutStr</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AhPutStrLn" TARGET="main"
+>hPutStrLn</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Buffer-Word8.html#v%3AbreakByte" TARGET="main"
+>breakByte</A
+></DIV
+></DIV
+></DIV
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/mini_Data-Buffer-Word8.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:37 GMT -->
+</HTML
+>

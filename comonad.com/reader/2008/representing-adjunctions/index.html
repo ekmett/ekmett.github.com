@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2008/representing-adjunctions/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:08:46 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Representing Adjunctions</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../12/index.html' />
+	<link rel='archives' title='November 2008' href='../11/index.html' />
+	<link rel='archives' title='June 2008' href='../06/index.html' />
+	<link rel='archives' title='May 2008' href='../05/index.html' />
+	<link rel='archives' title='April 2008' href='../04/index.html' />
+	<link rel='archives' title='March 2008' href='../03/index.html' />
+	<link rel='archives' title='January 2008' href='../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Representing Adjunctions Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Linear Bloom Filters' href='../linear-bloom-filters/index.html' />
+<link rel='next' title='Zapping Adjunctions' href='../zapping-strong-adjunctions/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 5 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Representing Adjunctions">Representing Adjunctions</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="index.html#comments" title="Comment on Representing Adjunctions">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I've had a few people ask me questions about Adjunctions since my <a href="../kan-extensions-ii/index.html">recent post</a> and a request for some more introductory material, so I figured I would take a couple of short posts to tie Adjunctions to some other concepts. </p>
+<p><b>Representable Functors</b></p>
+<p>A covariant functor <img src='../../../latex/33758b56f2465f3a2dca572d3dde1dcb.png' title='$F : \mathcal{C} -&gt; \mathbf{Set}$' alt='$F : \mathcal{C} -&gt; \mathbf{Set}$' align=absmiddle> is said to be <a href="http://en.wikipedia.org/wiki/Representable_functor">representable</a> by an object <img src='../../../latex/bc4271643b2d67fbae80b362be29e936.png' title='$x \in \mathcal{C}$' alt='$x \in \mathcal{C}$' align=absmiddle> if it is naturally isomorphic to <img src='../../../latex/084aae1f3de3245112b5152187542ed6.png' title='$\mathbf{Hom}_C(x,-)$' alt='$\mathbf{Hom}_C(x,-)$' align=absmiddle>.</p>
+<p>We can translate that into Haskell, letting <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> play the role of <img src='../../../latex/60e8ad4206d900f0a34a79b144d80097.png' title='$\mathbf{Set}$' alt='$\mathbf{Set}$' align=absmiddle> with:</p>
+<p><span id="more-67"></span></p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Representable f x <span style="color: #06c; font-weight: bold;">where</span>
+    rep :: <span style="color: green;">&#40;</span>x -&gt; a<span style="color: green;">&#41;</span> -&gt; f a
+    unrep :: f a -&gt; <span style="color: green;">&#40;</span>x -&gt; a<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# RULES
+&quot;rep/unrep&quot; rep . unrep = id
+&quot;unrep/rep&quot; unrep . rep = id
+ #-}</span>
+&nbsp;</pre>
+<p>It is trivial to show that any two representations of a given functor must be isomorphic, and that there is a natural isomorphism between any two functors with the same representation, so we could strengthen the signature of the type class above by adding a pair of functional dependencies: f -> x, x -> f, but lets work without this straightjacket for now.</p>
+<p><b>Example</b></p>
+<p>We can represent the anonymous reader monad with its environment.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Representable <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>x<span style="color: green;">&#41;</span> x <span style="color: #06c; font-weight: bold;">where</span>
+    rep = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+    unrep = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p><b>Example</b></p>
+<p>We could adopt the pleasant fiction that () has a single inhabitant to avoid bringing in an empty type, but lets do this correctly. Clearly the Identity functor needs no extra information from its representation.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Void <span style="color: #5d478b; font-style: italic;">{- you'll need EmptyDataDecls -}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Representable Identity Void <span style="color: #06c; font-weight: bold;">where</span>
+    rep f = Identity <span style="color: green;">&#40;</span>f <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:undefined"><span style="font-weight: bold;">undefined</span></a><span style="color: green;">&#41;</span>
+    unrep = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> . runIdentity
+&nbsp;</pre>
+<p><b>Adjunctions</b></p>
+<p>If you recall the definition of Adjunctions over <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> from before:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>   :: a -&gt; g <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> :: f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> -&gt; a
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a>  :: <span style="color: green;">&#40;</span>f a -&gt; b<span style="color: green;">&#41;</span> -&gt; a -&gt; g b
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> :: <span style="color: green;">&#40;</span>a -&gt; g b<span style="color: green;">&#41;</span> -&gt; f a -&gt; b
+&nbsp;
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f . <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>
+        <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> f = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f
+&nbsp;</pre>
+<p>We can generate a lot of representable functors, by turning to the theorem mentioned in <a href="http://en.wikipedia.org/wiki/Representable_functor#Left_adjoint">the Wikipedia article</a> about the representability of a right adjoint in terms of its left adjoint wrapped around a singleton element: </p>
+<blockquote><p>
+Any functor <img src='../../../latex/992ca4d6e7a041ad8f83a91a766da629.png' title='$K : \mathcal{C} -&gt; \mathbf{Set}$' alt='$K : \mathcal{C} -&gt; \mathbf{Set}$' align=absmiddle> with a left adjoint <img src='../../../latex/83acee5a42088b1ed44d8b5b98e9f1a2.png' title='$F : \mathbf{Set} -&gt; \mathcal{C}$' alt='$F : \mathbf{Set} -&gt; \mathcal{C}$' align=absmiddle> is represented by (FX, ηX(•)) where X = {•} is a singleton set and η is the unit of the adjunction.
+</p></blockquote>
+<p>Well, earlier we defined a singleton set, <code>Void</code>, and <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> can play the role of <img src='../../../latex/60e8ad4206d900f0a34a79b144d80097.png' title='$\mathbf{Set}$' alt='$\mathbf{Set}$' align=absmiddle> as we did above. For <img src='../../../latex/8d340a729769514f33c9ee93c4416e59.png' title='$\mathcal{C} = \mathbf{Hask}$' alt='$\mathcal{C} = \mathbf{Hask}$' align=absmiddle>, we can translate the remainder quite easily:</p>
+<pre class="haskell">&nbsp;
+repAdjunction :: <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <span style="color: green;">&#40;</span>f Void -&gt; a<span style="color: green;">&#41;</span> -&gt; g a
+repAdjunction f = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:undefined"><span style="font-weight: bold;">undefined</span></a>
+&nbsp;
+unrepAdjunction :: <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; g a -&gt; <span style="color: green;">&#40;</span>f Void -&gt; a<span style="color: green;">&#41;</span>
+unrepAdjunction = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a>
+&nbsp;</pre>
+<p>Now, as usual the way type class inference works in Haskell requires us to reason somewhat backwards.</p>
+<p>You'd like to say:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; Representable g <span style="color: green;">&#40;</span>f Void<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        rep = repAdjunction;
+        unrep = unrepAdjunction
+&nbsp;</pre>
+<p>But if you do so, you can't define any other instances for <code>Representable</code>, you'll have used up the instance head, so the previous definitions couldn't be made.</p>
+<p>On the other hand, you can create the obligation for an appropriate instance of <code>Representable</code> by changing the signature of <code>Adjunction</code>:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Representable g <span style="color: green;">&#40;</span>f Void<span style="color: green;">&#41;</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+        ...
+&nbsp;</pre>
+<p>Then the definitions for <code>repAdjunction</code> and <code>unrepAdjunction</code> can be used by any would-be <code>Adjunction</code> to automatically generate the corresponding <code>Representable</code> instance, just like <code>liftM</code> can alwyas be used to make a Haskell <code>Monad</code> into a <code>Functor</code>.</p>
+<p>We can also go the other way and define an <code>Adjunction</code> given a representation for the right adjoint, but I'll leave that as an exercise for the reader. (Hint: you'll probably want to weaken the signature for Adjunction to remove the fundeps, so you can test some simple cases). You may also want to take a look at the section on Adjunctions as Kan extensions portion of the <a href="../kan-extensions-ii/index.html">earlier post</a>.</p>
+<p>I have since modified <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/category-extras">category-extras</a> definition of Adjunction to require the instance for Representable motivated above.</p>
+<p><b>Haddock:</b><br />
+[<a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html">Control.Functor.Adjunction</a>]<br />
+[<a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Representable.html">Control.Functor.Representable</a>]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">2 Responses to &#8220;Representing Adjunctions&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1616">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../zapping-strong-adjunctions/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Zapping Adjunctions</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1616" title="">June 5th, 2008 at 3:34 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Now, we would like to do the same thing we did with Representable last time, and just require the user of the Adjunction class to provide us with more instances, something like: [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1681">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a41270ddebc8fd1971bfc72c4680448c&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Grant B</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1681" title="">June 13th, 2008 at 5:33 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Just to let you know that this post helped my understanding of category-theoretic representability and representable functors.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="67" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Jun 5th, 2008 at 11:48 am</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733/index.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2008/representing-adjunctions/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:08:49 GMT -->
+</html>

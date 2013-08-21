@@ -1,0 +1,51 @@
+name: monoids
+version: 0.1.29
+license: BSD3
+copyright: (c) 2009 Edward A. Kmett
+maintainer: Edward A. Kmett <ekmett@gmail.com>
+stability: experimental
+homepage: http://comonad.com/reader
+package-url:
+description: Monoids, specialized containers and a general map/reduce framework
+category: Data, Math, Numerical, Natural Language Processing, Parsing
+author: Edward A. Kmett
+exposed: True
+exposed-modules: Data.Field Data.Field.VectorSpace Data.Group
+                 Data.Group.Combinators Data.Group.Multiplicative
+                 Data.Group.Multiplicative.Sugar Data.Group.Sugar
+                 Data.Monoid.Additive Data.Monoid.Additive.Sugar
+                 Data.Monoid.Applicative Data.Monoid.Categorical
+                 Data.Monoid.Combinators Data.Monoid.FromString Data.Generator
+                 Data.Generator.Combinators Data.Generator.Compressive.LZ78
+                 Data.Generator.Compressive.RLE Data.Generator.Free
+                 Data.Monoid.Instances Data.Monoid.Lexical.SourcePosition
+                 Data.Monoid.Lexical.UTF8.Decoder Data.Monoid.Lexical.Words
+                 Data.Monoid.Monad Data.Monoid.Multiplicative
+                 Data.Monoid.Multiplicative.Sugar Data.Monoid.Ord
+                 Data.Monoid.Reducer Data.Monoid.Reducer.Char
+                 Data.Monoid.Reducer.With Data.Monoid.Self Data.Monoid.Union
+                 Data.Ring Data.Ring.Algebra Data.Ring.Boolean Data.Ring.FromNum
+                 Data.Ring.ModularArithmetic Data.Ring.Module
+                 Data.Ring.Module.AutomaticDifferentiation Data.Ring.Semi
+                 Data.Ring.Semi.BitSet Data.Ring.Semi.Near Data.Ring.Semi.Near.Trie
+                 Data.Ring.Semi.Natural Data.Ring.Semi.Ord Data.Ring.Semi.Tropical
+                 Data.Ring.Sugar
+hidden-modules:
+import-dirs: /home/ekmett/.cabal/lib/monoids-0.1.29/ghc-6.10.1
+library-dirs: /home/ekmett/.cabal/lib/monoids-0.1.29/ghc-6.10.1
+hs-libraries: HSmonoids-0.1.29
+extra-libraries:
+extra-ghci-libraries:
+include-dirs:
+includes:
+depends: QuickCheck-2.1.0.1 array-0.2.0.0 base-4.0.0.0 bitset-1.0
+         bytestring-0.9.1.4 category-extras-0.53.5 containers-0.2.0.0
+         fingertree-0.0 mtl-1.1.0.2 parallel-1.1.0.0 parsec-3.0.0
+         reflection-0.1.1 stm-2.1.1.2 text-0.1
+hugs-options:
+cc-options:
+ld-options:
+framework-dirs:
+frameworks:
+haddock-interfaces: /home/ekmett/.cabal/share/doc/monoids-0.1.29/html/monoids.haddock
+haddock-html: /home/ekmett/.cabal/share/doc/monoids-0.1.29/html

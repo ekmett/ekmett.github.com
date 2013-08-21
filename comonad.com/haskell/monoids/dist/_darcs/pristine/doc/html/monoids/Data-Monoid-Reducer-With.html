@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Reducer-With.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:06 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Reducer.With</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Reducer-With.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Reducer.With</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTCs)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AWithReducer"
+>WithReducer</A
+> c m = <A HREF="#v%3AWithReducer"
+>WithReducer</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AwithoutReducer"
+>withoutReducer</A
+> :: c</TD
+></TR
+></TABLE
+>}</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AWithReducer"
+></A
+><B
+>WithReducer</B
+> c m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Reducer-With.html#WithReducer"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>If <TT
+>m</TT
+> is a <TT
+>c</TT
+>-<A HREF="Reducer.html"
+>Reducer</A
+>, then m is <TT
+>(c <TT
+><A HREF="Data-Monoid-Reducer-With.html#v%3AWithReducer"
+>WithReducer</A
+></TT
+> m)</TT
+>-<A HREF="Reducer.html"
+>Reducer</A
+>
+   This can be used to quickly select a <A HREF="Reducer.html"
+>Reducer</A
+> for use as a <TT
+>FingerTree</TT
+>
+   <TT
+>measure</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AWithReducer"
+></A
+><B
+>WithReducer</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AwithoutReducer"
+></A
+><B
+>withoutReducer</B
+> :: c</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:WithReducer')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:WithReducer" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> c m =&gt; Measured m (<A HREF="Data-Monoid-Reducer-With.html#t%3AWithReducer"
+>WithReducer</A
+> c m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> c m =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Monoid-Reducer-With.html#t%3AWithReducer"
+>WithReducer</A
+> c m) m</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Reducer-With.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:07 GMT -->
+</HTML
+>

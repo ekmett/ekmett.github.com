@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Postpro.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Morphism.Postpro</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Morphism.Postpro</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>See Maarten Fokkinga''s PhD Dissertation for postpro. g_postpro is 
+ an obvious generalization.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Apostpro"
+>postpro</A
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f c -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ag_postpro"
+>g_postpro</A
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Abipostpro"
+>bipostpro</A
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> (f a) c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ag_bipostpro"
+>g_bipostpro</A
+> :: (<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m (f a) -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> (f a) m c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Apostpro"
+></A
+><B
+>postpro</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f c -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_postpro"
+></A
+><B
+>g_postpro</B
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generalized postpromorphisms
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Abipostpro"
+></A
+><B
+>bipostpro</B
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> (f a) c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_bipostpro"
+></A
+><B
+>g_bipostpro</B
+> :: (<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m (f a) -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> (f a) m c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; c -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Postpro.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

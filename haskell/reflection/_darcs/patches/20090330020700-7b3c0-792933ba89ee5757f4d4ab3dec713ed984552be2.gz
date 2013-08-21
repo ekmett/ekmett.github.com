@@ -1,5 +1,0 @@
-[added description to make cabal happy
-ekmett@gmail.com**20090330020700] {
-hunk ./reflection.cabal 12
-+description:    Implementation of the code in "Functional Pearl: Implicit Configurations" by Oleg Kiselyov and Chung-chieh Shan
-}

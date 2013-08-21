@@ -1,0 +1,860 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2011/what-constraints-entail-part-2/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:51 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; What Constraints Entail: Part 2</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../12/index.html' />
+	<link rel='archives' title='November 2011' href='../../11/index.html' />
+	<link rel='archives' title='October 2011' href='../../10/index.html' />
+	<link rel='archives' title='September 2011' href='../../09/index.html' />
+	<link rel='archives' title='July 2011' href='../../07/index.html' />
+	<link rel='archives' title='June 2011' href='../../06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; What Constraints Entail: Part 2 Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='What Constraints Entail: Part 1' href='../../what-constraints-entail-part-1/index.html' />
+<link rel='next' title='Searching Infinity Parametrically' href='../../searching-infinity/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 3 Nov 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: What Constraints Entail: Part 2">What Constraints Entail: Part 2</a></h2>
+Posted by Edward Kmett under <a href="../../../category/haskell/constraint-kinds/index.html" title="View all posts in Constraint Kinds" rel="category tag">Constraint Kinds</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../../category/logic/index.html" title="View all posts in Logic" rel="category tag">Logic</a> ,  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../../../category/type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a> ,  <a href="../../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../index.html#comments" title="Comment on What Constraints Entail: Part 2">[13] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="../../what-constraints-entail-part-1/index.html">Last time</a> we derived an entailment relation for constraints, now let's get some use out of it.</p>
+<h2>Reflecting Classes and Instances</h2>
+<p>Most of the implications we use on a day to day basis come from our class and instance declarations, but last time we only really dealt with constraint products.</p>
+<p><span id="more-461"></span></p>
+<p>For example given: </p>
+<pre class="haskell">&nbsp;
+#if <span style="color: red;">0</span>
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span>
+#endif
+&nbsp;</pre>
+<p>we could provide the following witnesses</p>
+<pre class="haskell">&nbsp;
+ordEq :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a :- <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a
+ordEq = Sub Dict
+&nbsp;
+eqList :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :- <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span>
+eqList = Sub Dict
+&nbsp;</pre>
+<p>But this would require a lot of names and become remarkably tedious.</p>
+<p>So lets define classes to reflect the entailment provided by class definitions and instance declarations and then use them to reflect themselves.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Class b h | h -&gt; b <span style="color: #06c; font-weight: bold;">where</span>
+  cls :: h :- b
+&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">9</span> :=&gt;
+<span style="color: #06c; font-weight: bold;">class</span> b :=&gt; h | h -&gt; b <span style="color: #06c; font-weight: bold;">where</span>
+  ins :: b :- h
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Class b a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b :=&gt; a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+&nbsp;</pre>
+<p>Now we can reflect classes and instances as instances of Class and (:=>) respectively with:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- class Eq a =&gt; Ord a where ...</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #5d478b; font-style: italic;">-- instance Eq a =&gt; Eq [a] where ...</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<p>That said, instances of Class and Instance should never require a context themselves, because the modules that the class and instance declarations live in can't taken one, so we can define the following instances which bootstrap the instances of (:=>) for Class and (:=>) once and for all.</p>
+<pre class="haskell">&nbsp;
+#ifdef UNDECIDABLE
+<span style="color: #06c; font-weight: bold;">instance</span> Class b a =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Class b a <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>b :=&gt; a<span style="color: green;">&#41;</span> =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; b :=&gt; a <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+#endif
+&nbsp;</pre>
+<p>These two instances are both decidable, and following a recent bug fix, the current version of GHC HEAD supports them, but my local version isn't that recent, hence the #ifdef.</p>
+<p>We can also give admissable-if-not-ever-stated instances of Class and (:=>) for () as well.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<h2>Reflecting the Prelude</h2>
+<p>So now that we've written a handful of instances, lets take the plunge and just reflect the entire Prelude, and (most of) the instances for the other modules we've loaded.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Dict a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>a :- b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>:=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>:=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>Dict a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> <span style="color: green;">&#40;</span>a :- b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ordering"><span style="background-color: #efefbf; font-weight: bold;">Ordering</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Dict a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>a :- b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ordering"><span style="background-color: #efefbf; font-weight: bold;">Ordering</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> a<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Read"><span style="background-color: #efefbf; font-weight: bold;">Read</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ordering"><span style="background-color: #efefbf; font-weight: bold;">Ordering</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ordering"><span style="background-color: #efefbf; font-weight: bold;">Ordering</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> b<span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bounded"><span style="background-color: #efefbf; font-weight: bold;">Bounded</span></a> <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Enum"><span style="background-color: #efefbf; font-weight: bold;">Enum</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Floating"><span style="background-color: #efefbf; font-weight: bold;">Floating</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Floating"><span style="background-color: #efefbf; font-weight: bold;">Floating</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Floating"><span style="background-color: #efefbf; font-weight: bold;">Floating</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Floating"><span style="background-color: #efefbf; font-weight: bold;">Floating</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Real"><span style="background-color: #efefbf; font-weight: bold;">Real</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Fractional"><span style="background-color: #efefbf; font-weight: bold;">Fractional</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFrac"><span style="background-color: #efefbf; font-weight: bold;">RealFrac</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFrac"><span style="background-color: #efefbf; font-weight: bold;">RealFrac</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFrac"><span style="background-color: #efefbf; font-weight: bold;">RealFrac</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> a :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFrac"><span style="background-color: #efefbf; font-weight: bold;">RealFrac</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFrac"><span style="background-color: #efefbf; font-weight: bold;">RealFrac</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Floating"><span style="background-color: #efefbf; font-weight: bold;">Floating</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Monoid a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Monoid <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Monoid <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ordering"><span style="background-color: #efefbf; font-weight: bold;">Ordering</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Monoid <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid a :=&gt; Monoid <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Monoid a, Monoid b<span style="color: green;">&#41;</span> :=&gt; Monoid <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:IO"><span style="background-color: #efefbf; font-weight: bold;">IO</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Applicative f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Applicative <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Applicative <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Applicative <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Applicative <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Applicative <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:IO"><span style="background-color: #efefbf; font-weight: bold;">IO</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid a :=&gt; Applicative <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span>Applicative f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Alternative f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Alternative <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; Alternative <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:IO"><span style="background-color: #efefbf; font-weight: bold;">IO</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>MonadPlus f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> cls = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; MonadPlus <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> :=&gt; MonadPlus <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<p>Of course, the structure of these definitions is extremely formulaic, so when template-haskell builds against HEAD again, they should be able to be generated automatically using splicing and reify, which would reduce this from a wall of text to a handful of lines with better coverage!</p>
+<h2>An alternative using Default Signatures and Type Families</h2>
+<p>Many of the above definitions could have been streamlined by using default definitions. However, MPTCs do not currently support default signatures. We can however, define Class and (:=>) using type families rather than functional dependencies. This enables us to use defaulting, whenever the superclass or context was ().</p>
+<pre class="haskell">&nbsp;
+#if <span style="color: red;">0</span>
+<span style="color: #06c; font-weight: bold;">class</span> Class h <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Sup h :: Constraint
+  <span style="color: #06c; font-weight: bold;">type</span> Sup h = <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+  cls :: h :- Sup h
+  <span style="color: #06c; font-weight: bold;">default</span> cls :: h :- <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+  cls = Sub Dict
+&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Instance h <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx h :: Constraint
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx h = <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+  ins :: Ctx h :- h
+  <span style="color: #06c; font-weight: bold;">default</span> ins :: h =&gt; Ctx h :- h
+  ins = Sub Dict
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span>Class a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span>Instance a<span style="color: green;">&#41;</span>
+&nbsp;
+#ifdef UNDECIDABLE
+<span style="color: #06c; font-weight: bold;">instance</span> Class a =&gt; Instance <span style="color: green;">&#40;</span>Class a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance a =&gt; Instance <span style="color: green;">&#40;</span>Instance a<span style="color: green;">&#41;</span>
+#endif
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+#endif
+&nbsp;</pre>
+<p>This seems at first to be a promising approach. Many instances are quite small:</p>
+<pre class="haskell">&nbsp;
+#if <span style="color: red;">0</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Class <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Float"><span style="background-color: #efefbf; font-weight: bold;">Float</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Double"><span style="background-color: #efefbf; font-weight: bold;">Double</span></a><span style="color: green;">&#41;</span>
+#endif
+&nbsp;</pre>
+<p>But those that aren't are considerably more verbose and are much harder to read off than the definitions using the MPTC based Class and (:=>).</p>
+<pre class="haskell">&nbsp;
+#if <span style="color: red;">0</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a
+  ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a
+  ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a
+  ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>Ratio a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a
+  ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> b<span style="color: green;">&#41;</span>
+  ins = Sub Dict
+<span style="color: #06c; font-weight: bold;">instance</span> Instance <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: #06c; font-weight: bold;">type</span> Ctx <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> b<span style="color: green;">&#41;</span>
+  ins = Sub Dict
+#endif
+&nbsp;</pre>
+<p>Having tested both approaches, the type family approach led to a ~10% larger file size, and was harder to read, so I remained with MPTCs even though it meant repeating "where ins = Sub Dict" over and over.</p>
+<p>In a perfect world, we'd gain the ability to use default signatures with multiparameter type classes, and the result would be considerably shorter and easier to read!</p>
+<h2>Fake Superclasses</h2>
+<p>Now, that we have all this machinery, it'd be nice to get something useful out of it. Even if we could derive it by other means, it'd let us know we weren't completely wasting our time.</p>
+<p>Let's define a rather horrid helper, which we'll only use where a and b are the same constraint being applied to a newtype wrapper of the same type, so we can rely on the fact that the dictionaries have the same representation.</p>
+<pre class="haskell">&nbsp;
+evil :: a :- b
+evil = unsafeCoerce refl
+&nbsp;</pre>
+<p>We often bemoan the fact that we can't use Applicative sugar given just a Monad, since Applicative wasn't made a superclass of Monad due to the inability of the Haskell 98 report to foresee the future invention of Applicative.</p>
+<p>There are rather verbose options to get Applicative sugar for your Monad, or to pass it to something that expects an Applicative. For instance you can use WrappedMonad from Applicative. We reflect the relevant instance here.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m :=&gt; Applicative <span style="color: green;">&#40;</span>WrappedMonad m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;</pre>
+<p>Using that instance and the combinators defined previously, we can obtain the following </p>
+<pre class="haskell">&nbsp;
+applicative :: <span style="color: #06c; font-weight: bold;">forall</span> m a. <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; <span style="color: green;">&#40;</span>Applicative m =&gt; m a<span style="color: green;">&#41;</span> -&gt; m a
+applicative m =
+  m \\ trans <span style="color: green;">&#40;</span>evil :: Applicative <span style="color: green;">&#40;</span>WrappedMonad m<span style="color: green;">&#41;</span> :- Applicative m<span style="color: green;">&#41;</span> ins
+&nbsp;</pre>
+<p>Here ins is instantiated to the instance of (:=>) above, so we use trans to compose <code>ins :: Monad m :- Applicative (WrappedMonad m)</code> with <code>evil :: Applicative (WrappedMonad m) :- Applicative m</code> to obtain an entailment of type <code>Monad m :- Applicative m</code> in local scope, and then apply that transformation to discharge the Applicative obligation on m.</p>
+<p>Now, we can use this to write definitions. [Note: Frustratingly, my blog software inserts spaces after &lt;'s in code]</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>&lt; &amp;&gt;<span style="color: green;">&#41;</span> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; m a -&gt; m b -&gt; m <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>
+m &lt; &amp;&gt; n = applicative $ <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> &lt; $&gt; m &lt; *&gt; n
+&nbsp;</pre>
+<p>Which compares rather favorably to the more correct</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>&lt; &amp;&gt;<span style="color: green;">&#41;</span> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; m a -&gt; m b -&gt; m <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>
+m &lt; &amp;&gt; n = unwrapMonad $ <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> &lt; $&gt; WrapMonad m &lt; *&gt; WrapMonad n
+&nbsp;</pre>
+<p>especially considering you still have access to any other instances on m you might want to bring into scope without having to use deriving to lift them onto the newtype!</p>
+<p>Similarly you can borrow <code>< |></code> and empty locally for use by your <code>MonadPlus</code> with:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadPlus m :=&gt; Alternative <span style="color: green;">&#40;</span>WrappedMonad m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ins = Sub Dict
+&nbsp;
+alternative :: <span style="color: #06c; font-weight: bold;">forall</span> m a. MonadPlus m =&gt; <span style="color: green;">&#40;</span>Alternative m =&gt; m a<span style="color: green;">&#41;</span> -&gt; m a
+alternative m =
+  m \\ trans <span style="color: green;">&#40;</span>evil :: Alternative <span style="color: green;">&#40;</span>WrappedMonad m<span style="color: green;">&#41;</span> :- Alternative m<span style="color: green;">&#41;</span> ins
+&nbsp;</pre>
+<p>The correctness of this of course relies upon the convention that any <code>Applicative</code> and <code>Alternative</code> your <code>Monad</code> may have should agree with its <code>Monad</code> instance, so even if you use <code>Alternative</code> or <code>Applicative</code> in a context where the actual <code>Applicative</code> or <code>Alternative</code> instance for your particular type m is in scope, it shouldn't matter beyond a little bit of efficiency which instance the compiler picks to discharge the <code>Applicative</code> or <code>Alternative</code> obligation.</p>
+<p>Note: It isn't that the <code>Constraint</code> kind is invalid, but rather that using <code>unsafeCoerce</code> judiciously we can bring into scope instances that don't exist for a given type by substituting those from a different type which have the right representation.</p>
+<p>[<a href="https://github.com/ekmett/constraints/blob/master/Data/Constraint.hs">Source</a>]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">13 Responses to &#8220;What Constraints Entail: Part 2&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-84914">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=6b5276e65cb7a7417188c9a035953cee&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84914" title="">November 16th, 2011 at 3:17 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Working on the problem of expressing the pattern behind the relationship between sort/sortBy, maximum/maximumBy, etc, I have a few observations.</p>
+<p>First, you&#8217;ve shown the existence of a type Dict :: Constraint -&gt; * (which I suggest might more naturally be named Evidence in keeping with most of the work I have seen on qualified types, but that&#8217;s not important). A little bit of magic (the TH approach that you mention would do it) should suffice to make this a surjective type function. There&#8217;s a plausible argument that it&#8217;s injective as well (since we take a nominal typing approach to constraints and ignore ordering of constraint conjunctions), but I don&#8217;t think this accomplishes much so let&#8217;s ignore it.</p>
+<p>Second, I postulate the existence of another (surjective, but surely not injective) type function Qualifier :: * -&gt; Constraint which extracts the context of its argument and returns the empty constraint if its argument is unqualified.</p>
+<p>Third, twisting the same idea, I postulate the existence of another surjective type function (for which I don&#8217;t have a good name&#8230;) Unqualified :: * -&gt; * which discards the context if its argument is qualified and is otherwise the identity function.</p>
+<p>Taking 1 and assuming 2 and 3, then shouldn&#8217;t we be able to have a function:</p>
+<p>by :: t -&gt; Evidence (Qualifier t) -&gt; Unqualified t?</p>
+<p>Working through the translation for an example, and ignoring the term level for a bit, we&#8217;d get:</p>
+<p>sort :: (Ord a) =&gt; [a] -&gt; [a]<br />
+Qualifier ((Ord a) =&gt; [a] -&gt; [a]) ~ Ord a<br />
+Evidence (Ord a) ~ OrdDict a<br />
+Unqualified ((Ord a) =&gt; [a] -&gt; [a]) ~ [a] -&gt; [a]</p>
+<p>(sort `by`) :: OrdDict a -&gt; [a] -&gt; [a]</p>
+<p>&#8230; which is what we were looking for.</p>
+<p>Sadly/oddly this is applicable at types which are not (possibly-qualified) arrow types, but it seems fairly harmless:</p>
+<p>(True `by`) :: () -&gt; Bool (assuming () is the type of evidence for the empty constraint?)</p>
+<p>Did I skip any steps? Is there a reason in principle why we couldn&#8217;t write either Qualifier or Unqualified (I could see how we might need a language extension&#8230;).</p>
+<p>Stepping back to the term level, I&#8217;m a bit stuck. I think I am stuck on understanding your concrete syntax more than on any fundamental reason why this is impossible, but I&#8217;m not sure.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-84919">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=6b5276e65cb7a7417188c9a035953cee&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84919" title="">November 16th, 2011 at 3:30 pm</a> </small>
+			<br clear="all"/>
+
+			<p>One more note:<br />
+The existence of GHC is a proof for the possibility of doing this at the term level, right, because it erases qualified types during the translation to the core language by doing this same evidence passing scheme?</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-84920">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=6b5276e65cb7a7417188c9a035953cee&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84920" title="">November 16th, 2011 at 3:32 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Oops, one more:<br />
+If you really were concerned about expressions like (True `by`) you could strengthen the type of by from</p>
+<p>by :: t -&gt; Evidence (Qualifier t) -&gt; Unqualified t</p>
+<p>to</p>
+<p>by :: (Unqualified t ~ a -&gt; b) =&gt; t -&gt; Evidence (Qualifier t) -&gt; Unqualified t</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-84931">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84931" title="">November 16th, 2011 at 5:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>The problem with Qualifier and Unqualified is that unification of types involving =&gt; isn&#8217;t done by simple unification, but instead by bi-implication for constraints, so while you can write some types with them, you typically can&#8217;t build inhabitants.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-84938">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d2830e0d6c046879b00c8e4d42d4c56a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84938" title="">November 16th, 2011 at 5:51 pm</a> </small>
+			<br clear="all"/>
+
+			<p>That explains why you can&#8217;t define them in Haskell, but I don&#8217;t think it bars you from adding them as primitives, does it? And the type checker already has the implementation that would back the primitive?</p>
+<p>I don&#8217;t have access to a machine with bleeding edge GHC on it at the moment, but is (c =&gt; t) -&gt; Dict c -&gt; t a syntactically valid type? If not, why not?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-84952">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84952" title="">November 16th, 2011 at 7:20 pm</a> </small>
+			<br clear="all"/>
+
+			<p>discharge :: (c => t) -> Dict c -> t<br />
+discharge t Dict = t</p>
+<p>works fine.</p>
+<p>as for whether the type checker has the machinery, that is somewhat harder to answer, becuase it would depend on the details of the largely underspecified constraint simplifier.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-84953">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-84953" title="">November 16th, 2011 at 7:23 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Dan Peebles has some nice examples for things like a more polymorphic &#8216;on&#8217; that could benefit, but in the meantime, one can use explicit proxies to work around the inability to name the constraint implicitly.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-85094">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=6b5276e65cb7a7417188c9a035953cee&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-85094" title="">November 17th, 2011 at 11:39 am</a> </small>
+			<br clear="all"/>
+
+			<p>Ah, ok, I&#8217;m on the right page now. This can&#8217;t work because context reduction/constraint simplification is such a mess.</p>
+<p>Probably a good thing, too, because for something like this you wouldn&#8217;t want any context reduction in the first place, you&#8217;d want the naively inferred context that is based solely on what class functions are actually mentioned in a definition.</p>
+<p>This is because you might want to occasionally use an ordering on, say, lists other than the lexical one in the prelude (say, by sum or whatever). If the context gets reduced from Ord ([Salary]) to Ord Salary then you&#8217;ve already lost your chance.</p>
+<p>Proxies it is.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-85115">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-85115" title="">November 17th, 2011 at 2:13 pm</a> </small>
+			<br clear="all"/>
+
+			<p>As an aside, you can _write_</p>
+<p>type family Constraints t :: Constraints<br />
+type instance Constraints (p => q) = p</p>
+<p>you just can&#8217;t use it anywhere. =/</p>
+<p>The compiler complains when you go to use it that you need LiberalTypeSynonyms even if you have LiberalTypeSynonyms turned on. ;)</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-85119">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=6b5276e65cb7a7417188c9a035953cee&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Doug McClean</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-85119" title="">November 17th, 2011 at 2:43 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Yeah, I was thinking of that definition and the corresponding</p>
+<p>type family Unqualified t :: *<br />
+type instance Unqualified (p =&gt; q) = q</p>
+<p>Alas there is a logical reason why it doesn&#8217;t make sense.</p>
+<p>{-# LANGUAGE CommunistTypeSynonyms #-}?</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-85122">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-85122" title="">November 17th, 2011 at 2:57 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I raised the issue to Max. Not sure there is a good way for it to be defined in user land, because</p>
+<p>() => q and q are interchangeable, so it would require compiler support.</p>
+<p>The most compelling use case is to make code like </p>
+<p>on :: (p a, p b) => (c -> c -> d) -> (forall x. p x => x -> c) -> a -> b -> d</p>
+<p>inhabitable for</p>
+<p>((++) `on` show)</p>
+<p>but it impacts all sorts of unrelated areas in the compiler.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-103013">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=263366f6318ce617f95d7282883402c0&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://joyoftypes.blogspot.com/' rel='external nofollow' class='url'>Philip J-F</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-103013" title="">March 1st, 2012 at 2:04 am</a> </small>
+			<br clear="all"/>
+
+			<p>Inspired by this discussion I wrote a post showing how to get multiple, passable, effectively first-class, instances.  I borrowed your applicative example: <a href="http://joyoftypes.blogspot.com/2012/02/haskell-supports-first-class-instances.html" rel="nofollow">http://joyoftypes.blogspot.com/2012/02/haskell-supports-first-class-instances.html</a></p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-105341">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=556f4ac7e166daeedb1b8968e228480b&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>zzo38</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-105341" title="">June 26th, 2012 at 2:08 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I like this! Nevertheless they are not perfect, not like real superclass, it is why I wanted to define my own programming language to correct these things, but at least Haskell has been improved by these thing so that much works OK.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="461" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Nov 3rd, 2011 at 2:23 am</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/haskell/constraint-kinds/index.html" title="View all posts in Constraint Kinds" rel="category tag">Constraint Kinds</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../../category/logic/index.html" title="View all posts in Logic" rel="category tag">Logic</a> and  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> and  <a href="../../../category/type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a> and  <a href="../../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2011/what-constraints-entail-part-2/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:52 GMT -->
+</html>

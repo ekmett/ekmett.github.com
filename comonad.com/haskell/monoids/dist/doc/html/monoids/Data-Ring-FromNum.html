@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-FromNum.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:13 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Ring.FromNum</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Ring-FromNum.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Ring.FromNum</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTCs)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A wrapper that lies for you and claims any instance of <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+></TT
+> is a <TT
+><A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+></TT
+>.
+ Who knows, for your type it might even be telling the truth!
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Ring.html"
+>Data.Ring</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AFromNum"
+></A
+><B
+>FromNum</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Ring-FromNum.html#FromNum"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AFromNum"
+></A
+><B
+>FromNum</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetFromNum"
+></A
+><B
+>getFromNum</B
+> :: a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:FromNum')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:FromNum" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> Integer (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Arbitrary a =&gt; Arbitrary (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>CoArbitrary a =&gt; CoArbitrary (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Monoid-Multiplicative.html#t%3AMultiplicative"
+>Multiplicative</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Group.html#t%3AGroup"
+>Group</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARing"
+>Ring</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ASemiRing"
+>SemiRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ALeftSemiNearRing"
+>LeftSemiNearRing</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> a =&gt; <A HREF="Data-Ring.html#t%3ARingoid"
+>Ringoid</A
+> (<A HREF="Data-Ring-FromNum.html#t%3AFromNum"
+>FromNum</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-FromNum.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:14 GMT -->
+</HTML
+>

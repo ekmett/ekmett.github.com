@@ -1,0 +1,5257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:16:04 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Buffer.Lazy.Word8</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Buffer-Lazy-Word8.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>buffer-0.0.1: Fast, packed, UTF-8 finger trees</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Buffer.Lazy.Word8</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>The <TT
+>Buffer</TT
+> type
+</A
+></DT
+><DT
+><A HREF="#2"
+>Introducing and eliminating <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</A
+></DT
+><DT
+><A HREF="#3"
+>Basic interface
+</A
+></DT
+><DT
+><A HREF="#4"
+>Transforming Buffers
+</A
+></DT
+><DT
+><A HREF="#5"
+>Reducing <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s (folds)
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#6"
+>Special folds
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#7"
+>Building Buffers
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#8"
+>Scans
+</A
+></DT
+><DT
+><A HREF="#9"
+>Accumulating maps
+</A
+></DT
+><DT
+><A HREF="#10"
+>Infinite Buffers
+</A
+></DT
+><DT
+><A HREF="#11"
+>Unfolding Buffers
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#12"
+>Substrings
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#13"
+>Breaking strings
+</A
+></DT
+><DT
+><A HREF="#14"
+>Breaking into many substrings
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#15"
+>Predicates
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#16"
+>Search for arbitrary substrings
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#17"
+>Searching Buffers
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#18"
+>Searching by equality
+</A
+></DT
+><DT
+><A HREF="#19"
+>Searching with a predicate
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#20"
+>Indexing Buffers
+</A
+></DT
+><DT
+><A HREF="#21"
+>Zipping and unzipping Buffers
+</A
+></DT
+><DT
+><A HREF="#22"
+>Ordered Buffers
+</A
+></DT
+><DT
+><A HREF="#23"
+>Low level conversions
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#24"
+>Copying Buffers
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#25"
+>I/O with <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#26"
+>Standard input and output
+</A
+></DT
+><DT
+><A HREF="#27"
+>Files
+</A
+></DT
+><DT
+><A HREF="#28"
+>I/O with Handles
+</A
+></DT
+></DL
+></DD
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A time and space-efficient implementation of lazy byte vectors
+ using lists of packed <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+> arrays, suitable for high performance
+ use, both in terms of large data quantities, or high speed
+ requirements. Byte vectors are encoded as lazy lists of strict <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+>
+ arrays of bytes. They provide a means to manipulate large byte vectors
+ without requiring the entire vector be resident in memory.
+</P
+><P
+>Some operations, such as concat, append, reverse and cons, have
+ better complexity than their <A HREF="Data-Buffer.html"
+>Data.Buffer</A
+> equivalents, due to
+ optimisations resulting from the list spine structure. And for other
+ operations lazy Buffers are usually within a few percent of
+ strict ones, but with better heap usage. For data larger than the
+ available memory, or if you have tight memory constraints, this
+ module will be the only option. The default chunk size is 64k, which
+ should be good in most circumstances. For people with large L2
+ caches, you may want to increase this to fit your cache.
+</P
+><P
+>This module is intended to be imported <TT
+>qualified</TT
+>, to avoid name
+ clashes with <A HREF="Prelude.html"
+>Prelude</A
+> functions.  eg.
+</P
+><PRE
+> import qualified Data.Buffer.Lazy as B
+</PRE
+><P
+>Original GHC implementation by Bryan O'Sullivan.
+ Rewritten to use Data.Array.Unboxed.UArray by Simon Marlow.
+ Rewritten to support slices and use Foreign.ForeignPtr.ForeignPtr
+ by David Roundy.
+ Polished and extended by Don Stewart.
+ Lazy variant by Duncan Coutts and Don Stewart.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ABuffer"
+>Buffer</A
+> </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aempty"
+>empty</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asingleton"
+>singleton</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Apack"
+>pack</A
+> :: [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunpack"
+>unpack</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromChunks"
+>fromChunks</A
+> :: [<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoChunks"
+>toChunks</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acons"
+>cons</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acons%27"
+>cons'</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asnoc"
+>snoc</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aappend"
+>append</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ahead"
+>head</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Auncons"
+>uncons</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Alast"
+>last</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atail"
+>tail</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainit"
+>init</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anull"
+>null</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Alength"
+>length</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amap"
+>map</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areverse"
+>reverse</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aintersperse"
+>intersperse</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aintercalate"
+>intercalate</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atranspose"
+>transpose</A
+> :: [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldl"
+>foldl</A
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldl%27"
+>foldl'</A
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldl1"
+>foldl1</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldl1%27"
+>foldl1'</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldr"
+>foldr</A
+> ::  (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afoldr1"
+>foldr1</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aconcat"
+>concat</A
+> :: [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AconcatMap"
+>concatMap</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aany"
+>any</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aall"
+>all</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amaximum"
+>maximum</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aminimum"
+>minimum</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ascanl"
+>scanl</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapAccumL"
+>mapAccumL</A
+> ::  (acc -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; (acc, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)) -&gt; acc -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (acc, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapAccumR"
+>mapAccumR</A
+> ::  (acc -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; (acc, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)) -&gt; acc -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (acc, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Arepeat"
+>repeat</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areplicate"
+>replicate</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acycle"
+>cycle</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aiterate"
+>iterate</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunfoldr"
+>unfoldr</A
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, a)) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atake"
+>take</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adrop"
+>drop</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsplitAt"
+>splitAt</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtakeWhile"
+>takeWhile</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdropWhile"
+>dropWhile</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aspan"
+>span</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Abreak"
+>break</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Agroup"
+>group</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AgroupBy"
+>groupBy</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainits"
+>inits</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atails"
+>tails</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit"
+>split</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsplitWith"
+>splitWith</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AisPrefixOf"
+>isPrefixOf</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AisSuffixOf"
+>isSuffixOf</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aelem"
+>elem</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnotElem"
+>notElem</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afind"
+>find</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afilter"
+>filter</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Apartition"
+>partition</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aindex"
+>index</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AelemIndex"
+>elemIndex</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AelemIndices"
+>elemIndices</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfindIndex"
+>findIndex</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfindIndices"
+>findIndices</A
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acount"
+>count</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Azip"
+>zip</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [(<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AzipWith"
+>zipWith</A
+> ::  (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunzip"
+>unzip</A
+> :: [(<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)] -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acopy"
+>copy</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AgetContents"
+>getContents</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AputStr"
+>putStr</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AputStrLn"
+>putStrLn</A
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainteract"
+>interact</A
+> :: (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AreadFile"
+>readFile</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AwriteFile"
+>writeFile</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AappendFile"
+>appendFile</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhGetContents"
+>hGetContents</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhGet"
+>hGet</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhGetNonBlocking"
+>hGetNonBlocking</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhPut"
+>hPut</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhPutStr"
+>hPutStr</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+><A NAME="1"
+>The <TT
+>Buffer</TT
+> type
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t:Buffer"
+><A NAME="t%3ABuffer"
+></A
+></A
+><B
+>Buffer</B
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>A space-efficient representation of a Word8 vector, supporting many
+ efficient operations.  A <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> contains 8-bit characters only.
+</P
+><P
+>Instances of Eq, Ord, Read, Show, Data, Typeable
+</P
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Buffer')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Buffer" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Data.html#t%3AData"
+>Data</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Typeable.html#t%3ATypeable"
+>Typeable</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+><A NAME="2"
+>Introducing and eliminating <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:empty"
+><A NAME="v%3Aempty"
+></A
+></A
+><B
+>empty</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> The empty <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:singleton"
+><A NAME="v%3Asingleton"
+></A
+></A
+><B
+>singleton</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> Convert a <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+> into a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:pack"
+><A NAME="v%3Apack"
+></A
+></A
+><B
+>pack</B
+> :: [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Convert a '[Word8]' into a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unpack"
+><A NAME="v%3Aunpack"
+></A
+></A
+><B
+>unpack</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Converts a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> to a '[Word8]'.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:fromChunks"
+><A NAME="v%3AfromChunks"
+></A
+></A
+><B
+>fromChunks</B
+> :: [<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(c)</EM
+> Convert a list of strict <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> into a lazy <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:toChunks"
+><A NAME="v%3AtoChunks"
+></A
+></A
+><B
+>toChunks</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Convert a lazy <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> into a list of strict <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+><A NAME="3"
+>Basic interface
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:cons"
+><A NAME="v%3Acons"
+></A
+></A
+><B
+>cons</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Acons"
+>cons</A
+></TT
+> is analogous to '(:)' for lists.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:cons'"
+><A NAME="v%3Acons%27"
+></A
+></A
+><B
+>cons'</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(1)</EM
+> Unlike <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Acons"
+>cons</A
+></TT
+>, 'cons\'' is
+ strict in the Buffer that we are consing onto. More precisely, it forces
+ the head and the first chunk. It does this because, for space efficiency, it
+ may coalesce the new byte onto the first 'chunk' rather than starting a
+ new 'chunk'.
+</P
+><P
+>So that means you can't use a lazy recursive contruction like this:
+</P
+><PRE
+> let xs = cons\' c xs in xs
+</PRE
+><P
+>You can however use <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Acons"
+>cons</A
+></TT
+>, as well as <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Arepeat"
+>repeat</A
+></TT
+> and <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Acycle"
+>cycle</A
+></TT
+>, to build
+ infinite lazy Buffers.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:snoc"
+><A NAME="v%3Asnoc"
+></A
+></A
+><B
+>snoc</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ Append a byte to the end of a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:append"
+><A NAME="v%3Aappend"
+></A
+></A
+><B
+>append</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ Append two Buffers
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:head"
+><A NAME="v%3Ahead"
+></A
+></A
+><B
+>head</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> Extract the first element of a Buffer, which must be non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:uncons"
+><A NAME="v%3Auncons"
+></A
+></A
+><B
+>uncons</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> Extract the head and tail of a Buffer, returning Nothing
+ if it is empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:last"
+><A NAME="v%3Alast"
+></A
+></A
+><B
+>last</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ Extract the last element of a Buffer, which must be finite
+ and non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:tail"
+><A NAME="v%3Atail"
+></A
+></A
+><B
+>tail</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> Extract the elements after the head of a Buffer, which must be
+ non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:init"
+><A NAME="v%3Ainit"
+></A
+></A
+><B
+>init</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ Return all the elements of a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> except the last one.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:null"
+><A NAME="v%3Anull"
+></A
+></A
+><B
+>null</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+> Test whether a Buffer is empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:length"
+><A NAME="v%3Alength"
+></A
+></A
+><B
+>length</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Alength"
+>length</A
+></TT
+> returns the length of a Buffer as an <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+><A NAME="4"
+>Transforming Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:map"
+><A NAME="v%3Amap"
+></A
+></A
+><B
+>map</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Amap"
+>map</A
+></TT
+> <TT
+>f xs</TT
+> is the Buffer obtained by applying <TT
+>f</TT
+> to each
+ element of <TT
+>xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:reverse"
+><A NAME="v%3Areverse"
+></A
+></A
+><B
+>reverse</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Areverse"
+>reverse</A
+></TT
+> <TT
+>xs</TT
+> returns the elements of <TT
+>xs</TT
+> in reverse order.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:intersperse"
+><A NAME="v%3Aintersperse"
+></A
+></A
+><B
+>intersperse</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aintersperse"
+>intersperse</A
+></TT
+> function takes a <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+> and a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> and
+ `intersperses' that byte between the elements of the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>.
+ It is analogous to the intersperse function on Lists.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:intercalate"
+><A NAME="v%3Aintercalate"
+></A
+></A
+><B
+>intercalate</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aintercalate"
+>intercalate</A
+></TT
+> function takes a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> and a list of
+ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s and concatenates the list after interspersing the first
+ argument between each element of the list.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:transpose"
+><A NAME="v%3Atranspose"
+></A
+></A
+><B
+>transpose</B
+> :: [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Atranspose"
+>transpose</A
+></TT
+> function transposes the rows and columns of its
+ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> argument.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+><A NAME="5"
+>Reducing <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s (folds)
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldl"
+><A NAME="v%3Afoldl"
+></A
+></A
+><B
+>foldl</B
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl"
+>foldl</A
+></TT
+>, applied to a binary operator, a starting value (typically
+ the left-identity of the operator), and a Buffer, reduces the
+ Buffer using the binary operator, from left to right.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldl'"
+><A NAME="v%3Afoldl%27"
+></A
+></A
+><B
+>foldl'</B
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>'foldl\'' is like <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl"
+>foldl</A
+></TT
+>, but strict in the accumulator.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldl1"
+><A NAME="v%3Afoldl1"
+></A
+></A
+><B
+>foldl1</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl1"
+>foldl1</A
+></TT
+> is a variant of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl"
+>foldl</A
+></TT
+> that has no starting value
+ argument, and thus must be applied to non-empty Buffers.
+ This function is subject to array fusion.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldl1'"
+><A NAME="v%3Afoldl1%27"
+></A
+></A
+><B
+>foldl1'</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>'foldl1\'' is like <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl1"
+>foldl1</A
+></TT
+>, but strict in the accumulator.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldr"
+><A NAME="v%3Afoldr"
+></A
+></A
+><B
+>foldr</B
+> ::  (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a -&gt; a) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldr"
+>foldr</A
+></TT
+>, applied to a binary operator, a starting value
+ (typically the right-identity of the operator), and a Buffer,
+ reduces the Buffer using the binary operator, from right to left.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:foldr1"
+><A NAME="v%3Afoldr1"
+></A
+></A
+><B
+>foldr1</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldr1"
+>foldr1</A
+></TT
+> is a variant of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldr"
+>foldr</A
+></TT
+> that has no starting value argument,
+ and thus must be applied to non-empty <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="6"
+><A NAME="6"
+>Special folds
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:concat"
+><A NAME="v%3Aconcat"
+></A
+></A
+><B
+>concat</B
+> :: [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>] -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Concatenate a list of Buffers.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:concatMap"
+><A NAME="v%3AconcatMap"
+></A
+></A
+><B
+>concatMap</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Map a function over a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> and concatenate the results
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:any"
+><A NAME="v%3Aany"
+></A
+></A
+><B
+>any</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Applied to a predicate and a Buffer, <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aany"
+>any</A
+></TT
+> determines if
+ any element of the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> satisfies the predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:all"
+><A NAME="v%3Aall"
+></A
+></A
+><B
+>all</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Applied to a predicate and a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aall"
+>all</A
+></TT
+> determines
+ if all elements of the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> satisfy the predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:maximum"
+><A NAME="v%3Amaximum"
+></A
+></A
+><B
+>maximum</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Amaximum"
+>maximum</A
+></TT
+> returns the maximum value from a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:minimum"
+><A NAME="v%3Aminimum"
+></A
+></A
+><B
+>minimum</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aminimum"
+>minimum</A
+></TT
+> returns the minimum value from a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="7"
+><A NAME="7"
+>Building Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="8"
+><A NAME="8"
+>Scans
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:scanl"
+><A NAME="v%3Ascanl"
+></A
+></A
+><B
+>scanl</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Ascanl"
+>scanl</A
+></TT
+> is similar to <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl"
+>foldl</A
+></TT
+>, but returns a list of successive
+ reduced values from the left. This function will fuse.
+</P
+><PRE
+> scanl f z [x1, x2, ...] == [z, z `f` x1, (z `f` x1) `f` x2, ...]
+</PRE
+><P
+>Note that
+</P
+><PRE
+> last (scanl f z xs) == foldl f z xs.
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="9"
+><A NAME="9"
+>Accumulating maps
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:mapAccumL"
+><A NAME="v%3AmapAccumL"
+></A
+></A
+><B
+>mapAccumL</B
+> ::  (acc -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; (acc, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)) -&gt; acc -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (acc, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AmapAccumL"
+>mapAccumL</A
+></TT
+> function behaves like a combination of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Amap"
+>map</A
+></TT
+> and
+ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldl"
+>foldl</A
+></TT
+>; it applies a function to each element of a Buffer,
+ passing an accumulating parameter from left to right, and returning a
+ final value of this accumulator together with the new Buffer.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:mapAccumR"
+><A NAME="v%3AmapAccumR"
+></A
+></A
+><B
+>mapAccumR</B
+> ::  (acc -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; (acc, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)) -&gt; acc -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (acc, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AmapAccumR"
+>mapAccumR</A
+></TT
+> function behaves like a combination of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Amap"
+>map</A
+></TT
+> and
+ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afoldr"
+>foldr</A
+></TT
+>; it applies a function to each element of a Buffer,
+ passing an accumulating parameter from right to left, and returning a
+ final value of this accumulator together with the new Buffer.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="10"
+><A NAME="10"
+>Infinite Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:repeat"
+><A NAME="v%3Arepeat"
+></A
+></A
+><B
+>repeat</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Arepeat"
+>repeat</A
+></TT
+> x</TT
+> is an infinite Buffer, with <TT
+>x</TT
+> the value of every
+ element.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:replicate"
+><A NAME="v%3Areplicate"
+></A
+></A
+><B
+>replicate</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Areplicate"
+>replicate</A
+></TT
+> n x</TT
+> is a Buffer of length <TT
+>n</TT
+> with <TT
+>x</TT
+>
+ the value of every element.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:cycle"
+><A NAME="v%3Acycle"
+></A
+></A
+><B
+>cycle</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Acycle"
+>cycle</A
+></TT
+> ties a finite Buffer into a circular one, or equivalently,
+ the infinite repetition of the original Buffer.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:iterate"
+><A NAME="v%3Aiterate"
+></A
+></A
+><B
+>iterate</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><TT
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aiterate"
+>iterate</A
+></TT
+> f x</TT
+> returns an infinite Buffer of repeated applications
+ of <TT
+>f</TT
+> to <TT
+>x</TT
+>:
+</P
+><PRE
+> iterate f x == [x, f x, f (f x), ...]
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="11"
+><A NAME="11"
+>Unfolding Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unfoldr"
+><A NAME="v%3Aunfoldr"
+></A
+></A
+><B
+>unfoldr</B
+> ::  (a -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, a)) -&gt; a -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aunfoldr"
+>unfoldr</A
+></TT
+> function is analogous to the List 'unfoldr'.
+ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aunfoldr"
+>unfoldr</A
+></TT
+> builds a Buffer from a seed value.  The function takes
+ the element and returns <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> if it is done producing the
+ Buffer or returns <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#v%3AJust"
+>Just</A
+></TT
+> <TT
+>(a,b)</TT
+>, in which case, <TT
+>a</TT
+> is a
+ prepending to the Buffer and <TT
+>b</TT
+> is used as the next element in a
+ recursive call.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="12"
+><A NAME="12"
+>Substrings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="13"
+><A NAME="13"
+>Breaking strings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:take"
+><A NAME="v%3Atake"
+></A
+></A
+><B
+>take</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Atake"
+>take</A
+></TT
+> <TT
+>n</TT
+>, applied to a Buffer <TT
+>xs</TT
+>, returns the prefix
+ of <TT
+>xs</TT
+> of length <TT
+>n</TT
+>, or <TT
+>xs</TT
+> itself if <TT
+>n &gt; <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Alength"
+>length</A
+></TT
+> xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:drop"
+><A NAME="v%3Adrop"
+></A
+></A
+><B
+>drop</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Adrop"
+>drop</A
+></TT
+> <TT
+>n xs</TT
+> returns the suffix of <TT
+>xs</TT
+> after the first <TT
+>n</TT
+>
+ elements, or <TT
+>[]</TT
+> if <TT
+>n &gt; <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Alength"
+>length</A
+></TT
+> xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:splitAt"
+><A NAME="v%3AsplitAt"
+></A
+></A
+><B
+>splitAt</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n\</EM
+>c)/ <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AsplitAt"
+>splitAt</A
+></TT
+> <TT
+>n xs</TT
+> is equivalent to <TT
+>(<TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Atake"
+>take</A
+></TT
+> n xs, <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Adrop"
+>drop</A
+></TT
+> n xs)</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:takeWhile"
+><A NAME="v%3AtakeWhile"
+></A
+></A
+><B
+>takeWhile</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AtakeWhile"
+>takeWhile</A
+></TT
+>, applied to a predicate <TT
+>p</TT
+> and a Buffer <TT
+>xs</TT
+>,
+ returns the longest prefix (possibly empty) of <TT
+>xs</TT
+> of elements that
+ satisfy <TT
+>p</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:dropWhile"
+><A NAME="v%3AdropWhile"
+></A
+></A
+><B
+>dropWhile</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AdropWhile"
+>dropWhile</A
+></TT
+> <TT
+>p xs</TT
+> returns the suffix remaining after <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AtakeWhile"
+>takeWhile</A
+></TT
+> <TT
+>p xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:span"
+><A NAME="v%3Aspan"
+></A
+></A
+><B
+>span</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aspan"
+>span</A
+></TT
+> <TT
+>p xs</TT
+> breaks the Buffer into two segments. It is
+ equivalent to <TT
+>(<TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AtakeWhile"
+>takeWhile</A
+></TT
+> p xs, <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AdropWhile"
+>dropWhile</A
+></TT
+> p xs)</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:break"
+><A NAME="v%3Abreak"
+></A
+></A
+><B
+>break</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Abreak"
+>break</A
+></TT
+> <TT
+>p</TT
+> is equivalent to <TT
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aspan"
+>span</A
+></TT
+> (<TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Bool.html#v%3Anot"
+>not</A
+></TT
+> . p)</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:group"
+><A NAME="v%3Agroup"
+></A
+></A
+><B
+>group</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Agroup"
+>group</A
+></TT
+> function takes a Buffer and returns a list of
+ Buffers such that the concatenation of the result is equal to the
+ argument.  Moreover, each sublist in the result contains only equal
+ elements.  For example,
+</P
+><PRE
+> group &quot;Mississippi&quot; = [&quot;M&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;i&quot;,&quot;ss&quot;,&quot;i&quot;,&quot;pp&quot;,&quot;i&quot;]
+</PRE
+><P
+>It is a special case of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AgroupBy"
+>groupBy</A
+></TT
+>, which allows the programmer to
+ supply their own equality test.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:groupBy"
+><A NAME="v%3AgroupBy"
+></A
+></A
+><B
+>groupBy</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AgroupBy"
+>groupBy</A
+></TT
+> function is the non-overloaded version of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Agroup"
+>group</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:inits"
+><A NAME="v%3Ainits"
+></A
+></A
+><B
+>inits</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Return all initial segments of the given <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, shortest first.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:tails"
+><A NAME="v%3Atails"
+></A
+></A
+><B
+>tails</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Return all final segments of the given <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, longest first.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="14"
+><A NAME="14"
+>Breaking into many substrings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:split"
+><A NAME="v%3Asplit"
+></A
+></A
+><B
+>split</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Break a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> into pieces separated by the byte
+ argument, consuming the delimiter. I.e.
+</P
+><PRE
+> split '\n' &quot;a\nb\nd\ne&quot; == [&quot;a&quot;,&quot;b&quot;,&quot;d&quot;,&quot;e&quot;]
+ split 'a'  &quot;aXaXaXa&quot;    == [&quot;&quot;,&quot;X&quot;,&quot;X&quot;,&quot;X&quot;,&quot;&quot;]
+ split 'x'  &quot;x&quot;          == [&quot;&quot;,&quot;&quot;]
+</PRE
+><P
+>and
+</P
+><PRE
+> intercalate [c] . split c == id
+ split == splitWith . (==)
+</PRE
+><P
+>As for all splitting functions in this library, this function does
+ not copy the substrings, it just constructs new Buffers that
+ are slices of the original.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:splitWith"
+><A NAME="v%3AsplitWith"
+></A
+></A
+><B
+>splitWith</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Splits a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> into components delimited by
+ separators, where the predicate returns True for a separator element.
+ The resulting components do not contain the separators.  Two adjacent
+ separators result in an empty component in the output.  eg.
+</P
+><PRE
+> splitWith (=='a') &quot;aabbaca&quot; == [&quot;&quot;,&quot;&quot;,&quot;bb&quot;,&quot;c&quot;,&quot;&quot;]
+ splitWith (=='a') []        == []
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="15"
+><A NAME="15"
+>Predicates
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:isPrefixOf"
+><A NAME="v%3AisPrefixOf"
+></A
+></A
+><B
+>isPrefixOf</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AisPrefixOf"
+>isPrefixOf</A
+></TT
+> function takes two Buffers and returns <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#v%3ATrue"
+>True</A
+></TT
+>
+ iff the first is a prefix of the second.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:isSuffixOf"
+><A NAME="v%3AisSuffixOf"
+></A
+></A
+><B
+>isSuffixOf</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AisSuffixOf"
+>isSuffixOf</A
+></TT
+> function takes two Buffers and returns <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#v%3ATrue"
+>True</A
+></TT
+>
+ iff the first is a suffix of the second.
+</P
+><P
+>The following holds:
+</P
+><PRE
+> isSuffixOf x y == reverse x `isPrefixOf` reverse y
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="16"
+><A NAME="16"
+>Search for arbitrary substrings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="17"
+><A NAME="17"
+>Searching Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="18"
+><A NAME="18"
+>Searching by equality
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:elem"
+><A NAME="v%3Aelem"
+></A
+></A
+><B
+>elem</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aelem"
+>elem</A
+></TT
+> is the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> membership predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:notElem"
+><A NAME="v%3AnotElem"
+></A
+></A
+><B
+>notElem</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AnotElem"
+>notElem</A
+></TT
+> is the inverse of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aelem"
+>elem</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="19"
+><A NAME="19"
+>Searching with a predicate
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:find"
+><A NAME="v%3Afind"
+></A
+></A
+><B
+>find</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afind"
+>find</A
+></TT
+> function takes a predicate and a Buffer,
+ and returns the first element in matching the predicate, or <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+>
+ if there is no such element.
+</P
+><PRE
+> find f p = case findIndex f p of Just n -&gt; Just (p ! n) ; _ -&gt; Nothing
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:filter"
+><A NAME="v%3Afilter"
+></A
+></A
+><B
+>filter</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Afilter"
+>filter</A
+></TT
+>, applied to a predicate and a Buffer,
+ returns a Buffer containing those characters that satisfy the
+ predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:partition"
+><A NAME="v%3Apartition"
+></A
+></A
+><B
+>partition</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Apartition"
+>partition</A
+></TT
+> function takes a predicate a Buffer and returns
+ the pair of Buffers with elements which do and do not satisfy the
+ predicate, respectively; i.e.,
+</P
+><PRE
+> partition p bs == (filter p xs, filter (not . p) xs)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="20"
+><A NAME="20"
+>Indexing Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:index"
+><A NAME="v%3Aindex"
+></A
+></A
+><B
+>index</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(c)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> index (subscript) operator, starting from 0.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:elemIndex"
+><A NAME="v%3AelemIndex"
+></A
+></A
+><B
+>elemIndex</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AelemIndex"
+>elemIndex</A
+></TT
+> function returns the index of the first
+ element in the given <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> which is equal to the query
+ element, or <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> if there is no such element. 
+ This implementation uses memchr(3).
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:elemIndices"
+><A NAME="v%3AelemIndices"
+></A
+></A
+><B
+>elemIndices</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AelemIndices"
+>elemIndices</A
+></TT
+> function extends <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AelemIndex"
+>elemIndex</A
+></TT
+>, by returning
+ the indices of all elements equal to the query element, in ascending order.
+ This implementation uses memchr(3).
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:findIndex"
+><A NAME="v%3AfindIndex"
+></A
+></A
+><B
+>findIndex</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AfindIndex"
+>findIndex</A
+></TT
+> function takes a predicate and a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> and
+ returns the index of the first element in the Buffer
+ satisfying the predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:findIndices"
+><A NAME="v%3AfindIndices"
+></A
+></A
+><B
+>findIndices</B
+> :: (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AfindIndices"
+>findIndices</A
+></TT
+> function extends <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AfindIndex"
+>findIndex</A
+></TT
+>, by returning the
+ indices of all elements satisfying the predicate, in ascending order.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:count"
+><A NAME="v%3Acount"
+></A
+></A
+><B
+>count</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>count returns the number of times its argument appears in the Buffer
+</P
+><PRE
+> count = length . elemIndices
+</PRE
+><P
+>But more efficiently than using length on the intermediate list.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="21"
+><A NAME="21"
+>Zipping and unzipping Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:zip"
+><A NAME="v%3Azip"
+></A
+></A
+><B
+>zip</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [(<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Azip"
+>zip</A
+></TT
+> takes two Buffers and returns a list of
+ corresponding pairs of bytes. If one input Buffer is short,
+ excess elements of the longer Buffer are discarded. This is
+ equivalent to a pair of <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aunpack"
+>unpack</A
+></TT
+> operations.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:zipWith"
+><A NAME="v%3AzipWith"
+></A
+></A
+><B
+>zipWith</B
+> ::  (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; a) -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AzipWith"
+>zipWith</A
+></TT
+> generalises <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Azip"
+>zip</A
+></TT
+> by zipping with the function given as
+ the first argument, instead of a tupling function.  For example,
+ <TT
+><TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AzipWith"
+>zipWith</A
+></TT
+> (+)</TT
+> is applied to two Buffers to produce the list of
+ corresponding sums.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unzip"
+><A NAME="v%3Aunzip"
+></A
+></A
+><B
+>unzip</B
+> :: [(<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>, <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)] -&gt; (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Aunzip"
+>unzip</A
+></TT
+> transforms a list of pairs of bytes into a pair of
+ Buffers. Note that this performs two <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3Apack"
+>pack</A
+></TT
+> operations.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="22"
+><A NAME="22"
+>Ordered Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="23"
+><A NAME="23"
+>Low level conversions
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="24"
+><A NAME="24"
+>Copying Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:copy"
+><A NAME="v%3Acopy"
+></A
+></A
+><B
+>copy</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+> Make a copy of the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> with its own storage.
+   This is mainly useful to allow the rest of the data pointed
+   to by the <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> to be garbage collected, for example
+   if a large string has been read in, and only a small part of it
+   is needed in the rest of the program.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="25"
+><A NAME="25"
+>I/O with <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="26"
+><A NAME="26"
+>Standard input and output
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:getContents"
+><A NAME="v%3AgetContents"
+></A
+></A
+><B
+>getContents</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>getContents. Equivalent to hGetContents stdin. Will read <EM
+>lazily</EM
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:putStr"
+><A NAME="v%3AputStr"
+></A
+></A
+><B
+>putStr</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Write a Buffer to stdout
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:putStrLn"
+><A NAME="v%3AputStrLn"
+></A
+></A
+><B
+>putStrLn</B
+> :: <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Write a Buffer to stdout, appending a newline byte
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:interact"
+><A NAME="v%3Ainteract"
+></A
+></A
+><B
+>interact</B
+> :: (<A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+>) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The interact function takes a function of type <TT
+>Buffer -&gt; Buffer</TT
+>
+ as its argument. The entire input from the standard input device is passed
+ to this function as its argument, and the resulting string is output on the
+ standard output device.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="27"
+><A NAME="27"
+>Files
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:readFile"
+><A NAME="v%3AreadFile"
+></A
+></A
+><B
+>readFile</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Read an entire file <EM
+>lazily</EM
+> into a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>.
+ The Handle will be held open until EOF is encountered.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:writeFile"
+><A NAME="v%3AwriteFile"
+></A
+></A
+><B
+>writeFile</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Write a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> to a file.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:appendFile"
+><A NAME="v%3AappendFile"
+></A
+></A
+><B
+>appendFile</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AFilePath"
+>FilePath</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Append a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> to a file.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="28"
+><A NAME="28"
+>I/O with Handles
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:hGetContents"
+><A NAME="v%3AhGetContents"
+></A
+></A
+><B
+>hGetContents</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Read entire handle contents <EM
+>lazily</EM
+> into a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>. Chunks
+ are read on demand, using the default chunk size.
+</P
+><P
+>Once EOF is encountered, the Handle is closed.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:hGet"
+><A NAME="v%3AhGet"
+></A
+></A
+><B
+>hGet</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Read <TT
+>n</TT
+> bytes into a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, directly from the specified <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:hGetNonBlocking"
+><A NAME="v%3AhGetNonBlocking"
+></A
+></A
+><B
+>hGetNonBlocking</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>hGetNonBlocking is similar to <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#v%3AhGet"
+>hGet</A
+></TT
+>, except that it will never block
+ waiting for data to become available, instead it returns only whatever data
+ is available.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:hPut"
+><A NAME="v%3AhPut"
+></A
+></A
+><B
+>hPut</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Outputs a <TT
+><A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> to the specified <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:hPutStr"
+><A NAME="v%3AhPutStr"
+></A
+></A
+><B
+>hPutStr</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AHandle"
+>Handle</A
+> -&gt; <A HREF="Data-Buffer-Lazy-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A synonym for <TT
+>hPut</TT
+>, for compatibility
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:16:05 GMT -->
+</HTML
+>

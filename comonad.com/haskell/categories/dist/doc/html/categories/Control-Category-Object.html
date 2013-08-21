@@ -1,0 +1,373 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Object.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Object</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>categories-0.3: Category Library</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Object</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>This module declares the <TT
+><A HREF="Control-Category-Object.html#t%3AHasTerminalObject"
+>HasTerminalObject</A
+></TT
+> and <TT
+><A HREF="Control-Category-Object.html#t%3AHasInitialObject"
+>HasInitialObject</A
+></TT
+> classes.
+ These are defined in terms of class-associated types rather than functional dependencies
+ because most of the time when you are manipulating a category you don't care about them;
+ this gets them out of the signature of most functions that use the category.
+ Both of these are special cases of the idea of a (co)limit.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> Category k =&gt; <A HREF="#t%3AHasTerminalObject"
+>HasTerminalObject</A
+> k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aterminate"
+>terminate</A
+> :: k a (Terminal k)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> Category k =&gt; <A HREF="#t%3AHasInitialObject"
+>HasInitialObject</A
+> k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainitiate"
+>initiate</A
+> :: k (Initial k) a</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> Category k =&gt; <A NAME="t%3AHasTerminalObject"
+></A
+><B
+>HasTerminalObject</B
+> k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+>Category k</TT
+> has a terminal object <TT
+>Terminal k</TT
+> such that for all objects <TT
+>a</TT
+> in <TT
+>k</TT
+>, 
+ there exists a unique morphism from <TT
+>a</TT
+> to <TT
+>Terminal k</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aterminate"
+></A
+><B
+>terminate</B
+> :: k a (Terminal k)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:HasTerminalObject')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:HasTerminalObject" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Object.html#t%3AHasTerminalObject"
+>HasTerminalObject</A
+> (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> k, <A HREF="Control-Category-Object.html#t%3AHasTerminalObject"
+>HasTerminalObject</A
+> k) =&gt; <A HREF="Control-Category-Object.html#t%3AHasTerminalObject"
+>HasTerminalObject</A
+> (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> Category k =&gt; <A NAME="t%3AHasInitialObject"
+></A
+><B
+>HasInitialObject</B
+> k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+>Category k</TT
+> has an initial (coterminal) object <TT
+>Initial k</TT
+> such that for all objects 
+ <TT
+>a</TT
+> in <TT
+>k</TT
+>, there exists a unique morphism from <TT
+>Initial k </TT
+> to <TT
+>a</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ainitiate"
+></A
+><B
+>initiate</B
+> :: k (Initial k) a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:HasInitialObject')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:HasInitialObject" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> k, <A HREF="Control-Category-Object.html#t%3AHasInitialObject"
+>HasInitialObject</A
+> k) =&gt; <A HREF="Control-Category-Object.html#t%3AHasInitialObject"
+>HasInitialObject</A
+> (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Object.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+</HTML
+>

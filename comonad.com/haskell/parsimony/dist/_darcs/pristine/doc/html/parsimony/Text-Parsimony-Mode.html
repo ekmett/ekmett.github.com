@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Mode.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:16 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Text.Parsimony.Mode</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>parsimony-0.0.1: Monoidal parser combinators for parallel parsing of context-free languages</TD
+><TD CLASS="topbut"
+><A HREF="src/Text-Parsimony-Mode.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Text.Parsimony.Mode</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A NAME="t%3AParseMode"
+></A
+><B
+>ParseMode</B
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#ParseMode"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AparseMap"
+></A
+><B
+>parseMap</B
+> :: (Generator c, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f) =&gt; (Elem c -&gt; e) -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m e a -&gt; c -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> (<A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> file) (f a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#parseMap"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aparse"
+></A
+><B
+>parse</B
+> :: (Generator c, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f) =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m (Elem c) a -&gt; c -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> (<A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> file) (f a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#parse"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A NAME="t%3ARecognizeMode"
+></A
+><B
+>RecognizeMode</B
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#RecognizeMode"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3ArecognizeMap"
+></A
+><B
+>recognizeMap</B
+> :: Generator c =&gt; (Elem c -&gt; e) -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m e a -&gt; c -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#recognizeMap"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Arecognize"
+></A
+><B
+>recognize</B
+> :: Generator c =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m (Elem c) a -&gt; c -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Mode.html#recognize"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Mode.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:16 GMT -->
+</HTML
+>

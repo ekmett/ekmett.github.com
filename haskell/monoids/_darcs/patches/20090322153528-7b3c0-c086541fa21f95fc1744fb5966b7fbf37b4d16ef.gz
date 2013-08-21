@@ -1,9 +1,0 @@
-[added instance Lexer c ()
-ekmett@gmail.com**20090322153528] {
-hunk ./Data/Monoid/Lexical.hs 98
-+
-+instance Lexer c () where
-+    lex _ = ()
-+    affix _ _ = ()
-+    prefix _ _ = ()
-}

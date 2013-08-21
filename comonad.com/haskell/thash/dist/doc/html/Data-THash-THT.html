@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-THash-THT.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:56 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.THash.THT</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>thash-0.1</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.THash.THT</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (requires STM)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><A HREF="Data-THash.html"
+>Data.THash</A
+> Internals. Unless you really want to do the plumbing yourself
+ you probably want to use that instead.
+</P
+><P
+>There is a nearby point in the design space that generates a traditional
+ sorted linear hash table which will output keys and values in the same 
+ order as long as both hashes have the same set of keys, regardless of 
+ insertion order. To get there we would need to maintain the linked lists 
+ in sorted order.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3ATHT"
+></A
+><B
+>THT</B
+> k v</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Anew"
+></A
+><B
+>new</B
+> :: (k -&gt; Int) -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromList"
+></A
+><B
+>fromList</B
+> :: Eq k =&gt; (k -&gt; Int) -&gt; [(k, v)] -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ainsert"
+></A
+><B
+>insert</B
+> :: Eq k =&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; k -&gt; v -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v, Bool)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aupdate"
+></A
+><B
+>update</B
+> :: Eq k =&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; k -&gt; v -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Amodify"
+></A
+><B
+>modify</B
+> :: Eq k =&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; k -&gt; (Maybe v -&gt; v) -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Adelete"
+></A
+><B
+>delete</B
+> :: Eq k =&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; k -&gt; STM (<A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v, Bool)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Alookup"
+></A
+><B
+>lookup</B
+> :: Eq k =&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; k -&gt; STM (Maybe v)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmapH"
+></A
+><B
+>mapH</B
+> :: ((k, v) -&gt; r) -&gt; <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; STM [r]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aeach"
+></A
+><B
+>each</B
+> :: <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; STM [(k, v)]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Akeys"
+></A
+><B
+>keys</B
+> :: <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; STM [k]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Avalues"
+></A
+><B
+>values</B
+> :: <A HREF="Data-THash-THT.html#t%3ATHT"
+>THT</A
+> k v -&gt; STM [v]</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.7</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-THash-THT.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:56 GMT -->
+</HTML
+>

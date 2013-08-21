@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Build.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Morphism.Build</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Morphism.Build</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ahbuild"
+>hbuild</A
+> :: (<A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f, Functor c) =&gt; (<SPAN CLASS="keyword"
+>forall</SPAN
+> x.  <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f x -&gt; c <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> x) -&gt; c <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-HigherOrder.html#t%3AFixH"
+>FixH</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Akbuild"
+>kbuild</A
+> :: <A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f =&gt; (<SPAN CLASS="keyword"
+>forall</SPAN
+> x.  <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f x -&gt; <A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> x) -&gt; <A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-HigherOrder.html#t%3AFixH"
+>FixH</A
+> f</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ahbuild"
+></A
+><B
+>hbuild</B
+> :: (<A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f, Functor c) =&gt; (<SPAN CLASS="keyword"
+>forall</SPAN
+> x.  <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f x -&gt; c <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> x) -&gt; c <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-HigherOrder.html#t%3AFixH"
+>FixH</A
+> f</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>forall h g.  hcata h . hbuild g = g h</TT
+> cannot be realized as a RULE because
+ h and g are not monotypes.
+ Kan extended build, gbuild in Ghani/Johann parlance, but g_foo currently denotes
+ generalized in the 'has a parameterizing (co)monad' sense.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Akbuild"
+></A
+><B
+>kbuild</B
+> :: <A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f =&gt; (<SPAN CLASS="keyword"
+>forall</SPAN
+> x.  <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f x -&gt; <A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> x) -&gt; <A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-HigherOrder.html#t%3AFixH"
+>FixH</A
+> f</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+> forall h g. kcata h . kbuild g = g (interpreterAlgebra h)</TT
+> cannot be realized as 
+ a RULE because h and g are not monotypes.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Build.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

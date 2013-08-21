@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Infrastructure</title>
+	<atom:link href="http://comonad.com/reader/category/haskell/infrastructure/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Working around Hackage Outages</title>
+		<link>http://comonad.com/reader/2012/hackage-mirror/</link>
+		<comments>http://comonad.com/reader/2012/hackage-mirror/#comments</comments>
+		<pubDate>Wed, 29 Aug 2012 19:51:49 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Infrastructure]]></category>
+		<category><![CDATA[hackage]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=651</guid>
+		<description><![CDATA[Luite Stegeman has a mirror of the packages from Hackage.
+He uses it to power his incredibly useful hdiff website.
+During a Hackage outage, you can set up your local cabal configuration to point to it instead by (temporarily) replacing the remote-repo in your ~/.cabal/config file with:
+
+remote-repo:
+  hdiff.luite.com:http://hdiff.luite.com/packages/archive
+
+and then running cabal update.
+I have a ~/.cabal/config that [...]]]></description>
+			<content:encoded><![CDATA[<p>Luite Stegeman has a mirror of the packages from <a href="http://hackage.haskell.org/">Hackage</a>.</p>
+<p>He uses it to power his incredibly useful <a href="http://hdiff.luite.com">hdiff</a> website.</p>
+<p>During a Hackage outage, you can set up your local cabal configuration to point to it instead by (temporarily) replacing the remote-repo in your <code>~/.cabal/config</code> file with:</p>
+<p><code><br />
+remote-repo:<br />
+  hdiff.luite.com:http://hdiff.luite.com/packages/archive<br />
+</code></p>
+<p>and then running <code>cabal update</code>.</p>
+<p>I have a <a href="https://github.com/ekmett/lens/blob/master/config"><code>~/.cabal/config</code></a> that I use whenever hackage goes down in my <a href="https://github.com/ekmett/lens">lens</a> package.</p>
+<p>If you use <a href="http://travis-ci.org/">travis-ci</a>, you can avoid build failures during hackage outages by first copying that config to ~/.cabal/config <a href="https://github.com/ekmett/lens/blob/master/.travis.yml#L4">during before_install</a>. -- You'll still be stuck waiting while it first tries to refresh from the real hackage server, but it only adds a few minutes to buildbot times.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/hackage-mirror/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

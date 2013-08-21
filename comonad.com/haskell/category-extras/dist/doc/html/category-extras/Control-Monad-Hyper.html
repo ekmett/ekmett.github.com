@@ -1,0 +1,488 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Monad-Hyper.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Monad.Hyper</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Monad.Hyper</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (functional-dependencies)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Based on the construction of hyperfunctions as parameterized monads in 
+ <A HREF="http://crab.rutgers.edu/~pjohann/f14-ghani.pdf"
+>http://crab.rutgers.edu/~pjohann/f14-ghani.pdf</A
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AContraFunctor"
+>ContraFunctor</A
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acontramap"
+>contramap</A
+> ::  (a -&gt; b) -&gt; f b -&gt; f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AHyper"
+>Hyper</A
+> h a = <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AHyp"
+>Hyp</A
+> e a = <A HREF="Control-Monad-Hyper.html#t%3AHyper"
+>Hyper</A
+> (<A HREF="Control-Functor-Contra.html#t%3AContraF"
+>ContraF</A
+> e) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3APHyper"
+>PHyper</A
+> h a b = <A HREF="#v%3APHyper"
+>PHyper</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3ArunPHyper"
+>runPHyper</A
+> :: h b -&gt; a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3AContraFunctor"
+></A
+><B
+>ContraFunctor</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acontramap"
+></A
+><B
+>contramap</B
+> ::  (a -&gt; b) -&gt; f b -&gt; f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ContraFunctor')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:ContraFunctor" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> (<A HREF="Control-Functor-Contra.html#t%3AContraF"
+>ContraF</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> (<A HREF="Control-Functor-Combinators-Const.html#t%3AConst2"
+>Const2</A
+> t a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> p <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, <A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> f, <A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> g) =&gt; <A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> (<A HREF="Control-Functor-Combinators-Lift.html#t%3ALift"
+>Lift</A
+> p f g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AHyper"
+></A
+><B
+>Hyper</B
+> h a = <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A generic recursive hyperfunction-like combinator
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AHyp"
+></A
+><B
+>Hyp</B
+> e a = <A HREF="Control-Monad-Hyper.html#t%3AHyper"
+>Hyper</A
+> (<A HREF="Control-Functor-Contra.html#t%3AContraF"
+>ContraF</A
+> e) a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Traditional Hyper functions
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3APHyper"
+></A
+><B
+>PHyper</B
+> h a b </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3APHyper"
+></A
+><B
+>PHyper</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ArunPHyper"
+></A
+><B
+>runPHyper</B
+> :: h b -&gt; a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:PHyper')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:PHyper" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> h =&gt; <A HREF="Control-Applicative-Parameterized.html#t%3APPointed"
+>PPointed</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> h =&gt; <A HREF="Control-Applicative-Parameterized.html#t%3APApplicative"
+>PApplicative</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> h =&gt; <A HREF="Control-Monad-Parameterized.html#t%3APMonad"
+>PMonad</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> h =&gt; <A HREF="Control-Functor.html#t%3AQFunctor"
+>QFunctor</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h) <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Functor.html#t%3APFunctor"
+>PFunctor</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h) <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Hyper.html#t%3AContraFunctor"
+>ContraFunctor</A
+> h =&gt; <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> (<A HREF="Control-Monad-Hyper.html#t%3APHyper"
+>PHyper</A
+> h) <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Monad-Hyper.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

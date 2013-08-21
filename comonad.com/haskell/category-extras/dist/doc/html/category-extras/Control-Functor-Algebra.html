@@ -1,0 +1,721 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Algebra.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:47 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Functor.Algebra</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Functor.Algebra</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Algebras, Coalgebras, Bialgebras, and Dialgebras and their (co)monadic
+ variants
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ADialgebra"
+>Dialgebra</A
+> f g a = f a -&gt; g a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AGDialgebra"
+>GDialgebra</A
+> f g w m a = f (w a) -&gt; g (m a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ABialgebra"
+>Bialgebra</A
+> f g a = (<A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f a, <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> g a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AGBialgebra"
+>GBialgebra</A
+> f g w m a = (<A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a, <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> g m a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AAlgebra"
+>Algebra</A
+> f a = f a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AGAlgebra"
+>GAlgebra</A
+> f w a = f (w a) -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ACoalgebra"
+>Coalgebra</A
+> f a = a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m a = a -&gt; f (m a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ATrialgebra"
+>Trialgebra</A
+> f g h a = (<A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f a, <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> g h a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftAlgebra"
+>liftAlgebra</A
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftCoalgebra"
+>liftCoalgebra</A
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftDialgebra"
+>liftDialgebra</A
+> :: (Functor g, Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w, Monad m) =&gt; <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> f g <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGDialgebra"
+>GDialgebra</A
+> f g w m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerAlgebra"
+>lowerAlgebra</A
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> f w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a -&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f (w a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerCoalgebra"
+>lowerCoalgebra</A
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m a -&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f (m a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromCoalgebra"
+>fromCoalgebra</A
+> ::  <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> Identity f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromAlgebra"
+>fromAlgebra</A
+> ::  <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> f Identity</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromBialgebra"
+>fromBialgebra</A
+> ::  <A HREF="Control-Functor-Algebra.html#t%3ABialgebra"
+>Bialgebra</A
+> f g <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> (f <A HREF="Control-Functor-Combinators-Lift.html#t%3A%3A%2A%3A"
+>:*:</A
+> Identity) (Identity <A HREF="Control-Functor-Combinators-Lift.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ADialgebra"
+></A
+><B
+>Dialgebra</B
+> f g a = f a -&gt; g a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F,G-dialgebras generalize algebras and coalgebras
+ NB: these definitions are actually wrong.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGDialgebra"
+></A
+><B
+>GDialgebra</B
+> f g w m a = f (w a) -&gt; g (m a)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ABialgebra"
+></A
+><B
+>Bialgebra</B
+> f g a = (<A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f a, <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> g a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F-G-bialgebras are representable by <TT
+>DiAlg (f :+: Identity) (Identity :+: g) a</TT
+>
+ and so add no expressive power, but are a lot more convenient.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGBialgebra"
+></A
+><B
+>GBialgebra</B
+> f g w m a = (<A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a, <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> g m a)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AAlgebra"
+></A
+><B
+>Algebra</B
+> f a = f a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F-Algebras
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGAlgebra"
+></A
+><B
+>GAlgebra</B
+> f w a = f (w a) -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F-W-Comonadic Algebras for a given comonad W
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ACoalgebra"
+></A
+><B
+>Coalgebra</B
+> f a = a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F-Coalgebras
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGCoalgebra"
+></A
+><B
+>GCoalgebra</B
+> f m a = a -&gt; f (m a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>F-M-Monadic Coalgebras for a given monad M
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ATrialgebra"
+></A
+><B
+>Trialgebra</B
+> f g h a = (<A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f a, <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> g h a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Martin Erwig's trialgebras for indexed data types
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AliftAlgebra"
+></A
+><B
+>liftAlgebra</B
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Turn an F-algebra into a F-W-algebra by throwing away the comonad
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AliftCoalgebra"
+></A
+><B
+>liftCoalgebra</B
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Turn a F-coalgebra into a F-M-coalgebra by returning into a monad
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AliftDialgebra"
+></A
+><B
+>liftDialgebra</B
+> :: (Functor g, Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w, Monad m) =&gt; <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> f g <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3AGDialgebra"
+>GDialgebra</A
+> f g w m</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AlowerAlgebra"
+></A
+><B
+>lowerAlgebra</B
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> f w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a -&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f (w a)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AlowerCoalgebra"
+></A
+><B
+>lowerCoalgebra</B
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m a -&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f (m a)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromCoalgebra"
+></A
+><B
+>fromCoalgebra</B
+> ::  <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> Identity f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromAlgebra"
+></A
+><B
+>fromAlgebra</B
+> ::  <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> f Identity</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromBialgebra"
+></A
+><B
+>fromBialgebra</B
+> ::  <A HREF="Control-Functor-Algebra.html#t%3ABialgebra"
+>Bialgebra</A
+> f g <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-Algebra.html#t%3ADialgebra"
+>Dialgebra</A
+> (f <A HREF="Control-Functor-Combinators-Lift.html#t%3A%3A%2A%3A"
+>:*:</A
+> Identity) (Identity <A HREF="Control-Functor-Combinators-Lift.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Algebra.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:47 GMT -->
+</HTML
+>

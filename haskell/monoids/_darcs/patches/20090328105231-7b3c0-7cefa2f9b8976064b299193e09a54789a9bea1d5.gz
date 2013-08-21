@@ -1,6 +1,0 @@
-[typo
-ekmett@gmail.com**20090328105231] {
-hunk ./Data/Ring/Semi/Near.hs 14
---- a 'Monoid' qualifies do to the distributivity of (>>=) over mplus.
-+-- a 'Monoid' qualifies due to the distributivity of (>>=) over 'mplus'.
-}

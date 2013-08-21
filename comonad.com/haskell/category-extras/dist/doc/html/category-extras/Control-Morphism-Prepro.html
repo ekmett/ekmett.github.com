@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Prepro.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Morphism.Prepro</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Morphism.Prepro</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>See Maarten Fokkinga''s PhD Dissertation for cascade and prepro.
+ g_prepro is an obvious generalization. The prepro variants of other
+ morphisms are distributed through the corresponding files.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aprepro"
+>prepro</A
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f c -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ag_prepro"
+>g_prepro</A
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> f w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acascade"
+>cascade</A
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> s <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; (a -&gt; a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> s a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> s a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Abiprepro"
+>biprepro</A
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> (f a) c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ag_biprepro"
+>g_biprepro</A
+> :: (<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> (f a) w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> (f a) w c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a -&gt; c</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aprepro"
+></A
+><B
+>prepro</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> f c -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f -&gt; c</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Fokkinga's Prepromorphism
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_prepro"
+></A
+><B
+>g_prepro</B
+> :: (Functor f, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> f w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> f w a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generalized prepromorphisms, parameterized by a comonad
+ This is used to generate most of the specialized prepromorphisms in other modules.
+ You can use the distributive law combinators to build up analogues of other recursion 
+ schemes.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acascade"
+></A
+><B
+>cascade</B
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> s <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; (a -&gt; a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> s a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> s a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><PRE
+>cascade f . map f = map f . cascade f</PRE
+><PRE
+>cascade f = biprepro InB (first f)</PRE
+><PRE
+>cascade f = x where x = InB . bimap id (x . fmap f) . outB</PRE
+><PRE
+>cascade f = x where x = InB . bimap id (fmap f . x) . outB</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Abiprepro"
+></A
+><B
+>biprepro</B
+> :: <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> =&gt; <A HREF="Control-Functor-Algebra.html#t%3AAlgebra"
+>Algebra</A
+> (f a) c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a -&gt; c</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Prepromorphisms for bifunctors
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_biprepro"
+></A
+><B
+>g_biprepro</B
+> :: (<A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> f <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+>, <A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> w) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> (f a) w -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGAlgebra"
+>GAlgebra</A
+> (f a) w c -&gt; (f a <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f a) -&gt; <A HREF="Control-Functor-Fix.html#t%3AFix"
+>Fix</A
+> f a -&gt; c</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generalized bifunctor prepromorphism, parameterized by a comonad
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Prepro.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

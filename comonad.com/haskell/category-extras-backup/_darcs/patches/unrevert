@@ -1,0 +1,165 @@
+
+New patches:
+
+[unrevert
+anonymous**20080517172437] 
+<
+> {
+hunk ./src/Control/Bifunctor/Biff.hs 14
+ -------------------------------------------------------------------------------------------
+ 
+ module Control.Bifunctor.Biff 
+-	( BiffB(..)
++	( Biff(..)
+ 	) where
+ 
+ import Control.Arrow ((|||),(&&&))
+hunk ./src/Control/Bifunctor/Biff.hs 20
+ import Control.Monad.Identity
+ import Control.Bifunctor.Monoidal
++import Control.Functor
+ import Control.Functor.Extras
+ import Control.Monad.Parameterized
+ import Control.Comonad.Parameterized
+hunk ./src/Control/Bifunctor/Biff.hs 25
+ 
+-newtype BiffB p f g a b = BiffB { runBiffB :: p (f a) (g b) } 
++newtype Biff p f g a b = Biff { runBiff :: p (f a) (g b) } 
++type PFree = Biff Either Identity
++type PCofree = Biff (,) Identity
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 29
+-instance (Functor f, Bifunctor p, Functor g) => Bifunctor (BiffB p f g) where
+-	bimap f g = BiffB . bimap (fmap f) (fmap g) . runBiffB
++instance (F f c c', Bifunctor p c' d' k, F g d d') => Bifunctor (Biff p f g) c d k where
++	bimap f g = Biff . bimap (mapF f) (mapF g) . runBiff
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 32
+-instance (Functor f, Braided p) => Braided (BiffB p f f) where
+-	braid = BiffB . braid . runBiffB
++instance (F f k k, Braided p k) => Braided (Biff p f f) k where
++	braid = Biff . braid . runBiff
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 35
+-instance (Functor f, Symmetric p) => Symmetric (BiffB p f f) 
++instance (F f k k, Symmetric p k) -> Symmetric (Biff p f f) k
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 37
+-instance (Functor f, Bifunctor p, Functor g) => Functor (BiffB p f g a) where
+-	fmap f = bimap id f
++instance (F f c c', Bifunctor p c' d' k, F g d d') => F (Biff p f g a) d k where
++	mapF f = bimap id f
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 40
+-instance FunctorPlus f => PPointed (BiffB (,) Identity f) where
+-        preturn a = BiffB (Identity a,fzero)
++instance (FPlus f k, Bifunctor (PCofree f) k k k) => PPointed (PCofree f) k where
++        preturn a = Biff (Identity a,fzero)
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 43
+-instance Functor f => PPointed (BiffB Either Identity f) where
+-        preturn = BiffB . Left . Identity
++instance (F f k k, Bifunctor (PFree f) k k k) => PPointed (PFree f) k where
++        preturn = Biff . Left . Identity
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 46
+-instance Functor f => PCopointed (BiffB (,) Identity f) where
+-        pextract = runIdentity . fst . runBiffB
++instance (F f k k, Bifunctor (PCofree f) k k k) => PCopointed (PCofree f) k where
++        pextract = runIdentity . fst . runBiff
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 49
+-instance Functor f => PApplicative (BiffB Either Identity f) where
++instance (F f k k, Bifunctor (PFree f) k k k) => PApplicative (PFree f) k where
+         pap = papPMonad
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 52
+-instance Functor f => PMonad (BiffB Either Identity f) where
+-        pbind k = (k . runIdentity ||| BiffB . Right) . runBiffB
++instance (F f k k, Bifunctor (PFree f) k k k) => PMonad (PFree f) k where
++        pbind k = (k . runIdentity ||| Biff . Right) . runBiff
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 55
+-instance FunctorPlus f => PApplicative (BiffB (,) Identity f) where
++instance (FPlus f k, Bifunctor (PCofree f) k k k) => PApplicative (PCofree f) k where
+         pap = papPMonad
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 58
+-instance FunctorPlus f => PMonad (BiffB (,) Identity f) where
+-        pbind k (BiffB ~(Identity a,as)) = BiffB (ib, fplus as bs) where BiffB (ib,bs) = k a
++instance (FPlus f k, Bifunctor (PCofree f) k k k) => PMonad (PCofree f) (->) where
++        pbind k (Biff ~(Identity a,as)) = Biff (ib, fplus as bs) where Biff (ib,bs) = k a
++
++instance (F f k k, Bifunctor (PCofree f) k k k) => PComonad (PCofree f) k where
++        pextend f = Biff . (Identity . f &&& snd . runBiff)
+ 
+hunk ./src/Control/Bifunctor/Biff.hs 64
+-instance Functor f => PComonad (BiffB (,) Identity f) where
+-        pextend f = BiffB . (Identity . f &&& snd . runBiffB)
+}
+
+Context:
+
+[0.44.4
+ekmett@gmail.com**20080507072142
+ 
+ Added Higher Order Adjunctions and Composition
+ 
+ Fixed the definition of shift to include the rank-2 type
+ 
+] 
+[0.44.3
+ekmett@gmail.com**20080507054023
+ 
+ Fleshed out IxState
+ 
+ Cleared up -Wall and all orphans except the unfixable ones in Control.Monad.Either
+ 
+ Merged some of the near-empty files together
+ 
+] 
+[tweak cabal
+gwern0@gmail.com**20080506223416
+ It's worth noting that using 'array' as a package means that you need base > 3, since it appears only in split-base.
+] 
+[convert OPTIONS -> OPTIONS_GHC, and add some missing -cpp options
+gwern0@gmail.com**20080506222828
+ -fglasgow-exts and -cpp are both GHC only, so OPTIONS_GHC is more honest.
+] 
+[.cabal: +-Wall
+gwern0@gmail.com**20080506222727] 
+[category-extras.cabal: -02 is advised against
+gwern0@gmail.com**20080506215037] 
+[+LICENSE
+gwern0@gmail.com**20080506215021] 
+[0.44.1
+ekmett@gmail.com**20080505003610
+ 
+ Initial package for hackage
+ Better documentation forthcoming
+ 
+] 
+[Added parameterized monads
+ekmett@gmail.com**20080504075235
+ 
+] 
+[0.4
+ekmett@gmail.com**20080502070621] 
+[it compiled again!
+ekmett@gmail.com**20080502055849] 
+[0.2
+ekmett@gmail.com**20080429072138] 
+[it builds again!
+ekmett@gmail.com**20080429072054] 
+[added new files
+ekmett@gmail.com**20080429070238] 
+[work in progress
+ekmett@gmail.com**20080429070203] 
+[added bifunctor instances
+ekmett@gmail.com**20080428211419] 
+[added missing bits
+ekmett@gmail.com**20080428190304] 
+[initialized
+ekmett@gmail.com**20080428190221] 
+Patch bundle hash:
+8d5fd9673f21b0150572e22d3f5c1005caf58ed4

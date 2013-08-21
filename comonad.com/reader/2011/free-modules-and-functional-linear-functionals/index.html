@@ -1,0 +1,720 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2011/free-modules-and-functional-linear-functionals/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:42 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Free Modules and Functional Linear Functionals</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../12/index.html' />
+	<link rel='archives' title='November 2011' href='../11/index.html' />
+	<link rel='archives' title='October 2011' href='../10/index.html' />
+	<link rel='archives' title='September 2011' href='../09/index.html' />
+	<link rel='archives' title='July 2011' href='../07/index.html' />
+	<link rel='archives' title='June 2011' href='../06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Free Modules and Functional Linear Functionals Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='A Product of an Imperfect Union' href='../a-product-of-an-imperfect-union/index.html' />
+<link rel='next' title='A Parsec Full of Rats, Part 1' href='../a-parsec-full-of-rats/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Mon 11 Jul 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Free Modules and Functional Linear Functionals">Free Modules and Functional Linear Functionals</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/mathematics/linear-algebra/index.html" title="View all posts in Linear Algebra" rel="category tag">Linear Algebra</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../../category/monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> ,  <a href="../../category/type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a> <br/><a href="index.html#comments" title="Comment on Free Modules and Functional Linear Functionals">[9] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Today I hope to start a new series of posts exploring constructive abstract algebra in Haskell.  </p>
+<p>In particular, I want to talk about a novel encoding of linear functionals, polynomials and linear maps in Haskell, but first we're going to have to build up some common terminology.</p>
+<p>Having obtained the blessing of Wolfgang Jeltsch, I replaced the <a href="http://hackage.haskell.org/package/algebra">algebra</a> package on hackage with something... bigger, although still very much a work in progress.</p>
+<p><span id="more-356"></span></p>
+<p><strong>(Infinite) Modules over Semirings</strong></p>
+<p>Recall that a vector space <strong>V</strong> over a field <strong>F</strong> is given by an additive Abelian group on <strong>V</strong>, and a scalar multiplication operator<br />
+   <code>(.*) :: F -> V -> V</code> subject to distributivity laws</p>
+<pre class="haskell">&nbsp;
+s .* <span style="color: green;">&#40;</span>u + v<span style="color: green;">&#41;</span> = s .* u + s .* v
+<span style="color: green;">&#40;</span>s + t<span style="color: green;">&#41;</span> .* v = s .* v + t .* v
+&nbsp;</pre>
+<p>and associativity laws</p>
+<pre class="haskell">&nbsp;
+   <span style="color: green;">&#40;</span>s * t<span style="color: green;">&#41;</span> .* v = s .* <span style="color: green;">&#40;</span>t .* v<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and respect of the unit of the field.</p>
+<pre class="haskell">&nbsp;
+   <span style="color: red;">1</span> .* v = v
+&nbsp;</pre>
+<p>Since multiplication on a field is commutative, we can also add</p>
+<pre class="haskell">&nbsp;
+  <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> :: V -&gt; F -&gt; V
+  v *. f = f .* v
+&nbsp;</pre>
+<p>with analogous rules.</p>
+<p>But when F is only a <a href="http://en.wikipedia.org/wiki/Ring_(mathematics)">Ring</a>, we call the analogous structure a module, and in a ring, we can't rely on the commutativity of multiplication, so we may have to deal left-modules and right-modules, where only one of those products is available.</p>
+<p>We can weaken the structure still further. If we lose the negation in our Ring we and go to a <a href="http://en.wikipedia.org/wiki/Semiring">Rig</a> (often called a Semiring), now our module is an additive moniod.</p>
+<p>If we get rid of the additive and multiplicative unit on our Rig we get down to what some authors call a Ringoid, but which we'll call a <a href="http://hackage.haskell.org/packages/archive/algebra/0.3.0/doc/html/Numeric-Semiring-Class.html">Semiring</a> here, because it makes the connection between semiring and semigroup clearer, and the <em>-oid</em> suffix is dangerously overloaded due to category theory.</p>
+<p>First we'll define additive semigroups, because I'm going to need both additive and multiplicative monoids over the same types, and Data.Monoid has simultaneously too much and too little structure.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- (a + b) + c = a + (b + c)</span>
+<span style="color: #06c; font-weight: bold;">class</span> Additive m <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> :: m -&gt; m -&gt; m
+  replicate1p :: Whole n =&gt; n -&gt; m -&gt; m <span style="color: #5d478b; font-style: italic;">-- (ignore this for now)</span>
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p>their Abelian cousins</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- a + b = b + a</span>
+<span style="color: #06c; font-weight: bold;">class</span> Additive m =&gt; Abelian m
+&nbsp;</pre>
+<p>and Multiplicative semigroups</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- (a * b) * c = a * (b * c)</span>
+<span style="color: #06c; font-weight: bold;">class</span> Multiplicative m <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> :: m -&gt; m -&gt; m
+  pow1p :: Whole n =&gt; m -&gt; n -&gt; m
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p>Then we can define a semirings</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- a*(b + c) = a*b + a*c</span>
+<span style="color: #5d478b; font-style: italic;">-- (a + b)*c = a*c + b*c</span>
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Additive m, Abelian m, Multiplicative m<span style="color: green;">&#41;</span> =&gt; Semiring
+&nbsp;</pre>
+<p>With that we can define modules over a semiring:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- r .* (x + y) = r .* x + r .* y</span>
+<span style="color: #5d478b; font-style: italic;">-- (r + s) .* x = r .* x + s .* x</span>
+<span style="color: #5d478b; font-style: italic;">-- (r * s) .* x = r .* (s .* x)</span>
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Semiring r, Additive m<span style="color: green;">&#41;</span> =&gt; LeftModule r m
+   <span style="color: green;">&#40;</span>.*<span style="color: green;">&#41;</span> :: r -&gt; m -&gt; m
+&nbsp;</pre>
+<p>and analogously:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Semiring r, Additive m<span style="color: green;">&#41;</span> =&gt; RightModule r m
+   <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> :: m -&gt; r -&gt; m
+&nbsp;</pre>
+<p>For instance every additive semigroup forms a semiring module over the positive natural numbers (1,2..) using replicate1p.</p>
+<p>If we know that our addition forms a monoid, then we can form a module over the naturals as well</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | zero + a = a = a + zero</span>
+<span style="color: #06c; font-weight: bold;">class</span>
+    <span style="color: green;">&#40;</span>LeftModule Natural m,
+    RightModule Natural m
+    <span style="color: green;">&#41;</span> =&gt; AdditiveMonoid m <span style="color: #06c; font-weight: bold;">where</span>
+   zero :: m
+   replicate :: Whole n =&gt; n -&gt; m -&gt; m
+&nbsp;</pre>
+<p>and if our addition forms a group, then we can form a module over the integers</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | a + negate a = zero = negate a + a</span>
+<span style="color: #06c; font-weight: bold;">class</span>
+    <span style="color: green;">&#40;</span>LeftModule <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> m
+    , RightModule <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> m
+    <span style="color: green;">&#41;</span> =&gt; AdditiveGroup m <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a> :: m -&gt; m
+  times :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> n =&gt; n -&gt; m -&gt; m
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p><strong>Free Modules over Semirings</strong></p>
+<p>A free module on a set E, is a module where the basis vectors are elements of E. Basically it is |E| copies of some (semi)ring.</p>
+<p>In Haskell we can represent the free module of a ring directly by defining the action of the (semi)group pointwise.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Additive m =&gt; Additive <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   f + g = \x -&gt; f x + g x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Abelian m =&gt; Abelian <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveMonoid m =&gt; AdditiveMonoid <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   zero = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> zero
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveGroup m =&gt; AdditveGroup <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   f - g = \x -&gt; f x - g x
+&nbsp;</pre>
+<p>We could define the following</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Semiring r =&gt; LeftModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   r .* f = \x -&gt; r * f x
+&nbsp;</pre>
+<p>but then we'd have trouble dealing with the Natural and Integer constraints above, so instead we lift modules</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> LeftModule r m =&gt; LeftModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <span style="color: green;">&#40;</span>.*<span style="color: green;">&#41;</span> m f e = m .* f e
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> RightModule r m =&gt; RightModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> f m e = f e *. m
+&nbsp;</pre>
+<p>We <strong>could</strong> go one step further and define multiplication pointwise, but while the direct product of |e| copies of a ring _does_ define a ring, and this ring is the one provided by the Conal Elliot's <a href="http://code.haskell.org/vector-space/"><code>vector-space</code></a> package, it isn't the most general ring we could construct. But we'll need to take a detour first.</p>
+<p><strong>Linear Functionals</strong></p>
+<p>A Linear functional f on a module M is a linear function from a M to its scalars R.</p>
+<p>That is to say that, f : M -> R such that</p>
+<pre class="haskell">&nbsp;
+f <span style="color: green;">&#40;</span>a .* x + y<span style="color: green;">&#41;</span> = a * f x + f y
+&nbsp;</pre>
+<p>Consequently linear functionals also form a module over R. We call this module the dual module M*.</p>
+<p>Dan Piponi has blogged about these dual vectors (or covectors) in the context of trace diagrams.</p>
+<p>If we limit our discussion to free modules, then M = E -> R, so a linear functional on M looks like <code>(E -> R) -> R</code><br />
+<em>subject to additional linearity constraints</em> on the result arrow. </p>
+<p>The main thing we're not allowed to do in our function is apply our function from E -> R to two different E's and then multiply the results together. Our pointwise definitions above satisfy those linearity constraints, but for example:</p>
+<pre class="haskell">&nbsp;
+bad f = f <span style="color: red;">0</span> * f <span style="color: red;">0</span>
+&nbsp;</pre>
+<p>does not.</p>
+<p>We <em>could</em> capture this invariant in the type by saying that instead we want</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> LinearM r e =
+  LinearM <span style="color: green;">&#123;</span>
+    runLinearM :: <span style="color: #06c; font-weight: bold;">forall</span> r. LeftModule r m =&gt; <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> -&gt; m
+  <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>we'd have to make a new such type every time we subclassed Semiring. I'll leave further exploration of this more exotic type to another time. (Using some technically illegal module instances we can recover more structure that you'd expect.)</p>
+<p>Now we can package up the type of covectors/linear functionals:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">0</span> $*
+<span style="color: #06c; font-weight: bold;">newtype</span> Linear r a = Linear <span style="color: green;">&#123;</span> <span style="color: green;">&#40;</span>$*<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; r <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>The sufficiently observant may have already noticed that this type is the same as the Cont monad (subject to the linearity restriction on the result arrow).</p>
+<p>In fact the <code>Functor</code>, <code>Monad</code>, <code>Applicative</code> instances for <code>Cont</code> all carry over, and <strong>preserve linearity</strong>. </p>
+<p>(We lose <code>callCC</code>, but that is at least partially due to the fact that <code>callCC</code> has a less than ideal type signature.)</p>
+<p>In addition we get a number of additional instances for <code>Alternative</code>, <code>MonadPlus</code>, by exploiting the knowledge that r is ring-like:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveMonoid r =&gt; Alternative <span style="color: green;">&#40;</span>Linear r a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Linear f &lt; |&gt; Linear g = Linear <span style="color: green;">&#40;</span>f + g<span style="color: green;">&#41;</span>
+  empty = Linear zero
+&nbsp;</pre>
+<p>Note that the <code>(+)</code> and <code>zero</code> there are the ones defined on functions from our earlier free module construction!</p>
+<p><strong>Linear Maps</strong></p>
+<p>Since <code>Linear r</code> is a monad, <code>Kleisli (Linear r)</code> forms an <code>Arrow</code>:</p>
+<pre class="haskell">&nbsp;
+b -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> ~&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>where the ~> denotes the arrow that is constrained to be linear.</p>
+<p>If we swap the order of the arguments so that</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> ~&gt; <span style="color: green;">&#40;</span>b -&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>this arrow has a very nice meaning! (See <a href="http://hackage.haskell.org/packages/archive/algebra/0.4.0/doc/html/Numeric-Map-Linear.html">Numeric.Map.Linear</a>)</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">0</span> $#
+<span style="color: #06c; font-weight: bold;">newtype</span> Map r b a = Map <span style="color: green;">&#123;</span> <span style="color: green;">&#40;</span>$#<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; r<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p><code>Map r b a</code> represents the type of <a href="http://en.wikipedia.org/wiki/Linear_map">linear maps</a> from <code>a -> b</code>. Unfortunately due to contravariance the arguments wind up in the "wrong" order.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Category <span style="color: green;">&#40;</span>Map r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Map f . Map g = Map <span style="color: green;">&#40;</span>g . f<span style="color: green;">&#41;</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> = Map <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>So we can see that a linear map from a module A with basis <code>a</code> to a vector space with basis <code>b</code> effectively consists of |b| linear functionals on A.</p>
+<p><code>Map r b a</code> provides a lot of structure. It is a valid instance of <a href="https://github.com/ekmett/algebra/blob/master/Numeric/Map/Linear.hs">an insanely large number of classes</a>.</p>
+<p><strong>Vectors and Covectors</strong></p>
+<p>In physics, we sometimes call linear functionals <a href="http://www.euclideanspace.com/maths/algebra/vectors/related/covector/index.htm">covectors</a> or covariant vectors, and if we're feeling particularly loquacious, we'll refer to vectors as contravariant vectors.</p>
+<p>This has to do with the fact that when you change basis, you change map the change over covariant vectors covariantly, and map the change over vectors contravariantly. (This distinction is beautifully captured by <a href="http://en.wikipedia.org/wiki/Einstein_notation">Einstein's summation notation</a>.)</p>
+<p>We also have a notion of <a href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)">covariance and contravariance in computer science</a>! </p>
+<p>Functions vary covariantly in their result, and contravariant in their argument. <code>E -> R</code> is contravariant in E. But we chose this representation for our free modules, so the vectors in our free vector space (or module) are contravariant in E.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Contravariant f <span style="color: #06c; font-weight: bold;">where</span>
+  contramap :: <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | Dual function arrows.</span>
+<span style="color: #06c; font-weight: bold;">newtype</span> Op a b = Op <span style="color: green;">&#123;</span> getOp :: b -&gt; a <span style="color: green;">&#125;</span> 
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Contravariant <span style="color: green;">&#40;</span>Op a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  contramap f g = Op <span style="color: green;">&#40;</span>getOp g . f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>On the other hand <code>(E -> R) ~> R</code> varies covariantly with the change of <code>E</code>.</p>
+<p>as witnessed by the fact that it is a <code>Functor</code>.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Linear r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f m = Linear $ \k -&gt; m $* k . f
+&nbsp;</pre>
+<p>We have lots of classes for manipulating covariant structures, and most of them apply to both (Linear r) and (Map r b).</p>
+<p><strong>Other Representations and Design Trade-offs</strong></p>
+<p>One common representation of vectors in a free vector space is as some kind of normalized list of scalars and basis vectors. In particular, David Amos's wonderful <a href="http://www.polyomino.f2s.com/david/haskell/main.html">HaskellForMaths</a> uses</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Vect r a = Vect <span style="color: green;">&#123;</span> runVect :: <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span>r,a<span style="color: green;">&#41;</span><span style="color: green;">&#93;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>for free vector spaces, only considering them up to linearity, paying for normalization as it goes.</p>
+<p>Given the insight above we can see that Vect isn't a representation of vectors in the free vector space, but instead represents the covectors of that space, quite simply because Vect r a varies covariantly with change of basis!</p>
+<p>Now the price of using the <code>Monad</code> on <code>Vect r</code> is that the monad denormalizes the representation. In particular, you can have multiple copies of the same basis vector., so any function that uses <code>Vect r a</code> has to merge them together.</p>
+<p>On the other hand with the directly encoded linear functionals we've described here, we've placed no obligations on the consumer of a linear functional. They can feed the directly encoded linear functional <strong>any vector</strong> they want! </p>
+<p>In fact, it'll even be quite a bit more efficient to compute, </p>
+<p>To see this, just consider:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MultiplicativeMonoid r =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Vect r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Vect <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,a<span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+   Vect <span style="color: #06c; font-weight: bold;">as</span> &gt;&gt;= f = Vect
+       <span style="color: green;">&#91;</span> <span style="color: green;">&#40;</span>p*q, b<span style="color: green;">&#41;</span> | <span style="color: green;">&#40;</span>p,a<span style="color: green;">&#41;</span> &lt; - <span style="color: #06c; font-weight: bold;">as</span>, <span style="color: green;">&#40;</span>q,b<span style="color: green;">&#41;</span> &lt;- runVect <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span> <span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>Every >>= must pay for multiplication. Every return will multiply the element by one. On the other hand, the price of return and bind in Linear r is function application.</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Linear r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Linear $ \k -&gt; k a
+  m &gt;&gt;= f = Linear $ \k -&gt; m $* \a -&gt; f a $* k
+&nbsp;</pre>
+<p><strong>A Digression on Free Linear Functionals</strong></p>
+<p>To wax categorical for a moment, we can construct a forgetful functor <code>U : Vect_F -> Set</code> that takes a vector space over F to just its set of covectors.</p>
+<pre lang="haskell>
+U (V,F,+,.*) = V ~> F
+</pre>
+<p>Then we can construct <code>F : Set -> Vect_F</code> which takes a set E and gives the vector space</p>
+<pre class="haskell">&nbsp;
+F E = <span style="color: green;">&#40;</span>E -&gt; F, F,\f g x -&gt; f x + g x ,\r f x -&gt; r * f x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>using the pointwise constructions we built earlier.</p>
+<p>Then in a classical setting, you can show that F is left adjoint to U.</p>
+<p>In particular the witnesses of this adjunction provide the linear map from (E -> F) to V and the function E -> (V ~> F) giving a linear functional on V for each element of E.</p>
+<p>In a classical setting you can go a lot farther, and show that all vector spaces (but not all modules) are free.</p>
+<p>But in a constructive setting, such as Haskell, we need a fair bit to go back and forth, in particular we wind up need E to be finitely enumerable to go one way, and for it to have decidable equality to go in the other. The latter is fairly easy to see, because even going from <code>E -> (E -> F)</code> requires that we can define and partially apply something like <a href="http://en.wikipedia.org/wiki/Kronecker_delta">Kronecker's delta</a>:</p>
+<pre class="haskell">&nbsp;
+delta :: <span style="color: green;">&#40;</span>Rig r, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span> =&gt; e -&gt; e -&gt; r
+delta i j | i == j = one
+             | <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:otherwise"><span style="font-weight: bold;">otherwise</span></a> = zero
+&nbsp;</pre>
+<p><strong>The Price of Power</strong></p>
+<p>The price we pay is that, given a <code>Rig</code>, we can go from <code>Vect r a</code> to <code>Linear r a</code> but going back requires <code>a</code> to be be finitely enumerable (or for our functional to satisfy other exotic side-conditions).  </p>
+<pre class="haskell">&nbsp;
+vectMap :: Rig r =&gt; Vect r a -&gt; Linear r a
+vectMap <span style="color: green;">&#40;</span>Vect <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = Map $ \k -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:sum"><span style="font-weight: bold;">sum</span></a> <span style="color: green;">&#91;</span> r * k a | <span style="color: green;">&#40;</span>r, a<span style="color: green;">&#41;</span> &lt; - <span style="color: #06c; font-weight: bold;">as</span> <span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>You can still probe <code>Linear r a</code> for individual coefficients, or pass it a vector for polynomial evaluation very easily, but for instance determining a degree of a polynomial efficiently requires attaching more structure to your semiring, because the only value you can get out of <code>Linear r a</code> is an <code>r</code>.</p>
+<p><strong>Optimizing Linear Functionals</strong></p>
+<p>In both the <code>Vect r</code> and <code>Linear r</code> cases, excessive use of <code>(>>=)</code> without somehow normalizing or tabulating your data will cause a <strong>lot</strong> of repeated work. </p>
+<p>This is perhaps easiest to see from the fact that <code>Vect r</code> never used the addition of <code>r</code>, so it distributed everything into a kind of disjunctive normal form. <code>Linear r</code> does the same thing.</p>
+<p>If you look at the Kleisli arrows of <code>Vect r</code> or <code>Linear r</code> as linear mappings, then you can see that Kleisli composition is going to explode the number of terms. </p>
+<p>So how can we collapse back down?</p>
+<p>In the <code>Kleisli (Vect r)</code> case we usually build up a map as we walk through the list then spit the list back out in order having added up like terms.</p>
+<p>In the <code>Map r</code> case, we can do better. My <a href="http://hackage.haskell.org/package/representable-tries"><code>representable-tries</code></a> package provides a readily instantiable <code>HasTrie</code> class, and the method:</p>
+</pre>
+<pre class="haskell">&nbsp;
+memo :: HasTrie a =&gt; <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; a -&gt; r
+&nbsp;</pre>
+<p>which is responsible for providing a memoized version of the function from <code>a -> r</code> in a purely functional way. This is obviously a linear map!</p>
+<pre class="haskell">&nbsp;
+memoMap :: HasTrie a =&gt; Map r a a
+memoMap = Map memo
+&nbsp;</pre>
+<p>We can also flip memo around and memoize linear functionals.</p>
+<pre class="haskell">&nbsp;
+memoLinear :: HasTrie a =&gt; a -&gt; Linear r a
+memoLinear = Linear . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> memo
+&nbsp;</pre>
+<p>Next time, (co)associative (co)algebras and the myriad means of multiplying (co)vectors!</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">9 Responses to &#8220;Free Modules and Functional Linear Functionals&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-64094">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a45975b050304c416d0e3a736c8d44ff&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Mathnerd314</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64094" title="">July 11th, 2011 at 9:48 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Your Multiplicative class seems to ignore the existence of noncommutative (semi)rings; surely this important area of mathematics shouldn&#8217;t be left out?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-64100">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64100" title="">July 11th, 2011 at 10:19 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Without commutative addition, you don&#8217;t get many normalization opportunities. So, in the interest of drawing the line somewhere I left that off. ;) I also avoided talking about left-seminnearings and right-seminearrings. =) I do enjoy playing with the individual grains of sand in my sandbox though.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-64175">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a43213193edfe5f59a8ad6eeb414724f&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Paul Keir</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64175" title="">July 12th, 2011 at 3:07 am</a> </small>
+			<br clear="all"/>
+
+			<p>You say &#8220;If we get rid of the additive and multiplicative unit on our Rig we get down to what some authors call a Ringoid, but which we&#8217;ll call a Semiring&#8221;, but earlier you &#8220;&#8230;go to a Rig (often called a Semiring)&#8221;. Are both of them Semirings?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-64180">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64180" title="">July 12th, 2011 at 3:46 am</a> </small>
+			<br clear="all"/>
+
+			<p>This is what I get for trying to nod to the fact that different authors use the same words for different things.</p>
+<p>The vocabulary I&#8217;m working with here is that a semiring is a pair of semigroups with a pair of distributive laws and that a rig adds a 0 and 1 to a semiring. </p>
+<p>Some authors call what I am calling a rig above a semiring, which is somewhat annoying because the semi- just means &#8216;not-quite&#8217; in this setting, and has no connection to the relationship between group and semigroup. Moreover it leaves the question of what to call the pair-of-semigroups construction that I&#8217;m calling semiring above. The name those authors often use is &#8220;ringoid&#8221;, but that conflicts with the much more useful use of ringoid for referring to Ab-enriched categories, which is likely to wind up in my semigroupoid package. </p>
+<p>If a group is a groupoid with one object then a ringoid is a ringoid with one object.</p>
+<p>So in the vocabuary I&#8217;m using here, we get:</p>
+<p>Semiring <= Rig <= Ring</p>
+<p>which parallels</p>
+<p>Semigroup <= Monoid <= Group</p>
+<p>by adding unit(s) and additive inverses respectively.</p>
+<p>I&#8217;ll see if I can clear up the verbage to make it clearer.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-64199">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=610014f51d5007450153ec25a790ab0b&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://beroal.livejournal.com/' rel='external nofollow' class='url'>beroal</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64199" title="">July 12th, 2011 at 5:48 am</a> </small>
+			<br clear="all"/>
+
+			<p>I suppose that “replicate1p” and “pow1p” both define repetition. IMHO you can name them with “+” and “*”, adding some symbol to denote repetition, maybe “&#8230;”? (And with the right order of arguments in “pow1p”. :) )</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-64208">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=610014f51d5007450153ec25a790ab0b&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://beroal.livejournal.com/' rel='external nofollow' class='url'>beroal</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64208" title="">July 12th, 2011 at 6:40 am</a> </small>
+			<br clear="all"/>
+
+			<p><em>If we limit our discussion to free modules, then M = E -&gt; R</em><br />
+And every element of M should be 0 on all but finite set of elements of E. This is the definition of free modules.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-64213">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=610014f51d5007450153ec25a790ab0b&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://beroal.livejournal.com/' rel='external nofollow' class='url'>beroal</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64213" title="">July 12th, 2011 at 6:49 am</a> </small>
+			<br clear="all"/>
+
+			<p><em>We could capture this invariant in the type by saying that instead we want</em><br />
+Can you please explain what “invariant” you are talking about?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-64233">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a45975b050304c416d0e3a736c8d44ff&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Mathnerd314</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64233" title="">July 12th, 2011 at 8:57 am</a> </small>
+			<br clear="all"/>
+
+			<p>Oops, sorry. I meant nonassociative rings. But I guess you do have to draw the line somewhere.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-64236">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-64236" title="">July 12th, 2011 at 9:21 am</a> </small>
+			<br clear="all"/>
+
+			<p>@beroal: i didn&#8217;t make them symbolic because they have the problem that what do you name the three different operators for ((N+1)*), (N*) and (Z*) ?</p>
+<p>whereas the precedent of log1p at least gives some intuition to the name replicate1p, and the action of replicate on lists if the repetition of a monoidal value. I had, however originally started using (#*) and (*#) for times and may revert. They are mostly provided as reasonable default implementations for the natural number multiplication and integer multiplication requirements placed on you by the module superclasses.</p>
+<p>As for the free module, technically I&#8217;m permitting the infinite free module. Haskell provides me a largely coinductive universe, I&#8217;d be remiss in not taking advantage of it. I&#8217;ll throw an (infinite) in there. ;) But unlike the classical case I can&#8217;t prove the duality in most cases to begin with and I&#8217;m not able to enumerate the set of all e in E such that E -> R is non-zero except when the set E is finitely enumerable itself, because I can&#8217;t intensionally inspect the function I&#8217;m given. Effectively the constraint moves from requiring the function to have a finite number of non-zeros to requiring that any linear functional can only inspect a finite number of vectors, which being constructive is all it can do anyways.</p>
+<p>The invariant in question is linearity. One (potentially conservative) way to enforce that would be to never apply our continuation vector twice and take the product of the results (or add it to some value in the ring), but instead only multiply it by values we have lying around in the ring or add and subtract them. If you think about it, quantifying over the choice of a module then prevents violations of linearity.  \k -> r .*  f k  is well typed, we can plumb in zeroes, etc, but \k -> f k * f k requires our module be strengthened to a semiring, and the unmentioned but also non-linear \k -> f k + r also would fail to type check, since f k :: m, and under quantification over the module all we&#8217;re permitted to do is use the (.*) and the (+) from our module. the reason this is a problem is if you want to use the zero from a semigroup-with-zero module, you&#8217;d need a new type. </p>
+<p>There is also a performance impact from the fact that we effectively use the LeftModule dictionary as an interpreter, and most damningly it costs us the ability to use representable-tries for cheap memoization.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="356" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Monday, Jul 11th, 2011 at 3:58 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../category/mathematics/linear-algebra/index.html" title="View all posts in Linear Algebra" rel="category tag">Linear Algebra</a> and  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> and  <a href="../../category/monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> and  <a href="../../category/type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733/index.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2011/free-modules-and-functional-linear-functionals/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:43 GMT -->
+</html>

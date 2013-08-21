@@ -1,0 +1,5029 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set-Unboxed.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:47 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Set.Unboxed</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>unboxed-containers-0.0.2: Self-optimizing unboxed sets using view patterns and data families</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Set-Unboxed.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Set.Unboxed</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (type families, view patterns, unboxed tuples)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Set type
+</A
+></DT
+><DT
+><A HREF="#2"
+>Operators
+</A
+></DT
+><DT
+><A HREF="#3"
+>Query
+</A
+></DT
+><DT
+><A HREF="#4"
+>Construction
+</A
+></DT
+><DT
+><A HREF="#5"
+>Combine
+</A
+></DT
+><DT
+><A HREF="#6"
+>Filter
+</A
+></DT
+><DT
+><A HREF="#7"
+>Map
+</A
+></DT
+><DT
+><A HREF="#8"
+>Fold
+</A
+></DT
+><DT
+><A HREF="#9"
+>Min/Max
+</A
+></DT
+><DT
+><A HREF="#10"
+>Conversion
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#11"
+>List
+</A
+></DT
+><DT
+><A HREF="#12"
+>Ordered list
+</A
+></DT
+></DL
+></DD
+><DT
+><A HREF="#13"
+>Debugging
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>An efficient implementation of sets.
+</P
+><P
+>Since many function names (but not the type name) clash with
+ <A HREF="Prelude.html"
+>Prelude</A
+> names, this module is usually imported <TT
+>qualified</TT
+>, e.g.
+</P
+><PRE
+>  import Data.Set.Unboxed (USet)
+  import qualified Data.Set.Unboxed as USet
+</PRE
+><P
+>The implementation of <TT
+><A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+></TT
+> is based on <EM
+>size balanced</EM
+> binary trees (or
+ trees of <EM
+>bounded balance</EM
+>) as described by:
+</P
+><UL
+><LI
+> Stephen Adams, &quot;<EM
+>Efficient sets: a balancing act</EM
+>&quot;,
+  Journal of Functional Programming 3(4):553-562, October 1993,
+  <A HREF="http://www.swiss.ai.mit.edu/~adams/BB/"
+>http://www.swiss.ai.mit.edu/~adams/BB/</A
+>.
+</LI
+><LI
+> J. Nievergelt and E.M. Reingold,
+  &quot;<EM
+>Binary search trees of bounded balance</EM
+>&quot;,
+  SIAM journal of computing 2(1), March 1973.
+</LI
+></UL
+><P
+>Note that the implementation is <EM
+>left-biased</EM
+> -- the elements of a
+ first argument are always preferred to the second, for example in
+ <TT
+><A HREF="Data-Set-Unboxed.html#v%3Aunion"
+>union</A
+></TT
+> or <TT
+><A HREF="Data-Set-Unboxed.html#v%3Ainsert"
+>insert</A
+></TT
+>.  Of course, left-biasing can only be observed
+ when equality is an equivalence relation instead of structural
+ equality.
+</P
+><P
+>Modified from <A HREF="Data-Set.html"
+>Data.Set</A
+> to use type families for automatic unboxing
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AUS"
+>US</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A HREF="#t%3AUSet"
+>USet</A
+> a </TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asize"
+>size</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; Size</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anull"
+>null</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3ABoxed"
+>Boxed</A
+> a = <A HREF="#v%3ABoxed"
+>Boxed</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetBoxed"
+>getBoxed</A
+> :: a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%5C%5C"
+>(\\)</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Anull"
+>null</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asize"
+>size</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; Size</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amember"
+>member</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnotMember"
+>notMember</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AisSubsetOf"
+>isSubsetOf</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AisProperSubsetOf"
+>isProperSubsetOf</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aempty"
+>empty</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asingleton"
+>singleton</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainsert"
+>insert</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adelete"
+>delete</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunion"
+>union</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunions"
+>unions</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; [<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adifference"
+>difference</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aintersection"
+>intersection</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afilter"
+>filter</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; (a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Apartition"
+>partition</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; (a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit"
+>split</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsplitMember"
+>splitMember</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amap"
+>map</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> b, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> b) =&gt; (a -&gt; b) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapMonotonic"
+>mapMonotonic</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> b) =&gt; (a -&gt; b) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afold"
+>fold</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; (a -&gt; b -&gt; b) -&gt; b -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfindMin"
+>findMin</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfindMax"
+>findMax</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdeleteMin"
+>deleteMin</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdeleteMax"
+>deleteMax</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdeleteFindMin"
+>deleteFindMin</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AdeleteFindMax"
+>deleteFindMax</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmaxView"
+>maxView</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AminView"
+>minView</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aelems"
+>elems</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoList"
+>toList</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromList"
+>fromList</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoAscList"
+>toAscList</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromAscList"
+>fromAscList</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a) =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromDistinctAscList"
+>fromDistinctAscList</A
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AshowTree"
+>showTree</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AshowTreeWith"
+>showTreeWith</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Avalid"
+>valid</A
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Set type
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3AUS"
+></A
+><B
+>US</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#US"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Associated Types</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3AUSet"
+></A
+><B
+>USet</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#USet"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Asize"
+></A
+><B
+>size</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; Size</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#size"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. The number of elements in the set.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Anull"
+></A
+><B
+>null</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#null"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. Is this the empty set?
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:US')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:US" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> Integer</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) Integer Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) Integer Integer Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> e) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) Integer Integer Integer Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> e) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> f) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> g))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) Integer Integer Integer Integer Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> e) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> f) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> g) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> h))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3ADouble"
+>Double</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AFloat"
+>Float</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt8"
+>Int8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt16"
+>Int16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt32"
+>Int32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Int.html#t%3AInt64"
+>Int64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) Integer Integer Integer Integer Integer Integer Integer Integer Integer)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord16"
+>Word16</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord32"
+>Word32</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Word.html#t%3AWord64"
+>Word64</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> ((,,,,,,,,) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> b) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> c) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> d) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> e) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> f) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> g) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> h) (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> i))</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3ABoxed"
+></A
+><B
+>Boxed</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#Boxed"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ABoxed"
+></A
+><B
+>Boxed</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetBoxed"
+></A
+><B
+>getBoxed</B
+> :: a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Boxed')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Boxed" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> (<A HREF="Data-Set-Unboxed.html#t%3ABoxed"
+>Boxed</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Operators
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3A%5C%5C"
+></A
+><B
+>(\\)</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#%5C%5C"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n+m)</EM
+>. See <TT
+><A HREF="Data-Set-Unboxed.html#v%3Adifference"
+>difference</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Query
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Anull"
+></A
+><B
+>null</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#null"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. Is this the empty set?
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Asize"
+></A
+><B
+>size</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; Size</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#size"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. The number of elements in the set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Amember"
+></A
+><B
+>member</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#member"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Is the element in the set?
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnotMember"
+></A
+><B
+>notMember</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#notMember"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Is the element not in the set?
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AisSubsetOf"
+></A
+><B
+>isSubsetOf</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#isSubsetOf"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n+m)</EM
+>. Is this a subset?
+ <TT
+>(s1 <TT
+><A HREF="Data-Set-Unboxed.html#v%3AisSubsetOf"
+>isSubsetOf</A
+></TT
+> s2)</TT
+> tells whether <TT
+>s1</TT
+> is a subset of <TT
+>s2</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AisProperSubsetOf"
+></A
+><B
+>isProperSubsetOf</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#isProperSubsetOf"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n+m)</EM
+>. Is this a proper subset? (ie. a subset but not equal).
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>Construction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aempty"
+></A
+><B
+>empty</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#empty"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. The empty set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Asingleton"
+></A
+><B
+>singleton</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#singleton"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(1)</EM
+>. Create a singleton set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Ainsert"
+></A
+><B
+>insert</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#insert"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Insert an element in a set.
+ If the set already contains an element equal to the given value,
+ it is replaced with the new value.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Adelete"
+></A
+><B
+>delete</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#delete"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Delete an element from a set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+>Combine
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aunion"
+></A
+><B
+>union</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#union"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n+m)</EM
+>. The union of two sets, preferring the first set when
+ equal elements are encountered.
+ The implementation uses the efficient <EM
+>hedge-union</EM
+> algorithm.
+ Hedge-union is more efficient on (bigset <TT
+><A HREF="Data-Set-Unboxed.html#v%3Aunion"
+>union</A
+></TT
+> smallset).
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aunions"
+></A
+><B
+>unions</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; [<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#unions"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The union of a list of sets: (<TT
+><TT
+><A HREF="Data-Set-Unboxed.html#v%3Aunions"
+>unions</A
+></TT
+> == <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-List.html#v%3Afoldl"
+>foldl</A
+></TT
+> <TT
+><A HREF="Data-Set-Unboxed.html#v%3Aunion"
+>union</A
+></TT
+> <TT
+><A HREF="Data-Set-Unboxed.html#v%3Aempty"
+>empty</A
+></TT
+></TT
+>).
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Adifference"
+></A
+><B
+>difference</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#difference"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n+m)</EM
+>. Difference of two sets. 
+ The implementation uses an efficient <EM
+>hedge</EM
+> algorithm comparable with <EM
+>hedge-union</EM
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aintersection"
+></A
+><B
+>intersection</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#intersection"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n+m)</EM
+>. The intersection of two sets.
+ Elements of the result come from the first set, so for example
+</P
+><PRE
+> import qualified Data.Set as S
+ data AB = A | B deriving Show
+ instance Ord AB where compare _ _ = EQ
+ instance Eq AB where _ == _ = True
+ main = print (S.singleton A `S.intersection` S.singleton B,
+               S.singleton B `S.intersection` S.singleton A)
+</PRE
+><P
+>prints <TT
+>(fromList [A],fromList [B])</TT
+>.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="6"
+>Filter
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afilter"
+></A
+><B
+>filter</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; (a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#filter"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Filter all elements that satisfy the predicate.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Apartition"
+></A
+><B
+>partition</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; (a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#partition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Partition the set into two sets, one with all elements that satisfy
+ the predicate and one with all elements that don't satisfy the predicate.
+ See also <TT
+><A HREF="Data-Set-Unboxed.html#v%3Asplit"
+>split</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Asplit"
+></A
+><B
+>split</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#split"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. The expression (<TT
+><TT
+><A HREF="Data-Set-Unboxed.html#v%3Asplit"
+>split</A
+></TT
+> x set</TT
+>) is a pair <TT
+>(set1,set2)</TT
+>
+ where <TT
+>set1</TT
+> comprises the elements of <TT
+>set</TT
+> less than <TT
+>x</TT
+> and <TT
+>set2</TT
+>
+ comprises the elements of <TT
+>set</TT
+> greater than <TT
+>x</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsplitMember"
+></A
+><B
+>splitMember</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (<A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#splitMember"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Performs a <TT
+><A HREF="Data-Set-Unboxed.html#v%3Asplit"
+>split</A
+></TT
+> but also returns whether the pivot
+ element was found in the original set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="7"
+>Map
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Amap"
+></A
+><B
+>map</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> b, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> b) =&gt; (a -&gt; b) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#map"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n*log n)</EM
+>. 
+ <TT
+><TT
+><A HREF="Data-Set-Unboxed.html#v%3Amap"
+>map</A
+></TT
+> f s</TT
+> is the set obtained by applying <TT
+>f</TT
+> to each element of <TT
+>s</TT
+>.
+</P
+><P
+>It's worth noting that the size of the result may be smaller if,
+ for some <TT
+>(x,y)</TT
+>, <TT
+>x /= y &amp;&amp; f x == f y</TT
+>
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapMonotonic"
+></A
+><B
+>mapMonotonic</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> b) =&gt; (a -&gt; b) -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#mapMonotonic"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+>. The 
+</P
+><P
+><TT
+><TT
+><A HREF="Data-Set-Unboxed.html#v%3AmapMonotonic"
+>mapMonotonic</A
+></TT
+> f s == <TT
+><A HREF="Data-Set-Unboxed.html#v%3Amap"
+>map</A
+></TT
+> f s</TT
+>, but works only when <TT
+>f</TT
+> is monotonic.
+ <EM
+>The precondition is not checked.</EM
+>
+ Semi-formally, we have:
+</P
+><PRE
+> and [x &lt; y ==&gt; f x &lt; f y | x &lt;- ls, y &lt;- ls] 
+                     ==&gt; mapMonotonic f s == map f s
+     where ls = toList s
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="8"
+>Fold
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afold"
+></A
+><B
+>fold</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; (a -&gt; b -&gt; b) -&gt; b -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#fold"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Fold over the elements of a set in an unspecified order.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="9"
+>Min/Max
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfindMin"
+></A
+><B
+>findMin</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#findMin"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. The minimal element of a set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfindMax"
+></A
+><B
+>findMax</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#findMax"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. The maximal element of a set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AdeleteMin"
+></A
+><B
+>deleteMin</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#deleteMin"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Delete the minimal element.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AdeleteMax"
+></A
+><B
+>deleteMax</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#deleteMax"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Delete the maximal element.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AdeleteFindMin"
+></A
+><B
+>deleteFindMin</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#deleteFindMin"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(log n)</EM
+>. Delete and find the minimal element.
+</P
+><PRE
+> deleteFindMin set = (findMin set, deleteMin set)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AdeleteFindMax"
+></A
+><B
+>deleteFindMax</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#deleteFindMax"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(log n)</EM
+>. Delete and find the maximal element.
+</P
+><PRE
+> deleteFindMax set = (findMax set, deleteMax set)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmaxView"
+></A
+><B
+>maxView</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#maxView"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Retrieves the maximal key of the set, and the set
+ stripped of that element, or <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> if passed an empty set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AminView"
+></A
+><B
+>minView</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (a, <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#minView"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(log n)</EM
+>. Retrieves the minimal key of the set, and the set
+ stripped of that element, or <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> if passed an empty set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="10"
+>Conversion
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="11"
+>List
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aelems"
+></A
+><B
+>elems</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#elems"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. The elements of a set.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AtoList"
+></A
+><B
+>toList</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#toList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Convert the set to a list of elements.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfromList"
+></A
+><B
+>fromList</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#fromList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n*log n)</EM
+>. Create a set from a list of elements.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="12"
+>Ordered list
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AtoAscList"
+></A
+><B
+>toAscList</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#toAscList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Convert the set to an ascending list of elements.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfromAscList"
+></A
+><B
+>fromAscList</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a) =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#fromAscList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Build a set from an ascending list in linear time.
+ <EM
+>The precondition (input list is ascending) is not checked.</EM
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfromDistinctAscList"
+></A
+><B
+>fromDistinctAscList</B
+> :: <A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a =&gt; [a] -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#fromDistinctAscList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Build a set from an ascending list of distinct elements in linear time.
+ <EM
+>The precondition (input list is strictly ascending) is not checked.</EM
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="13"
+>Debugging
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AshowTree"
+></A
+><B
+>showTree</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#showTree"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Show the tree that implements the set. The tree is shown
+ in a compressed, hanging format.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AshowTreeWith"
+></A
+><B
+>showTreeWith</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+> -&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#showTreeWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+>. The expression (<TT
+>showTreeWith hang wide map</TT
+>) shows
+ the tree that implements the set. If <TT
+>hang</TT
+> is
+ <TT
+>True</TT
+>, a <EM
+>hanging</EM
+> tree is shown otherwise a rotated tree is shown. If
+ <TT
+>wide</TT
+> is <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#v%3ATrue"
+>True</A
+></TT
+>, an extra wide version is shown.
+</P
+><PRE
+> Set&gt; putStrLn $ showTreeWith True False $ fromDistinctAscList [1..5]
+ 4
+ +--2
+ |  +--1
+ |  +--3
+ +--5
+ 
+ Set&gt; putStrLn $ showTreeWith True True $ fromDistinctAscList [1..5]
+ 4
+ |
+ +--2
+ |  |
+ |  +--1
+ |  |
+ |  +--3
+ |
+ +--5
+ 
+ Set&gt; putStrLn $ showTreeWith False True $ fromDistinctAscList [1..5]
+ +--5
+ |
+ 4
+ |
+ |  +--3
+ |  |
+ +--2
+    |
+    +--1
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Avalid"
+></A
+><B
+>valid</B
+> :: (<A HREF="Data-Set-Unboxed.html#t%3AUS"
+>US</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a) =&gt; <A HREF="Data-Set-Unboxed.html#t%3AUSet"
+>USet</A
+> a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Set-Unboxed.html#valid"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><EM
+>O(n)</EM
+>. Test if the internal set structure is valid.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set-Unboxed.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:48 GMT -->
+</HTML
+>

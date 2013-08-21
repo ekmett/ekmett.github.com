@@ -1,0 +1,528 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Combinators.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:14 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Text.Parsimony.Combinators</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>parsimony-0.0.1: Monoidal parser combinators for parallel parsing of context-free languages</TD
+><TD CLASS="topbut"
+><A HREF="src/Text-Parsimony-Combinators.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Text.Parsimony.Combinators</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AoneOf"
+></A
+><B
+>oneOf</B
+> :: (<A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> t) =&gt; [t] -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t t</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#oneOf"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnoneOf"
+></A
+><B
+>noneOf</B
+> :: (<A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> t) =&gt; [t] -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t t</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#noneOf"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AanyToken"
+></A
+><B
+>anyToken</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t t</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#anyToken"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aoption"
+></A
+><B
+>option</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f =&gt; a -&gt; f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#option"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Acount"
+></A
+><B
+>count</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; f a -&gt; f [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#count"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Amany1"
+></A
+><B
+>many1</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f =&gt; f a -&gt; f [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#many1"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AendBy"
+></A
+><B
+>endBy</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#endBy"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AendBy1"
+></A
+><B
+>endBy1</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#endBy1"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsepBy"
+></A
+><B
+>sepBy</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#sepBy"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsepBy1"
+></A
+><B
+>sepBy1</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#sepBy1"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsepEndBy"
+></A
+><B
+>sepEndBy</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#sepEndBy"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsepEndBy1"
+></A
+><B
+>sepEndBy1</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t sep -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#sepEndBy1"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AskipMany"
+></A
+><B
+>skipMany</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#skipMany"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AskipMany1"
+></A
+><B
+>skipMany1</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#skipMany1"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Abetween"
+></A
+><B
+>between</B
+> :: <A HREF="Text-Parsimony-Prim.html#t%3AMode"
+>Mode</A
+> m =&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t open -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> <A HREF="Text-Parsimony-Prim.html#t%3ARecognizing"
+>Recognizing</A
+> t close -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a -&gt; <A HREF="Text-Parsimony-Prim.html#t%3AParser"
+>Parser</A
+> m t a</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Combinators.html#between"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Combinators.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:15 GMT -->
+</HTML
+>

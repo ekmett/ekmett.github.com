@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Zipping and Unzipping Functors</title>
+	<atom:link href="http://comonad.com/reader/2008/zipping-and-unzipping-functors/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: anonymous</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-101831</link>
+		<dc:creator>anonymous</dc:creator>
+		<pubDate>Wed, 22 Feb 2012 20:29:32 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-101831</guid>
+		<description>I also want liftPair in Applicative</description>
+		<content:encoded><![CDATA[<p>I also want liftPair in Applicative</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-9740</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Mon, 22 Jun 2009 21:59:36 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-9740</guid>
+		<description>@Jake
+
+I almost agree. I&#039;ve had people point out the connection to Applicative on several occasions before, but it falters slightly.
+
+There is no requirement for the existence of unit, so your functor need not be pointed. This permits the class of zippable functors to be slightly wider than the class of applicative functors.
+
+Secondly the particular near-applicative operation is selected explicitly so it will be a left inverse to unzip.
+
+fzip . unfzip = id
+
+Since that should hold for any functor to claim to be a member of Zip the definition is narrower than that of Applicative. Using list monad semantics for fzip on [] would fail this law.
+
+So Zip is neither a superclass nor a subclass of Applicative.
+
+That, at least, was my justification for a zippable functor as an independent concept; I may not have fully articulated the justification back when i wrote this article.</description>
+		<content:encoded><![CDATA[<p>@Jake</p>
+<p>I almost agree. I&#8217;ve had people point out the connection to Applicative on several occasions before, but it falters slightly.</p>
+<p>There is no requirement for the existence of unit, so your functor need not be pointed. This permits the class of zippable functors to be slightly wider than the class of applicative functors.</p>
+<p>Secondly the particular near-applicative operation is selected explicitly so it will be a left inverse to unzip.</p>
+<p>fzip . unfzip = id</p>
+<p>Since that should hold for any functor to claim to be a member of Zip the definition is narrower than that of Applicative. Using list monad semantics for fzip on [] would fail this law.</p>
+<p>So Zip is neither a superclass nor a subclass of Applicative.</p>
+<p>That, at least, was my justification for a zippable functor as an independent concept; I may not have fully articulated the justification back when i wrote this article.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jake McArthur</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-9675</link>
+		<dc:creator>Jake McArthur</dc:creator>
+		<pubDate>Sat, 20 Jun 2009 20:13:02 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-9675</guid>
+		<description>fzipWith = liftA2, at least ignoring the inverse law for fzip and funzip as you seem to have for [] (where you chose the ZipList semantics) and Maybe. Perhaps the [] and Maybe instances for Zip should be removed, and instances for known Applicatives which follow the inverse law should be added?</description>
+		<content:encoded><![CDATA[<p>fzipWith = liftA2, at least ignoring the inverse law for fzip and funzip as you seem to have for [] (where you chose the ZipList semantics) and Maybe. Perhaps the [] and Maybe instances for Zip should be removed, and instances for known Applicatives which follow the inverse law should be added?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Zapping Adjunctions</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-1615</link>
+		<dc:creator>The Comonad.Reader &#187; Zapping Adjunctions</dc:creator>
+		<pubDate>Thu, 05 Jun 2008 19:34:16 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-1615</guid>
+		<description>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</description>
+		<content:encoded><![CDATA[<p>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Cozipping</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-1165</link>
+		<dc:creator>The Comonad.Reader &#187; Cozipping</dc:creator>
+		<pubDate>Mon, 05 May 2008 21:48:36 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-1165</guid>
+		<description>[...] Twan van Laarhoven pointed out that fzip from the other day is a close cousin of applicative chosen to be an inverse of universal construction: unfzip [...]</description>
+		<content:encoded><![CDATA[<p>[...] Twan van Laarhoven pointed out that fzip from the other day is a close cousin of applicative chosen to be an inverse of universal construction: unfzip [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Twan van Laarhoven</title>
+		<link>http://comonad.com/reader/2008/zipping-and-unzipping-functors/comment-page-1/#comment-1163</link>
+		<dc:creator>Twan van Laarhoven</dc:creator>
+		<pubDate>Mon, 05 May 2008 20:53:48 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/zipping-and-unzipping-functors/#comment-1163</guid>
+		<description>your Zip class is almost the same as Applicative:
+
+    fzipWith f a b  =  fmap f a  b
+
+Your fzip function is suggested in the Applicative paper as making more sense from a  category theory perspective.
+
+This also raises the question of what exactly fzip should do. How do you say that it should &#039;zip&#039;? For instance [] is also an applicative functor with the usual Monad-style cartestian product behaviour.
+
+Specifying that unfzip is the inverse of fzip is a good idea. For [] fzip is only a right inverse of unfzip, since you could zip lists of different lengths. The same holds for Maybe: funzip (fzip (Just x) Nothing) /= (Just x, Nothing).</description>
+		<content:encoded><![CDATA[<p>your Zip class is almost the same as Applicative:</p>
+<p>    fzipWith f a b  =  fmap f a  b</p>
+<p>Your fzip function is suggested in the Applicative paper as making more sense from a  category theory perspective.</p>
+<p>This also raises the question of what exactly fzip should do. How do you say that it should &#8216;zip&#8217;? For instance [] is also an applicative functor with the usual Monad-style cartestian product behaviour.</p>
+<p>Specifying that unfzip is the inverse of fzip is a good idea. For [] fzip is only a right inverse of unfzip, since you could zip lists of different lengths. The same holds for Maybe: funzip (fzip (Just x) Nothing) /= (Just x, Nothing).</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

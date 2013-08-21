@@ -1,0 +1,1120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Union.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:07 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Union</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Union.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Union</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Unions of Containers
+</A
+></DT
+><DT
+><A HREF="#2"
+>Unions of Containers of Monoids
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3AHasUnion"
+>HasUnion</A
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aempty"
+>empty</A
+> :: f</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunion"
+>union</A
+> :: f -&gt; f -&gt; f</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aempty"
+>empty</A
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aunion"
+>union</A
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; f -&gt; f -&gt; f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AUnion"
+>Union</A
+> f = <A HREF="#v%3AUnion"
+>Union</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetUnion"
+>getUnion</A
+> :: f</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> f =&gt; <A HREF="#t%3AHasUnionWith"
+>HasUnionWith</A
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunionWith"
+>unionWith</A
+> ::  (a -&gt; a -&gt; a) -&gt; f a -&gt; f a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AemptyWith"
+>emptyWith</A
+> ::  f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AemptyWith"
+>emptyWith</A
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f =&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunionWith"
+>unionWith</A
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f =&gt; (a -&gt; a -&gt; a) -&gt; f a -&gt; f a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AUnionWith"
+>UnionWith</A
+> f m = <A HREF="#v%3AUnionWith"
+>UnionWith</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetUnionWith"
+>getUnionWith</A
+> :: f m</TD
+></TR
+></TABLE
+>}</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Unions of Containers
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3AHasUnion"
+></A
+><B
+>HasUnion</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#HasUnion"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A Container suitable for the <TT
+><A HREF="Data-Monoid-Union.html#v%3AUnion"
+>Union</A
+></TT
+> <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aempty"
+></A
+><B
+>empty</B
+> :: f</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#empty"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aunion"
+></A
+><B
+>union</B
+> :: f -&gt; f -&gt; f</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#union"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:HasUnion')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:HasUnion" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-IntSet.html#t%3AIntSet"
+>IntSet</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> ([] a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-IntMap.html#t%3AIntMap"
+>IntMap</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-Set.html#t%3ASet"
+>Set</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> k =&gt; <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-Map.html#t%3AMap"
+>Map</A
+> k a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aempty"
+></A
+><B
+>empty</B
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; f</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#empty"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aunion"
+></A
+><B
+>union</B
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; f -&gt; f -&gt; f</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#union"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AUnion"
+></A
+><B
+>Union</B
+> f </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#Union"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>(<TT
+><A HREF="Data-Monoid-Union.html#v%3Aunion"
+>union</A
+></TT
+>,<TT
+><A HREF="Data-Monoid-Union.html#v%3Aempty"
+>empty</A
+></TT
+>)</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AUnion"
+></A
+><B
+>Union</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetUnion"
+></A
+><B
+>getUnion</B
+> :: f</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Union')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Union" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Copointed <A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> f (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Union.html#t%3AHasUnion"
+>HasUnion</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnion"
+>Union</A
+> f)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Unions of Containers of Monoids
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> f =&gt; <A NAME="t%3AHasUnionWith"
+></A
+><B
+>HasUnionWith</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#HasUnionWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Polymorphic containers that we can supply an operation to handle unions with
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AunionWith"
+></A
+><B
+>unionWith</B
+> ::  (a -&gt; a -&gt; a) -&gt; f a -&gt; f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#unionWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AemptyWith"
+></A
+><B
+>emptyWith</B
+> ::  f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#emptyWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:HasUnionWith')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:HasUnionWith" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-IntMap.html#t%3AIntMap"
+>IntMap</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> k =&gt; <A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-Map.html#t%3AMap"
+>Map</A
+> k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AemptyWith"
+></A
+><B
+>emptyWith</B
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f =&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#emptyWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AunionWith"
+></A
+><B
+>unionWith</B
+> :: <A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f =&gt; (a -&gt; a -&gt; a) -&gt; f a -&gt; f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#unionWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AUnionWith"
+></A
+><B
+>UnionWith</B
+> f m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Union.html#UnionWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>('unionWith mappend',<TT
+><A HREF="Data-Monoid-Union.html#v%3Aempty"
+>empty</A
+></TT
+>)</TT
+> for containers full of monoids.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AUnionWith"
+></A
+><B
+>UnionWith</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetUnionWith"
+></A
+><B
+>getUnionWith</B
+> :: f m</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:UnionWith')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:UnionWith" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> r, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> r, <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> r) =&gt; <A HREF="Data-Ring-Module.html#t%3ARightModule"
+>RightModule</A
+> r (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> r, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> r, <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> r) =&gt; <A HREF="Data-Ring-Module.html#t%3ALeftModule"
+>LeftModule</A
+> r (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> r, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> r, <A HREF="Data-Ring.html#t%3ARightSemiNearRing"
+>RightSemiNearRing</A
+> r) =&gt; <A HREF="Data-Ring-Module.html#t%3AModule"
+>Module</A
+> r (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed f =&gt; Pointed (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (f m) (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (f m) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (f m) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (f m) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (f m) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Monoid-Union.html#t%3AHasUnionWith"
+>HasUnionWith</A
+> f, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Union.html#t%3AUnionWith"
+>UnionWith</A
+> f m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Union.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:08 GMT -->
+</HTML
+>

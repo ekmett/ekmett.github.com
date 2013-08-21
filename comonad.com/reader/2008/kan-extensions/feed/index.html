@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Kan Extensions</title>
+	<atom:link href="http://comonad.com/reader/2008/kan-extensions/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/kan-extensions/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: zzo38</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-105351</link>
+		<dc:creator>zzo38</dc:creator>
+		<pubDate>Wed, 27 Jun 2012 18:50:40 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-105351</guid>
+		<description>Can you make the constraint Kan extension? Such as (forall b. Monoid b =&gt; (a -&gt; g b) -&gt; h b) and so on. Or use the constraint kind to allow it a parameter.</description>
+		<content:encoded><![CDATA[<p>Can you make the constraint Kan extension? Such as (forall b. Monoid b =&gt; (a -&gt; g b) -&gt; h b) and so on. Or use the constraint kind to allow it a parameter.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Free Monads for Less (Part 2 of 3): Yoneda</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-61215</link>
+		<dc:creator>The Comonad.Reader &#187; Free Monads for Less (Part 2 of 3): Yoneda</dc:creator>
+		<pubDate>Fri, 24 Jun 2011 04:53:38 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-61215</guid>
+		<description>[...] covered it briefly in my initial article on Kan extensions, but the inestimable Dan Piponi wrote a much nicer article on how it implies in Haskell that given [...]</description>
+		<content:encoded><![CDATA[<p>[...] covered it briefly in my initial article on Kan extensions, but the inestimable Dan Piponi wrote a much nicer article on how it implies in Haskell that given [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Free Monads for Less (Part 1 of 3): Codensity</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-61208</link>
+		<dc:creator>The Comonad.Reader &#187; Free Monads for Less (Part 1 of 3): Codensity</dc:creator>
+		<pubDate>Fri, 24 Jun 2011 04:00:16 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-61208</guid>
+		<description>[...] will arise in a subsequent post) on this blog previously, in a series of posts on Kan Extensions. [ 1, 2, [...]</description>
+		<content:encoded><![CDATA[<p>[...] will arise in a subsequent post) on this blog previously, in a series of posts on Kan Extensions. [ 1, 2, [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Kan Extensions III: As Ends and Coends</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-1475</link>
+		<dc:creator>The Comonad.Reader &#187; Kan Extensions III: As Ends and Coends</dc:creator>
+		<pubDate>Tue, 27 May 2008 00:22:20 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-1475</guid>
+		<description>[...] Grant B. asked me to post the derivation for the right and left Kan extension formula used in previous Kan Extension posts (1,2). For that we can turn to the definition of Kan extensions in terms of ends, but first we need to take a couple of steps back to find a way to represent (co)ends in Haskell. [...]</description>
+		<content:encoded><![CDATA[<p>[...] Grant B. asked me to post the derivation for the right and left Kan extension formula used in previous Kan Extension posts (1,2). For that we can turn to the definition of Kan extensions in terms of ends, but first we need to take a couple of steps back to find a way to represent (co)ends in Haskell. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-1419</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Fri, 23 May 2008 05:33:57 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-1419</guid>
+		<description>The left Kan extension used in that paper is taken along a functor with domain &#124;Hask&#124; rather than Hask. Where &#124;C&#124; maps a category to its underlying discrete category, discarding all non-identity arrows. Their Lan only needs to support this discrete category, because that is all that is necessary to faithfully model GADTs. 
+
+They don&#039;t need it since their only arrows are the identities. Since they only need concern themselves with identities, an equality GADT serves them in better stead.
+
+This is also why their definition of an HFunctor drops ffmap. It eases their derivation. For instance in http://comonad.com/haskell/category-extras/src/Control/Functor/HigherOrder/Composition.hs
+
+I have to deal with a lot of newtype noise to implement ffmap, since they don&#039;t need it at all, they don&#039;t have to cram that into the paper.
+
+If you look at Johann and Ghani&#039;s earlier paper &quot;Initial Semantics is Enough!&quot; at http://crab.rutgers.edu/~pjohann/tlca07-rev.pdf you&#039;ll find the exact definition above (modulo the choice of newtyping a tuple vs. using a data type.
+
+As for the derivations I was planning to do a post on that at some point, but the short answer is they are based on the definition of Kan extensions as (co)ends, which can be found readily in the Wikipedia article on Kan extensions or more formally in Categories for the Working Mathematician.</description>
+		<content:encoded><![CDATA[<p>The left Kan extension used in that paper is taken along a functor with domain |Hask| rather than Hask. Where |C| maps a category to its underlying discrete category, discarding all non-identity arrows. Their Lan only needs to support this discrete category, because that is all that is necessary to faithfully model GADTs. </p>
+<p>They don&#8217;t need it since their only arrows are the identities. Since they only need concern themselves with identities, an equality GADT serves them in better stead.</p>
+<p>This is also why their definition of an HFunctor drops ffmap. It eases their derivation. For instance in <a href="http://comonad.com/haskell/category-extras/src/Control/Functor/HigherOrder/Composition.hs" rel="nofollow">http://comonad.com/haskell/category-extras/src/Control/Functor/HigherOrder/Composition.hs</a></p>
+<p>I have to deal with a lot of newtype noise to implement ffmap, since they don&#8217;t need it at all, they don&#8217;t have to cram that into the paper.</p>
+<p>If you look at Johann and Ghani&#8217;s earlier paper &#8220;Initial Semantics is Enough!&#8221; at <a href="http://crab.rutgers.edu/~pjohann/tlca07-rev.pdf" rel="nofollow">http://crab.rutgers.edu/~pjohann/tlca07-rev.pdf</a> you&#8217;ll find the exact definition above (modulo the choice of newtyping a tuple vs. using a data type.</p>
+<p>As for the derivations I was planning to do a post on that at some point, but the short answer is they are based on the definition of Kan extensions as (co)ends, which can be found readily in the Wikipedia article on Kan extensions or more formally in Categories for the Working Mathematician.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Kan Extensions II: Adjunctions, Composition, Lifting</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-1415</link>
+		<dc:creator>The Comonad.Reader &#187; Kan Extensions II: Adjunctions, Composition, Lifting</dc:creator>
+		<pubDate>Fri, 23 May 2008 00:13:23 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-1415</guid>
+		<description>[...] But first, I want to take a moment to recall adjunctions and show how they relate to some standard (co)monads, before tying them back to Kan extensions. [...]</description>
+		<content:encoded><![CDATA[<p>[...] But first, I want to take a moment to recall adjunctions and show how they relate to some standard (co)monads, before tying them back to Kan extensions. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Grant B</title>
+		<link>http://comonad.com/reader/2008/kan-extensions/comment-page-1/#comment-1412</link>
+		<dc:creator>Grant B</dc:creator>
+		<pubDate>Thu, 22 May 2008 22:01:04 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/kan-extensions/#comment-1412</guid>
+		<description>Neat! 
+
+One question: can you explain how you converted the definition of the Kan extension and its universal property into the Haskell datatype above?
+
+It should be unambiguous, correct? I&#039;m confused as to why Johann and Ghani&#039;s GADT paper in POPL 2008 &lt;a href=&quot;http://crab.rutgers.edu/~pjohann/popl08.pdf&quot; rel=&quot;nofollow&quot;&gt;here&lt;/a&gt; gives a different encoding of the left Kan extension.
+
+Any help would be appreciated.</description>
+		<content:encoded><![CDATA[<p>Neat! </p>
+<p>One question: can you explain how you converted the definition of the Kan extension and its universal property into the Haskell datatype above?</p>
+<p>It should be unambiguous, correct? I&#8217;m confused as to why Johann and Ghani&#8217;s GADT paper in POPL 2008 <a href="http://crab.rutgers.edu/~pjohann/popl08.pdf" rel="nofollow">here</a> gives a different encoding of the left Kan extension.</p>
+<p>Any help would be appreciated.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

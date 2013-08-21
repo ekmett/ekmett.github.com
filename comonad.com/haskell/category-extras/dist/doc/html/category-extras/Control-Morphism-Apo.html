@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Apo.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Morphism.Apo</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Morphism.Apo</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Traditional operators, shown here to show how to roll your own
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aapo"
+></A
+><B
+>apo</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f (<A HREF="Control-Morphism-Apo.html#t%3AApo"
+>Apo</A
+> f) a -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_apo"
+></A
+><B
+>g_apo</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f b -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f (<A HREF="Control-Morphism-Apo.html#t%3AGApo"
+>GApo</A
+> b) a -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Apostpro_apo"
+></A
+><B
+>postpro_apo</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f (<A HREF="Control-Morphism-Apo.html#t%3AApo"
+>Apo</A
+> f) a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ag_postpro_apo"
+></A
+><B
+>g_postpro_apo</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f b -&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f (<A HREF="Control-Morphism-Apo.html#t%3AGApo"
+>GApo</A
+> b) a -&gt; (f <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> f) -&gt; a -&gt; <A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AApo"
+></A
+><B
+>Apo</B
+> f a = Either (<A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f) a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AApoT"
+></A
+><B
+>ApoT</B
+> f m a = <A HREF="Control-Monad-Either.html#t%3AEitherT"
+>EitherT</A
+> (<A HREF="Control-Functor-Fix.html#t%3AFixF"
+>FixF</A
+> f) m a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AdistApoT"
+></A
+><B
+>distApoT</B
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> (<A HREF="Control-Morphism-Apo.html#t%3AApoT"
+>ApoT</A
+> f m) f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGApo"
+></A
+><B
+>GApo</B
+> b a = Either b a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AGApoT"
+></A
+><B
+>GApoT</B
+> b m a = <A HREF="Control-Monad-Either.html#t%3AEitherT"
+>EitherT</A
+> b m a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AdistGApo"
+></A
+><B
+>distGApo</B
+> :: Functor f =&gt; <A HREF="Control-Functor-Algebra.html#t%3ACoalgebra"
+>Coalgebra</A
+> f b -&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> (Either b) f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AdistGApoT"
+></A
+><B
+>distGApoT</B
+> :: (Functor f, Monad m) =&gt; <A HREF="Control-Functor-Algebra.html#t%3AGCoalgebra"
+>GCoalgebra</A
+> f m b -&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> m f -&gt; <A HREF="Control-Functor-Extras.html#t%3ADist"
+>Dist</A
+> (<A HREF="Control-Monad-Either.html#t%3AEitherT"
+>EitherT</A
+> b m) f</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Morphism-Apo.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

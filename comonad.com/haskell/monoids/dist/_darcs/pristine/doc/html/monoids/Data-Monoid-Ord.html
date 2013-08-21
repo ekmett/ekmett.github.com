@@ -1,0 +1,1156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Ord.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:05 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Ord</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Ord.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Ord</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Max
+</A
+></DT
+><DT
+><A HREF="#2"
+>Min
+</A
+></DT
+><DT
+><A HREF="#3"
+>MaxPriority: Max semigroup w/ added bottom
+</A
+></DT
+><DT
+><A HREF="#4"
+>MinPriority: Min semigroup w/ added top
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AMax"
+>Max</A
+> a = <A HREF="#v%3AMax"
+>Max</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetMax"
+>getMax</A
+> :: a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AMin"
+>Min</A
+> a = <A HREF="#v%3AMin"
+>Min</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetMin"
+>getMin</A
+> :: a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AMaxPriority"
+>MaxPriority</A
+> a = <A HREF="#v%3AMaxPriority"
+>MaxPriority</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetMaxPriority"
+>getMaxPriority</A
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aminfinity"
+>minfinity</A
+> ::  <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A HREF="#t%3AMinPriority"
+>MinPriority</A
+> a = <A HREF="#v%3AMinPriority"
+>MinPriority</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetMinPriority"
+>getMinPriority</A
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ainfinity"
+>infinity</A
+> ::  <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Max
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AMax"
+></A
+><B
+>Max</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#Max"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>(<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#v%3Amax"
+>max</A
+></TT
+>,<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#v%3AminBound"
+>minBound</A
+></TT
+>)</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AMax"
+></A
+><B
+>Max</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetMax"
+></A
+><B
+>getMax</B
+> :: a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Max')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Max" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Copointed <A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a) =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMax"
+>Max</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Min
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AMin"
+></A
+><B
+>Min</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#Min"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> given by <TT
+>(<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#v%3Amin"
+>min</A
+></TT
+>,<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#v%3AmaxBound"
+>maxBound</A
+></TT
+>)</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AMin"
+></A
+><B
+>Min</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetMin"
+></A
+><B
+>getMin</B
+> :: a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Min')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Min" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Copointed <A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a) =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> a (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ABounded"
+>Bounded</A
+> a) =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMin"
+>Min</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>MaxPriority: Max semigroup w/ added bottom
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AMaxPriority"
+></A
+><B
+>MaxPriority</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#MaxPriority"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>(<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#v%3Amax"
+>max</A
+></TT
+>,<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+>)</TT
+> over <TT
+><TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TT
+> a</TT
+> where <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> is the bottom element
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AMaxPriority"
+></A
+><B
+>MaxPriority</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetMaxPriority"
+></A
+><B
+>getMaxPriority</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MaxPriority')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MaxPriority" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a) (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aminfinity"
+></A
+><B
+>minfinity</B
+> ::  <A HREF="Data-Monoid-Ord.html#t%3AMaxPriority"
+>MaxPriority</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#minfinity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>MinPriority: Min semigroup w/ added top
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>newtype</SPAN
+>  <A NAME="t%3AMinPriority"
+></A
+><B
+>MinPriority</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#MinPriority"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> <TT
+>(<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#v%3Amin"
+>min</A
+></TT
+>,<TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+>)</TT
+> over <TT
+><TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TT
+> a</TT
+> where <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#v%3ANothing"
+>Nothing</A
+></TT
+> is the top element
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AMinPriority"
+></A
+><B
+>MinPriority</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetMinPriority"
+></A
+><B
+>getMinPriority</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MinPriority')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MinPriority" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a) (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a) (<A HREF="Data-Ring-Semi-Ord.html#t%3APriority"
+>Priority</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a) (<A HREF="Data-Ring-Semi-Tropical.html#t%3ATropical"
+>Tropical</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Ainfinity"
+></A
+><B
+>infinity</B
+> ::  <A HREF="Data-Monoid-Ord.html#t%3AMinPriority"
+>MinPriority</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Ord.html#infinity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Ord.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:05 GMT -->
+</HTML
+>

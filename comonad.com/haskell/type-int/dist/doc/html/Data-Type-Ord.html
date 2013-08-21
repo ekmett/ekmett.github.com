@@ -1,0 +1,576 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Ord.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:22 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Type.Ord</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>type-int-0.4: Type Level 2s- and 16s- Complement Integers</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Type.Ord</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (FD and MPTC, undecidable-instances)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Simple equality and ordering for types.
+ Extended to include common usage cases.
+</P
+><P
+>Instances should all really be decidable.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b =&gt; <A NAME="t%3ATEq"
+></A
+><B
+>TEq</B
+> x y b | x y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TEq')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TEq" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> m n b =&gt; <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> m n b =&gt; <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n) b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtEq"
+></A
+><B
+>tEq</B
+> :: <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> x y b =&gt; x -&gt; y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b =&gt; <A NAME="t%3ATLt"
+></A
+><B
+>TLt</B
+> x y b | x y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TLt')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TLt" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> d, <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b' c, <A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> c d) =&gt; <A HREF="Data-Type-Ord.html#t%3ATLt"
+>TLt</A
+> a b d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtLt"
+></A
+><B
+>tLt</B
+> :: <A HREF="Data-Type-Ord.html#t%3ATLt"
+>TLt</A
+> x y b =&gt; x -&gt; y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> TCGe Closure x y b =&gt; <A NAME="t%3ATGe"
+></A
+><B
+>TGe</B
+> x y b | x y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TGe')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TGe" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b', <A HREF="Data-Type-Ord.html#t%3ATLt"
+>TLt</A
+> x y b, <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b b') =&gt; <A HREF="Data-Type-Ord.html#t%3ATGe"
+>TGe</A
+> x y b'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtGe"
+></A
+><B
+>tGe</B
+> :: <A HREF="Data-Type-Ord.html#t%3ATGe"
+>TGe</A
+> x y b =&gt; x -&gt; y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b =&gt; <A NAME="t%3ATLe"
+></A
+><B
+>TLe</B
+> x y b | x y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TLe')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TLe" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b'', <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> x y b, <A HREF="Data-Type-Ord.html#t%3ATLt"
+>TLt</A
+> x y b', <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> b b' b'') =&gt; <A HREF="Data-Type-Ord.html#t%3ATLe"
+>TLe</A
+> x y b''</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtLe"
+></A
+><B
+>tLe</B
+> :: <A HREF="Data-Type-Ord.html#t%3ATGt"
+>TGt</A
+> x y b =&gt; x -&gt; y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b =&gt; <A NAME="t%3ATGt"
+></A
+><B
+>TGt</B
+> x y b | x y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TGt')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TGt" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> b', <A HREF="Data-Type-Ord.html#t%3ATLe"
+>TLe</A
+> x y b, <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b b') =&gt; <A HREF="Data-Type-Ord.html#t%3ATGt"
+>TGt</A
+> x y b'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtGt"
+></A
+><B
+>tGt</B
+> :: <A HREF="Data-Type-Ord.html#t%3ATGt"
+>TGt</A
+> x y b =&gt; x -&gt; y -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Ord.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:22 GMT -->
+</HTML
+>

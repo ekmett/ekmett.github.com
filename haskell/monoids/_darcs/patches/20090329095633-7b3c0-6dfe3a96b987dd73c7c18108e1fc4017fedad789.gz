@@ -1,5 +1,0 @@
-[cleanup
-ekmett@gmail.com**20090329095633] {
-hunk ./Data/Monoid/Generator.hs 84
--    -- mapReduce f = foldMap (unit . f)
-}

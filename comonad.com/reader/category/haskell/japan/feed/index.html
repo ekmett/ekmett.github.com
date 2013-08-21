@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Japan</title>
+	<atom:link href="http://comonad.com/reader/category/haskell/japan/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Japanese &#8220;ekmett&#8221; Workshop (Part 1 of 2)</title>
+		<link>http://comonad.com/reader/2013/japanese-workshop-1/</link>
+		<comments>http://comonad.com/reader/2013/japanese-workshop-1/#comments</comments>
+		<pubDate>Mon, 01 Apr 2013 05:59:05 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Japan]]></category>
+		<category><![CDATA[Lenses]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[workshop]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=831</guid>
+		<description><![CDATA[A couple of weeks back one of my coworkers brought to my attention a several hour long workshop in Japan to go over and describe a number of my libraries, hosted by TANAKA Hideyuki — not the voice actor, I checked!
+I was incredibly honored and I figured that if that many people (they had 30 [...]]]></description>
+			<content:encoded><![CDATA[<p>A couple of weeks back one of my coworkers brought to my attention <a href="http://partake.in/events/1698f7f8-4151-4048-b317-03a8c3f1a7ab">a several hour long workshop in Japan</a> to go over and describe a number of my libraries, hosted by <a href="https://github.com/tanakh">TANAKA Hideyuki</a> — not the <a href="http://en.wikipedia.org/wiki/Hideyuki_Tanaka">voice actor</a>, I checked!</p>
+<p>I was incredibly honored and I figured that if that many people (they had 30 or so registered attendees and 10 presentations) were going to spend that much time going over software that I had written, I should at least offer to show up!</p>
+<p>I'd like to apologize for any errors in the romanization of people's names or misunderstandings I may have in the following text. My grasp of Japanese is very poor! Please feel free to send me corrections or additions!</p>
+<h2>Surprise!</h2>
+<p>Sadly, my <a href="https://twitter.com/mcscottmc">boss</a>'s immediate reaction to hearing that there was a workshop in Japan about my work was to quip that "You're saying you're <a href="http://en.wikipedia.org/wiki/Big_in_Japan_(phrase)">huge in Japan</a>?" With him conspicuously not offering to fly me out here, I had to settle for surprising the organizers and attending via Google Hangout.</p>
+<h2>Commentary and Logs</h2>
+<p><a href="http://twitter.com/nushio">@nushio</a> was very helpful in getting me connected, and while the speakers gave their talks I sat on the irc.freenode.net #haskell-lens channel and Google Hangout and answered questions and provided a running commentary with more details and references. Per <a href="http://freenode.net/channel_guidelines.shtml">freenode policy</a> the fact that we were logging the channel was announced -- well, at least before things got too far underway.</p>
+<p><a href="https://gist.github.com/ekmett/5283253">Here is the IRC session log as a gist</a>. IKEGAMI Daisuke <a href="https://twitter.com/ikegami__">@ikegami__</a> (<code>ikeg</code> in the IRC log) tried to keep up a high-level running commentary about what was happening in the video to the log, which may be helpful if you are trying to follow along through each retroactively.</p>
+<p>Other background chatter and material is strewn across twitter under the <a href="https://twitter.com/search?q=%23ekmett_conf&src=typd">#ekmett_conf</a> hash tag and on a japanese twitter aggregator named <a href="http://togetter.com/li/480399">togetter</a></p>
+<p><span id="more-831"></span></p>
+<h2>Getting Started</h2>
+<p>The 1PM start time in Shibuya, Tokyo, Japan translates to midnight at the start of Easter here in Boston, which meant ~6 hours later when we reached the Q&A session, I was a bit loopy from lack of sleep, but they were incredibly polite and didn't seem to mind my long rambling responses.</p>
+<p>Thanks to the organizers, we have video of the vast majority of the event! There was no audio for the first couple of minutes, and the recording machine lost power for the last talk and the Q&A session at the end as we ran somewhat longer than they had originally scheduled! -- And since I was attending remotely and a number of others flitted in and out over the course of the night, they were nice enough to put most of the slides and background material online.</p>
+<h2>profunctors by Liyang HU and HIBINO Kei</h2>
+<p><a href="http://liyang.hu/">Liyang Hu</a> (<a href="http://twitter.com/liyanghu">@liyanghu</a>) started the session off with a nicely self-contained crash course on my <a href="http://github.com/ekmett/profunctors">profunctors</a> package, since profunctors are used fairly heavily inside the implementation of <a href="http://github.com/ekmett/lens">lens</a> and <a href="http://github.com/ekmett/machines">machines</a>, with a couple of detours into <a href="http://github.com/ekmett/contravariant">contravariant</a> and <a href="http://github.com/ekmett/bifunctors">bifunctors</a>.</p>
+<p><a href="https://www.fpcomplete.com/user/liyang/profunctors">His presentation materials</a> are available interactively from the new <a href="https://www.fpcomplete.com/">FP Complete</a> School of Haskell. You can also watch the <a href="http://www.ustream.tv/recorded/30668431/highlight/337429">video recording of his talk</a> on <a href="http://www.ustream.tv/">ustream</a>.</p>
+<p>This talk was followed by a much more condensed version of very similar content <a href="http://www.ustream.tv/recorded/30668431/highlight/337431">in Japanese by Hibino Kei</a> (<a href="https://github.com/khibino">@khibino</a>) His talk was more focused on the relationship between arrows and profunctors, and the <a href="http://www.slideshare.net/khibino/profunctor-and-arrow-17939130"> slides are available through slideshare</a>.</p>
+<h2>lens by @its_out_of_tune</h2>
+<p>Once the necessary background material was out of the way, the talk on <a href="http://hackage.haskell.org/package/lens">lens</a> -- arguably the presentation that most of the people were there for -- came early. </p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-its_out_of_tune-1.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-its_out_of_tune-1.jpg" alt="ekmett_conf-its_out_of_tune-1" title="ekmett_conf-its_out_of_tune-1" width="1076" height="736" class="aligncenter size-full wp-image-835" /></a></p>
+<p><a href="https://twitter.com/its_out_of_tune">@its_out_of_tune</a> gave an incredibly dense overview of how to use the main parts of the lens package in Japanese. <a href="http://www.slideshare.net/itsoutoftunethismymusic/ekmett-17955009">His slides are available online</a> and <a href="http://www.ustream.tv/recorded/30668431/highlight/337435">here is a recording of his talk</a>. </p>
+<p>Over the course of a half hour, he was able to cram in a great cross-section of the library including material that I hadn't even been able to get to even with 4x the amount of time available during <a href="https://www.youtube.com/watch?v=cefnmjtAolY&hd=1">my New York talk</a> on how to use the lens template-haskell code to automatically generate lenses for user data types and how to use the lens <a href=http://hackage.haskell.org/packages/archive/lens/3.9.0.2/doc/html/Control-Lens-Action.html">Action</a> machinery.</p>
+<h2>free and free-game by KINOSHITA Fumiaki</h2>
+<p>Next up, was my <a href="http://hackage.haskell.org/package/free">free</a> package and the neat <a href="http://hackage.haskell.org/package/free-game">free-game</a> engine that Kinoshita Fumiaki (<a href="https://twitter.com/fumieval">@fumieval</a>) built on top.</p>
+<p>The slides were in English, though the talk and humor were very Japanese. ^_^</p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-free.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-free.jpg" alt="ekmett_conf-free" title="ekmett_conf-free" width="1076" height="734" class="aligncenter size-full wp-image-852" /></a></p>
+<p>That said, he had some amazingly nice demos, including a live demo of his tetris clone, <a href="https://github.com/fumieval/Monaris">Monaris</a>, which is visible about 10 minutes into <a href="http://www.ustream.tv/recorded/30668431/highlight/337437">the video</a>!</p>
+<h2>ad by @nebutalab</h2>
+<p><a href="http://twitter.com/nebutalab">@nebutalab</a>, like me, joined the session remotely through Google Hangout, and proceeded to give a tutorial on how <a href="http://en.wikipedia.org/wiki/Automatic_differentiation#Forward_accumulation">forward mode</a> automatic differentiation works through my <a href="http://github.com/ekmett/ad">AD</a> package.</p>
+<p><a href="http://www.slideshare.net/nebuta/haskell-ad34">His slides were made available before the talk</a> and the video is available in <a href="http://www.ustream.tv/recorded/30671273/highlight/337441">two</a> <a href="http://www.ustream.tv/recorded/30671623/highlight/337439">parts</a> due a technical hiccup in the middle of the recording.</p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/04/ekmett_conf-ad.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/04/ekmett_conf-ad-300x204.jpg" alt="ekmett_conf-ad" title="ekmett_conf-ad" width="300" height="204" class="aligncenter size-medium wp-image-862" /></a></p>
+<p>I'm currently working to drastically simplify the API for ad with <a href="https://github.com/alang9">Alex Lang</a>. Fortunately almost all of the material in this presentation will still be relevant to the new design.</p>
+<h2>tables by MURAYAMA Shohei</h2>
+<p>Next up, Murayama Shohei (<a href="https://twitter.com/yuga">@yuga</a>) gave an introduction to <a href="http://hackage.haskell.org/package/tables">tables</a>, which is a small in memory data-store that I wrote a few months back to sit on top of lens.</p>
+<p><a href="http://www.ustream.tv/recorded/30672629/highlight/337395">Video of @yuga's talk</a> and <a href="https://gist.github.com/yuga/5279313">his slides</a> are available, which I think makes this the first public talk about this project. -_^</p>
+<h2>machines by YOSHIDA Sanshiro</h2>
+<p>Yoshida Sanshiro (<a href="http://twitter.com/halcat0x15a">@halcat0x15a</a>) gave a nice overview of the currently released version of <a href="http://hackage.haskell.org/package/machines">machines</a> including a lot of examples! I think he may have actually written more code using machines just for demonstrations than I have written using it myself.</p>
+<p><a href="http://www.ustream.tv/recorded/30672629/highlight/337397">Video of his talk is available</a> along with <a href="http://halcat0x15a.github.com/slide/machines/out/#0">his slide deck</a> -- just tap left or right to move through the slides. He has also written <a href="http://krdlab.hatenablog.com/entry/2013/03/16/204039">a blog post</a> documenting his early explorations of the library, and some thoughts about using it with attoparsec.</p>
+<p>I've recently been trying to redesign machines with coworker Paul CHIUSANO <a href="https://twitter.com/pchiusano">@pchiusano</a> and we've begun greatly simplifying the design of machines based on some work <a href="http://www.youtube.com/watch?v=8fC2V9HX_m8">he has been doing in Scala</a>, so unfortunately many of the particulars of this talk will be soon outdated, but the overall 'feel' of working with machines should be preserved across the change-over. Some of these changes can be seen in the <a href="http://github.com/ekmett/machines">master branch on github</a> now.</p>
+<h2>More to come</h2>
+<p>There were 4 more sessions, but alas, I'm out of time for the moment! I'll continue this write-up with more links to the source material and my thoughts as soon as I can tomorrow!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2013/japanese-workshop-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Natural Deduction, Sequent Calculus and Type Classes</title>
+	<atom:link href="http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Riccardo</title>
+		<link>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/comment-page-1/#comment-107068</link>
+		<dc:creator>Riccardo</dc:creator>
+		<pubDate>Fri, 21 Dec 2012 01:53:52 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=720#comment-107068</guid>
+		<description>Not sure if this respects the implicit assumptions that you have in mind, but if you&#039;re willing to change the syntax of your term language, you should be able to get more immediate correspondences between terms and the sequent calculus rules. 
+
+For instance, a term &#039;let (y,z)=x in A&#039; corresponding to the AND-L rule, without requiring explicit substitution. This matches your intuitions about the pattern language, of course, but without relying on heavy pattern-based machinery.
+
+IMP-L corresponds to the term &#039;let r = (f A) in B&#039; where r and f are variables of the right type (f a function t(A) -&gt; t(B), and r of type t(B)), etc. 
+
+You can define standard application as an abbreviation if you have local binding (which you should be able to get as term syntax for the CUT rule): 
+
+ (A B)  ==  let f = A in let r = (f B) in r
+
+Details to be checked, of course, but back of the envelope, this might work.</description>
+		<content:encoded><![CDATA[<p>Not sure if this respects the implicit assumptions that you have in mind, but if you&#8217;re willing to change the syntax of your term language, you should be able to get more immediate correspondences between terms and the sequent calculus rules. </p>
+<p>For instance, a term &#8216;let (y,z)=x in A&#8217; corresponding to the AND-L rule, without requiring explicit substitution. This matches your intuitions about the pattern language, of course, but without relying on heavy pattern-based machinery.</p>
+<p>IMP-L corresponds to the term &#8216;let r = (f A) in B&#8217; where r and f are variables of the right type (f a function t(A) -&gt; t(B), and r of type t(B)), etc. </p>
+<p>You can define standard application as an abbreviation if you have local binding (which you should be able to get as term syntax for the CUT rule): </p>
+<p> (A B)  ==  let f = A in let r = (f B) in r</p>
+<p>Details to be checked, of course, but back of the envelope, this might work.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: PhilipJF</title>
+		<link>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/comment-page-1/#comment-106949</link>
+		<dc:creator>PhilipJF</dc:creator>
+		<pubDate>Mon, 10 Dec 2012 08:48:03 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=720#comment-106949</guid>
+		<description>Another reason for the lack of the sequent calculus in programming languages, is that the elegance of the sequent calculus comes from having formula on the right of the turnstile (just like you can on the left).  Just like you interpret the gamma on the left by &quot;anding&quot; all the formula together, you interpret the right as m-arry &quot;or&quot;.  The &quot;problem&quot; with this is that if you do this you basically get the law of the excluded middle for free.  Since ordinary functional programming is intuitionistic, this is a biy of a problem.  Sequence calculus is only worth it if you have continuations.  
+Check out the work of Pierre-Louis Curien for some (classical) programming language work based in sequent calculus.  I once implemented an interpretor (in Haskell) using Typed Higher Order Syntax and GADTS for the lambda mu mu tilde calculus, and found it to be actually relatively pleasant.  Although, in practice I found it easiest to construct programs using the Hilbert style classical operators (S,K,I, and Peirce&#039;s law), this was primarily because Haskell makes dealing with classical logic&#039;s involutive negation a pain.  Also, lambda mu mu tilde was meant as an intermediary language anyways--it has complex types because it is polarized (And focalized!) but this means you get both CBN and CBV function spaces.</description>
+		<content:encoded><![CDATA[<p>Another reason for the lack of the sequent calculus in programming languages, is that the elegance of the sequent calculus comes from having formula on the right of the turnstile (just like you can on the left).  Just like you interpret the gamma on the left by &#8220;anding&#8221; all the formula together, you interpret the right as m-arry &#8220;or&#8221;.  The &#8220;problem&#8221; with this is that if you do this you basically get the law of the excluded middle for free.  Since ordinary functional programming is intuitionistic, this is a biy of a problem.  Sequence calculus is only worth it if you have continuations.<br />
+Check out the work of Pierre-Louis Curien for some (classical) programming language work based in sequent calculus.  I once implemented an interpretor (in Haskell) using Typed Higher Order Syntax and GADTS for the lambda mu mu tilde calculus, and found it to be actually relatively pleasant.  Although, in practice I found it easiest to construct programs using the Hilbert style classical operators (S,K,I, and Peirce&#8217;s law), this was primarily because Haskell makes dealing with classical logic&#8217;s involutive negation a pain.  Also, lambda mu mu tilde was meant as an intermediary language anyways&#8211;it has complex types because it is polarized (And focalized!) but this means you get both CBN and CBV function spaces.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: danr</title>
+		<link>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/comment-page-1/#comment-106932</link>
+		<dc:creator>danr</dc:creator>
+		<pubDate>Sun, 09 Dec 2012 10:41:30 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=720#comment-106932</guid>
+		<description>Programming with type classes in Haskell is remniscent of programming in Prolog, which indeed does a proof seach.
+
+Compare the Prolog membership predicate:
+
+    member(X,[X&#124;Xs]).
+    member(X,[Y&#124;Xs]) :- member(X,Xs)
+
+with this rough Haskell type class implementation (using tuples instead of lists):
+
+    class Member x xs
+
+    instance Member x (x,xs)
+    instance Member x xs =&gt; Member x (y,xs)
+
+Cheers!</description>
+		<content:encoded><![CDATA[<p>Programming with type classes in Haskell is remniscent of programming in Prolog, which indeed does a proof seach.</p>
+<p>Compare the Prolog membership predicate:</p>
+<p>    member(X,[X|Xs]).<br />
+    member(X,[Y|Xs]) :- member(X,Xs)</p>
+<p>with this rough Haskell type class implementation (using tuples instead of lists):</p>
+<p>    class Member x xs</p>
+<p>    instance Member x (x,xs)<br />
+    instance Member x xs =&gt; Member x (y,xs)</p>
+<p>Cheers!</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

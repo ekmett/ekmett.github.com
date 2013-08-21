@@ -1,0 +1,1838 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:16:06 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Buffer.Unsafe</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Buffer-Unsafe.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>buffer-0.0.1: Fast, packed, UTF-8 finger trees</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Buffer.Unsafe</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Unchecked access
+</A
+></DT
+><DT
+><A HREF="#2"
+>Low level interaction with CStrings
+</A
+></DT
+><DD
+><DL
+><DT
+><A HREF="#3"
+>Using Buffers with functions for CStrings
+</A
+></DT
+><DT
+><A HREF="#4"
+>Converting CStrings to Buffers
+</A
+></DT
+></DL
+></DD
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A module containing unsafe <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> operations.
+</P
+><P
+>While these functions have a stable API and you may use these functions in
+ applications, do carefully consider the documented pre-conditions;
+ incorrect use can break referential transparency or worse.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeHead"
+>unsafeHead</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeTail"
+>unsafeTail</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeLast"
+>unsafeLast</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeInit"
+>unsafeInit</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeIndex"
+>unsafeIndex</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeTake"
+>unsafeTake</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeDrop"
+>unsafeDrop</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeSplitAt"
+>unsafeSplitAt</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeUseAsCString"
+>unsafeUseAsCString</A
+> ::  <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeUseAsCStringLen"
+>unsafeUseAsCStringLen</A
+> ::  <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackCString"
+>unsafePackCString</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAsciiCString"
+>unsafePackAsciiCString</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackCStringLen"
+>unsafePackCStringLen</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAsciiCStringLen"
+>unsafePackAsciiCStringLen</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackMallocCString"
+>unsafePackMallocCString</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackMallocAsciiCString"
+>unsafePackMallocAsciiCString</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAddress"
+>unsafePackAddress</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAsciiAddress"
+>unsafePackAsciiAddress</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAddressLen"
+>unsafePackAddressLen</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAsciiAddressLen"
+>unsafePackAsciiAddressLen</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackCStringFinalizer"
+>unsafePackCStringFinalizer</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-Ptr.html#t%3APtr"
+>Ptr</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafePackAsciiCStringFinalizer"
+>unsafePackAsciiCStringFinalizer</A
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-Ptr.html#t%3APtr"
+>Ptr</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunsafeFinalize"
+>unsafeFinalize</A
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+><A NAME="1"
+>Unchecked access
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeHead"
+><A NAME="v%3AunsafeHead"
+></A
+></A
+><B
+>unsafeHead</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Ahead"
+>head</A
+></TT
+> for non-empty Buffers. <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeHead"
+>unsafeHead</A
+></TT
+> omits the
+ check for the empty case, so there is an obligation on the programmer
+ to provide a proof that the Buffer is non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeTail"
+><A NAME="v%3AunsafeTail"
+></A
+></A
+><B
+>unsafeTail</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Atail"
+>tail</A
+></TT
+> for non-empty Buffers. <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeTail"
+>unsafeTail</A
+></TT
+> omits the
+ check for the empty case. As with <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeHead"
+>unsafeHead</A
+></TT
+>, the programmer must
+ provide a separate proof that the Buffer is non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeLast"
+><A NAME="v%3AunsafeLast"
+></A
+></A
+><B
+>unsafeLast</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Ahead"
+>head</A
+></TT
+> for non-empty Buffers. <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeHead"
+>unsafeHead</A
+></TT
+> omits the
+ check for the empty case, so there is an obligation on the programmer
+ to provide a proof that the Buffer is non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeInit"
+><A NAME="v%3AunsafeInit"
+></A
+></A
+><B
+>unsafeInit</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Atail"
+>tail</A
+></TT
+> for non-empty Buffers. <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeTail"
+>unsafeTail</A
+></TT
+> omits the
+ check for the empty case. As with <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafeHead"
+>unsafeHead</A
+></TT
+>, the programmer must
+ provide a separate proof that the Buffer is non-empty.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeIndex"
+><A NAME="v%3AunsafeIndex"
+></A
+></A
+><B
+>unsafeIndex</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Unsafe <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> index (subscript) operator, starting from 0, returning a <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+></TT
+>
+ This omits the bounds check, which means there is an accompanying
+ obligation on the programmer to ensure the bounds are checked in some
+ other way.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeTake"
+><A NAME="v%3AunsafeTake"
+></A
+></A
+><B
+>unsafeTake</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Atake"
+>take</A
+></TT
+> which omits the checks on <TT
+>n</TT
+> so there is an
+ obligation on the programmer to provide a proof that <TT
+>0 &lt;= n &lt;= <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Alength"
+>length</A
+></TT
+> xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeDrop"
+><A NAME="v%3AunsafeDrop"
+></A
+></A
+><B
+>unsafeDrop</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>A variety of <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Adrop"
+>drop</A
+></TT
+> which omits the checks on <TT
+>n</TT
+> so there is an
+ obligation on the programmer to provide a proof that <TT
+>0 &lt;= n &lt;= <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Alength"
+>length</A
+></TT
+> xs</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeSplitAt"
+><A NAME="v%3AunsafeSplitAt"
+></A
+></A
+><B
+>unsafeSplitAt</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>, <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+>)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+><A NAME="2"
+>Low level interaction with CStrings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="3"
+><A NAME="3"
+>Using Buffers with functions for CStrings
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeUseAsCString"
+><A NAME="v%3AunsafeUseAsCString"
+></A
+></A
+><B
+>unsafeUseAsCString</B
+> ::  <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(1) construction</EM
+> Use a <TT
+>Buffer</TT
+> with a function requiring a
+ <TT
+>CString</TT
+>.
+</P
+><P
+>This function does zero copying, and merely unwraps a <TT
+>Buffer</TT
+> to
+ appear as a <TT
+>CString</TT
+>. It is <EM
+>unsafe</EM
+> in two ways:
+</P
+><UL
+><LI
+> After calling this function the <TT
+>CString</TT
+> shares the underlying
+ byte buffer with the original <TT
+>Buffer</TT
+>. Thus modifying the
+ <TT
+>CString</TT
+>, either in C, or using poke, will cause the contents of the
+ <TT
+>Buffer</TT
+> to change, breaking referential transparency. Other
+ <TT
+>Buffers</TT
+> created by sharing (such as those produced via <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Atake"
+>take</A
+></TT
+>
+ or <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Adrop"
+>drop</A
+></TT
+>) will also reflect these changes. Modifying the <TT
+>CString</TT
+>
+ will break referential transparency. To avoid this, use
+ <TT
+>useAsCString</TT
+>, which makes a copy of the original <TT
+>Buffer</TT
+>.
+</LI
+><LI
+> <TT
+>CStrings</TT
+> are often passed to functions that require them to be
+ null-terminated. If the original <TT
+>Buffer</TT
+> wasn't null terminated,
+ neither will the <TT
+>CString</TT
+> be. It is the programmers responsibility
+ to guarantee that the <TT
+>Buffer</TT
+> is indeed null terminated. If in
+ doubt, use <TT
+>useAsCString</TT
+>.
+</LI
+></UL
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeUseAsCStringLen"
+><A NAME="v%3AunsafeUseAsCStringLen"
+></A
+></A
+><B
+>unsafeUseAsCStringLen</B
+> ::  <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; (<A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a) -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(1) construction</EM
+> Use a <TT
+>Buffer</TT
+> with a function requiring a
+ <TT
+>CStringLen</TT
+>.
+</P
+><P
+>This function does zero copying, and merely unwraps a <TT
+>Buffer</TT
+> to
+ appear as a <TT
+>CStringLen</TT
+>. It is <EM
+>unsafe</EM
+>:
+</P
+><UL
+><LI
+> After calling this function the <TT
+>CStringLen</TT
+> shares the underlying
+ byte buffer with the original <TT
+>Buffer</TT
+>. Thus modifying the
+ <TT
+>CStringLen</TT
+>, either in C, or using poke, will cause the contents of the
+ <TT
+>Buffer</TT
+> to change, breaking referential transparency. Other
+ <TT
+>Buffers</TT
+> created by sharing (such as those produced via <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Atake"
+>take</A
+></TT
+>
+ or <TT
+><A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Adrop"
+>drop</A
+></TT
+>) will also reflect these changes. Modifying the <TT
+>CStringLen</TT
+>
+ will break referential transparency. To avoid this, use
+ <TT
+>useAsCStringLen</TT
+>, which makes a copy of the original <TT
+>Buffer</TT
+>.
+</LI
+></UL
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section2"
+><A NAME="4"
+><A NAME="4"
+>Converting CStrings to Buffers
+</A
+></A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackCString"
+><A NAME="v%3AunsafePackCString"
+></A
+></A
+><B
+>unsafePackCString</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Build a <TT
+>Buffer</TT
+> from a <TT
+>CString</TT
+>. This value will have <EM
+>no</EM
+>
+ finalizer associated to it, and will not be garbage collected by
+ Haskell. The Buffer length is calculated using <EM
+>strlen(3)</EM
+>,
+ and thus the complexity is a <EM
+>O(n)</EM
+>.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+>. If the <TT
+>CString</TT
+> is later modified, this
+ change will be reflected in the resulting <TT
+>Buffer</TT
+>, breaking
+ referential transparency.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAsciiCString"
+><A NAME="v%3AunsafePackAsciiCString"
+></A
+></A
+><B
+>unsafePackAsciiCString</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Build a <TT
+>Buffer</TT
+> from a <TT
+>CString</TT
+>. This value will have <EM
+>no</EM
+>
+ finalizer associated to it, and will not be garbage collected by
+ Haskell. The Buffer length is calculated using <EM
+>strlen(3)</EM
+>,
+ and thus the complexity is a <EM
+>O(n)</EM
+>.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+>. If the <TT
+>CString</TT
+> is later modified, this
+ change will be reflected in the resulting <TT
+>Buffer</TT
+>, breaking
+ referential transparency. In addition the CString must not contain
+ any bytes greater than 0x7f.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackCStringLen"
+><A NAME="v%3AunsafePackCStringLen"
+></A
+></A
+><B
+>unsafePackCStringLen</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Build a <TT
+>Buffer</TT
+> from a <TT
+>CStringLen</TT
+>. This value will
+ have <EM
+>no</EM
+> finalizer associated with it, and will not be garbage
+ collected by Haskell. This operation has <EM
+>O(1)</EM
+> complexity as we
+ already know the final size, so no <EM
+>strlen(3)</EM
+> is required.
+</P
+><P
+>This funtion is <EM
+>unsafe</EM
+>. If the original <TT
+>CStringLen</TT
+> is later
+ modified, this change will be reflected in the resulting <TT
+>Buffer</TT
+>,
+ breaking referential transparency.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAsciiCStringLen"
+><A NAME="v%3AunsafePackAsciiCStringLen"
+></A
+></A
+><B
+>unsafePackAsciiCStringLen</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACStringLen"
+>CStringLen</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(1)</EM
+> Build a <TT
+>Buffer</TT
+> from a <TT
+>CStringLen</TT
+>. This value will
+ have <EM
+>no</EM
+> finalizer associated with it, and will not be garbage
+ collected by Haskell. This operation has <EM
+>O(1)</EM
+> complexity as we
+ already know the final size, so no <EM
+>strlen(3)</EM
+> is required.
+</P
+><P
+>This funtion is <EM
+>unsafe</EM
+> in two ways: 
+</P
+><UL
+><LI
+> if the original <TT
+>CStringLen</TT
+> is later
+ modified, this change will be reflected in the resulting <TT
+>Buffer</TT
+>,
+ breaking referential transparency.
+</LI
+><LI
+> the CString is assumed to point to memory such that no element exceeds 0x7f.
+</LI
+></UL
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackMallocCString"
+><A NAME="v%3AunsafePackMallocCString"
+></A
+></A
+><B
+>unsafePackMallocCString</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Build a <TT
+>Buffer</TT
+> from a malloced <TT
+>CString</TT
+>. This value will
+ have a <TT
+>free(3)</TT
+> finalizer associated to it.
+</P
+><P
+>This funtion is <EM
+>unsafe</EM
+>. If the original <TT
+>CString</TT
+> is later
+ modified, this change will be reflected in the resulting <TT
+>Buffer</TT
+>,
+ breaking referential transparency.
+</P
+><P
+>This function is also unsafe if you call its finalizer twice,
+ which will result in a <EM
+>double free</EM
+> error, or if you pass it
+ a CString not allocated with malloc.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackMallocAsciiCString"
+><A NAME="v%3AunsafePackMallocAsciiCString"
+></A
+></A
+><B
+>unsafePackMallocAsciiCString</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html#t%3ACString"
+>CString</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Build a <TT
+>Buffer</TT
+> from a malloced <TT
+>CString</TT
+>. This value will
+ have a <TT
+>free(3)</TT
+> finalizer associated to it.
+</P
+><P
+>This funtion is <EM
+>unsafe</EM
+>. If the original <TT
+>CString</TT
+> is later
+ modified, this change will be reflected in the resulting <TT
+>Buffer</TT
+>,
+ breaking referential transparency. In addition, the original 
+ CString may not contain any bytes greter than 0x7f.
+</P
+><P
+>This function is also unsafe if you call its finalizer twice,
+ which will result in a <EM
+>double free</EM
+> error, or if you pass it
+ a CString not allocated with malloc.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAddress"
+><A NAME="v%3AunsafePackAddress"
+></A
+></A
+><B
+>unsafePackAddress</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Pack a null-terminated sequence of bytes, pointed to by an
+ Addr# (an arbitrary machine address assumed to point outside the
+ garbage-collected heap) into a <TT
+>Buffer</TT
+>. A much faster way to
+ create an Addr# is with an unboxed string literal, than to pack a
+ boxed string. A unboxed string literal is compiled to a static <TT
+>char
+ []</TT
+> by GHC. Establishing the length of the string requires a call to
+ <TT
+>strlen(3)</TT
+>, so the Addr# must point to a null-terminated buffer (as
+ is the case with <A HREF="string.html"
+>string</A
+># literals in GHC). Use <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafePackAddressLen"
+>unsafePackAddressLen</A
+></TT
+>
+ if you know the length of the string statically.
+</P
+><P
+>An example:
+</P
+><PRE
+> literalFS = unsafePackAddress &quot;literal&quot;#
+</PRE
+><P
+>This function is <EM
+>unsafe</EM
+>. If you modify the buffer pointed to by the
+ original Addr# this modification will be reflected in the resulting
+ <TT
+>Buffer</TT
+>, breaking referential transparency.
+</P
+><P
+>Note this also won't work if you Add# has embedded '\0' characters in
+ the string (strlen will fail).
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAsciiAddress"
+><A NAME="v%3AunsafePackAsciiAddress"
+></A
+></A
+><B
+>unsafePackAsciiAddress</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Pack a null-terminated sequence of bytes, pointed to by an
+ Addr# (an arbitrary machine address assumed to point outside the
+ garbage-collected heap) into a <TT
+>Buffer</TT
+>. A much faster way to
+ create an Addr# is with an unboxed string literal, than to pack a
+ boxed string. A unboxed string literal is compiled to a static <TT
+>char
+ []</TT
+> by GHC. Establishing the length of the string requires a call to
+ <TT
+>strlen(3)</TT
+>, so the Addr# must point to a null-terminated buffer (as
+ is the case with <A HREF="string.html"
+>string</A
+># literals in GHC). Use <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafePackAddressLen"
+>unsafePackAddressLen</A
+></TT
+>
+ if you know the length of the string statically.
+</P
+><P
+>An example:
+</P
+><PRE
+> literalFS = unsafePackAddress &quot;literal&quot;#
+</PRE
+><P
+>This function is <EM
+>unsafe</EM
+> in two ways:
+</P
+><UL
+><LI
+> if you modify the buffer pointed to by the
+ original Addr# this modification will be reflected in the resulting
+ <TT
+>Buffer</TT
+>, breaking referential transparency.
+</LI
+><LI
+> the Addr# is assumed to point to memory such that no element exceeds 0x7f.
+</LI
+></UL
+><P
+>Note this also won't work if you Add# has embedded '\0' characters in
+ the string (strlen will fail).
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAddressLen"
+><A NAME="v%3AunsafePackAddressLen"
+></A
+></A
+><B
+>unsafePackAddressLen</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafePackAddressLen"
+>unsafePackAddressLen</A
+></TT
+> provides constant-time construction of
+ Buffers which is ideal for string literals. It packs a sequence
+ of bytes into a <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, given a raw 'Addr#' to the string, and
+ the length of the string. Unlike <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafePackAddressLen"
+>unsafePackAddressLen</A
+></TT
+> for a ByteString
+ this still has to scan the Addr# for high bytes.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+> in two ways:
+</P
+><UL
+><LI
+> the length argument is assumed to be correct. If the length
+ argument is incorrect, it is possible to overstep the end of the
+ byte array.
+</LI
+><LI
+> if the underying Addr# is later modified, this change will be
+ reflected in resulting <TT
+>Buffer</TT
+>, breaking referential
+ transparency.
+</LI
+></UL
+><P
+>If in doubt, don't use these functions.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAsciiAddressLen"
+><A NAME="v%3AunsafePackAsciiAddressLen"
+></A
+></A
+><B
+>unsafePackAsciiAddressLen</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html#t%3AAddr%23"
+>Addr#</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(1)</EM
+> <TT
+><A HREF="Data-Buffer-Unsafe.html#v%3AunsafePackAsciiAddressLen"
+>unsafePackAsciiAddressLen</A
+></TT
+> provides constant-time construction of
+ Buffers which is ideal for string literals. It packs a sequence
+ of bytes into a <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>, given a raw 'Addr#' to the string, and
+ the length of the string.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+> in three ways:
+</P
+><UL
+><LI
+> the length argument is assumed to be correct. If the length
+ argument is incorrect, it is possible to overstep the end of the
+ byte array.
+</LI
+><LI
+> if the underying Addr# is later modified, this change will be
+ reflected in resulting <TT
+>Buffer</TT
+>, breaking referential
+ transparency.
+</LI
+><LI
+> the Addr# is assumed to point to memory such that no element exceeds 0x7f.
+</LI
+></UL
+><P
+>If in doubt, don't use these functions.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackCStringFinalizer"
+><A NAME="v%3AunsafePackCStringFinalizer"
+></A
+></A
+><B
+>unsafePackCStringFinalizer</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-Ptr.html#t%3APtr"
+>Ptr</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Construct a <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> given a Ptr Word8 to a buffer, a
+ length, and an IO action representing a finalizer. This function is
+ not available on Hugs.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+>, it is possible to break referential
+ transparency by modifying the underlying buffer pointed to by the
+ first argument. Any changes to the original buffer will be reflected
+ in the resulting <TT
+>Buffer</TT
+>.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafePackAsciiCStringFinalizer"
+><A NAME="v%3AunsafePackAsciiCStringFinalizer"
+></A
+></A
+><B
+>unsafePackAsciiCStringFinalizer</B
+> :: <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Foreign-Ptr.html#t%3APtr"
+>Ptr</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Word.html#t%3AWord8"
+>Word8</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+><EM
+>O(n)</EM
+> Construct a <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+> given a Ptr Word8 to a buffer, a
+ length, and an IO action representing a finalizer. This function is
+ not available on Hugs.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+> in two ways:
+</P
+><UL
+><LI
+> it is possible to break referential
+ transparency by modifying the underlying buffer pointed to by the
+ first argument. Any changes to the original buffer will be reflected
+ in the resulting <TT
+>Buffer</TT
+>.
+</LI
+><LI
+> the CString is assumed to point to memory such that no element exceeds 0x7f.
+</LI
+></UL
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v:unsafeFinalize"
+><A NAME="v%3AunsafeFinalize"
+></A
+></A
+><B
+>unsafeFinalize</B
+> :: <A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+> -&gt; <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html#t%3A%28%29"
+>()</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Explicitly run the finaliser associated with a <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>.
+ References to this value after finalisation may generate invalid memory
+ references.
+</P
+><P
+>This function is <EM
+>unsafe</EM
+>, as there may be other
+ Buffers referring to the same underlying pages. If you use
+ this, you need to have a proof of some kind that all <TT
+><A HREF="Data-Buffer-Word8.html#t%3ABuffer"
+>Buffer</A
+></TT
+>s
+ ever generated from the underlying byte array are no longer live.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:16:07 GMT -->
+</HTML
+>

@@ -1,0 +1,782 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Lexical-SourcePosition.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:03 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Lexical.SourcePosition</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Lexical.SourcePosition</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTCs, OverloadedStrings)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Incrementally determine locations in a source file through local information
+ This allows for efficient recomputation of line #s and token locations
+ while the file is being interactively updated by storing this as a supplemental
+ measure on a FingerTree.
+</P
+><P
+>The general idea is to use this as part of a measure in a FingerTree so you can
+ use <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3Amappend"
+>mappend</A
+></TT
+> to prepend a <TT
+><A HREF="Data-Monoid-Lexical-SourcePosition.html#v%3AstartOfFile"
+>startOfFile</A
+></TT
+> with the file information.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer-Char.html"
+>Data.Monoid.Reducer.Char</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnextTab"
+>nextTab</A
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ASourcePosition"
+>SourcePosition</A
+> file </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3APos"
+>Pos</A
+> file !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ALines"
+>Lines</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AColumns"
+>Columns</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3ATab"
+>Tab</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ASourceLine"
+>SourceLine</A
+> = <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3ASourceColumn"
+>SourceColumn</A
+> = <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsourceLine"
+>sourceLine</A
+> ::  <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsourceColumn"
+>sourceColumn</A
+> ::  <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AstartOfFile"
+>startOfFile</A
+> ::  f -&gt; <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AshowSourcePosition"
+>showSourcePosition</A
+> :: <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer-Char.html"
+>Data.Monoid.Reducer.Char</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnextTab"
+></A
+><B
+>nextTab</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#nextTab"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Compute the location of the next standard 8-column aligned tab
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ASourcePosition"
+></A
+><B
+>SourcePosition</B
+> file </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourcePosition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> of partial information about locations in a source file.
+   This is polymorphic in the kind of information you want to maintain about each source file.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3APos"
+></A
+><B
+>Pos</B
+> file !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+><TD CLASS="rdoc"
+>An absolute position in a file is known, or an overriding #line directive has been seen
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ALines"
+></A
+><B
+>Lines</B
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+><TD CLASS="rdoc"
+>We've seen some carriage returns.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AColumns"
+></A
+><B
+>Columns</B
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+><TD CLASS="rdoc"
+>We've only seen part of a line.
+</TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ATab"
+></A
+><B
+>Tab</B
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+> !!<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+><TD CLASS="rdoc"
+>We have an unhandled tab to deal with.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SourcePosition')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SourcePosition" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>FunctorZero <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>FunctorPlus <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring-Module.html#t%3ARightModule"
+>RightModule</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring-Module.html#t%3ALeftModule"
+>LeftModule</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Ring-Module.html#t%3AModule"
+>Module</A
+> <A HREF="Data-Ring-Semi-Natural.html#t%3ANatural"
+>Natural</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> file =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> file =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> file =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> (<A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> file)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ASourceLine"
+></A
+><B
+>SourceLine</B
+> = <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourceLine"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ASourceColumn"
+></A
+><B
+>SourceColumn</B
+> = <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#SourceColumn"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsourceLine"
+></A
+><B
+>sourceLine</B
+> ::  <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceLine"
+>SourceLine</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#sourceLine"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>extract partial information about the current line number if possible
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsourceColumn"
+></A
+><B
+>sourceColumn</B
+> ::  <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourceColumn"
+>SourceColumn</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#sourceColumn"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>extract partial information about the current column, even in the absence of knowledge of the source file
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AstartOfFile"
+></A
+><B
+>startOfFile</B
+> ::  f -&gt; <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#startOfFile"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>lift information about a source file into a starting <TT
+><A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+></TT
+> for that file
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AshowSourcePosition"
+></A
+><B
+>showSourcePosition</B
+> :: <A HREF="Data-Monoid-Lexical-SourcePosition.html#t%3ASourcePosition"
+>SourcePosition</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-SourcePosition.html#showSourcePosition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>extract the standard format for an absolute source position
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Lexical-SourcePosition.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:03 GMT -->
+</HTML
+>

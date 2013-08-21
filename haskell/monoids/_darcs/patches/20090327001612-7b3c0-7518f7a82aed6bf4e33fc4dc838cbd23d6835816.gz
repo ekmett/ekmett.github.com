@@ -1,5 +1,0 @@
-[added find to Data.Monoid.Generator
-ekmett@gmail.com**20090327001612] {
-hunk ./Data/Monoid/Generator/Combinators.hs 19
-+    , find
-}

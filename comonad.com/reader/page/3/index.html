@@ -1,0 +1,653 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/page/3/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:57 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader</title>
+	<meta name="generator" content="WordPress 2.8.4" /> <!-- leave this for stats please -->
+	<style type="text/css" media="screen">
+		@import url( ../../wp-content/themes/connections/style.css);
+	</style>	
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+    	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+	"api_key":"86dec4630f050b0e692605e1e2f90eef",
+	"size":"480x60"
+}
+</script>
+<noscript>
+	<strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+						<div class="post">
+				<p class="post-date">Thu 4 Dec 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/the-pointed-set-comonad/index.html" rel="bookmark" title="Permanent Link: The Pointed-Set Comonad">The Pointed-Set Comonad</a></h2>
+Posted by Edward Kmett under <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2008/the-pointed-set-comonad/index.html#comments" title="Comment on The Pointed-Set Comonad">[3] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Last night, Chung-Chieh Shan posted an example of a <a href="http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Pointed_set/">pointed-set monad</a> on his blog, which happens to be isomorphic to a non-empty stream monad with a different emphasis. </p>
+<p>But, I thought I should point out that the pointed set that he posted also has a comonadic structure, which may be exploited since it is just a variation on the "zipper comonad," a structure that is perhaps more correctly called a "pointing comonad."</p>
+<p> <a href="../../2008/the-pointed-set-comonad/index.html#more-80" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Sat 8 Nov 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/still-alive/index.html" rel="bookmark" title="Permanent Link: Still Alive">Still Alive</a></h2>
+Posted by Edward Kmett under <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2008/still-alive/index.html#comments" title="Comment on Still Alive">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>To those that have asked, I'm still alive. </p>
+<p>I had to restore the blog database from a backup and so I lost a few posts, including the index for the various recursion schemes entries. Fortunately, before that happened I had replicated the <a href="http://knol.google.com/k/edward-kmett/catamorphisms/">catamorphism post as a knol</a>.</p>
+<p>Should I find myself with a copious glut of free time, I shall happily re-scribe and finish the rest, but I've been very busy. </p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Thu 5 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/zapping-strong-adjunctions/index.html" rel="bookmark" title="Permanent Link: Zapping Adjunctions">Zapping Adjunctions</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="../../2008/zapping-strong-adjunctions/index.html#comments" title="Comment on Zapping Adjunctions">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>As you may recall, every functor in Haskell is strong, in the sense that if you provided an instance of Monad for that functor the following definition would satisfy the requirements mentioned <a href="http://en.wikipedia.org/wiki/Strong_monad">here</a>:</p>
+<pre class="haskell">&nbsp;
+strength :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; a -&gt; f b -&gt; f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+strength = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>In an earlier post about <a href="../../2008/the-cofree-comonad-and-the-expression-problem/index.html">the cofree comonad and the expression problem</a>, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in <a href="../../2008/zipping-and-unzipping-functors/index.html">Zipping and Unzipping Functors</a>, I have since remodeled that class slightly:</p>
+<p> <a href="../../2008/zapping-strong-adjunctions/index.html#more-68" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Thu 5 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/representing-adjunctions/index.html" rel="bookmark" title="Permanent Link: Representing Adjunctions">Representing Adjunctions</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="../../2008/representing-adjunctions/index.html#comments" title="Comment on Representing Adjunctions">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I've had a few people ask me questions about Adjunctions since my <a href="../../2008/kan-extensions-ii/index.html">recent post</a> and a request for some more introductory material, so I figured I would take a couple of short posts to tie Adjunctions to some other concepts. </p>
+<p><b>Representable Functors</b></p>
+<p>A covariant functor <img src='../../../latex/33758b56f2465f3a2dca572d3dde1dcb.png' title='$F : \mathcal{C} -&gt; \mathbf{Set}$' alt='$F : \mathcal{C} -&gt; \mathbf{Set}$' align=absmiddle> is said to be <a href="http://en.wikipedia.org/wiki/Representable_functor">representable</a> by an object <img src='../../../latex/bc4271643b2d67fbae80b362be29e936.png' title='$x \in \mathcal{C}$' alt='$x \in \mathcal{C}$' align=absmiddle> if it is naturally isomorphic to <img src='../../../latex/084aae1f3de3245112b5152187542ed6.png' title='$\mathbf{Hom}_C(x,-)$' alt='$\mathbf{Hom}_C(x,-)$' align=absmiddle>.</p>
+<p>We can translate that into Haskell, letting <img src='../../../latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> play the role of <img src='../../../latex/60e8ad4206d900f0a34a79b144d80097.png' title='$\mathbf{Set}$' alt='$\mathbf{Set}$' align=absmiddle> with:</p>
+<p> <a href="../../2008/representing-adjunctions/index.html#more-67" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Tue 3 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/linear-bloom-filters/index.html" rel="bookmark" title="Permanent Link: Linear Bloom Filters">Linear Bloom Filters</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> <br/><a href="../../2008/linear-bloom-filters/index.html#comments" title="Comment on Linear Bloom Filters">[11] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>This post is a bit of a departure from my recent norm. It contains no category theory whatsoever. None. I promise.</p>
+<p>Now that I've bored away the math folks, I'll point out that this also isn't a guide to better horticulture. Great, there goes the rest of you.</p>
+<p>Instead, I want to talk about <a href="http://citeseer.ist.psu.edu/bloom70spacetime.html">Bloom filters</a>, Bloom joins for distributed databases and some novel extensions to them that let you trade in resources that we have in abundance for ones that are scarce, which I've been using for the last few months and which I have never before seen before in print. Primarily because I guess they have little to do with the strengths of Bloom filters.</p>
+<p> <a href="../../2008/linear-bloom-filters/index.html#more-66" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Mon 26 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/kan-extension-iii/index.html" rel="bookmark" title="Permanent Link: Kan Extensions III: As Ends and Coends">Kan Extensions III: As Ends and Coends</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> <br/><a href="../../2008/kan-extension-iii/index.html#comments" title="Comment on Kan Extensions III: As Ends and Coends">[14] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Grant B. <a href="../../2008/kan-extensions/index.html#comment-1412">asked me</a> to post the derivation for the right and left Kan extension formula used in previous Kan Extension posts (<a href="../../2008/kan-extensions/index.html">1</a>,<a href="../../2008/kan-extensions-ii/index.html">2</a>). For that we can turn to the definition of Kan extensions in terms of ends, but first we need to take a couple of steps back to find a way to represent (co)ends in Haskell.</p>
+<p> <a href="../../2008/kan-extension-iii/index.html#more-65" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Thu 22 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/kan-extensions-ii/index.html" rel="bookmark" title="Permanent Link: Kan Extensions II: Adjunctions, Composition, Lifting">Kan Extensions II: Adjunctions, Composition, Lifting</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/kan-extensions-ii/index.html#comments" title="Comment on Kan Extensions II: Adjunctions, Composition, Lifting">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I want to spend some more time talking about Kan extensions, composition of Kan extensions, and the relationship between a monad and the monad generated by a monad.</p>
+<p>But first, I want to take a moment to recall adjunctions and show how they relate to some standard (co)monads, before tying them back to <a href="../../2008/kan-extensions/index.html">Kan extensions</a>.</p>
+<p><b>Adjunctions 101</b></p>
+<p>An adjunction between categories <img src='../../../latex/db5f7b3e9934fbc5a2859d88c4ba84a3.png' title='$\mathcal{C}$' alt='$\mathcal{C}$' align=absmiddle> and <img src='../../../latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> consists of a pair of functors <img src='../../../latex/643ec496aeec2eb4f7cdeeeab943a717.png' title='$F : \mathcal{C} -&gt; \mathcal{D}$' alt='$F : \mathcal{C} -&gt; \mathcal{D}$' align=absmiddle>, and <img src='../../../latex/eaa04d33f0ae2a183ec4b02f98486860.png' title='$G : \mathcal{D} -&gt; \mathcal{C}$' alt='$G : \mathcal{D} -&gt; \mathcal{C}$' align=absmiddle> and a natural isomorphism:</p>
+<p><img src='../../../latex/84b7d3e3e76f4dbe53fea154dac9b8f8.png' title='$\phi : \mathrm{Hom}_\mathcal{D} (F-, =) -&gt; \mathrm{Hom}_\mathcal{C} (-, G=)$' alt='$\phi : \mathrm{Hom}_\mathcal{D} (F-, =) -&gt; \mathrm{Hom}_\mathcal{C} (-, G=)$' align=absmiddle></p>
+<p>We call <img src='../../../latex/b8bc815b5e9d5177af01fd4d3d3c2f10.png' title='$F$' alt='$F$' align=absmiddle> the left adjoint functor, and <img src='../../../latex/5201385589993766eea584cd3aa6fa13.png' title='$G$' alt='$G$' align=absmiddle> the right adjoint functor and <img src='../../../latex/599386ddd45d1479f1992f0f7183ac22.png' title='$(F,G)$' alt='$(F,G)$' align=absmiddle> an adjoint pair, and write this relationship as <img src='../../../latex/754907e967821ca061438630f9c72a7d.png' title='$F \dashv G$' alt='$F \dashv G$' align=absmiddle></p>
+<p> <a href="../../2008/kan-extensions-ii/index.html#more-64" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Tue 20 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/kan-extensions/index.html" rel="bookmark" title="Permanent Link: Kan Extensions">Kan Extensions</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/kan-extensions/index.html#comments" title="Comment on Kan Extensions">[7] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I think I may spend a post or two talking about <a href="http://en.wikipedia.org/wiki/Kan_extension">Kan extensions</a>.</p>
+<p>They appear to be black magic to Haskell programmers, but as <a href="http://en.wikipedia.org/wiki/Saunders_Mac_Lane">Saunders Mac Lane</a> said in <a href="http://www.amazon.com/Categories-Working-Mathematician-Graduate-Mathematics/dp/0387984038">Categories for the Working Mathematician</a>:</p>
+<blockquote><p>All concepts are Kan extensions.</p></blockquote>
+<p>So what is a Kan extension? They come in two forms: right- and left- Kan extensions. </p>
+<p>First I'll talk about right Kan extensions, since Haskell programmers have a better intuition for them.</p>
+<p> <a href="../../2008/kan-extensions/index.html#more-63" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Mon 19 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/elgot-coalgebras/index.html" rel="bookmark" title="Permanent Link: Elgot (Co)Algebras">Elgot (Co)Algebras</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../../category/squiggol/index.html" title="View all posts in Squiggol" rel="category tag">Squiggol</a> <br/><a href="../../2008/elgot-coalgebras/index.html#comments" title="Comment on Elgot (Co)Algebras">[4] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<pre class="haskell">&nbsp;
+&gt; <span style="color: #06c; font-weight: bold;">import</span> Control.Arrow <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>|||<span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span>&amp;&amp;&amp;<span style="color: green;">&#41;</span>,left<span style="color: green;">&#41;</span>
+&gt; <span style="color: #06c; font-weight: bold;">newtype</span> Mu f = InF <span style="color: green;">&#123;</span> outF :: f <span style="color: green;">&#40;</span>Mu f<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>I want to talk about a novel recursion scheme that hasn't received a lot of attention from the Haskell community and its even more obscure dual -- which is necessarily more obscure because I believe this is the first time anyone has talked about it. </p>
+<p><a href="http://www.iti.cs.tu-bs.de/~adamek/adamek.html">Jiri Adámek</a>, <a href="http://www.iti.cs.tu-bs.de/~milius/">Stefan Milius</a> and <a href="http://math.feld.cvut.cz/velebil/">Jiri Velebil</a> have done a lot of work on <a href="http://arxiv.org/abs/cs/0609040">Elgot algebras</a>.  Here I'd like to translate them into Haskell, dualize them, observe that the dual can encode primitive recursion, and provide some observations.</p>
+<p>You can kind of think an Elgot algebra as a hylomorphism that cheats.</p>
+<pre class="haskell">&nbsp;
+&gt; <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Algebra-Elgot.html#v:elgot"><span style="font-weight: bold;">elgot</span></a> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>f b -&gt; b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> b <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt; a -&gt; b
+&gt; <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Algebra-Elgot.html#v:elgot"><span style="font-weight: bold;">elgot</span></a> phi psi = h <span style="color: #06c; font-weight: bold;">where</span> h = <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> ||| phi . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> h<span style="color: green;">&#41;</span> . psi
+&nbsp;</pre>
+<p> <a href="../../2008/elgot-coalgebras/index.html#more-60" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Fri 16 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/forgetful-laziness/index.html" rel="bookmark" title="Permanent Link: Forgetful Laziness">Forgetful Laziness</a></h2>
+Posted by Edward Kmett under <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2008/forgetful-laziness/index.html#comments" title="Comment on Forgetful Laziness">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Does anyone know of any work on "forgetful laziness?"</p>
+<p> <a href="../../2008/forgetful-laziness/index.html#more-59" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Wed 14 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/generatingfunctorology/index.html" rel="bookmark" title="Permanent Link: Generatingfunctorology">Generatingfunctorology</a></h2>
+Posted by Edward Kmett under <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../category/type-theory/index.html" title="View all posts in Type Theory" rel="category tag">Type Theory</a> <br/><a href="../../2008/generatingfunctorology/index.html#comments" title="Comment on Generatingfunctorology">[12] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Ok, I decided to take a step back from my flawed approach in the <a href="../../2008/towards-formal-power-series-for-functors/index.html">last post</a> and play with the idea of power series of functors from a different perspective.</p>
+<p>I dusted off my copy of Herbert Wilf's <a href="http://www.math.upenn.edu/~wilf/DownldGF.html">generatingfunctionology</a> and switched goals to try to see some well known recursive functors or <a href="http://www.cas.mcmaster.ca/~carette/species/msfp08_species.pdf">species</a> as formal power series. It appears that we can pick a few things out about the generating functions of polynomial functors.</p>
+<p>As an example:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> x = <span style="color: red;">1</span> + x
+&nbsp;</pre>
+<p>Ok. We're done. Thank you very much. I'll be here all week. Try the veal... </p>
+<p>For a more serious example, the formal power series for the list [x] is just a <a href="http://en.wikipedia.org/wiki/Geometric_series">geometric series</a>:</p>
+<p> <a href="../../2008/generatingfunctorology/index.html#more-58" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Tue 13 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/towards-formal-power-series-for-functors/index.html" rel="bookmark" title="Permanent Link: Towards Formal Power Series for Functors">Towards Formal Power Series for Functors</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../category/type-theory/index.html" title="View all posts in Type Theory" rel="category tag">Type Theory</a> <br/><a href="../../2008/towards-formal-power-series-for-functors/index.html#comments" title="Comment on Towards Formal Power Series for Functors">[12] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>The post below will only compile on a version of GHC >= 6.9, since it uses type families.</p>
+<p> <a href="../../2008/towards-formal-power-series-for-functors/index.html#more-57" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Wed 7 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/just-fokkinga-abide/index.html" rel="bookmark" title="Permanent Link: Just Fokkinga Abide">Just Fokkinga Abide</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/squiggol/index.html" title="View all posts in Squiggol" rel="category tag">Squiggol</a> <br/><a href="../../2008/just-fokkinga-abide/index.html#comments" title="Comment on Just Fokkinga Abide">[8] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I did some digging and found the universal operations mentioned in the last couple of posts: unzip, unbizip and counzip were referenced as abide<img src='../../../latex/300409b3693d9c2ed5beb2965fbe1685.png' title='${}_F$' alt='${}_F$' align=absmiddle>, abide<img src='../../../latex/413889d0ad4c3d54fdf97c23514425fc.png' title='${}_\dagger$' alt='${}_\dagger$' align=absmiddle> and coabide<img src='../../../latex/300409b3693d9c2ed5beb2965fbe1685.png' title='${}_F$' alt='${}_F$' align=absmiddle> -- actually, I was looking for something else, and this fell into my lap.</p>
+<p>They were apparently named for a notion defined by Richard Bird back in:</p>
+<blockquote><p>
+R.S. Bird. Lecture notes on constructive functional programming. In M. Broy, editor, Constructive Methods in Computing Science. International Summer School directed by F.L. Bauer [et al.], Springer Verlag, 1989. NATO Advanced Science Institute Series (Series F: Computer and System Sciences Vol. 55).
+</p></blockquote>
+<p>The notion can be summed up by defining that two binary operations <img src='../../../latex/d3a4f1a022abad70b22f229066e6298c.png' title='$\varobar$' alt='$\varobar$' align=absmiddle> and <img src='../../../latex/8fa00c513ba6b25363ef179c33823f50.png' title='$\varominus$' alt='$\varominus$' align=absmiddle> <b>abide</b> if for all a, b, c, d:</p>
+<p><img src='../../../latex/a585c81706e6dd15a998ace5f1dac664.png' title='$(a \varominus b) \varobar (c \varominus d) = (a \varobar c) \varominus (b \varobar d)$' alt='$(a \varominus b) \varobar (c \varominus d) = (a \varobar c) \varominus (b \varobar d)$' align=absmiddle>.</p>
+<p>There is a cute pictorial explanation of this idea in <a href="http://dbappl.cs.utwente.nl/Publications/PaperStore/db-utwente-404F4540.pdf">Maarten Fokkinga's remarkably readable Ph.D dissertation</a> on p. 20.</p>
+<p>The idea appears again on p.88 as part of the famous 'banana split' theorem, and then later on p90 the above names above are given along with the laws:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f &amp;&amp;&amp; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g = unfzip . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>f &amp;&amp;&amp; g<span style="color: green;">&#41;</span>
+bimap f g &amp;&amp;&amp; bimap h j = unbizip . bimap <span style="color: green;">&#40;</span>f &amp;&amp;&amp; h<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &amp;&amp;&amp; j<span style="color: green;">&#41;</span>
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f ||| <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>f ||| g<span style="color: green;">&#41;</span> . counfzip
+&nbsp;</pre>
+<p>That said the cases when the inverse operations exist do not appear to be mentioned in these sources.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Mon 5 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/cozipping/index.html" rel="bookmark" title="Permanent Link: Cozipping">Cozipping</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/cozipping/index.html#comments" title="Comment on Cozipping">[3] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="http://twan.home.fmf.nl/">Twan van Laarhoven</a> <a href="../../2008/zipping-and-unzipping-functors/index.html#comments">pointed out</a> that fzip from the other day is a close cousin of applicative chosen to be an inverse of the universal construction 'unfzip'.</p>
+<p>During that post I also put off talking about the dual of zipping, so I figured I'd bring up the notion of choosing a notion of 'cozipping' by defining it as an inverse to a universally definable notion of 'counzipping'.</p>
+<p> <a href="../../2008/cozipping/index.html#more-55" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Sun 4 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/zipping-and-unzipping-functors/index.html" rel="bookmark" title="Permanent Link: Zipping and Unzipping Functors">Zipping and Unzipping Functors</a></h2>
+Posted by Edward Kmett under <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="../../2008/zipping-and-unzipping-functors/index.html#comments" title="Comment on Zipping and Unzipping Functors">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Kefer asked a question in the comments of my post about <a href="../../2008/deriving-strength-from-laziness/index.html">(co)monadic (co)strength</a> about Uustalu and Vene's ComonadZip class from p157 of <a href="http://cs.ioc.ee/~tarmo/papers/cefp05.pdf">The Essence of Dataflow Programming</a>. The class in question is:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w =&gt; ComonadZip w <span style="color: #06c; font-weight: bold;">where</span>
+     czip :: f a -&gt; f b -&gt; f <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>In response I added <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html">Control.Functor.Zip</a> [<a href="../../../haskell/category-extras/src/Control/Functor/Zip.hs">Source</a>] to my nascent rebundled version of category-extras, which was posted up to hackage earlier today. </p>
+<p> <a href="../../2008/zipping-and-unzipping-functors/index.html#more-54" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Wed 30 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/the-cofree-comonad-and-the-expression-problem/index.html" rel="bookmark" title="Permanent Link: The Cofree Comonad and the Expression Problem">The Cofree Comonad and the Expression Problem</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/the-cofree-comonad-and-the-expression-problem/index.html#comments" title="Comment on The Cofree Comonad and the Expression Problem">[8] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# OPTIONS -fglasgow-exts -fallow-undecidable-instances #-}</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">import</span> Control.Arrow <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>&amp;&amp;&amp;<span style="color: green;">&#41;</span>, <span style="color: green;">&#40;</span>***<span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span>+++<span style="color: green;">&#41;</span>, <span style="color: green;">&#40;</span>|||<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I want to talk about duality briefly. I don't want to go all the way to <a href="http://citeseer.ist.psu.edu/filinski89declarative.html">Filinski</a>-style or <a href="http://research.microsoft.com/users/simonpj/papers/not-not-ml/index.htm">Haskell is Not Not ML</a>-style value/continuation duality, but I do want to poke a bit at the variant/record duality explified by the extensible cases used to handle variants in <a href="http://ttic.uchicago.edu/~wchae/wiki/pmwiki.php">MLPolyR</a>. </p>
+<p>The need for extensible cases to handle open variants is part of the expression problem as stated by Wadler:</p>
+<blockquote><p>
+The goal is to define a data type by cases, where one can add new cases to the data type and new functions over the data type, without recompiling existing code, and while retaining static type safety.
+</p></blockquote>
+<p>One obvious trick is to use an extensible record of functions as a 'case' statement, with each field corresponding to one of the variants. To index into records you can use an extensible variant of functions to represent a field selection. In a purer form ala the Filinski or the Haskell is Not Not ML approach mentioned above, you can replace the word 'function' with continuation and everything works out.</p>
+<p>Sweirstra recently tackled the extensible variant side of the equation with in <a href="http://www.cs.nott.ac.uk/~wss/Publications/DataTypesALaCarte.pdf">Data types a la carte</a> using the free monad coproduct to handle the 'variant' side of things, leaving the handling of cases to typeclasses, but we can see if we can go one better and just exploit the variant/record duality directly.</p>
+<p> <a href="../../2008/the-cofree-comonad-and-the-expression-problem/index.html#more-53" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Wed 30 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/deriving-strength-from-laziness/index.html" rel="bookmark" title="Permanent Link: Deriving Strength from Laziness">Deriving Strength from Laziness</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/deriving-strength-from-laziness/index.html#comments" title="Comment on Deriving Strength from Laziness">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>No, this isn't some uplifting piece about deriving courage from sloth in the face of adversity.</p>
+<p>What I want to talk about is <b>monadic</b> strength.</p>
+<p>Transcribing the <a href="http://en.wikipedia.org/wiki/Strong_monad">definition</a> from category theory into Haskell we find that a strong monad is a functor such that there exists a morphism:</p>
+<p><img src='../../../latex/dd8eea562fbc1edf6cc67c329788aed1.png' title='$t_{A, B} : M A * B -&gt; M (A * B)$' alt='$t_{A, B} : M A * B -&gt; M (A * B)$' align=absmiddle></p>
+<p>with a couple of conditions on it that I'll get to later.</p>
+<p>Currying that to get something that feels more natural to a Haskell programmer we get:</p>
+<pre class="haskell">&nbsp;
+mstrength :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; m a -&gt; b -&gt; m <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Pardo provided us with a nice definition for that in <a href="http://citeseer.ist.psu.edu/pardo00towards.html">Towards merging recursion and comonads</a>:</p>
+<p> <a href="../../2008/deriving-strength-from-laziness/index.html#more-52" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Sat 26 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/dynamorphisms-as-chronomorphisms/index.html" rel="bookmark" title="Permanent Link: Dynamorphisms as Chronomorphisms">Dynamorphisms as Chronomorphisms</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="../../2008/dynamorphisms-as-chronomorphisms/index.html#comments" title="Comment on Dynamorphisms as Chronomorphisms">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>In case it wasn't obvious, I thought I should mention that Kabanov and Vene's <a href="http://citeseer.ist.psu.edu/748315.html">dynamorphisms</a> which optimize histomorphisms for dynamic programming can be expressed readily as <a href="../../2008/time-for-chronomorphisms/index.html">chronomorphisms</a>; they just use an <a href="http://en.wikipedia.org/wiki/Anamorphism">anamorphism</a> instead of a <a href="http://www.mii.lt/informatica/pdf/INFO141.pdf">futumorphism</a>. </p>
+<p> <a href="../../2008/dynamorphisms-as-chronomorphisms/index.html#more-51" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Sat 26 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/unnatural-transformations/index.html" rel="bookmark" title="Permanent Link: Unnatural Transformations">Unnatural Transformations</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2008/unnatural-transformations/index.html#comments" title="Comment on Unnatural Transformations">1 Comment</a>&nbsp;</div>
+<div class="post-content">
+	<p>Back in the days of <a href="http://citeseer.ist.psu.edu/41091.html">HYLO</a>, it was common to write hylomorphisms with an additional natural transformation in them. Well, I was still coding in evil imperative languages back then, but I have it on reliable, er.. well supposition, that this is probably the case, or at least that they liked to do it back in the HYLO papers anyways.</p>
+<p>Transcoding the category theory mumbo-jumbo into Haskell, so I can have a larger audience, we get the following 'frat combinator' -- you can blame Jules Bean from #haskell for that.</p>
+<pre class="haskell">&nbsp;
+hyloEta :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+     <span style="color: green;">&#40;</span>g b -&gt; b<span style="color: green;">&#41;</span> -&gt;
+     <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. f a -&gt; g a<span style="color: green;">&#41;</span> -&gt;
+     <span style="color: green;">&#40;</span>a -&gt; f a<span style="color: green;">&#41;</span>
+hyloEta phi eta psi = phi . eta . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>hyloEta phi eta psi<span style="color: green;">&#41;</span> . psi
+&nbsp;</pre>
+<p>We placed eta in the middle of the argument list because it is evocative of the fact that it occurs between phi and psi, and because that seems to be where everyone else puts it. </p>
+<p>Now, clearly, we could roll eta into phi and get the more traditional hylo where f = g. Less obviously we could roll it into psi because it is a <a href="http://en.wikipedia.org/wiki/Natural_transformation">natural transformation</a> and so the following diagram commutes:</p>
+<div class="codeblock" align="center">
+<img src='../../../latex/eb518f091c90f6025d7669a9291b6c29.png' title='\bfig \square/&gt;`&gt;`&gt;`&gt;/[F(A)`F(B)`G(A)`G(B);F {[}\hspace{-0.8pt}{[}f, g{]}\hspace{-0.8pt}{]} `\eta_A`\eta_B`G {[}\hspace{-0.8pt}{[}f, g{]}\hspace{-0.8pt}{]}] \efig ' alt='\bfig \square/&gt;`&gt;`&gt;`&gt;/[F(A)`F(B)`G(A)`G(B);F {[}\hspace{-0.8pt}{[}f, g{]}\hspace{-0.8pt}{]} `\eta_A`\eta_B`G {[}\hspace{-0.8pt}{[}f, g{]}\hspace{-0.8pt}{]}] \efig ' align=absmiddle>
+</div>
+<p>This 'Hylo Shift' property (mentioned in that same paper) allows us to move the 'eta' term into the phi term or into the psi term as we see fit. Since we can move the eta term around and it adds no value to the combinator, it quietly returned to the void from whence it came. hyloEta offers us no more power than hylo, so out it goes.</p>
+<p>So, if its dead, why talk about it?</p>
+<p> <a href="../../2008/unnatural-transformations/index.html#more-50" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+						<div class="post">
+				<p class="post-date">Sat 26 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/time-for-chronomorphisms/index.html" rel="bookmark" title="Permanent Link: Time for Chronomorphisms">Time for Chronomorphisms</a></h2>
+Posted by Edward Kmett under <a href="../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2008/time-for-chronomorphisms/index.html#comments" title="Comment on Time for Chronomorphisms">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>First, we can make the <a href="../../2008/generalized-hylomorphisms/index.html">generalized hylomorphism</a> from the other day more efficient by noting that once you inline the <a href="http://en.wikipedia.org/wiki/Hylomorphism_(computer_science)">hylomorphism</a>, you can see that you do 3 fmaps over the same structure, so we can fuse those together yielding:</p>
+<pre class="haskell">&nbsp;
+g_hylo :: <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m<span style="color: green;">&#41;</span> =&gt;
+          <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. f <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span> -&gt; w <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. m <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>w b<span style="color: green;">&#41;</span> -&gt; b<span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span>a -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+          <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span>
+g_hylo w m f g = <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extract"><span style="font-weight: bold;">extract</span></a> . g_hylo' w m f g . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | the kernel of the generalized hylomorphism</span>
+g_hylo' :: <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m<span style="color: green;">&#41;</span> =&gt;
+          <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. f <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span> -&gt; w <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. m <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>w b<span style="color: green;">&#41;</span> -&gt; b<span style="color: green;">&#41;</span> -&gt;
+	  <span style="color: green;">&#40;</span>a -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+          <span style="color: green;">&#40;</span>m a -&gt; w b<span style="color: green;">&#41;</span>
+g_hylo' w m f g =
+    liftW f . w .
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:duplicate"><span style="font-weight: bold;">duplicate</span></a> . g_hylo' w m f g . join<span style="color: green;">&#41;</span> .
+    m . liftM g
+&nbsp;</pre>
+<p>Also, the above made me realize that most of the generalized cata/ana, etc morphisms give you a little more interesting stuff to do if you separate out the recursive part. Then you can pass it a monad built with something other than return to perform substitution on, or inspect the comonadic wrapper on the result.</p>
+<p>Oh, and to support my earlier claim that g_hylo generalizes g_cata and g_ana here are derivations of each in terms of g_hylo.</p>
+<pre class="haskell">&nbsp;
+g_cata :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w<span style="color: green;">&#41;</span> =&gt;
+          <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. f <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span> -&gt; w <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+          <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span> -&gt; a<span style="color: green;">&#41;</span> -&gt;
+          Mu f -&gt; a
+&nbsp;
+g_cata k f = g_hylo k <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> Id . runId<span style="color: green;">&#41;</span> f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> Id . outF<span style="color: green;">&#41;</span>
+&nbsp;
+g_ana :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m<span style="color: green;">&#41;</span> =&gt;
+         <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. m <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+         <span style="color: green;">&#40;</span>a -&gt; f <span style="color: green;">&#40;</span>m a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+         a -&gt; Nu f
+g_ana k g = g_hylo <span style="color: green;">&#40;</span>Id . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> runId<span style="color: green;">&#41;</span> k <span style="color: green;">&#40;</span>InF . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> runId<span style="color: green;">&#41;</span> g
+&nbsp;</pre>
+<p>As an aside, histomorphisms have a dual that seems to be elided from most lists of recursion schemes: <a href="http://www.mii.lt/informatica/pdf/INFO141.pdf">Uustalu and Vene</a> call it a futumorphism. It basically lets you return a structure with seeds multiple levels deep rather than have to plumb 'one level at a time' through the anamorphism. While a histomorphism is a generalized catamorphism parameterized by the cofree comonad of your functor, a futumorphism is a generalized anamorphism parameterized by the free monad of your functor.</p>
+<pre class="haskell">&nbsp;
+futu :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>a -&gt; f <span style="color: green;">&#40;</span>Free f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt; a -&gt; Nu f
+futu f = ana <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>f ||| <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span> . runFree<span style="color: green;">&#41;</span> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a>
+&nbsp;</pre>
+<p>Now, g_hylo is painfully general, so lets look at a particularly interesting choice of comonad and monad for a given functor that always have a distributive law: the cofree comonad, and the free monad of that very same functor! </p>
+<p>This gives rise to a particular form of morphism that I haven't seem talked about in literature, which after kicking a few names around on the haskell channel we chose to call a <strong>chronomorphism</strong> because it subsumes histo- and futu- morphisms.</p>
+<pre class="haskell">&nbsp;
+chrono :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+          <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Cofree f b<span style="color: green;">&#41;</span> -&gt; b<span style="color: green;">&#41;</span> -&gt;
+          <span style="color: green;">&#40;</span>a -&gt; f <span style="color: green;">&#40;</span>Free f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+          a -&gt; b
+&nbsp;</pre>
+<p>Unlike most of the types of these generalized recursion schemes, chrono's type is quite readable!</p>
+<p>A chronomorphism's fold operation can 'look back' at the results it has given, and its unfold operation can 'jump forward' by returning seeds nested multiple levels deep. It relies on the fact that you always have a distributive law for the cofree comonad of your functor over the functor itself and also one for the functor over its free monad and so it works for any Functor.</p>
+<p>You can generalize it like you generalize histomorphisms and futumorphisms, and derive ana and catamorphisms from it by noting the fact that you can fmap extract or fmap return to deal with the cofree comonad or free monad parts of the term.</p>
+<p>Alternately, since the 'identity comonad' can be viewed as the cofree comonad of the <img src='../../../latex/d1cca51f81e4659e1d2de727392d4476.png' title='$\perp$' alt='$\perp$' align=absmiddle> Functor that maps everything to <img src='../../../latex/d1cca51f81e4659e1d2de727392d4476.png' title='$\perp$' alt='$\perp$' align=absmiddle>, you can also choose to rederive generalized futumorphisms from generalized chronomorphism using the distributive law of the identity comonad.</p>
+<p>Below you'll find source code for generalized hylo- cata- ana- histo- futu- chrono- etc... morphisms and their separated kernels.</p>
+<p><a href="../../../haskell/Chronomorphism.hs">Source Code</a></p>
+<p>As an aside, Dan Doel (dolio) has started packaging these up for addition to category-extras in Hackage.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+							</div>
+					<p align="center"><a href="../2/index.html" >&laquo; Previous Page</a> &#8212; <a href="../4/index.html" >Next Page &raquo;</a></p>		
+	</div>
+	<div id="sidebar">
+<h2>About</h2>
+<ul><li><div align="center">
+<script language="JavaScript" type="text/javascript" src="http://www.linkedinabox.com/inabox.js"></script>
+<script language="JavaScript" type="text/javascript">createInABox('160', '274', '10285663', 'Edward Kmett',1,'undefined');</script>
+</div></li></ul>
+		
+		
+		<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+
+		<h2>Links</h2>
+		<ul><li><a href="http://planet.haskell.org/" target="_top">Planet Haskell</a></li>
+<li><a href="http://www.haskell.org/hawiki/TheMonadReader" target="_top">The Monad.Reader</a></li>
+</ul>
+		
+		<h2>Meta</h2>
+				<ul>
+										<li><a href="../../wp-login.html">Log in</a></li>
+									</ul>	
+	</div>
+	
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/page/3/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:58 GMT -->
+</html>

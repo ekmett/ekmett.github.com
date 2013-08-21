@@ -1,9 +1,0 @@
-[versioning hell
-ekmett@gmail.com**20090401065124] {
-hunk ./monoids.cabal 2
--version:	    0.1.19
-+version:	    0.1.20
-hunk ./monoids.cabal 31
--    reflection >= 0.0 && < 0.1
-+    reflection >= 0.1 && < 0.2
-}

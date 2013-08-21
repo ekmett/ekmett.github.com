@@ -1,0 +1,543 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2008/deriving-strength-from-laziness/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Deriving Strength from Laziness</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../12/index.html' />
+	<link rel='archives' title='November 2008' href='../../11/index.html' />
+	<link rel='archives' title='June 2008' href='../../06/index.html' />
+	<link rel='archives' title='May 2008' href='../../05/index.html' />
+	<link rel='archives' title='April 2008' href='../../04/index.html' />
+	<link rel='archives' title='March 2008' href='../../03/index.html' />
+	<link rel='archives' title='January 2008' href='../../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Deriving Strength from Laziness Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='Dynamorphisms as Chronomorphisms' href='../../dynamorphisms-as-chronomorphisms/index.html' />
+<link rel='next' title='The Cofree Comonad and the Expression Problem' href='../../the-cofree-comonad-and-the-expression-problem/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Wed 30 Apr 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Deriving Strength from Laziness">Deriving Strength from Laziness</a></h2>
+Posted by Edward Kmett under <a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../index.html#comments" title="Comment on Deriving Strength from Laziness">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>No, this isn't some uplifting piece about deriving courage from sloth in the face of adversity.</p>
+<p>What I want to talk about is <b>monadic</b> strength.</p>
+<p>Transcribing the <a href="http://en.wikipedia.org/wiki/Strong_monad">definition</a> from category theory into Haskell we find that a strong monad is a functor such that there exists a morphism:</p>
+<p><img src='../../../../latex/dd8eea562fbc1edf6cc67c329788aed1.png' title='$t_{A, B} : M A * B -&gt; M (A * B)$' alt='$t_{A, B} : M A * B -&gt; M (A * B)$' align=absmiddle></p>
+<p>with a couple of conditions on it that I'll get to later.</p>
+<p>Currying that to get something that feels more natural to a Haskell programmer we get:</p>
+<pre class="haskell">&nbsp;
+mstrength :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; m a -&gt; b -&gt; m <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Pardo provided us with a nice definition for that in <a href="http://citeseer.ist.psu.edu/pardo00towards.html">Towards merging recursion and comonads</a>:</p>
+<p><span id="more-52"></span></p>
+<pre class="haskell">&nbsp;
+mstrength ma b = ma &gt;&gt;= <span style="color: green;">&#40;</span>\\a -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>which we can rewrite by pulling the return out of the function:</p>
+<pre class="haskell">&nbsp;
+mstrength' ma b = ma &gt;&gt;= <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> . <span style="color: green;">&#40;</span>\\a -&gt; <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now, one of the nice monad laws we have says that if your Monad is a Functor, which it <a href="http://www.haskell.org/haskellwiki/Functor_hierarchy_proposal">should be</a>, then:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f xs == xs &gt;&gt;= <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> . f
+&nbsp;</pre>
+<p>This law is what gives us the definition for liftM modulo the do-sugar used when writing it.</p>
+<p>This lets us write:</p>
+<pre class="haskell">&nbsp;
+strength :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; f a -&gt; b -&gt; f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+strength fa b = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>\\a -&gt; <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> fa
+&nbsp;</pre>
+<p>Then by the monad laws any definition for Monad for this Functor must be strong in the sense that if it was made into a monad, this strength function would be a valid strength for the monad.</p>
+<p>So we get the interesting observation that all functors in Haskell are 'strong'. Lets look at a couple:</p>
+<p><b>Example ((,)c)</b></p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>c<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f ~<span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>a,f b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>The above may be familiar as the reader comonad, or as the functor induced by the (,) Bifunctor.</p>
+<p>What is the meaning of its strength?</p>
+<pre class="haskell">&nbsp;
+strength<span style="color: green;">&#123;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>c<span style="color: green;">&#125;</span> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c,a<span style="color: green;">&#41;</span>,b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>c,<span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Well, thats just the associative law for the (,) bifunctor.</p>
+<p><b>Example (Either a)</b></p>
+<p>What about the built-in functor instance for (Either a)?</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+strength<span style="color: green;">&#123;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c<span style="color: green;">&#125;</span> :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c a, b<span style="color: green;">&#41;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>This strength gives us a (slightly weak) form of distributive law for sums over products in Haskell.</p>
+<p>Having strength lets us know that if we have a functor of a's I can go through it and just drop in b's in along side each of the a's.</p>
+<p>The show is over. Everyone can go home.</p>
+<p>Not <i>quite</i>. What about comonadic <b>costrength</b>?</p>
+<p><img src='../../../../latex/5dbfa5957d0e833ecf43bb1c7b2479c5.png' title='s_{A,B} : W (A + B) -&gt; W A + B' alt='s_{A,B} : W (A + B) -&gt; W A + B' align=absmiddle></p>
+<p>with a couple of laws we can ignore for the moment.</p>
+<p>Since we can derive strength for all Functors in Haskell, we'd think at first<br />
+that we could do the same for costrength, after all most constructions work out that way when you can<br />
+construct one, its dual usually means something interesting and works out fine.</p>
+<p>Here I'll introduce a typeclass, foreshadowing that this probably won't go so smoothly:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> w =&gt; Costrong w <span style="color: #06c; font-weight: bold;">where</span>
+	costrength :: w <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span> b
+&nbsp;</pre>
+<p>Unfortunately costrength cannot be derived for every functor in Haskell. Lets look at what it does and see why.</p>
+<p>With costrength, given a data structure decorated at each point with either an 'a' or a 'b' I can walk the entire structure and if I found a's everywhere then I know I have  'a's in every position, so I can strengthen the type to say that it just contains 'a's. Otherwise I found a b, so I'll give you one of the b's I found. This requires that I'm somehow able to decide if the structure contains b's anywhere and constructively give you one if it does.</p>
+<p>Lets find a functor that you can't do this to.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>e<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+         <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>  = <span style="color: green;">&#40;</span>.<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>An instance of costrength for (->) e,</p>
+<pre class="haskell">&nbsp;
+costrength<span style="color: green;">&#123;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>e<span style="color: green;">&#125;</span> :: <span style="color: green;">&#40;</span>e -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>e -&gt; a<span style="color: green;">&#41;</span> b
+&nbsp;</pre>
+<p>would be equivalent to deciding  that the function returns only Left's for all inputs.</p>
+<p>Epic failure; functions are out.</p>
+<p>Now, if we restrict ourselves to polynomial functors, we can try again, but what about infinite data structures?</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Stream a = a &lt; : Stream a
+&nbsp;</pre>
+<p>Lets define the following stream comparison function:</p>
+</pre>
+<pre class="haskell">&nbsp;
+eqstream :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a =&gt; Stream a -&gt; Stream a -&gt; Stream <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+eqstream <span style="color: green;">&#40;</span>a &lt; : <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b &lt;: bs<span style="color: green;">&#41;</span> = c &lt;: eqstream <span style="color: #06c; font-weight: bold;">as</span> bs <span style="color: #06c; font-weight: bold;">where</span>
+	c = <span style="color: #06c; font-weight: bold;">if</span> a == b <span style="color: #06c; font-weight: bold;">then</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">else</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p><a href="http://fsl.cs.uiuc.edu/pubs/rosu-2006-icfp.pdf">Deciding equality of streams</a> is <img src='../../../../latex/07bd26c4c33cd3a685bb6be089ff70c0.png' title='\Pi_0^2' alt='\Pi_0^2' align=absmiddle> complete , so this would imply that we have an oracle for the halting problem!</p>
+<p>Ok, so infinite data structures are out.</p>
+<p>This rules out 'coinductive' structures in general, but inductive structures are fine.</p>
+<p>So what is in?</p>
+<p>In Scheme you can define costrength with a the use of call-cc, which I'll leave as an exercise to the reader.</p>
+<p>But, you can't use fmap to do that in Haskell, because call-cc passing around the current continuation is a form of monadic side effect. You could use the old Data.FunctorM and a Cont monad, but we like to think in terms of Data.Traversable today.</p>
+<p>Unfortunately 'Either' isn't a Haskell monad in general because of some noise about trying to support 'fail', but if we define a less restrictive Either monad than the one in Control.Monad.Error, like the following:</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a &gt;&gt;= k = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> a &gt;&gt;= k = k a
+&nbsp;</pre>
+<p>then using the version of mapM in Data.Traversable, </p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:mapM"><span style="font-weight: bold;">mapM</span></a> :: <span style="color: green;">&#40;</span>Traversable t, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m<span style="color: green;">&#41;</span> =&gt; <span style="color: green;">&#40;</span>a -&gt; m b<span style="color: green;">&#41;</span> -&gt; t a -&gt; m <span style="color: green;">&#40;</span>t b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>if we look at this specialized to 'id',</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:mapM"><span style="font-weight: bold;">mapM</span></a><span style="color: green;">&#123;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#125;</span>  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> :: Traversable f =&gt; f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>we have almost has the right type. (In fact the above is probably a more natural signature for costrength in Haskell, because it is a distributive law for any Traversable functor f over (Either a). In fact mapM id (also known as sequence) is a distributive law for a traversable functor over any monad.</p>
+<p>If we note the fact that sums are symmetric:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Symmetric p <span style="color: #06c; font-weight: bold;">where</span>
+     swap :: p a b -&gt; p b a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Symmetric <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: #06c; font-weight: bold;">where</span>
+    swap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> a
+    swap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> a<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a
+&nbsp;</pre>
+<p>then:</p>
+<pre class="haskell">&nbsp;
+costrength :: Traversable f =&gt; f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> b
+costrength = swap . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:mapM"><span style="font-weight: bold;">mapM</span></a> swap
+&nbsp;</pre>
+<p>The ability to define strength in general came from the fact that we were lazy enough that 'strength' doesn't try to evaluate the potentially infinite structure (there are little hidden functions all over the place in the form of thunks). The trade off is that we aren't 'strict' enough for 'costrength' to be definable in general.</p>
+<p>A couple of uses for costrength:</p>
+<p><b>Example (Either c)</b></p>
+<pre class="haskell">&nbsp;
+costrength <span style="color: green;">&#123;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c<span style="color: green;">&#125;</span> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> c a<span style="color: green;">&#41;</span> b
+&nbsp;</pre>
+<p>is just the coassociative law for Either.</p>
+<p><b>Example ((,)c)</b></p>
+<pre class="haskell">&nbsp;
+costrength <span style="color: green;">&#123;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>c<span style="color: green;">&#125;</span> :: <span style="color: green;">&#40;</span>c, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#40;</span>c,a<span style="color: green;">&#41;</span> b
+&nbsp;</pre>
+<p>lets us distribute sums over products another way.</p>
+<p><b>Example []</b></p>
+<p>Finally,</p>
+<pre class="haskell">&nbsp;
+costrength <span style="color: green;">&#123;</span><span style="color: green;">&#91;</span><span style="color: green;">&#93;</span><span style="color: green;">&#125;</span> :: <span style="color: green;">&#91;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a b<span style="color: green;">&#93;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: green;">&#91;</span>a<span style="color: green;">&#93;</span> b
+&nbsp;</pre>
+<p>lets us pretend that we can solve the stream problem above, but it just bottoms out if you apply it to an infinite list.</p>
+<p>In short, in Haskell, every Functor is strong and every Traversable Functor is costrong.</p>
+<p>[Edit: Dan Doel pointed out that instead of mapM id you could use sequence]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">6 Responses to &#8220;Deriving Strength from Laziness&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1097">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=45e5f4dfff7bd47674e01894d13e50b3&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Kefer</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1097" title="">May 1st, 2008 at 4:36 am</a> </small>
+			<br clear="all"/>
+
+			<p>One of the Estonians&#8217; comonadic papers talk about zippability: w a -&gt; w b -&gt; w (a,b). </p>
+<p>I definitely like to know what you thought about that concept and its dual, if any.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1153">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../zipping-and-unzipping-functors/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Zipping and Unzipping Functors</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1153" title="">May 4th, 2008 at 10:01 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Kefer asked a question in the comments of my post about (co)monadic (co)strength about Uustalu and Vene&#8217;s ComonadZip class from p157 of The Essence of Dataflow Programming. The class in question is: [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1376">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1376" title="">May 18th, 2008 at 11:33 pm</a> </small>
+			<br clear="all"/>
+
+			<p>A follow-up in case anyone cares about this stuff. A lot can be said about &#8220;the meaning of strength:&#8221;</p>
+<p><a href="http://pages.cpsc.ucalgary.ca/~robin/Theses/Strength.ps.gz" rel="nofollow">http://pages.cpsc.ucalgary.ca/~robin/Theses/Strength.ps.gz</a></p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1388">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../elgot-coalgebras/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Elgot (Co)Algebras</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1388" title="">May 19th, 2008 at 9:37 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] So can we convert between an apomorphism and an Elgot algebra? For a somewhat circuitous path to that answer lets recall the definition of strength from my post a couple of weeks ago. Flipping the arguments and direction of application for strength to simplify what is coming we get: [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-51521">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=29610e29af62d73918d3e6adcae1fe00&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://effing-ineffables/' rel='external nofollow' class='url'>BMeph</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-51521" title="">April 30th, 2011 at 9:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Sorry to only be responding to this three years later, but:<br />
+1) Shouldn&#8217;t the costrength case have the added constraint (Monoid e), if only for conformity to its Comonadic form?<br />
+2) Is there a way we can exploit the (Monoid e) constraint to give us a meaningful result for costrength?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-51571">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-51571" title="">May 1st, 2011 at 3:31 am</a> </small>
+			<br clear="all"/>
+
+			<p>BMeph: 1.) nah, the costrength used here was derived from relaxing the notion from a comonad to a functor in the same way that strength was weakened from mstrength.</p>
+<p>2.) Even with some random Monoid constraint on e it wouldn&#8217;t give you the power to enumerate all possible values of e, to complete the costrength.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="52" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Wednesday, Apr 30th, 2008 at 1:21 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2008/deriving-strength-from-laziness/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:50 GMT -->
+</html>

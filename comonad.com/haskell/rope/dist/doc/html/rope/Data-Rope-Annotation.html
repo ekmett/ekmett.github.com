@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotation.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:39 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Rope.Annotation</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Rope-Annotation.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>rope-0.4: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Rope-Annotation.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Rope.Annotation</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:MonoidA"
+><A NAME="t%3AMonoidA"
+></A
+></A
+><B
+>MonoidA</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#MonoidA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:emptyA"
+><A NAME="v%3AemptyA"
+></A
+></A
+><B
+>emptyA</B
+> ::  f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#emptyA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>build an empty Annotation
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:appendA"
+><A NAME="v%3AappendA"
+></A
+></A
+><B
+>appendA</B
+> ::  <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f b -&gt; f c</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#appendA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>append two annotations
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MonoidA')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MonoidA" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> <A HREF="Data-Rope-Annotation-Unit.html#t%3AUnit"
+>Unit</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> f =&gt; <A NAME="t:ReducerA"
+><A NAME="t%3AReducerA"
+></A
+></A
+><B
+>ReducerA</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#ReducerA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:unitA"
+><A NAME="v%3AunitA"
+></A
+></A
+><B
+>unitA</B
+> ::  <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#unitA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>construct an Annotation from a <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+> out of whole cloth
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:snocA"
+><A NAME="v%3AsnocA"
+></A
+></A
+><B
+>snocA</B
+> ::  <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; f b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#snocA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+> has been updated to contains n more bytes on the right than the one used to build the Annotation, update the Annotation
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:consA"
+><A NAME="v%3AconsA"
+></A
+></A
+><B
+>consA</B
+> ::  <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; f b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#consA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>The <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+> contains n more bytes on the left than the one used to build the Annotation, update the Annotation
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ReducerA')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:ReducerA" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> <A HREF="Data-Rope-Annotation-Unit.html#t%3AUnit"
+>Unit</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t:BreakableA"
+><A NAME="t%3ABreakableA"
+></A
+></A
+><B
+>BreakableA</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#BreakableA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:splitAtA"
+><A NAME="v%3AsplitAtA"
+></A
+></A
+><B
+>splitAtA</B
+> ::  <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; (f b, f c)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#splitAtA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>split an Annotation about a <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+> into two annotations, one about the first n bytes, the other about the remainder
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:takeA"
+><A NAME="v%3AtakeA"
+></A
+></A
+><B
+>takeA</B
+> ::  <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; f b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#takeA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>truncate the Annotation to <TT
+><A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-List.html#v%3Alength"
+>length</A
+></TT
+> n
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:dropA"
+><A NAME="v%3AdropA"
+></A
+></A
+><B
+>dropA</B
+> ::  <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+> -&gt; <A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+> -&gt; f a -&gt; f b</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation.html#dropA"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>drop the first n bytes from the Annotation
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:BreakableA')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:BreakableA" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> <A HREF="Data-Rope-Annotation-Unit.html#t%3AUnit"
+>Unit</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotation.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:40 GMT -->
+</HTML
+>

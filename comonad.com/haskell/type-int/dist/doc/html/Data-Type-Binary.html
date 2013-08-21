@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:18 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Type.Binary</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>type-int-0.4: Type Level 2s- and 16s- Complement Integers</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Type.Binary</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTC, FD, TH, undecidable instances, and missing constructors)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Simple type-level binary numbers, positive and negative with infinite
+ precision. This forms a nice commutative ring with multiplicative identity
+ like we would expect from a representation for Z.
+</P
+><P
+>The numbers are represented as a Boolean Ring over a countable set of
+ variables, in which for every element in the set there exists an n in N
+ and a b in {T,F} such that forall n' &gt;= n in N, x_i = b.
+</P
+><P
+>For uniqueness we always choose the least such n when representing numbers
+ this allows us to run most computations backwards. When we can't, and such
+ a fundep would be implied, we obtain it by combining semi-operations that
+ together yield the appropriate class fundep list.
+</P
+><P
+>The goal here was to pull together many of the good ideas I've seen from
+ various sources, and sprinkle a two's complement negative number
+ representation on top.
+</P
+><P
+>Reuses T and F from the Type.Boolean as the infinite tail of the 2s
+ complement binary number. I'm particularly fond of the symmetry exhibited
+ in the full adder.
+</P
+><P
+>TODO: <TT
+>TDivMod, TImplies, TGCD, TBit, TComplementBit, TSetBit</TT
+>
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Type-Binary-Internals.html"
+>Data.Type.Binary.Internals</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Type-Boolean.html"
+>Data.Type.Boolean</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Type-Ord.html"
+>Data.Type.Ord</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Type-Binary-TH.html"
+>Data.Type.Binary.TH</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:18 GMT -->
+</HTML
+>

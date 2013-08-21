@@ -1,6 +1,0 @@
-[doh
-ekmett@gmail.com**20080523022513] {
-hunk ./category-extras.cabal 76
--		Control.Functor,
-+                Control.Functor,
-}

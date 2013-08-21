@@ -1,0 +1,612 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/category/data-structures/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:06:56 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Data Structures</title>
+	<meta name="generator" content="WordPress 2.8.4" /> <!-- leave this for stats please -->
+	<style type="text/css" media="screen">
+		@import url( ../../wp-content/themes/connections/style.css);
+	</style>
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+        	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Data Structures Category Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+
+<body id="archives">
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+					<h3>Data Structures</h3>
+			<div class="post-info">Archived Posts from this Category</div>		
+			<br/>				
+							
+				<div class="post">
+					<p class="post-date">Wed 26 Dec 2012</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2012/abstracting-with-applicatives/index.html" rel="bookmark" title="Permanent Link: Abstracting with Applicatives">Abstracting with Applicatives</a></h2>
+Posted by Gershom Bazerman under <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> <br/><a href="../../2012/abstracting-with-applicatives/index.html#comments" title="Comment on Abstracting with Applicatives">[7] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Consider the humble Applicative. More than a functor, less than a monad. It gives us such lovely syntax. Who among us still prefers to write <code>liftM2 foo a b</code> when we could instead write <code>foo &lt;$> a &lt;*> b</code>? But we seldom use the Applicative as such — when Functor is too little, Monad is too much, but a lax monoidal functor is just right. I noticed lately a spate of proper uses of Applicative —<a href="http://groups.inf.ed.ac.uk/links/formlets/">Formlets</a> (and their later incarnation in the <a href="http://hackage.haskell.org/package/reform">reform</a> library), <a href="http://hackage.haskell.org/package/optparse-applicative">OptParse-Applicative</a> (and its competitor library <a href="#"http://hackage.haskell.org/package/cmdtheline>CmdTheLine</a>), and a <a href="http://gergo.erdi.hu/blog/2012-12-01-static_analysis_with_applicatives/">post by Gergo Erdi</a> on applicatives for declaring dependencies of computations. I also ran into a very similar genuine use for applicatives in working on the Panels library (part of <a href="http://hackage.haskell.org/package/jmacro-rpc">jmacro-rpc</a>), where I wanted to determine dependencies of a dynamically generated dataflow computation. And then, again, I stumbled into an applicative while cooking up a form validation library, which turned out to be a reinvention of the same ideas as formlets.</p>
+<p>Given all this, It seems post on thinking with applicatives is in order, showing how to build them up and reason about them. One nice thing about the approach we'll be taking is that it uses a "final" encoding of applicatives, rather than building up and then later interpreting a structure. This is in fact how we typically write monads (pace operational, free, etc.), but since we more often only determine our data structures are applicative after the fact, we often get some extra junk lying around (OptParse-Applicative, for example, has a GADT that I think is entirely extraneous).</p>
+<p>So the usual throat clearing:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">{-# LANGUAGE TypeOperators, MultiParamTypeClasses, FlexibleInstances,
+StandaloneDeriving, FlexibleContexts, UndecidableInstances,
+GADTs, KindSignatures, RankNTypes #-}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">module</span> Main <span style="color: #06c; font-weight: bold;">where</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Const<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Sum, Product<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Identity a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = <span style="color: #3c7331;">&quot;(Identity &quot;</span> ++ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> x ++ <span style="color: #3c7331;">&quot;)&quot;</span></pre>
+<p>And now, let's start with a classic applicative, going back to the <a href="http://www.soi.city.ac.uk/~ross/papers/Applicative.pdf">Applicative Programming With Effects</a> paper:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Const mo a = Const mo <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> = Const mo
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid mo =&gt; Applicative <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure _ = Const mempty
+    <span style="color: green;">&#40;</span>Const f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> = Const <span style="color: green;">&#40;</span>f &lt;&gt; x<span style="color: green;">&#41;</span></pre>
+<p>(<code>Const</code> lives in <a href="http://hackage.haskell.org/package/transformers">transformers</a> as the <code>Constant</code> functor, or in base as <code>Const</code>)</p>
+<p>Note that <code>Const</code> is not a monad. We've defined it so that its structure is independent of the `a` type. Hence if we try to write <code>(>>=) </code>of type <code>Const mo a -> (a -> Const mo b) -> Const mo b</code>, we'll have no way to "get out" the first `a` and feed it to our second argument.</p>
+<p>One great thing about Applicatives is that there is no distinction between applicative transformers and applicatives themselves. This is to say that the composition of two applicatives is cleanly and naturally always also an applicative. We can capture this like so:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Compose f g a = Compose <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a><span style="color: green;">&#41;</span> f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure = Compose . pure . pure
+    <span style="color: green;">&#40;</span>Compose f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span>&lt; *&gt;<span style="color: green;">&#41;</span> &lt; $&gt; f &lt; *&gt; x</pre>
+<p>(<code>Compose</code> also lives in transformers)</p>
+<p>Note that Applicatives compose <b>two</b> ways. We can also write:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Product f g a = Product <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Product <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span></pre>
+<p>(<code>Product</code> lives in transformers as well)</p>
+<p>This lets us now construct an extremely rich set of applicative structures from humble beginnings. For example, we can reconstruct the Writer Applicative.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Writer mo = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+tell :: mo -&gt; Writer mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tell x = Product <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span></pre>
+<pre>-- tell [1] *> tell [2]
+-- > Product (Const [1,2]) (Identity ())</pre>
+<p>Note that if we strip away the newtype noise, Writer turns into <code>(mo,a)</code> which is isomorphic to the Writer monad. However, we've learned something along the way, which is that the monoidal component of Writer (as long as we stay within the rules of applicative) is entirely independent from the "identity" component. However, if we went on to write the Monad instance for our writer (by defining <code>>>=</code>), we'd have to "reach in" to the identity component to grab a value to hand back to the function yielding our monoidal component. Which is to say we would destroy this nice seperation of "trace" and "computational content" afforded by simply taking the product of two Applicatives.</p>
+<p>Now let's make things more interesting. It turns out that just as the composition of two applicatives may be a monad, so too the composition of two monads may be no stronger than an applicative!</p>
+<p>We'll see this by introducing Maybe into the picture, for possibly failing computations.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FailingWriter mo = Compose <span style="color: green;">&#40;</span>Writer mo<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a>
+&nbsp;
+tellFW :: Monoid mo =&gt; mo -&gt; FailingWriter mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tellFW x = Compose <span style="color: green;">&#40;</span>tell x *&gt; pure <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+failFW :: Monoid mo =&gt; FailingWriter mo a
+failFW = Compose <span style="color: green;">&#40;</span>pure <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Nothing"><span style="font-weight: bold;">Nothing</span></a><span style="color: green;">&#41;</span></pre>
+<pre>-- tellFW [1] *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Just ()))
+
+-- tellFW [1] *> failFW *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Nothing))</pre>
+<p>Maybe over Writer gives us the same effects we'd get in a Monad — either the entire computation fails, or we get the result and the trace. But Writer over Maybe gives us new behavior. We get the entire trace, even if some computations have failed! This structure, just like Const, cannot be given a proper Monad instance. (In fact if we take Writer over Maybe as a Monad, we get only the trace until the first point of failure).</p>
+<p>This seperation of a monoidal trace from computational effects (either entirely independent of a computation [via a product] or independent between parts of a computation [via Compose]) is the key to lots of neat tricks with applicative functors.</p>
+<p>Next, let's look at Gergo Erdi's "Static Analysis with Applicatives" that is built using free applicatives. We can get essentially the same behavior directly from the product of a constant monad with an arbitrary effectful monad representing our ambient environment of information. As long as we constrain ourselves to only querying it with the takeEnv function, then we can either read the left side of our product to statically read dependencies, or the right side to actually utilize them.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> HasEnv k m = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>k<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> m
+takeEnv :: <span style="color: green;">&#40;</span>k -&gt; m a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k m a
+takeEnv f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span></pre>
+<p>If we prefer, we can capture queries of a static environment directly with the standard Reader applicative, which is just a newtype over the function arrow. There are other varients of this that perhaps come closer to exactly how Erdi's post does things, but I think this is enough to demonstrate the general idea.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Reader r a = Reader <span style="color: green;">&#40;</span>r -&gt; a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f . x<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Reader $ pure x
+    <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+&nbsp;
+runReader :: <span style="color: green;">&#40;</span>Reader r a<span style="color: green;">&#41;</span> -&gt; r -&gt; a
+runReader <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> = f
+&nbsp;
+takeEnvNew :: <span style="color: green;">&#40;</span>env -&gt; k -&gt; a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> a
+takeEnvNew f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Reader $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> f x<span style="color: green;">&#41;</span></pre>
+<p>So, what then is a full formlet? It's something that can be executed in one context as a monoid that builds a form, and in another as a parser. so the top level must be a product.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletOne mo a = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity a</pre>
+<p>Below the product, we read from an environment and perhaps get an answer. So that's reader with a maybe.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletTwo mo env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span> a</pre>
+<p>Now if we fail, we want to have a trace of errors. So we expand out the Maybe into a product as well to get the following, which adds monoidal errors:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletThree mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Product <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> a</pre>
+<p>But now we get errors whether or not the parse succeeds. We want to say either the parse succeeds or we get errors. For this, we can turn to the typical Sum functor, which currently lives as Coproduct in comonad-transformers, but will hopefully be moving as Sum to the transformers library in short order.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Sum f g a = InL <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> | InR <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span></pre>
+<p>The Functor instance is straightforward for Sum, but the applicative instance is puzzling. What should "pure" do? It needs to inject into either the left or the right, so clearly we need some form of "bias" in the instance. What we really need is the capacity to "work in" one side of the sum until compelled to switch over to the other, at which point we're stuck there. If two functors, F and G are in a relationship such that we can always send <code>f x -> g x</code> in a way that "respects" fmap (that is to say, such that (<code>fmap f . fToG == ftoG . fmap f</code>) then we call this a natural transformation. The action that sends f to g is typically called "eta". (We actually want something slightly stronger called a "monoidal natural transformation" that respects not only the functorial action <code>fmap</code> but the applicative action <code>&lt;*></code>, but we can ignore that for now).</p>
+<p>Now we can assert that as long as there is a natural transformation between g and f, then Sum f g can be made an Applicative, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">class</span> Natural f g <span style="color: #06c; font-weight: bold;">where</span>
+    eta :: f a -&gt; g a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g, Natural g f<span style="color: green;">&#41;</span> =&gt;
+  Applicative <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = InR $ pure x
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; eta x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>eta g &lt; *&gt; x<span style="color: green;">&#41;</span></pre>
+<p>The natural transformation we'll tend to use simply sends any functor to Const.</p>
+<pre>instance Monoid mo => Natural f (Const mo) where
+    eta = const (Const mempty)</pre>
+<p>However, there are plenty of other natural transformations that we could potentially make use of, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">instance</span> Applicative f =&gt;
+  Natural g <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative g, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural f g<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product x <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural g f<span style="color: green;">&#41;</span> =&gt; Natural g <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span> x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product x _ <span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> g <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product _ x<span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural g f =&gt; Natural <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = x
+    eta <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = eta y
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural Identity <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = pure x</pre>
+<p>In theory, there should also be a natural transformation that can be built magically from the product of any other two natural transformations, but that will just confuse the Haskell typechecker hopelessly. This is because we know that often different "paths" of typeclass choices will often be isomorphic, but the compiler has to actually pick one "canonical" composition of natural transformations to compute with, although multiple paths will typically be possible.</p>
+<p>For similar reasons of avoiding overlap, we can't both have the terminal homomorphism that sends everything to "Const" <b>and</b> the initial homomorphism that sends "Identity" to anything like so:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- instance Applicative g =&gt; Natural Identity g where</span>
+<span style="color: #5d478b; font-style: italic;">--     eta (Identity x) = pure x</span>
+&nbsp;</pre>
+<p>We choose to keep the terminal transformation around because it is more generally useful for our purposes. As the comments below point out, it turns out that a version of "Sum" with the initial transformation baked in now lives in transformers as <code>Lift</code>.</p>
+<p>In any case we can now write a proper Validation applicative:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Validation mo = Sum <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+validationError :: Monoid mo =&gt; mo -&gt; Validation mo a
+validationError x = InL <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span></pre>
+<p>This applicative will yield either a single result, or an accumulation of monoidal errors. It exists on hackage in the <a href="http://hackage.haskell.org/package/Validation">Validation</a> package.</p>
+<p>Now, based on the same principles, we can produce a full Formlet.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Formlet mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span>
+                     <span style="color: green;">&#40;</span>Sum <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> Identity<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    a</pre>
+<p>All the type and newtype noise looks a bit ugly, I'll grant. But the idea is to <strong>think</strong> with structures built with applicatives, which gives guarantees that we're building applicative structures, and furthermore, structures with certain guarantees in terms of which components can be interpreted independently of which others. So, for example, we can strip away the newtype noise and find the following:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletClean mo err env a = <span style="color: green;">&#40;</span>mo, env -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> err a<span style="color: green;">&#41;</span></pre>
+<p>Because we built this up from our basic library of applicatives, we also know how to write its applicative instance directly.</p>
+<p>Now that we've gotten a basic algebraic vocabulary of applicatives, and especially now that we've produced this nifty Sum applicative (which I haven't seen presented before), we've gotten to where I intended to stop.</p>
+<p>But lots of other questions arise, on two axes. First, what other typeclasses beyond applicative do our constructions satisfy? Second, what basic pieces of vocabulary are missing from our constructions — what do we need to add to flesh out our universe of discourse? (Fixpoints come to mind).</p>
+<p>Also, what statements can we make about "completeness" — what portion of the space of all applicatives can we enumerate and construct in this way? Finally, why is it that monoids seem to crop up so much in the course of working with Applicatives? I plan to tackle at least some of these questions in future blog posts.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Sun 24 Jun 2012</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2012/mirrored-lenses/index.html" rel="bookmark" title="Permanent Link: Mirrored Lenses">Mirrored Lenses</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../lenses/index.html" title="View all posts in Lenses" rel="category tag">Lenses</a> <br/><a href="../../2012/mirrored-lenses/index.html#comments" title="Comment on Mirrored Lenses">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Lenses are a great way to deal with functional references, but there are two common issues that arise from their use. </p>
+<ol>
+<li>There is a long-standing folklore position that lenses do not support polymorphic updates. This has actually caused a fair bit of embarrassment for the folks who'd like to incorporate lenses in any Haskell record system improvement.</li>
+<li>Access control. It'd be nice to have read-only or write-only properties -- "one-way" or "mirrored" lenses, as it were. Moreover, lenses are commonly viewed as an all or nothing proposition, in that it is hard to mix them with arbitrary user functions.</li>
+<li>Finally there is a bit of a cult around trying to generalize lenses by smashing a monad in the middle of them somewhere, it would be nice to be able to get into a list and work with each individual element in it without worrying about someone mucking up our lens laws, and perhaps avoid the whole generalized lens issue entirely.</li>
+</ol>
+<p>We'll take a whack at each of these concerns in turn today.<br />
+ <a href="../../2012/mirrored-lenses/index.html#more-600" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Fri 23 Sep 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/a-parsec-full-of-rats-part-2/index.html" rel="bookmark" title="Permanent Link: A Parsec Full of Rats, Part 2">A Parsec Full of Rats, Part 2</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../parsing/index.html" title="View all posts in Parsing" rel="category tag">Parsing</a> ,  <a href="../uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2011/a-parsec-full-of-rats-part-2/index.html#respond" title="Comment on A Parsec Full of Rats, Part 2">No Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Last time, I showed that we can build a small parsec clone with packrat support.</p>
+<p>This time I intend to implement packrat directly on top of Parsec 3.</p>
+<p>One of the main topics of discussion when it comes to packrat parsing since Bryan Ford's initial release of Pappy has been the fact that in general you shouldn't use packrat to memoize every rule, and that instead you should apply Amdahl's law to look for the cases where the lookup time is paid back in terms of repetitive evaluation, computation time and the hit rate. This is great news for us, since, we only want to memoize a handful of expensive combinators.</p>
+<p> <a href="../../2011/a-parsec-full-of-rats-part-2/index.html#more-397" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Fri 23 Sep 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/a-parsec-full-of-rats/index.html" rel="bookmark" title="Permanent Link: A Parsec Full of Rats, Part 1">A Parsec Full of Rats, Part 1</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../parsing/index.html" title="View all posts in Parsing" rel="category tag">Parsing</a> ,  <a href="../uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../../2011/a-parsec-full-of-rats/index.html#comments" title="Comment on A Parsec Full of Rats, Part 1">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<blockquote><p>You never heard of the Millenium Falcon? It's the ship that made the Kessel Run in 12 parsecs.</p></blockquote>
+<p>I've been working on a parser combinator library called <a href="http://hackage.haskell.org/package/trifecta">trifecta</a>, and so I decided I'd share some thoughts on parsing. </p>
+<p><a href="http://pdos.csail.mit.edu/~baford/packrat/">Packrat parsing</a> (as provided by <a href="http://hackage.haskell.org/package/frisby">frisby</a>, <a href="http://hackage.haskell.org/package/pappy">pappy</a>, <a href="http://cs.nyu.edu/rgrimm/xtc/">rats!</a> and the Scala parsing combinators) and more traditional recursive descent parsers (like Parsec) are often held up as somehow different. </p>
+<p>Today I'll show that you can add monadic parsing to a packrat parser, sacrificing asymptotic guarantees in exchange for the convenient context sensitivity, and conversely how you can easily add packrat parsing to a traditional monadic parser combinator library.</p>
+<p> <a href="../../2011/a-parsec-full-of-rats/index.html#more-380" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Mon 11 Jul 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/free-modules-and-functional-linear-functionals/index.html" rel="bookmark" title="Permanent Link: Free Modules and Functional Linear Functionals">Free Modules and Functional Linear Functionals</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../mathematics/linear-algebra/index.html" title="View all posts in Linear Algebra" rel="category tag">Linear Algebra</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> ,  <a href="../monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> ,  <a href="../type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a> <br/><a href="../../2011/free-modules-and-functional-linear-functionals/index.html#comments" title="Comment on Free Modules and Functional Linear Functionals">[9] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Today I hope to start a new series of posts exploring constructive abstract algebra in Haskell.  </p>
+<p>In particular, I want to talk about a novel encoding of linear functionals, polynomials and linear maps in Haskell, but first we're going to have to build up some common terminology.</p>
+<p>Having obtained the blessing of Wolfgang Jeltsch, I replaced the <a href="http://hackage.haskell.org/package/algebra">algebra</a> package on hackage with something... bigger, although still very much a work in progress.</p>
+<p> <a href="../../2011/free-modules-and-functional-linear-functionals/index.html#more-356" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Tue 28 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/monad-transformers-from-comonads/index.html" rel="bookmark" title="Permanent Link: Monad Transformers from Comonads">Monad Transformers from Comonads</a></h2>
+Posted by Edward Kmett under <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2011/monad-transformers-from-comonads/index.html#comments" title="Comment on Monad Transformers from Comonads">1 Comment</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="../../2011/monads-from-comonads/index.html">Last time</a>, I showed that we can transform any Comonad in Haskell into a Monad in Haskell.</p>
+<p>Today, I'll show that we can go one step further and derive a monad transformer from any comonad! </p>
+<p> <a href="../../2011/monad-transformers-from-comonads/index.html#more-321" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Fri 24 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/free-monads-for-less-3/index.html" rel="bookmark" title="Permanent Link: Free Monads for Less (Part 3 of 3): Yielding IO">Free Monads for Less (Part 3 of 3): Yielding IO</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2011/free-monads-for-less-3/index.html#comments" title="Comment on Free Monads for Less (Part 3 of 3): Yielding IO">[9] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="../../2011/free-monads-for-less-2/index.html">Last time</a>, I said that I was going to put our cheap new free monad to work, so let's give it a shot. </p>
+<p> <a href="../../2011/free-monads-for-less-3/index.html#more-251" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Thu 23 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/free-monads-for-less-2/index.html" rel="bookmark" title="Permanent Link: Free Monads for Less (Part 2 of 3): Yoneda">Free Monads for Less (Part 2 of 3): Yoneda</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2011/free-monads-for-less-2/index.html#comments" title="Comment on Free Monads for Less (Part 2 of 3): Yoneda">[3] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="../../2011/free-monads-for-less/index.html">Last time</a>, I started exploring whether or not <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Control-Monad-Codensity.html">Codensity</a> was necessary to <a href="http://www.iai.uni-bonn.de/~jv/mpc08.pdf">improve the asymptotic performance of free monads</a>.</p>
+<p>This time I'll show that the answer is no; we can get by with something smaller.</p>
+<p> <a href="../../2011/free-monads-for-less-2/index.html#more-243" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Thu 23 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2011/free-monads-for-less/index.html" rel="bookmark" title="Permanent Link: Free Monads for Less (Part 1 of 3): Codensity">Free Monads for Less (Part 1 of 3): Codensity</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../../2011/free-monads-for-less/index.html#comments" title="Comment on Free Monads for Less (Part 1 of 3): Codensity">[5] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>A couple of years back <a href="http://www.iai.uni-bonn.de/~jv/">Janis Voigtländer</a> wrote <a href="http://www.iai.uni-bonn.de/~jv/mpc08.pdf">a nice paper</a> on how one can use the codensity monad to improve the asymptotic complexity of algorithms using the free monads. He didn't use the name <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Control-Monad-Codensity.html">Codensity</a> in the paper, but this is essentially the meaning of his type <code>C</code>. </p>
+<p>I just returned from <a href="http://www.cas.mcmaster.ca/~anand/DSL2011.html">running a workshop on domain-specific languages at McMaster University</a> with the more than able assistance of <a href="http://llama.freegeek.org/~wren/thornton_cv.pdf">Wren Ng Thornton</a>. Among the many topics covered, I spent a lot of time talking about how to use free monads to build up term languages for various DSLs with simple evaluators, and then made them efficient by using <code>Codensity</code>.</p>
+<p>This has been shown to be a sufficient tool for this task, but is it necessary?</p>
+<p> <a href="../../2011/free-monads-for-less/index.html#more-218" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Sat 15 May 2010</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2010/brodal-okasaki-heaps-in-haskell/index.html" rel="bookmark" title="Permanent Link: Brodal-Okasaki Heaps in Haskell">Brodal-Okasaki Heaps in Haskell</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> <br/><a href="../../2010/brodal-okasaki-heaps-in-haskell/index.html#respond" title="Comment on Brodal-Okasaki Heaps in Haskell">No Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I've uploaded a package named <a href="http://hackage.haskell.org/packages/archive/heaps/0.2/doc/html/Data-Heap.html">heaps</a> to Hackage that provides <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.48.973">Brodal-Okasaki bootstrapped skew-binomial heaps</a> in Haskell.<br />
+ <a href="../../2010/brodal-okasaki-heaps-in-haskell/index.html#more-187" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Thu 29 Apr 2010</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2010/finger-trees/index.html" rel="bookmark" title="Permanent Link: Finger Trees">Finger Trees</a></h2>
+Posted by Edward Kmett under <a href="../haskell/boston-haskell/index.html" title="View all posts in Boston Haskell" rel="category tag">Boston Haskell</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../type-hackery/index.html" title="View all posts in Type Hackery" rel="category tag">Type Hackery</a> <br/><a href="../../2010/finger-trees/index.html#comments" title="Comment on Finger Trees">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I gave a talk last night at <a href="http://www.haskell.org/haskellwiki/Boston_Area_Haskell_Users'_Group">Boston Haskell</a> on finger trees. </p>
+<p>In particular I spent a lot of time focusing on how to derive the construction of Hinze and Paterson's 2-3 finger trees via an extended detour into a whole menagerie of tree types, and less on particular applications of the final resulting structure.</p>
+<p> <a href="../../2010/finger-trees/index.html#more-174" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Thu 20 Aug 2009</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2009/iteratees-parsec-and-monoid/index.html" rel="bookmark" title="Permanent Link: Iteratees, Parsec and Monoids (Slides)">Iteratees, Parsec and Monoids (Slides)</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../monoids/index.html" title="View all posts in Monoids" rel="category tag">Monoids</a> ,  <a href="../parsing/index.html" title="View all posts in Parsing" rel="category tag">Parsing</a> <br/><a href="../../2009/iteratees-parsec-and-monoid/index.html#comments" title="Comment on Iteratees, Parsec and Monoids (Slides)">[5] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I was asked to give two talks at the <a href="http://groups.google.com/group/bostonhaskell">Boston Area Haskell User Group</a> for this past Tuesday. The first was pitched at a more introductory level and the second was to go deeper into what I have been using monoids for lately.</p>
+<p>The first talk covers an introduction to the mathematical notion of a monoid, introduces some of the features of my Haskell monoids library on hackage, and starts to motivate the use of monoidal parallel/incremental parsing, and the modification use of compression algorithms to recycle monoidal results.</p>
+<p>The second talk covers a way to generate a locally-context sensitive parallel/incremental parser by modifying <a href="http://okmij.org/ftp/Haskell/Iteratee/Iteratee.hs">Iteratees</a> to enable them to drive a <a href="http://hackage.haskell.org/package/parsec-3.0.0">Parsec 3</a> lexer, and then wrapping that in a monoid based on <a href="http://dragonbook.stanford.edu/lecture-notes/Columbia-COMS-W4115/08-03-05.html">error productions</a> in the grammar before recycling these techniques at a higher level to deal with parsing seemingly stateful structures, such as Haskell layout.</p>
+<ol>
+<li><a href='../../wp-content/uploads/2009/08/IntroductionToMonoids.pdf'>Introduction To Monoids (PDF)</a></li>
+<li><a href='../../wp-content/uploads/2009/08/A-Parsing-Trifecta.pdf'>Iteratees, Parsec and Monoids: A Parsing Trifecta (PDF)</a></li>
+</ol>
+<p>Due to a late start, I was unable to give the second talk. However, I did give a quick run through to a few die-hards who stayed late and came to the <a href="http://www.cambrew.com/">Cambridge Brewing Company</a> afterwards. As I promised some people that I would post the slides after the talk, here they are. </p>
+<p>The current plan is to possibly give the second talk in full at either the September or October Boston Haskell User Group sessions, depending on scheduling and availability.</p>
+<p>[ <a href='../../wp-content/uploads/2009/08/Iteratee.hs'>Iteratee.hs</a> ]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+							
+				<div class="post">
+					<p class="post-date">Tue 3 Jun 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../../2008/linear-bloom-filters/index.html" rel="bookmark" title="Permanent Link: Linear Bloom Filters">Linear Bloom Filters</a></h2>
+Posted by Edward Kmett under <a href="../algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> <br/><a href="../../2008/linear-bloom-filters/index.html#comments" title="Comment on Linear Bloom Filters">[11] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>This post is a bit of a departure from my recent norm. It contains no category theory whatsoever. None. I promise.</p>
+<p>Now that I've bored away the math folks, I'll point out that this also isn't a guide to better horticulture. Great, there goes the rest of you.</p>
+<p>Instead, I want to talk about <a href="http://citeseer.ist.psu.edu/bloom70spacetime.html">Bloom filters</a>, Bloom joins for distributed databases and some novel extensions to them that let you trade in resources that we have in abundance for ones that are scarce, which I've been using for the last few months and which I have never before seen before in print. Primarily because I guess they have little to do with the strengths of Bloom filters.</p>
+<p> <a href="../../2008/linear-bloom-filters/index.html#more-66" class="more-link">(more...)</a></p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+									</div>
+						<p align="center"></p>		
+					
+	</div>
+	<div id="sidebar">		
+		<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28 current-cat"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+	</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/category/data-structures/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:06:57 GMT -->
+</html>

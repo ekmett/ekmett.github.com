@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Elgot (Co)Algebras</title>
+	<atom:link href="http://comonad.com/reader/2008/elgot-coalgebras/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/elgot-coalgebras/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: JanBessai</title>
+		<link>http://comonad.com/reader/2008/elgot-coalgebras/comment-page-1/#comment-106278</link>
+		<dc:creator>JanBessai</dc:creator>
+		<pubDate>Fri, 12 Oct 2012 09:54:57 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/elgot-algebras/#comment-106278</guid>
+		<description>The type signature of strength&#039; needs to be flipped
+&gt; strength&#039; :: Functor f =&gt; f a -&gt; t -&gt; f (t, a)</description>
+		<content:encoded><![CDATA[<p>The type signature of strength&#8217; needs to be flipped<br />
+&gt; strength&#8217; :: Functor f =&gt; f a -&gt; t -&gt; f (t, a)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jan Bessai</title>
+		<link>http://comonad.com/reader/2008/elgot-coalgebras/comment-page-1/#comment-106277</link>
+		<dc:creator>Jan Bessai</dc:creator>
+		<pubDate>Fri, 12 Oct 2012 09:41:48 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/elgot-algebras/#comment-106277</guid>
+		<description>This is rather old, but apo and g_apo need a small fix:
+&gt; apo psi = h .Right  where h = InF . fmap h . (fmap Left . outF &#124;&#124;&#124; psi) 
+&gt; g_apo g f = h .Right where h = InF . fmap h . (fmap Left . g &#124;&#124;&#124; f)
+otherwise they will not typecheck.</description>
+		<content:encoded><![CDATA[<p>This is rather old, but apo and g_apo need a small fix:<br />
+&gt; apo psi = h .Right  where h = InF . fmap h . (fmap Left . outF ||| psi)<br />
+&gt; g_apo g f = h .Right where h = InF . fmap h . (fmap Left . g ||| f)<br />
+otherwise they will not typecheck.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Recursion Schemes: A Field Guide (Redux)</title>
+		<link>http://comonad.com/reader/2008/elgot-coalgebras/comment-page-1/#comment-9528</link>
+		<dc:creator>The Comonad.Reader &#187; Recursion Schemes: A Field Guide (Redux)</dc:creator>
+		<pubDate>Tue, 16 Jun 2009 19:49:08 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/elgot-algebras/#comment-9528</guid>
+		<description>[...] Elgot coalgebra [...]</description>
+		<content:encoded><![CDATA[<p>[...] Elgot coalgebra [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Elgot Algebras</title>
+		<link>http://comonad.com/reader/2008/elgot-coalgebras/comment-page-1/#comment-1394</link>
+		<dc:creator>The Comonad.Reader &#187; Elgot Algebras</dc:creator>
+		<pubDate>Tue, 20 May 2008 20:48:22 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/elgot-algebras/#comment-1394</guid>
+		<description>[...] Here is the actual content.   &#160; [...]</description>
+		<content:encoded><![CDATA[<p>[...] Here is the actual content.   &nbsp; [...]</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

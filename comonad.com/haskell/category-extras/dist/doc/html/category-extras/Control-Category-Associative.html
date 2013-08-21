@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Associative.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:50 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Associative</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Associative</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>NB: this contradicts another common meaning for an <TT
+><A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+></TT
+> Category, which is one 
+ where the pentagonal condition does not hold, but for which there is an identity.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> p k k k =&gt; <A HREF="#t%3AAssociative"
+>Associative</A
+> k p  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aassociate"
+>associate</A
+> ::  k (p (p a b) c) (p a (p b c))</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> s k k k =&gt; <A HREF="#t%3ACoassociative"
+>Coassociative</A
+> k s  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acoassociate"
+>coassociate</A
+> ::  k (s a (s b c)) (s (s a b) c)</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> p k k k =&gt; <A NAME="t%3AAssociative"
+></A
+><B
+>Associative</B
+> k p  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>A category with an associative bifunctor satisfying Mac Lane's pentagonal coherence identity law:
+</P
+><PRE
+> bimap id associate . associate . bimap associate id = associate . associate
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aassociate"
+></A
+><B
+>associate</B
+> ::  k (p (p a b) c) (p a (p b c))</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Associative')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Associative" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> (<A HREF="Control-Functor-Combinators-Const.html#t%3AConst2"
+>Const2</A
+> t)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> p =&gt; <A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> (<A HREF="Control-Functor-Combinators-Flip.html#t%3AFlip"
+>Flip</A
+> p)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Functor.html#t%3ABifunctor"
+>Bifunctor</A
+> s k k k =&gt; <A NAME="t%3ACoassociative"
+></A
+><B
+>Coassociative</B
+> k s  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>A category with a coassociative bifunctor satisyfing the dual of Mac Lane's pentagonal coherence identity law:
+</P
+><PRE
+> bimap coassociate id . coassociate . bimap id coassociate = coassociate . coassociate
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoassociate"
+></A
+><B
+>coassociate</B
+> ::  k (s a (s b c)) (s (s a b) c)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Coassociative')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Coassociative" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> (<A HREF="Control-Functor-Combinators-Const.html#t%3AConst2"
+>Const2</A
+> t)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Associative.html#t%3AAssociative"
+>Associative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> p =&gt; <A HREF="Control-Category-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> <A HREF="Control-Category-Hask.html#t%3AHask"
+>Hask</A
+> (<A HREF="Control-Functor-Combinators-Flip.html#t%3AFlip"
+>Flip</A
+> p)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Associative.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:50 GMT -->
+</HTML
+>

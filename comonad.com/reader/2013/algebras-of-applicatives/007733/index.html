@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2013/algebras-of-applicatives/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Algebras of Applicatives</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../05/index.html' />
+	<link rel='archives' title='April 2013' href='../../04/index.html' />
+	<link rel='archives' title='January 2013' href='../../01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Algebras of Applicatives Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='Abstracting with Applicatives' href='../../../2012/abstracting-with-applicatives/index.html' />
+<link rel='next' title='Japanese &#8220;ekmett&#8221; Workshop (Part 1 of 2)' href='../../japanese-workshop-1/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Fri 11 Jan 2013</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Algebras of Applicatives">Algebras of Applicatives</a></h2>
+Posted by Gershom Bazerman under <a href="../../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a> <br/><a href="../index.html#respond" title="Comment on Algebras of Applicatives">No Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>While the <a href="../../../2012/abstracting-with-applicatives.html">previous post</a> in this series was relatively immediately applicable, this one has constructions I definitely wouldn't recommend in production code. However, they do take us further in exploring the universe of applicative functors, and, more broadly, exploring which data types provide which properties by construcion.</p>
+<p>It's well known that if you have any Functor <code>F a</code>, you can take its "fixpoint", creating a structure of infinitely nested Fs, like so. <code>F (F (F (...) ) )</code> Since we can't have infinite types directly in Haskell, we introduce the Fix newtype:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Fix f = Fix <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Fix f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span></pre>
+<p>This "wraps up" the recursion so that GHC accepts the type. <code>Fix f</code> is a <code>Fix</code> constructor, containing an "f" of <code>Fix f</code> inside. Each in turn expands out, and soforth. Fixpoints of functors have fixedpoints of functors inside 'em. And so on, and so on, ad infinitum.</p>
+<p>(Digression: We speak of "algebraic data types" in Haskell. The "algebra" in question is an "F-algebra", and we can build up structures with fixpoints of functors, taking those functors as initial or terminal objects and generating either initial algebras or terminal coalgebras. These latter two concepts coincide in Haskell in the Fix description given above, as greatest and least fixpoints of data types in Haskell turn out to be the same thing. For more background, one can go to Wadler's "<a href="http://homepages.inf.ed.ac.uk/wadler/papers/free-rectypes/free-rectypes.txt">Recursive Types for Free</a>,"  or Jacobs and Rutten's "<a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.1418">Tutorial on (Co)Algebras and (Co)Induction</a>" for starters.)</p>
+<p>The family of functors built from our friends Const, Sum, Product, and Reader (exponentiation) are known as Polynomial Functors. If we take closure of these with a proper fixpoint construct (that lets us build infinite structures), we get things that are variously known as Containers, Shapely Types, and Strictly Positive types.</p>
+<p>One irritating thing is that the fixpoint of a functor as we've written it is no longer itself a functor. The type constructor Fix is of kind <code>(* -> *) -> *</code>, which says it takes an "f" which takes one argument (e.g. "Maybe" or "Identity" or etc.) and returns a proper type (i.e. a value at the type level of kind *).</p>
+<p>We want a fixpoint construction that gives back something of kind <code>* -> *</code> — i.e. something that is a type constructor representing a functor, and not just a plain old type. The following does the trick.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> FixF f a = FixF <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>FixF f a<span style="color: green;">&#41;</span></pre>
+<p>(I learned about FixF from <a href="http://www.cs.ox.ac.uk/ralf.hinze/SSGIP10/AdjointFolds.pdf">a paper by Ralf Hinze</a>, but I'm sure the origins go back much further).</p>
+<p>FixF is of kind <code>((* -> *) -> * -> *) -> * -> *</code>. It takes the fixpoint of a "second-order Functor" (a Functor that sends a Functor to another Functor, i.e. an endofunctor on the functor category of hask), to recover a standard "first order Functor" back out. This sounds scary, but it isn't once you load it up in ghci and start playing with it. In fact, we've encountered second order functors just recently. Product, Sum, and Compose are all of kind <code>(* -> *) -> (* -> *) -> * -> *</code>. So they all send two functors to a third functor. That means that <code>Product Const</code>, <code>Sum Identity</code> and <code>Compose Maybe</code> are all second-order functors, and things appropriate to take our "second-order fixpoint" of.</p>
+<p>Conceptually, "Fix f" took a value with one hole, and we filled that hole with "Fix f" so there was no room for a type parameter. Now we've got an "f" with two holes, the first of which takes a functor, and the second of which is the hole of the resulting functor.</p>
+<p>Unlike boring old "Fix", we can write Functor and Applicative instances for "FixF", and they're about as simple and compositional as we could possibly hope.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>FixF x<span style="color: green;">&#41;</span> = FixF $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = FixF $ pure x
+    <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>FixF x<span style="color: green;">&#41;</span> = FixF <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span></pre>
+<p>But now we run into a new problem! It seems like this "a" parameter is just hanging out there, doing basically nothing. We take our classic functors and embed them in there, and they still only have "one hole" at the value level, so don't actually have any place to put the "a" type we now introduced. For example, we can write the following:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- FixF . Compose . Just . FixF . Compose $ Nothing</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Compose (Just (FixF (Compose Nothing))))</span>
+<span style="color: #5d478b; font-style: italic;">-- :t FixF (Compose (Just (FixF (Compose Nothing))))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Compose Maybe) a</span></pre>
+<p>We now introduce one new member of our basic constructions — a second order functor that acts like "const" on the type level, taking any functor and returning Identity.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Embed <span style="color: green;">&#40;</span>f :: * -&gt; *<span style="color: green;">&#41;</span> a = Embed a <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Embed x<span style="color: green;">&#41;</span> = Embed $ f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Embed x
+    <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Embed x<span style="color: green;">&#41;</span> = Embed <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span></pre>
+<p>Now we can actually stick functorial values into our fixpoints:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- FixF $ Embed &quot;hi&quot;</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Embed &quot;hi&quot;)</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- fmap (++ &quot; world&quot;) $ FixF (Embed &quot;hi&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Embed &quot;hi world&quot;)</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- FixF . Product (Embed &quot;hi&quot;) .</span>
+<span style="color: #5d478b; font-style: italic;">--        FixF . Product (Embed &quot;there&quot;) . FixF $ undefined</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Product (Embed &quot;hi&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">--   (FixF (Product (Embed &quot;there&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">--   (FixF *** Exception: Prelude.undefined</span></pre>
+<p>You may have noticed that we seem to be able to use "product" to begin a chain of nested fixpoints, but we don't seem able to stick a "Maybe" in there to <strong>stop</strong> the chain. And it seems like we're not even "fixing" where we intend to be:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- :t FixF . Product (Embed &quot;hi&quot;) . FixF . Product (Embed &quot;there&quot;) . FixF $ undefined</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Product (Embed f)) [Char]</span></pre>
+<p>That's because we're applying Product, takes and yields arguments of kind <code>* -> *</code> in a context where we really want to take and yield second-order functors as arguments — things of kind <code>(* -> *) -> * -> *</code>. If we had proper kind polymorphism, "Product" and "ProductF" would be able to collapse (and maybe, soon, they will). But at least in the ghc 7.4.1 that I'm working with, we have to write the same darn thing, but "up a kind".</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> ProductF f g <span style="color: green;">&#40;</span>b :: * -&gt; *<span style="color: green;">&#41;</span> a =
+      ProductF <span style="color: green;">&#40;</span>f b a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g b a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt;
+         <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>ProductF f g b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+                <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>ProductF x y<span style="color: green;">&#41;</span> = ProductF <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>, Applicative <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt;
+         Applicative <span style="color: green;">&#40;</span>ProductF f g b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+               pure x = ProductF <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span>
+              <span style="color: green;">&#40;</span>ProductF f g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>ProductF x y<span style="color: green;">&#41;</span> = ProductF <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span></pre>
+<p>We can now do the following properly.</p>
+<pre class="haskell">yy = FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;foo&quot;</span><span style="color: green;">&#41;</span> $ InL $ Const <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+xx = FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;bar&quot;</span><span style="color: green;">&#41;</span> . InR .
+        FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;baz&quot;</span><span style="color: green;">&#41;</span> . InL $ Const <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span></pre>
+<p>So we've recovered proper lists in Haskell, as the "second-order fixpoint" of polynomial functors. And the types look right too:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- :t yy</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (ProductF Embed (Sum (Const ()))) [Char]</span></pre>
+<p>Because we've built our Applicative instances compositionally, we have an applicative for our list list construction automatically:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- (++) &lt; $&gt; yy &lt; *&gt; xx</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (ProductF (Embed &quot;foobar&quot;) (InL (Const ())))</span></pre>
+<p>This is precisely the "ZipList" applicative instance. In fact, our applicative instances from this "functor toolkit" are all "zippy" — matching up structure where possible, and "smashing it down" where not. This is because Sum, with its associated natural transformation logic, is the only way to introduce a disjoint choice of shape. Here are some simple examples with Sum to demonstrate:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- liftA2 (++) (InL (Identity &quot;hi&quot;)) $</span>
+<span style="color: #5d478b; font-style: italic;">--      InR (Product (Identity &quot; there&quot;) (Const ([12::Int])))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; InL (Identity &quot;hi there&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">-- liftA2 (++) (InR (Identity &quot;hi&quot;)) $ InL (Product (Identity &quot; there&quot;) (Const ([12::Int])))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; InL (Product (Identity &quot;hi there&quot;) (Const [12]))</span></pre>
+<p>We're always "smashing" towards the left. So in the first case, that means throwing away half of the pair. In the second case, it means injecting Const mempty into a pair, and then operating with that.</p>
+<p>In any case, we now have infinite and possibly infinite branching structures. And not only are they Functors, but they're also Applicatives, and in a way that's uniform and straightforward to reason about.</p>
+<p>In the next post, we'll stop building out our vocabulary of "base" Functors (though it's not quite complete) and instead push forward on what else these functors can provide "beyond" Applicative.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+
+   
+		<!-- If comments are open, but there are no comments. -->
+		
+	 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="811" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Friday, Jan 11th, 2013 at 12:03 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/uncategorized/index.html" title="View all posts in Uncategorized" rel="category tag">Uncategorized</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2013/algebras-of-applicatives/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:45 GMT -->
+</html>

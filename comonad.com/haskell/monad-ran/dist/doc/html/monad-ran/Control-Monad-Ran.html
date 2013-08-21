@@ -1,0 +1,4611 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:59 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Monad.Ran</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monad-ran-0.1.0: Fast monads and monad transformers</TD
+><TD CLASS="topbut"
+><A HREF="src/Control-Monad-Ran.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Monad.Ran</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (type families, GHC internals)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>A right Kan extension monad transformer
+</A
+></DT
+><DT
+><A HREF="#2"
+>Representing monads as right Kan extensions
+</A
+></DT
+><DT
+><A HREF="#3"
+>Ran Monad Transformers
+</A
+></DT
+><DT
+><A HREF="#4"
+>Default definitions for common extensions
+</A
+></DT
+><DT
+><A HREF="#5"
+>IO, ST s, STM
+</A
+></DT
+><DT
+><A HREF="#6"
+>The Yoneda Lemma is a right-Kan extension
+</A
+></DT
+><DT
+><A HREF="#7"
+>The codensity monad of a functor is a right-Kan extension
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A fast right Kan extension based <A HREF="Monad%20Transformer.html"
+>Monad Transformer</A
+> that can be used to 
+ generate an efficient CPS representation from any combination of monads
+ from the Monad Transformer Library. 
+</P
+><P
+>To use, just wrap the type of your monad in <TT
+><A HREF="Control-Monad-Ran.html#v%3ARan"
+>Ran</A
+></TT
+>:
+ i.e. <TT
+>Ran (StateT MyState ReaderT MyEnv IO) Bool</TT
+> 
+ and use <TT
+>liftRan :: RanFunctor m =&gt; m a -&gt; Ran m a</TT
+> and
+ and <TT
+>lowerRan :: RanFunctor m =&gt; Ran m a -&gt; m a</TT
+> to extract
+ your original monad.
+</P
+><P
+>This is really just a fancy way of saying that m a is isomorphic to 
+ forall o. (a -&gt; f o) -&gt; g o for some definition of f and g that is chosen by m.
+ In practice f and g are built up out of newtypes.
+</P
+><P
+>Ran m a is often more efficient than the straightforward monad m because
+ CPS transforming can yield additional optimization opportunities. There
+ are a few caveats to be aware of however. If you inspect the result
+ multiple times then 'Ran m a' may have to recompute its result for each
+ usage. To prevent this, either, use 'Ran m a' once, as in most straight-line
+ monadic code, or explicitly call <TT
+><A HREF="Control-Monad-Ran.html#v%3AlowerRan"
+>lowerRan</A
+></TT
+> on it and perform your repeated
+ tests against the unlifted monad.
+</P
+><P
+>Since Ran m is a data type that depends on type families, Ran cannot be
+ made an instance of <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadTrans"
+>MonadTrans</A
+></TT
+>, use <TT
+><A HREF="Control-Monad-Ran.html#v%3AliftRanT"
+>liftRanT</A
+></TT
+> or <TT
+><A HREF="Control-Monad-Ran.html#v%3AinRan"
+>inRan</A
+></TT
+> in place of <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#v%3Alift"
+>lift</A
+></TT
+>
+ as needed.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ARan"
+>Ran</A
+> m a = <A HREF="#v%3ARan"
+>Ran</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetRan"
+>getRan</A
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m b) -&gt; <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m b</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f) =&gt; <A HREF="#t%3ARanApplicative"
+>RanApplicative</A
+> f </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> f, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f) =&gt; <A HREF="#t%3ARanMonad"
+>RanMonad</A
+> f </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3ARanFunctor"
+>RanFunctor</A
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AG"
+>G</A
+> f :: * -&gt; *</TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A HREF="#t%3AH"
+>H</A
+> f :: * -&gt; *</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRan"
+>liftRan</A
+> ::  f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerRan"
+>lowerRan</A
+> ::  <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a -&gt; f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRan"
+>liftRan</A
+> :: <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f =&gt; f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerRan"
+>lowerRan</A
+> :: <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A HREF="#t%3ARanTrans"
+>RanTrans</A
+> t  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRanT"
+>liftRanT</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AoutRan"
+>outRan</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a -&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AinRan"
+>inRan</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRanT"
+>liftRanT</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AoutRan"
+>outRan</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a -&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AinRan"
+>inRan</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AreturnRanCodensity"
+>returnRanCodensity</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AbindRanCodensity"
+>bindRanCodensity</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; (a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AapRanCodensity"
+>apRanCodensity</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (a -&gt; b) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AranCodensity"
+>ranCodensity</A
+> ::  <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcodensityRan"
+>codensityRan</A
+> ::  <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRanCodensity"
+>liftRanCodensity</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerRanCodensity"
+>lowerRanCodensity</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AliftRanWorld"
+>liftRanWorld</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ World w, <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m ~ World w) =&gt; (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w -&gt; (#<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w, a#)) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerRanWorld"
+>lowerRanWorld</A
+> :: (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ World w, <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m ~ World w) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w -&gt; (#<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w, a#)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AYoneda"
+>Yoneda</A
+> f a = <A HREF="#v%3AYoneda"
+>Yoneda</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetYoneda"
+>getYoneda</A
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; b) -&gt; f b</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerYoneda"
+>lowerYoneda</A
+> ::  <A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ACodensity"
+>Codensity</A
+> f a = <A HREF="#v%3ACodensity"
+>Codensity</A
+> {<TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="recfield"
+><A HREF="#v%3AgetCodensity"
+>getCodensity</A
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; f b) -&gt; f b</TD
+></TR
+></TABLE
+>}</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerCodensity"
+>lowerCodensity</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m a -&gt; m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlowerCodensityApp"
+>lowerCodensityApp</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f =&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a -&gt; f a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>A right Kan extension monad transformer
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ARan"
+></A
+><B
+>Ran</B
+> m a </TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#Ran"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A right Kan extension transformer for a monad
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ARan"
+></A
+><B
+>Ran</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetRan"
+></A
+><B
+>getRan</B
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m b) -&gt; <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m b</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Ran')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Ran" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO-Error.html#t%3AIOError"
+>IOError</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> r m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> ((-&gt;) e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> ((-&gt;) e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> ((-&gt;) e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont-Class.html#t%3AMonadCont"
+>MonadCont</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont-Class.html#t%3AMonadCont"
+>MonadCont</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanMonad"
+>RanMonad</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m)) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> b) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a b))) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> a m) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> b) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a b))) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> a m) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> b) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a b))) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> a m) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> b) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> a b))) =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> a m) b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> ((-&gt;) e) m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e) m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Representing monads as right Kan extensions
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f) =&gt; <A NAME="t%3ARanApplicative"
+></A
+><B
+>RanApplicative</B
+> f </TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#RanApplicative"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f), <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> f, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f) =&gt; <A NAME="t%3ARanMonad"
+></A
+><B
+>RanMonad</B
+> f </TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#RanMonad"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3ARanFunctor"
+></A
+><B
+>RanFunctor</B
+> f  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#RanFunctor"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Associated Types</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AG"
+></A
+><B
+>G</B
+> f :: * -&gt; *</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#G"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AH"
+></A
+><B
+>H</B
+> f :: * -&gt; *</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#H"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRan"
+></A
+><B
+>liftRan</B
+> ::  f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerRan"
+></A
+><B
+>lowerRan</B
+> ::  <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:RanFunctor')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:RanFunctor" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> ((-&gt;) e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Either.html#t%3AEither"
+>Either</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRan"
+></A
+><B
+>liftRan</B
+> :: <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f =&gt; f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerRan"
+></A
+><B
+>lowerRan</B
+> :: <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> f =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Ran Monad Transformers
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>class</SPAN
+>  <A NAME="t%3ARanTrans"
+></A
+><B
+>RanTrans</B
+> t  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#RanTrans"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRanT"
+></A
+><B
+>liftRanT</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRanT"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AoutRan"
+></A
+><B
+>outRan</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a -&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#outRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AinRan"
+></A
+><B
+>inRan</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#inRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:RanTrans')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:RanTrans" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html#t%3AStateT"
+>StateT</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html#t%3ARWST"
+>RWST</A
+> r w s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html#t%3ARWST"
+>RWST</A
+> r w s)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRanT"
+></A
+><B
+>liftRanT</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRanT"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AoutRan"
+></A
+><B
+>outRan</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a -&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#outRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AinRan"
+></A
+><B
+>inRan</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanTrans"
+>RanTrans</A
+> t, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (t m)) =&gt; t (<A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (t m) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#inRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>Default definitions for common extensions
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AreturnRanCodensity"
+></A
+><B
+>returnRanCodensity</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#returnRanCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AbindRanCodensity"
+></A
+><B
+>bindRanCodensity</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; (a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#bindRanCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AapRanCodensity"
+></A
+><B
+>apRanCodensity</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m (a -&gt; b) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m b</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#apRanCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AranCodensity"
+></A
+><B
+>ranCodensity</B
+> ::  <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f) a -&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#ranCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AcodensityRan"
+></A
+><B
+>codensityRan</B
+> ::  <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f) a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#codensityRan"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRanCodensity"
+></A
+><B
+>liftRanCodensity</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRanCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerRanCodensity"
+></A
+><B
+>lowerRanCodensity</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> m, <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m)) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerRanCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+>IO, ST s, STM
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AliftRanWorld"
+></A
+><B
+>liftRanWorld</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ World w, <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m ~ World w) =&gt; (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w -&gt; (#<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w, a#)) -&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#liftRanWorld"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerRanWorld"
+></A
+><B
+>lowerRanWorld</B
+> :: (<A HREF="Control-Monad-Ran.html#t%3AG"
+>G</A
+> m ~ World w, <A HREF="Control-Monad-Ran.html#t%3AH"
+>H</A
+> m ~ World w) =&gt; <A HREF="Control-Monad-Ran.html#t%3ARan"
+>Ran</A
+> m a -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w -&gt; (#<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html#t%3AState%23"
+>State#</A
+> w, a#)</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerRanWorld"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="6"
+>The Yoneda Lemma is a right-Kan extension
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AYoneda"
+></A
+><B
+>Yoneda</B
+> f a </TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#Yoneda"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The Covariant Yoneda lemma applied to a functor. Note that <TT
+>f</TT
+> need not be a Hask <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+></TT
+>!
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AYoneda"
+></A
+><B
+>Yoneda</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetYoneda"
+></A
+><B
+>getYoneda</B
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; b) -&gt; f b</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Yoneda')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Yoneda" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadTrans"
+>MonadTrans</A
+> <A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerYoneda"
+></A
+><B
+>lowerYoneda</B
+> ::  <A HREF="Control-Monad-Ran.html#t%3AYoneda"
+>Yoneda</A
+> f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerYoneda"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="7"
+>The codensity monad of a functor is a right-Kan extension
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ACodensity"
+></A
+><B
+>Codensity</B
+> f a </TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#Codensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The Codensity monad of a functor/monad generated by a functor
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="5" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ACodensity"
+></A
+><B
+>Codensity</B
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="body" COLSPAN="2"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AgetCodensity"
+></A
+><B
+>getCodensity</B
+> :: <SPAN CLASS="keyword"
+>forall</SPAN
+> b.  (a -&gt; f b) -&gt; f b</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Codensity')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Codensity" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadTrans"
+>MonadTrans</A
+> <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html#t%3AMonadRWS"
+>MonadRWS</A
+> r w s (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html#t%3AMonadError"
+>MonadError</A
+> e (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html#t%3AMonadReader"
+>MonadReader</A
+> r (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html#t%3AMonadState"
+>MonadState</A
+> s (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html#t%3AMonadWriter"
+>MonadWriter</A
+> w (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> k)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> f =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html#t%3AMonadFix"
+>MonadFix</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> m =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html#t%3AMonadIO"
+>MonadIO</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Ran.html#t%3ARanFunctor"
+>RanFunctor</A
+> (<A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerCodensity"
+></A
+><B
+>lowerCodensity</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> m a -&gt; m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerCodensity"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlowerCodensityApp"
+></A
+><B
+>lowerCodensityApp</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f =&gt; <A HREF="Control-Monad-Ran.html#t%3ACodensity"
+>Codensity</A
+> f a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Control-Monad-Ran.html#lowerCodensityApp"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:10:14 GMT -->
+</HTML
+>

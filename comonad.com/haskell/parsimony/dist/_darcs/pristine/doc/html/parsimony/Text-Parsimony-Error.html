@@ -1,0 +1,981 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Error.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:15 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Text.Parsimony.Error</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>parsimony-0.0.1: Monoidal parser combinators for parallel parsing of context-free languages</TD
+><TD CLASS="topbut"
+><A HREF="src/Text-Parsimony-Error.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Text.Parsimony.Error</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>provisional</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>As per <A HREF="Text-Parsec-Errors.html"
+>Text.Parsec.Errors</A
+> except with monoidal source position information
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AMessage"
+>Message</A
+>  </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>= <A HREF="#v%3ASysUnExpect"
+>SysUnExpect</A
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AUnExpect"
+>UnExpect</A
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AExpect"
+>Expect</A
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>| <A HREF="#v%3AMessage"
+>Message</A
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmessageString"
+>messageString</A
+> :: <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AerrorPosition"
+>errorPosition</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; SourcePosition f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AerrorMessages"
+>errorMessages</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; [<A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+>]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AerrorIsUnknown"
+>errorIsUnknown</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AshowErrorMessages"
+>showErrorMessages</A
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; [<A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+>] -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewErrorMessage"
+>newErrorMessage</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewErrorUnknown"
+>newErrorUnknown</A
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AaddErrorMessage"
+>addErrorMessage</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsetErrorPosition"
+>setErrorPosition</A
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsetErrorMessage"
+>setErrorMessage</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AprependErrorPosition"
+>prependErrorPosition</A
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmergeError"
+>mergeError</A
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AMessage"
+></A
+><B
+>Message</B
+>  </TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#Message"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>This abstract data type represents parse error messages. There are
+ four kinds of messages:
+</P
+><PRE
+>  data Message = SysUnExpect String
+               | UnExpect String
+               | Expect String
+               | Message String
+</PRE
+><P
+>The fine distinction between different kinds of parse errors allows
+ the system to generate quite good error messages for the user. It
+ also allows error messages that are formatted in different
+ languages. Each kind of message is generated by different combinators:
+</P
+><UL
+><LI
+> A <TT
+><A HREF="Text-Parsimony-Error.html#v%3ASysUnExpect"
+>SysUnExpect</A
+></TT
+> message is automatically generated by the
+       Text.Parsec.Combinator.satisfy combinator. The argument is the
+       unexpected input.
+</LI
+><LI
+> A <TT
+><A HREF="Text-Parsimony-Error.html#v%3AUnExpect"
+>UnExpect</A
+></TT
+> message is generated by the Text.Parsec.Prim.unexpected
+       combinator. The argument describes the
+       unexpected item.
+</LI
+><LI
+> A <TT
+><A HREF="Text-Parsimony-Error.html#v%3AExpect"
+>Expect</A
+></TT
+> message is generated by the Text.Parsec.Prim.&lt;?&gt;
+       combinator. The argument describes the expected item.
+</LI
+><LI
+> A <TT
+><A HREF="Text-Parsimony-Error.html#v%3AMessage"
+>Message</A
+></TT
+> message is generated by the <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#v%3Afail"
+>fail</A
+></TT
+>
+       combinator. The argument is some general parser message. 
+</LI
+></UL
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+><A NAME="v%3ASysUnExpect"
+></A
+><B
+>SysUnExpect</B
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AUnExpect"
+></A
+><B
+>UnExpect</B
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AExpect"
+></A
+><B
+>Expect</B
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+><TR
+><TD CLASS="arg"
+><A NAME="v%3AMessage"
+></A
+><B
+>Message</B
+> !<A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Message')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Message" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3AEnum"
+>Enum</A
+> <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmessageString"
+></A
+><B
+>messageString</B
+> :: <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#messageString"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Extract the message string from an error message 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AParseError"
+></A
+><B
+>ParseError</B
+> f </TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#ParseError"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The abstract data type <TT
+>ParseError</TT
+> represents parse errors. It
+ provides the source position (<TT
+>SourcePosition</TT
+>) of the error
+ and a list of error messages (<TT
+><A HREF="Text-Parsimony-Error.html#v%3AMessage"
+>Message</A
+></TT
+>). A <TT
+>ParseError</TT
+>
+ can be returned by the function Text.Parsimony.Mode.parse. <TT
+>ParseError</TT
+> is an
+ instance of the <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+></TT
+> class, but does not comply with the Haskell convention
+ that Show should yield a valid source code representation.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:ParseError')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:ParseError" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> f =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AerrorPosition"
+></A
+><B
+>errorPosition</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; SourcePosition f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#errorPosition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Extracts the source position from the parse error
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AerrorMessages"
+></A
+><B
+>errorMessages</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; [<A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+>]</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#errorMessages"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AerrorIsUnknown"
+></A
+><B
+>errorIsUnknown</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#errorIsUnknown"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AshowErrorMessages"
+></A
+><B
+>showErrorMessages</B
+> :: <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; [<A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+>] -&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Char.html#t%3AString"
+>String</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#showErrorMessages"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnewErrorMessage"
+></A
+><B
+>newErrorMessage</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#newErrorMessage"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnewErrorUnknown"
+></A
+><B
+>newErrorUnknown</B
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#newErrorUnknown"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AaddErrorMessage"
+></A
+><B
+>addErrorMessage</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#addErrorMessage"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsetErrorPosition"
+></A
+><B
+>setErrorPosition</B
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#setErrorPosition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AsetErrorMessage"
+></A
+><B
+>setErrorMessage</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AMessage"
+>Message</A
+> -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#setErrorMessage"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AprependErrorPosition"
+></A
+><B
+>prependErrorPosition</B
+> ::  SourcePosition f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#prependErrorPosition"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmergeError"
+></A
+><B
+>mergeError</B
+> ::  <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f -&gt; <A HREF="Text-Parsimony-Error.html#t%3AParseError"
+>ParseError</A
+> f</TD
+><TD CLASS="declbut"
+><A HREF="src/Text-Parsimony-Error.html#mergeError"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Error.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:15 GMT -->
+</HTML
+>

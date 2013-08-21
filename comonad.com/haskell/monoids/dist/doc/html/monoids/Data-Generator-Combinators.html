@@ -1,0 +1,1716 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:23 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Generator.Combinators</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Generator-Combinators.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Generator.Combinators</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (type families, MPTCs)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Monadic Reduction
+</A
+></DT
+><DT
+><A HREF="#2"
+>Applicative Reduction
+</A
+></DT
+><DT
+><A HREF="#3"
+>Logical Reduction
+</A
+></DT
+><DT
+><A HREF="#4"
+>Monoidal Reduction
+</A
+></DT
+><DT
+><A HREF="#5"
+>List-Like Reduction
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Utilities for working with Monoids that conflict with names from the <A HREF="Prelude.html"
+>Prelude</A
+>,
+ <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+>, <A HREF="Control-Monad.html"
+>Control.Monad</A
+> or elsewhere. Intended to be imported qualified.
+</P
+><PRE
+> import Data.Generator.Combinators as Generator
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Generator.html"
+>Data.Generator</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapM_"
+>mapM_</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m b) -&gt; c -&gt; m ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AforM_"
+>forM_</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m) =&gt; c -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m b) -&gt; m ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amsum"
+>msum</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, m a ~ <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) =&gt; c -&gt; m a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Atraverse_"
+>traverse_</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; f b) -&gt; c -&gt; f ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afor_"
+>for_</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f) =&gt; c -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; f b) -&gt; f ()</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aasum"
+>asum</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f, f a ~ <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) =&gt; c -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aand"
+>and</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) =&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aor"
+>or</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) =&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aany"
+>any</A
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aall"
+>all</A
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfoldMap"
+>foldMap</A
+> :: (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m, <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m) -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afold"
+>fold</A
+> :: (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m, <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ m) =&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtoList"
+>toList</A
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; c -&gt; [<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AconcatMap"
+>concatMap</A
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; [b]) -&gt; c -&gt; [b]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aelem"
+>elem</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afilter"
+>filter</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfilterWith"
+>filterWith</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (m -&gt; n) -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afind"
+>find</A
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asum"
+>sum</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; c -&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aproduct"
+>product</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; c -&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnotElem"
+>notElem</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Generator.html"
+>Data.Generator</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Monadic Reduction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AmapM_"
+></A
+><B
+>mapM_</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m b) -&gt; c -&gt; m ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#mapM_"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using the <TT
+><A HREF="Data-Monoid-Monad.html#v%3AAction"
+>Action</A
+></TT
+> monoid. A specialized version of its namesake from <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+> and <A HREF="Control-Monad.html"
+>Control.Monad</A
+>
+</P
+><PRE
+>
+    <TT
+><A HREF="Data-Generator.html#v%3AmapReduceWith"
+>mapReduceWith</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Monad.html#v%3AgetAction"
+>getAction</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AforM_"
+></A
+><B
+>forM_</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m) =&gt; c -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m b) -&gt; m ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#forM_"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Convenience function as found in <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+> and <A HREF="Control-Monad.html"
+>Control.Monad</A
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#v%3Aflip"
+>flip</A
+></TT
+> <TT
+><A HREF="Data-Generator-Combinators.html#v%3AmapM_"
+>mapM_</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Amsum"
+></A
+><B
+>msum</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonadPlus"
+>MonadPlus</A
+> m, m a ~ <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) =&gt; c -&gt; m a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#msum"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>The sum of a collection of actions, generalizing <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-List.html#v%3Aconcat"
+>concat</A
+></TT
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Monad.html#v%3AgetMonadSum"
+>getMonadSum</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Applicative Reduction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Atraverse_"
+></A
+><B
+>traverse_</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; f b) -&gt; c -&gt; f ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#traverse_"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using the <TT
+><A HREF="Data-Monoid-Applicative.html#v%3ATraversal"
+>Traversal</A
+></TT
+> monoid. A specialized version of its namesake from <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Applicative.html#v%3AgetTraversal"
+>getTraversal</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afor_"
+></A
+><B
+>for_</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f) =&gt; c -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; f b) -&gt; f ()</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#for_"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Convenience function as found in <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#v%3Aflip"
+>flip</A
+></TT
+> <TT
+><A HREF="Data-Generator-Combinators.html#v%3Atraverse_"
+>traverse_</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aasum"
+></A
+><B
+>asum</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Applicative.html#t%3AAlternative"
+>Alternative</A
+> f, f a ~ <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) =&gt; c -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#asum"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>The sum of a collection of actions, generalizing <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-List.html#v%3Aconcat"
+>concat</A
+></TT
+>
+</P
+><PRE
+>
+    <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Applicative.html#v%3AgetAlt"
+>getAlt</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Logical Reduction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aand"
+></A
+><B
+>and</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) =&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#and"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3Areduce"
+>reduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> that contains values of type <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TT
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetAll"
+>getAll</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aor"
+></A
+><B
+>or</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) =&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#or"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3Areduce"
+>reduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> that contains values of type <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TT
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetAny"
+>getAny</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aany"
+></A
+><B
+>any</B
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#any"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> any <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> checking to see if any of its values match the supplied predicate
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AmapReduceWith"
+>mapReduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetAny"
+>getAny</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aall"
+></A
+><B
+>all</B
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#all"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> any <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> checking to see if all of its values match the supplied predicate
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AmapReduceWith"
+>mapReduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetAll"
+>getAll</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>Monoidal Reduction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfoldMap"
+></A
+><B
+>foldMap</B
+> :: (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m, <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; m) -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#foldMap"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using the <TT
+><A HREF="Data-Monoid-Self.html#v%3ASelf"
+>Self</A
+></TT
+> monoid. A specialized version of its namesake from <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AmapReduceWith"
+>mapReduceWith</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Self.html#v%3AgetSelf"
+>getSelf</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afold"
+></A
+><B
+>fold</B
+> :: (<A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m, <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ m) =&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#fold"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3Areduce"
+>reduce</A
+></TT
+> a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using the <TT
+><A HREF="Data-Monoid-Self.html#v%3ASelf"
+>Self</A
+></TT
+> monoid. A specialized version of its namesake from <A HREF="Data-Foldable.html"
+>Data.Foldable</A
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Self.html#v%3AgetSelf"
+>getSelf</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AtoList"
+></A
+><B
+>toList</B
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; c -&gt; [<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#toList"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Convert any <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> to a list of its contents. Specialization of <TT
+><A HREF="Data-Generator.html#v%3Areduce"
+>reduce</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+>List-Like Reduction
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AconcatMap"
+></A
+><B
+>concatMap</B
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; [b]) -&gt; c -&gt; [b]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#concatMap"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Type specialization of <A HREF="foldMap.html"
+>foldMap</A
+> above
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aelem"
+></A
+><B
+>elem</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#elem"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Check to see if <TT
+><A HREF="Data-Generator-Combinators.html#v%3Aany"
+>any</A
+></TT
+> member of the <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> matches the supplied value
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afilter"
+></A
+><B
+>filter</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; m</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#filter"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Efficiently <TT
+><A HREF="Data-Generator.html#v%3AmapReduce"
+>mapReduce</A
+></TT
+> a subset of the elements in a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AfilterWith"
+></A
+><B
+>filterWith</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c) m) =&gt; (m -&gt; n) -&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; n</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#filterWith"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Allows idiomatic specialization of filter by proving a function that will be used to transform the output
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Afind"
+></A
+><B
+>find</B
+> :: <A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c =&gt; (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+>) -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#find"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A specialization of <TT
+><A HREF="Data-Generator-Combinators.html#v%3Afilter"
+>filter</A
+></TT
+> using the <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AFirst"
+>First</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+>, analogous to Data.List.find
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator-Combinators.html#v%3AfilterWith"
+>filterWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetFirst"
+>getFirst</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Asum"
+></A
+><B
+>sum</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; c -&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#sum"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently sum over the members of any <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetSum"
+>getSum</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aproduct"
+></A
+><B
+>product</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; c -&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#product"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Efficiently take the product of every member of a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+>
+</P
+><PRE
+>
+     <TT
+><A HREF="Data-Generator.html#v%3AreduceWith"
+>reduceWith</A
+></TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#v%3AgetProduct"
+>getProduct</A
+></TT
+>
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AnotElem"
+></A
+><B
+>notElem</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c)) =&gt; <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c -&gt; c -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Combinators.html#notElem"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Check to make sure that the supplied value is not a member of the <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:25 GMT -->
+</HTML
+>

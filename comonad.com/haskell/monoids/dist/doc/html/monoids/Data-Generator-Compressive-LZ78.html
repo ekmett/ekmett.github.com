@@ -1,0 +1,593 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Compressive-LZ78.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:25 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Generator.Compressive.LZ78</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Generator.Compressive.LZ78</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Lempel-Ziv 78 
+</A
+></DT
+><DT
+><A HREF="#2"
+>Decoding
+</A
+></DT
+><DT
+><A HREF="#3"
+>Encoding
+</A
+></DT
+><DT
+><A HREF="#4"
+>QuickCheck Properties
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Compression algorithms are all about exploiting redundancy. When applying
+ an expensive <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> to a redundant source, it may be better to 
+ extract the structural redundancy that is present. <TT
+><A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+></TT
+> is a compression
+ algorithm that does so, without requiring the dictionary to be populated
+ with all of the possible values of a data type unlike its later 
+ refinement LZW, and which has fewer comparison reqirements during encoding
+ than its earlier counterpart LZ77. Since we aren't storing these as a 
+ bitstream the LZSS refinement of only encoding pointers once you cross
+ the break-even point is a net loss. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Generator.html"
+>Data.Generator</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ALZ78"
+>LZ78</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Adecode"
+>decode</A
+> ::  <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a -&gt; [a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aencode"
+>encode</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; [a] -&gt; <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AencodeEq"
+>encodeEq</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; [a] -&gt; <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aprop_decode_encode"
+>prop_decode_encode</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; [a] -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aprop_decode_encodeEq"
+>prop_decode_encodeEq</A
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; [a] -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Generator.html"
+>Data.Generator</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Lempel-Ziv 78 
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ALZ78"
+></A
+><B
+>LZ78</B
+> a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#LZ78"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:LZ78')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:LZ78" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Foldable.html#t%3AFoldable"
+>Foldable</A
+> <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> a =&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> (<A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Decoding
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Adecode"
+></A
+><B
+>decode</B
+> ::  <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a -&gt; [a]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#decode"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>a type-constrained <TT
+><A HREF="Data-Generator.html#v%3Areduce"
+>reduce</A
+></TT
+> operation
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Encoding
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aencode"
+></A
+><B
+>encode</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; [a] -&gt; <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#encode"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>contruct an LZ78-compressed <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using a <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/containers/Data-Map.html#t%3AMap"
+>Map</A
+></TT
+> internally, requires an instance of Ord.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AencodeEq"
+></A
+><B
+>encodeEq</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; [a] -&gt; <A HREF="Data-Generator-Compressive-LZ78.html#t%3ALZ78"
+>LZ78</A
+> a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#encodeEq"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>contruct an LZ78-compressed <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> using a list internally, requires an instance of Eq.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>QuickCheck Properties
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aprop_decode_encode"
+></A
+><B
+>prop_decode_encode</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> a =&gt; [a] -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#prop_decode_encode"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>QuickCheck property: decode . encode = id
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3Aprop_decode_encodeEq"
+></A
+><B
+>prop_decode_encodeEq</B
+> :: <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> a =&gt; [a] -&gt; <A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Generator-Compressive-LZ78.html#prop_decode_encodeEq"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>QuickCheck property: decode . encodeEq = id
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Compressive-LZ78.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:25 GMT -->
+</HTML
+>

@@ -1,8 +1,0 @@
-[missing file
-ekmett@gmail.com**20090329072648] {
-hunk ./monoids.cabal 2
--version:	    0.1.8
-+version:	    0.1.9
-hunk ./monoids.cabal 51
-+    Data.Monoid.Self
-}

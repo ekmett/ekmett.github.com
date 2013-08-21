@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Comonad.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Comonad</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>categories-0.3: Category Library</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Comonad</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Defines <TT
+><A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+></TT
+> in a way that allows it to represent a <TT
+><A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+></TT
+> over 
+ a Category other than just Hask.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> w k =&gt; <A HREF="#t%3AComonad"
+>Comonad</A
+> w k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aextend"
+>extend</A
+> :: k (w a) b -&gt; k (w a) (w b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aduplicate"
+>duplicate</A
+> :: k (w a) (w (w a))</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapComonad"
+>mapComonad</A
+> :: <A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+> w k =&gt; k a b -&gt; k (w a) (w b)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> w k =&gt; <A NAME="t%3AComonad"
+></A
+><B
+>Comonad</B
+> w k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>Instances of Comonad should satisfy the following laws:
+</P
+><PRE
+> extract . extend k = k
+ extend extract = id
+ map f = extend (f . extract)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aextend"
+></A
+><B
+>extend</B
+> :: k (w a) b -&gt; k (w a) (w b)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aduplicate"
+></A
+><B
+>duplicate</B
+> :: k (w a) (w (w a))</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Comonad')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Comonad" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+> <A HREF="Control-Category-Functor-Identity.html#t%3AIdentity"
+>Identity</A
+> (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m k =&gt; <A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+> m (<A HREF="Control-Category-Dual.html#t%3ADual"
+>Dual</A
+> k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmapComonad"
+></A
+><B
+>mapComonad</B
+> :: <A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+> w k =&gt; k a b -&gt; k (w a) (w b)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free definition of <TT
+><A HREF="Control-Category-Functor.html#t%3AFunctor"
+>Functor</A
+></TT
+> for a <TT
+><A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+></TT
+> <TT
+>m</TT
+> over a Category <TT
+>k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Comonad.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+</HTML
+>

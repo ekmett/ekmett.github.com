@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/security-policy/dist/doc/html/Control-Monad-Security.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:11:05 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Monad.Security</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>security-policy-0.0.1: Type-parameterized Security Monads</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Monad.Security</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ASecurityPolicy"
+>SecurityPolicy</A
+> p </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Security.html#t%3ASecurityPolicy"
+>SecurityPolicy</A
+> p, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> l) =&gt; <A HREF="#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l | l -&gt; p</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l, <A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l', <A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l'') =&gt; <A HREF="#t%3ASecurityLattice"
+>SecurityLattice</A
+> p l l' l'' | l l' -&gt; l'', l -&gt; p, l' -&gt; p, l'' -&gt; p <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Awitness"
+>witness</A
+> :: l a -&gt; (a -&gt; l' b) -&gt; l'' b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Awitness"
+>witness</A
+> :: <A HREF="Control-Monad-Security.html#t%3ASecurityLattice"
+>SecurityLattice</A
+> p l l' l'' =&gt; l a -&gt; (a -&gt; l' b) -&gt; l'' b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areclassify"
+>reclassify</A
+> :: <A HREF="Control-Monad-Security.html#t%3ASecurityLattice"
+>SecurityLattice</A
+> p l m m =&gt; l a -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ASecurityPolicy"
+></A
+><B
+>SecurityPolicy</B
+> p </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A Policy is a particular relationship between a closed set of <TT
+><A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+></TT
+>s. 
+ The closure of this set is maintained by limiting the export of the policy. 
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Security.html#t%3ASecurityPolicy"
+>SecurityPolicy</A
+> p, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> l) =&gt; <A NAME="t%3ASecurityLevel"
+></A
+><B
+>SecurityLevel</B
+> p l | l -&gt; p</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+></TT
+> is a particular point inside our capability space. You should not export the
+ data constructors for your SecurityLevels, but only export whatever methods you want to allow the
+ end user to deconstruct your secured data with including all access controls and permission checks.
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l, <A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l', <A HREF="Control-Monad-Security.html#t%3ASecurityLevel"
+>SecurityLevel</A
+> p l'') =&gt; <A NAME="t%3ASecurityLattice"
+></A
+><B
+>SecurityLattice</B
+> p l l' l'' | l l' -&gt; l'', l -&gt; p, l' -&gt; p, l'' -&gt; p <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Note instances of this class must form a full meet-semilattice for security purposes. 
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Awitness"
+></A
+><B
+>witness</B
+> :: l a -&gt; (a -&gt; l' b) -&gt; l'' b</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Parameterized bind. 
+</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Awitness"
+></A
+><B
+>witness</B
+> :: <A HREF="Control-Monad-Security.html#t%3ASecurityLattice"
+>SecurityLattice</A
+> p l l' l'' =&gt; l a -&gt; (a -&gt; l' b) -&gt; l'' b</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Parameterized bind. 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Areclassify"
+></A
+><B
+>reclassify</B
+> :: <A HREF="Control-Monad-Security.html#t%3ASecurityLattice"
+>SecurityLattice</A
+> p l m m =&gt; l a -&gt; m a</TD
+></TR
+><TR
+><TD CLASS="doc"
+><TT
+>x &amp; y = y iff x &lt;= y</TT
+> is a meet semilattice law. 
+ use this to raise the security level of a value using the supplied <TT
+><A HREF="Control-Monad-Security.html#v%3Awitness"
+>witness</A
+></TT
+> for the <TT
+><A HREF="Control-Monad-Security.html#t%3ASecurityLattice"
+>SecurityLattice</A
+></TT
+> relationship
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/security-policy/dist/doc/html/Control-Monad-Security.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:11:05 GMT -->
+</HTML
+>

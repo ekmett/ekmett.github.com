@@ -1,0 +1,7043 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary-Internals.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:18 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Type.Binary.Internals</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>type-int-0.4: Type Level 2s- and 16s- Complement Integers</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Type.Binary.Internals</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (FD and MPTC)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Simple type-level binary numbers, positive and negative with infinite
+ precision. This forms a nice commutative ring with multiplicative identity
+ like we would expect from a representation for Z.
+</P
+><P
+>The numbers are represented as a Boolean Ring over a countable set of
+ variables, in which for every element in the set there exists an n in N
+ and a b in {T,F} such that for all n'&gt;=n in N, x_i = b.
+</P
+><P
+>For uniqueness we always choose the least such n when representing numbers
+ this allows us to run most computations backwards. When we can't, and such
+ a fundep would be implied, we obtain it by combining semi-operations that
+ together yield the appropriate class fundep list.
+</P
+><P
+>Reuses T and F from the Type.Boolean as the infinite tail of the 2s
+ complement binary number. 
+</P
+><P
+>TODO: TDivMod, TGCD
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A HREF="#t%3AO"
+>O</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A HREF="#t%3AI"
+>I</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATSucc"
+>TSucc</A
+> n m | n -&gt; m, m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSucc"
+>tSucc</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; n -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtPred"
+>tPred</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATCBinary"
+>TCBinary</A
+> c a | a -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> Closure a =&gt; <A HREF="#t%3ATBinary"
+>TBinary</A
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromTBinary"
+>fromTBinary</A
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> b =&gt; a -&gt; b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfromTBinary"
+>fromTBinary</A
+> :: (<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> b) =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATNeg"
+>TNeg</A
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtNeg"
+>tNeg</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsNegative"
+>TIsNegative</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsNegative"
+>tIsNegative</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsPositive"
+>TIsPositive</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsPositive"
+>tIsPositive</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsZero"
+>TIsZero</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsZero"
+>tIsZero</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsZero"
+>TIsZero</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATEven"
+>TEven</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtEven"
+>tEven</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATEven"
+>TEven</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATOdd"
+>TOdd</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtOdd"
+>tOdd</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATOdd"
+>TOdd</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAdd"
+>TAdd</A
+> a b c | a b -&gt; c, a c -&gt; b, b c -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAdd"
+>tAdd</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSub"
+>tSub</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; c -&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATMul"
+>TMul</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtMul"
+>tMul</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATPow"
+>TPow</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtPow"
+>tPow</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATShift"
+>TShift</A
+> a b c' | a b -&gt; c'</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtShift"
+>tShift</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATGetBit"
+>TGetBit</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtGetBit"
+>tGetBit</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATGetBit"
+>TGetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATSetBit"
+>TSetBit</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSetBit"
+>tSetBit</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSetBit"
+>TSetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATChangeBit"
+>TChangeBit</A
+> a b c d | a b c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtChangeBit"
+>tChangeBit</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATChangeBit"
+>TChangeBit</A
+> a b c d =&gt; a -&gt; b -&gt; c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATUnSetBit"
+>TUnSetBit</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtUnSetBit"
+>tUnSetBit</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATUnSetBit"
+>TUnSetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATComplementBit"
+>TComplementBit</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtComplementBit"
+>tComplementBit</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATComplementBit"
+>TComplementBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATCountBits"
+>TCountBits</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtCountBits"
+>tCountBits</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits"
+>TCountBits</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAbs"
+>TAbs</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAbs"
+>tAbs</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAbs"
+>TAbs</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATNF"
+>TNF</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtNF"
+>tNF</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3At2n"
+>t2n</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3At2np1"
+>t2np1</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATShift%27"
+>TShift'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATNF%27"
+>TNF'</A
+> a b c | a -&gt; b c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAddC%27"
+>TAddC'</A
+> a b c d | a b c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAdd%27"
+>TAdd'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAdd%27"
+>tAdd'</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATSub%27"
+>TSub'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSub%27"
+>tSub'</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSub%27"
+>TSub'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATCountBits%27"
+>TCountBits'</A
+> a b t | a t -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> d =&gt; <A HREF="#t%3ALSB"
+>LSB</A
+> a d a' | a -&gt; d a', d a' -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtLSB"
+>tLSB</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a d a' =&gt; a -&gt; d -&gt; a'</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtBSL"
+>tBSL</A
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a d a' =&gt; a' -&gt; d -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a =&gt; <A HREF="#t%3AXI"
+>XI</A
+> a </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> a =&gt; <A HREF="#t%3AXO"
+>XO</A
+> a </TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3AO"
+></A
+><B
+>O</B
+> a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:O')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:O" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c a, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a k c, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> c c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> k) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a k c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> c c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> k) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> c b d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> c b d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> d)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) =&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Binary-Internals.html#t%3ANegative"
+>Negative</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>, <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> m n) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) n <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> a =&gt; X (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D0 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D1 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D2 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D3 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D4 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D5 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D6 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D7 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D8 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D9 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DA a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DB a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DC a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DD a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DE a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b =&gt; <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b =&gt; <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> n, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> m) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> m n b =&gt; <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3AI"
+></A
+><B
+>I</B
+> a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:I')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:I" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c a, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a k c, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> c c d, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a d e) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> k) e</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a k c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> c c d, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a d e) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> k) e</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> c b d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> d)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) =&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Binary-Internals.html#t%3APositive"
+>Positive</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Trichotomy a b, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; Trichotomy (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>, <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) m <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a m <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) m <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a =&gt; X (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b c =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D1 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D2 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D3 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D4 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D5 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D6 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D7 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D8 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D9 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DA a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DB a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DC a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DD a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DE a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DF a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b =&gt; <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b =&gt; <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> n, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> m) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n))</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> m n b =&gt; <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATImplies"
+>TImplies</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) c') =&gt; <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) c'</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATSucc"
+></A
+><B
+>TSucc</B
+> n m | n -&gt; m, m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Finds the unique successor for any normalized binary number
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TSucc')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TSucc" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> n, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> m) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n))</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSucc"
+></A
+><B
+>tSucc</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; n -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtPred"
+></A
+><B
+>tPred</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATCBinary"
+></A
+><B
+>TCBinary</B
+> c a | a -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Our set of digits is closed to retain the properties needed for most of the classes herein
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TCBinary')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TCBinary" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> Closure <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> Closure <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c a, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c a, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> c (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ATCBinary"
+>TCBinary</A
+> Closure a =&gt; <A NAME="t%3ATBinary"
+></A
+><B
+>TBinary</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>We don't want to have to carry the closure parameter around explicitly everywhere, so we
+   shed it here.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromTBinary"
+></A
+><B
+>fromTBinary</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> b =&gt; a -&gt; b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TBinary')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TBinary" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromTBinary"
+></A
+><B
+>fromTBinary</B
+> :: (<A HREF="Data-Type-Binary-Internals.html#t%3ATBinary"
+>TBinary</A
+> a, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> b) =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNeg"
+></A
+><B
+>TNeg</B
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>TNeg obtains the 2s complement of a number and is reversible
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNeg')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNeg" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b, <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b c) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtNeg"
+></A
+><B
+>tNeg</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsNegative"
+></A
+><B
+>TIsNegative</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Returns true if the number is less than zero
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsNegative')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsNegative" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(Trichotomy n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3ANegative"
+>Negative</A
+> b) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsNegative"
+></A
+><B
+>tIsNegative</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsPositive"
+></A
+><B
+>TIsPositive</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Returns true if the number is greater than zero
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsPositive')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsPositive" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(Trichotomy n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3APositive"
+>Positive</A
+> b) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsPositive"
+></A
+><B
+>tIsPositive</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsZero"
+></A
+><B
+>TIsZero</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Returns true if the number is equal to zero
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsZero')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsZero" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(Trichotomy n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3ASignZero"
+>SignZero</A
+> b) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATIsZero"
+>TIsZero</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsZero"
+></A
+><B
+>tIsZero</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATIsZero"
+>TIsZero</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATEven"
+></A
+><B
+>TEven</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Returns true if the lsb of the number is true
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TEven')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TEven" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a b c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATEven"
+>TEven</A
+> a b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtEven"
+></A
+><B
+>tEven</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATEven"
+>TEven</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATOdd"
+></A
+><B
+>TOdd</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Returns true if the lsb of the number if false
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TOdd')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TOdd" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a b c, <A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> b b') =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATOdd"
+>TOdd</A
+> a b'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtOdd"
+></A
+><B
+>tOdd</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATOdd"
+>TOdd</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAdd"
+></A
+><B
+>TAdd</B
+> a b c | a b -&gt; c, a c -&gt; b, b c -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Reversible adder with extra fundeps.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAdd')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAdd" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> c b' a, <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a a', <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> c a' b) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd"
+>TAdd</A
+> a b c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAdd"
+></A
+><B
+>tAdd</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSub"
+></A
+><B
+>tSub</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; c -&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATMul"
+></A
+><B
+>TMul</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Multiplication: a * b = c
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TMul')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TMul" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> b</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtMul"
+></A
+><B
+>tMul</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATPow"
+></A
+><B
+>TPow</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Exponentiation: a^b = c (only defined for non-negative exponents)
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TPow')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TPow" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a k c, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> c c d, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> a d e) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> k) e</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a k c, <A HREF="Data-Type-Binary-Internals.html#t%3ATMul"
+>TMul</A
+> c c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> k) d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtPow"
+></A
+><B
+>tPow</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATPow"
+>TPow</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATShift"
+></A
+><B
+>TShift</B
+> a b c' | a b -&gt; c'</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Shift a right b places obtaining c in normal form.
+ | If b is negative then we shift left.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TShift')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TShift" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> c c') =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> a b c'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtShift"
+></A
+><B
+>tShift</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATGetBit"
+></A
+><B
+>TGetBit</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>get bit #b in a as c in {T,F}
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TGetBit')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TGetBit" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> a b' c, <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> c d e) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATGetBit"
+>TGetBit</A
+> a b d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtGetBit"
+></A
+><B
+>tGetBit</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATGetBit"
+>TGetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATSetBit"
+></A
+><B
+>TSetBit</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>set bit #b in a to T, yielding c.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TSetBit')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TSetBit" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) b c, <A HREF="Data-Type-Boolean.html#t%3ATOr"
+>TOr</A
+> a c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATSetBit"
+>TSetBit</A
+> a b d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSetBit"
+></A
+><B
+>tSetBit</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSetBit"
+>TSetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATChangeBit"
+></A
+><B
+>TChangeBit</B
+> a b c d | a b c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>change bit #b in a to c in {T,F}, yielding d.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TChangeBit')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TChangeBit" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATSetBit"
+>TSetBit</A
+> a b d, <A HREF="Data-Type-Binary-Internals.html#t%3ATUnSetBit"
+>TUnSetBit</A
+> a b e, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> c d e f) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATChangeBit"
+>TChangeBit</A
+> a b c f</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtChangeBit"
+></A
+><B
+>tChangeBit</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATChangeBit"
+>TChangeBit</A
+> a b c d =&gt; a -&gt; b -&gt; c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATUnSetBit"
+></A
+><B
+>TUnSetBit</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>set bit #b in a to F, yielding c
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TUnSetBit')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TUnSetBit" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) b c, <A HREF="Data-Type-Boolean.html#t%3ATAnd"
+>TAnd</A
+> a c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATUnSetBit"
+>TUnSetBit</A
+> a b d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtUnSetBit"
+></A
+><B
+>tUnSetBit</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATUnSetBit"
+>TUnSetBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATComplementBit"
+></A
+><B
+>TComplementBit</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>toggle the value of bit #b in a, yielding c
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TComplementBit')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TComplementBit" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift"
+>TShift</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) b c, <A HREF="Data-Type-Boolean.html#t%3ATXOr%27"
+>TXOr'</A
+> a c d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATComplementBit"
+>TComplementBit</A
+> a b d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtComplementBit"
+></A
+><B
+>tComplementBit</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATComplementBit"
+>TComplementBit</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATCountBits"
+></A
+><B
+>TCountBits</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Count the number of bits set. Since we may have an infinite tail of 1s, we return
+ a negative number in such cases indicating how many bits are NOT set.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TCountBits')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TCountBits" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> a t, <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a b t) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits"
+>TCountBits</A
+> a b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtCountBits"
+></A
+><B
+>tCountBits</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits"
+>TCountBits</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAbs"
+></A
+><B
+>TAbs</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Return the absolute value of a
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAbs')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAbs" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATIsNegative"
+>TIsNegative</A
+> a s, <A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> a a', <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> s a' a a'') =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAbs"
+>TAbs</A
+> a a''</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAbs"
+></A
+><B
+>tAbs</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAbs"
+>TAbs</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNF"
+></A
+><B
+>TNF</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Shed the additional reduction parameter from TNF'
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNF')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNF" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> a b c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> a b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtNF"
+></A
+><B
+>tNF</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3At2n"
+></A
+><B
+>t2n</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3At2np1"
+></A
+><B
+>t2np1</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATShift%27"
+></A
+><B
+>TShift'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Shift a right b places obtaining c. If b is negative then we shift left.
+ | TShift' does not yield normal form answers.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TShift%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TShift%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> c b d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a b c, <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> c b d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> d)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATShift%27"
+>TShift'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNF%27"
+></A
+><B
+>TNF'</B
+> a b c | a -&gt; b c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Transform a number into normal form, but track whether further reductions
+ may be necessary if this number is extended for efficiency.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNF%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNF%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) c b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATNF%27"
+>TNF'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAddC%27"
+></A
+><B
+>TAddC'</B
+> a b c d | a b c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A symmetrical full adder, that does not yield normal form answers.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAddC%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAddC%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> c =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> c)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAdd%27"
+></A
+><B
+>TAdd'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Non-reversible addition. Kept for efficiency purposes.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAdd%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAdd%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> d d') =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b d'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAdd%27"
+></A
+><B
+>tAdd'</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATSub%27"
+></A
+><B
+>TSub'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Non-reversible subtraction. Kept for efficiency purposes.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TSub%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TSub%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Binary-Internals.html#t%3ATAdd%27"
+>TAdd'</A
+> a b' c) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATSub%27"
+>TSub'</A
+> a b c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSub%27"
+></A
+><B
+>tSub'</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ATSub%27"
+>TSub'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATCountBits%27"
+></A
+><B
+>TCountBits'</B
+> a b t | a t -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Count the number of bits set, but track whether the number is positive or negative
+ to simplify casing. Since we may have an infinite tail of 1s, we return a negative
+ number in such cases indicating how many bits are NOT set.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TCountBits%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TCountBits%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>, <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> n m) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) m <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a m <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) m <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> a n <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>, <A HREF="Data-Type-Binary-Internals.html#t%3ATSucc"
+>TSucc</A
+> m n) =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3ATCountBits%27"
+>TCountBits'</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) n <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Boolean.html#t%3ATBool"
+>TBool</A
+> d =&gt; <A NAME="t%3ALSB"
+></A
+><B
+>LSB</B
+> a d a' | a -&gt; d a', d a' -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Extracts the least significant bit of a as d and returns a'.
+ Can also be used to prepend bit d onto a' obtaining a.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:LSB')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:LSB" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> n)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> n)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtLSB"
+></A
+><B
+>tLSB</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a d a' =&gt; a -&gt; d -&gt; a'</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtBSL"
+></A
+><B
+>tBSL</B
+> :: <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> a d a' =&gt; a' -&gt; d -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a =&gt; <A NAME="t%3AXI"
+></A
+><B
+>XI</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>assert 2n+1 != n
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:XI')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:XI" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3AXI"
+>XI</A
+> a</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> a =&gt; <A NAME="t%3AXO"
+></A
+><B
+>XO</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>assert 2n != n
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:XO')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:XO" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Binary-Internals.html#t%3ALSB"
+>LSB</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> a =&gt; <A HREF="Data-Type-Binary-Internals.html#t%3AXO"
+>XO</A
+> a</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary-Internals.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:18 GMT -->
+</HTML
+>

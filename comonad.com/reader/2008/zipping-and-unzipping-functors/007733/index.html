@@ -1,0 +1,509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2008/zipping-and-unzipping-functors/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Zipping and Unzipping Functors</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../12/index.html' />
+	<link rel='archives' title='November 2008' href='../../11/index.html' />
+	<link rel='archives' title='June 2008' href='../../06/index.html' />
+	<link rel='archives' title='May 2008' href='../../05/index.html' />
+	<link rel='archives' title='April 2008' href='../../04/index.html' />
+	<link rel='archives' title='March 2008' href='../../03/index.html' />
+	<link rel='archives' title='January 2008' href='../../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Zipping and Unzipping Functors Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='The Cofree Comonad and the Expression Problem' href='../../the-cofree-comonad-and-the-expression-problem/index.html' />
+<link rel='next' title='Cozipping' href='../../cozipping/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Sun 4 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Zipping and Unzipping Functors">Zipping and Unzipping Functors</a></h2>
+Posted by Edward Kmett under <a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="../index.html#comments" title="Comment on Zipping and Unzipping Functors">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Kefer asked a question in the comments of my post about <a href="../../deriving-strength-from-laziness/index.html">(co)monadic (co)strength</a> about Uustalu and Vene's ComonadZip class from p157 of <a href="http://cs.ioc.ee/~tarmo/papers/cefp05.pdf">The Essence of Dataflow Programming</a>. The class in question is:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w =&gt; ComonadZip w <span style="color: #06c; font-weight: bold;">where</span>
+     czip :: f a -&gt; f b -&gt; f <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>In response I added <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html">Control.Functor.Zip</a> [<a href="../../../../haskell/category-extras/src/Control/Functor/Zip.hs">Source</a>] to my nascent rebundled version of category-extras, which was posted up to hackage earlier today. </p>
+<p><span id="more-54"></span></p>
+<p>Putting aside the dual operation for the moment, we can dispense with the inverse of zip quite simply, for much the same reason that every functor in Haskell is strong, every functor in haskell is unzippable:</p>
+<pre class="haskell">&nbsp;
+unfzip :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; f <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>f a, f b<span style="color: green;">&#41;</span>
+unfzip = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a> &amp;&amp;&amp; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a>
+&nbsp;</pre>
+<p>On the other hand the question of what Functors are zippable is a little trickier. Allowing for a circular definition between fzip and fzipWith we can start with the following class for which you have to implement at least one of fzip or fzipWith.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> f <span style="color: #06c; font-weight: bold;">where</span>
+        fzip :: f a -&gt; f b -&gt; f <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>
+	fzip = fzipWith <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>
+        fzipWith :: <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b -&gt; f c
+	fzipWith f <span style="color: #06c; font-weight: bold;">as</span> bs = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>fzip <span style="color: #06c; font-weight: bold;">as</span> bs<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Here we set aside the restriction that we only be able to Zip a comonad, and simply require that if the functor in question is a comonad, then it is a "symmetric semi-monoidal comonad", which is to say that zipping and then extracting yields the same result as extracting from each separately. You may note a lot of similarity in the above to the definition for <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zap.html">Control.Functor.Zap</a> the Dual functor from <a href="../../the-cofree-comonad-and-the-expression-problem/index.html">the other day</a>.</p>
+<p>Now, we can throw ourselves with reckless abandon at the easy cases:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> Identity <span style="color: #06c; font-weight: bold;">where</span>
+	fzipWith f <span style="color: green;">&#40;</span>Identity a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Identity b<span style="color: green;">&#41;</span> = Identity <span style="color: green;">&#40;</span>f a b<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	fzip = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:zip"><span style="font-weight: bold;">zip</span></a>
+	fzipWith = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:zipWith"><span style="font-weight: bold;">zipWith</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: #06c; font-weight: bold;">where</span>
+	fzipWith f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> <span style="color: green;">&#40;</span>f a b<span style="color: green;">&#41;</span>
+	fzipWith f _ _ = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Nothing"><span style="font-weight: bold;">Nothing</span></a>
+&nbsp;</pre>
+<p>But we note that Either causes us to break down, we can't handle the 'mixed' cases of Left and Right cleanly. We can however use the same 'cheat' that makes the Writer Monad work, however, and rely on an instance of Monoid, and leaving the left hand side of the bifunctor unchanged to enable us to define:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid a =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	fzipWith f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> <span style="color: green;">&#40;</span>mappend a b<span style="color: green;">&#41;</span>
+	fzipWith f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> b
+	fzipWith f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a
+	fzipWith f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> <span style="color: green;">&#40;</span>f a b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and similarly:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid a =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	fzipWith f <span style="color: green;">&#40;</span>a, c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b, d<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>mappend a b, f c d<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Unfortunately the instance for ((,)a) is a little less than satisfying, what we really want to say there is that we have a <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Bifunctor.html#t%3ABifunctor">Bifunctor</a> and that it has two parameters that can be zipped together:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Bifunctor p =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> p <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#v:bizip"><span style="font-weight: bold;">bizip</span></a> :: p a c -&gt; p b d -&gt; p <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>c,d<span style="color: green;">&#41;</span>
+	<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#v:bizip"><span style="font-weight: bold;">bizip</span></a> = bizipWith <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>
+	bizipWith :: <span style="color: green;">&#40;</span>a -&gt; b -&gt; e<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>c -&gt; d -&gt; f<span style="color: green;">&#41;</span> -&gt; p a c -&gt; p b d -&gt; p e f
+	bizipWith f g <span style="color: #06c; font-weight: bold;">as</span> bs = bimap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#v:bizip"><span style="font-weight: bold;">bizip</span></a> <span style="color: #06c; font-weight: bold;">as</span> bs<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now, we can define a more satisfying instance for (,):</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bizipWith f g <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>c,d<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>f a c, g b d<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>However, by its very nature, an instance for Either eludes us. </p>
+<p>Now, we can define a "Bifunctor-Functor-Functor Bifunctor" transformer that takes a bifunctor and a pair of functors to wrap it around, and derives a new bifunctor and lift the zippability of each of the parts to the zippability of the whole:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> BiffB p f g a b = BiffB <span style="color: green;">&#123;</span> runBiffB :: p <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span> 
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, Bifunctor p, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; Bifunctor <span style="color: green;">&#40;</span>BiffB p f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bimap f g = BiffB . bimap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g<span style="color: green;">&#41;</span> . runBiffB
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> f, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> p, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> <span style="color: green;">&#40;</span>BiffB p f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bizipWith f g <span style="color: #06c; font-weight: bold;">as</span> bs = BiffB $ bizipWith <span style="color: green;">&#40;</span>fzipWith f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>fzipWith g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>runBiffB <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>runBiffB bs<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>What is interesting about this is that the <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Cofree.html">cofree comonad</a> and <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Monad-Free.html">free monad</a> can be defined in terms of BiffB given a definition for the <a href="../../../../haskell/category-extras/src/Control/Bifunctor/Fix.html">fixed point of a bifunctor</a>:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> FixB s a = InB <span style="color: green;">&#123;</span> outB :: s a <span style="color: green;">&#40;</span>FixB s a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Bifunctor s =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>FixB s<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = InB . bimap f <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . outB
+&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Cofree f a = FixB <span style="color: green;">&#40;</span>BiffB <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> Identity f<span style="color: green;">&#41;</span> a
+<span style="color: #06c; font-weight: bold;">type</span> Free f a = FixB <span style="color: green;">&#40;</span>BiffB <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> Identity f<span style="color: green;">&#41;</span> a
+&nbsp;</pre>
+<p>Then we can define that the fixed point of a zippable bifunctor is a zippable functor:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> p =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> <span style="color: green;">&#40;</span>FixB p<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	fzipWith f <span style="color: #06c; font-weight: bold;">as</span> bs = InB $ bizipWith f <span style="color: green;">&#40;</span>fzipWith f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>outB <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>outB bs<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Then it immediately follows by the construction for BiffB that every Cofree Comonad of a zippable base functor is Zippable because they are the fixed point of BiffB (,) Identity f. and since (,) is zippable and Identity is zippable, then given f zippable the base bifunctor is zippable, so Cofree f is zippable.</p>
+<p>On the other hand, we do not get the same result for the <a href="../../monads-for-free/index.html">Free Monad</a>, because it is built over BiffB Either Identity f, and Either is not a zippable bifunctor.</p>
+<p>We can define some other functors and bifunctors which are zippable, i.e. we can define a <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Bifunctor-Composition.html#t%3AFunctorB">"functor-wrapped bifunctor bifunctor"</a>:</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> FunctorB f p a b = FunctorB <span style="color: green;">&#123;</span> runFunctorB :: f <span style="color: green;">&#40;</span>p a b<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span> 
+&nbsp;
+liftFunctorB :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span>p a b -&gt; p c d<span style="color: green;">&#41;</span> -&gt; FunctorB f p a b -&gt; FunctorB f p c d
+liftFunctorB f = FunctorB . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f . runFunctorB
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, Bifunctor p<span style="color: green;">&#41;</span> =&gt; Bifunctor <span style="color: green;">&#40;</span>FunctorB f p<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bimap f g = liftFunctorB <span style="color: green;">&#40;</span>bimap f g<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Zip"><span style="background-color: #efefbf; font-weight: bold;">Zip</span></a> f, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> p<span style="color: green;">&#41;</span> =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Zip.html#t:Bizip"><span style="background-color: #efefbf; font-weight: bold;">Bizip</span></a> <span style="color: green;">&#40;</span>FunctorB f p<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bizipWith f g <span style="color: #06c; font-weight: bold;">as</span> bs = FunctorB $ fzipWith <span style="color: green;">&#40;</span>bizipWith f g<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>runFunctorB <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>runFunctorB bs<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>But the general pattern was set by Either and Maybe. Whenever your functor has a branch you need a way to uniquely determine the way the constant terms combine. </p>
+<p>While I think the above yields a pleasingly generic version of zip. I do not believe that I have exhausted the set of possible instances, but yielding them automatically for cofree comonads of zippable functors, and hence for rose trees, streams, was rather nice.</p>
+<p>If you have any other instances of note, I would welcome the insight.</p>
+<p>[<a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/category-extras-0.44.1">category-extras-0.44.1</a>]</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">6 Responses to &#8220;Zipping and Unzipping Functors&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1163">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=2535857ac59d18baeda7b081c645f901&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://twan.home.fmf.nl/' rel='external nofollow' class='url'>Twan van Laarhoven</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1163" title="">May 5th, 2008 at 3:53 pm</a> </small>
+			<br clear="all"/>
+
+			<p>your Zip class is almost the same as Applicative:</p>
+<p>    fzipWith f a b  =  fmap f a  b</p>
+<p>Your fzip function is suggested in the Applicative paper as making more sense from a  category theory perspective.</p>
+<p>This also raises the question of what exactly fzip should do. How do you say that it should &#8216;zip&#8217;? For instance [] is also an applicative functor with the usual Monad-style cartestian product behaviour.</p>
+<p>Specifying that unfzip is the inverse of fzip is a good idea. For [] fzip is only a right inverse of unfzip, since you could zip lists of different lengths. The same holds for Maybe: funzip (fzip (Just x) Nothing) /= (Just x, Nothing).</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1165">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../cozipping/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Cozipping</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1165" title="">May 5th, 2008 at 4:48 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Twan van Laarhoven pointed out that fzip from the other day is a close cousin of applicative chosen to be an inverse of universal construction: unfzip [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1615">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../zapping-strong-adjunctions/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Zapping Adjunctions</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1615" title="">June 5th, 2008 at 2:34 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-9675">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=49ab3ce5a4922b4747d1d6f330784629&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Jake McArthur</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-9675" title="">June 20th, 2009 at 3:13 pm</a> </small>
+			<br clear="all"/>
+
+			<p>fzipWith = liftA2, at least ignoring the inverse law for fzip and funzip as you seem to have for [] (where you chose the ZipList semantics) and Maybe. Perhaps the [] and Maybe instances for Zip should be removed, and instances for known Applicatives which follow the inverse law should be added?</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-9740">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-9740" title="">June 22nd, 2009 at 4:59 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Jake</p>
+<p>I almost agree. I&#8217;ve had people point out the connection to Applicative on several occasions before, but it falters slightly.</p>
+<p>There is no requirement for the existence of unit, so your functor need not be pointed. This permits the class of zippable functors to be slightly wider than the class of applicative functors.</p>
+<p>Secondly the particular near-applicative operation is selected explicitly so it will be a left inverse to unzip.</p>
+<p>fzip . unfzip = id</p>
+<p>Since that should hold for any functor to claim to be a member of Zip the definition is narrower than that of Applicative. Using list monad semantics for fzip on [] would fail this law.</p>
+<p>So Zip is neither a superclass nor a subclass of Applicative.</p>
+<p>That, at least, was my justification for a zippable functor as an independent concept; I may not have fully articulated the justification back when i wrote this article.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-101831">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=432b14624c692e7a24b7ce1c1ec8db50&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='http://example.org/' rel='external nofollow' class='url'>anonymous</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-101831" title="">February 22nd, 2012 at 3:29 pm</a> </small>
+			<br clear="all"/>
+
+			<p>I also want liftPair in Applicative</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="54" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Sunday, May 4th, 2008 at 10:00 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2008/zipping-and-unzipping-functors/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:17 GMT -->
+</html>

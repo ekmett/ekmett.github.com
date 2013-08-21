@@ -1,4 +1,0 @@
-[.cabal: +-Wall
-gwern0@gmail.com**20080506222727] hunk ./category-extras.cabal 105
--ghc-options:		-funbox-strict-fields
-+ghc-options:		-Wall -funbox-strict-fields

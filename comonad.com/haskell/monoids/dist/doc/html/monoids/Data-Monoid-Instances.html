@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Instances.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:27 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Instances</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Instances.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Instances</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>A collection of orphan instance declarations for Monoids that should
+ eventually be pushed back down to the source packages.
+</P
+><P
+>Every package that uses these instances includes this package internally.
+</P
+><P
+>Includes:
+</P
+><UL
+><LI
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> instances for the <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+></TT
+> transformers from the mtl package
+</LI
+><LI
+> A <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> instance for the <TT
+>ParsecT</TT
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+></TT
+> from parsec-3.
+</LI
+><LI
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+></TT
+> instances for tuples of <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+></TT
+> for overloaded string support.
+</LI
+><LI
+> A <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> instance for the <TT
+>FingerTree</TT
+> in the fingertree package 
+</LI
+><LI
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> instances for <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AInt"
+>Int</A
+></TT
+>, <TT
+>Integer</TT
+>, and <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ratio.html#t%3ARatio"
+>Ratio</A
+></TT
+> using <TT
+>(+,0)</TT
+>
+</LI
+><LI
+> <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Prelude.html#t%3ANum"
+>Num</A
+></TT
+> and <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bits.html#t%3ABits"
+>Bits</A
+></TT
+> instances for <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html#t%3ABool"
+>Bool</A
+></TT
+> as a Boolean <TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bool.html#v%3A%26%26"
+>&amp;&amp;</A
+></TT
+>/<TT
+><A HREF="../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Bool.html#v%3A%7C%7C"
+>||</A
+></TT
+> SemiRing
+</LI
+></UL
+><P
+>This module is automatically included everywhere this functionality is required
+ within this package. You should only have to import this module yourself if you 
+ want these instances for your own purposes.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Instances.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:32:28 GMT -->
+</HTML
+>

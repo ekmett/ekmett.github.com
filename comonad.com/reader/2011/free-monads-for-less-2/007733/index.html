@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2011/free-monads-for-less-2/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:10:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Free Monads for Less (Part 2 of 3): Yoneda</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../12/index.html' />
+	<link rel='archives' title='November 2011' href='../../11/index.html' />
+	<link rel='archives' title='October 2011' href='../../10/index.html' />
+	<link rel='archives' title='September 2011' href='../../09/index.html' />
+	<link rel='archives' title='July 2011' href='../../07/index.html' />
+	<link rel='archives' title='June 2011' href='../../06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Free Monads for Less (Part 2 of 3): Yoneda Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='Free Monads for Less (Part 1 of 3): Codensity' href='../../free-monads-for-less/index.html' />
+<link rel='next' title='Free Monads for Less (Part 3 of 3): Yielding IO' href='../../free-monads-for-less-3/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 23 Jun 2011</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Free Monads for Less (Part 2 of 3): Yoneda">Free Monads for Less (Part 2 of 3): Yoneda</a></h2>
+Posted by Edward Kmett under <a href="../../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> ,  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../index.html#comments" title="Comment on Free Monads for Less (Part 2 of 3): Yoneda">[3] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p><a href="../../free-monads-for-less/index.html">Last time</a>, I started exploring whether or not <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Control-Monad-Codensity.html">Codensity</a> was necessary to <a href="http://www.iai.uni-bonn.de/~jv/mpc08.pdf">improve the asymptotic performance of free monads</a>.</p>
+<p>This time I'll show that the answer is no; we can get by with something smaller.</p>
+<p><span id="more-243"></span></p>
+<p><b>The Yoneda Lemma</b></p>
+<p>Another form of right Kan extension arises from the <a href="http://en.wikipedia.org/wiki/Yoneda_lemma">Yoneda lemma</a>.</p>
+<p>I covered it briefly in <a href="../../../2008/kan-extensions/index.html">my initial article on Kan extensions</a>, but the inestimable Dan Piponi wrote a <a href="http://blog.sigfpe.com/2006/11/yoneda-lemma.html">much nicer article</a> on how it implies in Haskell that given a <code>Functor</code> instance on <em>f</em>, this type</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Yoneda f a = Yoneda <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> r. <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; f r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>is isomorphic to <code>f a</code>, witnessed by these natural transformations:</p>
+<pre class="haskell">&nbsp;
+liftYoneda :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; f a -&gt; Yoneda f a
+liftYoneda a = Yoneda <span style="color: green;">&#40;</span>\f -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f a<span style="color: green;">&#41;</span>
+&nbsp;
+lowerYoneda :: Yoneda f a -&gt; f a
+lowerYoneda <span style="color: green;">&#40;</span>Yoneda f<span style="color: green;">&#41;</span> = f <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>That said, <em>you are not limited to applying <code>Yoneda</code> to types that have <code>Functor</code> instances</em>.</p>
+<p>This type and these functions are provided by <a href="http://hackage.haskell.org/packages/archive/kan-extensions/0.5.0/doc/html/Data-Functor-Yoneda.html">Data.Functor.Yoneda</a> from the <a href="http://hackage.haskell.org/package/kan-extensions">kan-extensions</a> package.</p>
+<p><b>Codensity vs. Yoneda</b></p>
+<p>Note, <code>Yoneda f</code> is in some sense smaller than <code>Codensity f</code>, as <code>Codensity f a</code> is somewhat 'bigger' than <code>f a</code>, despite providing an embedding, while <code>Yoneda f a</code> is isomorphic.</p>
+<p>For example, <code>Codensity ((->) s) a</code> is isomorphic to <code>State s a</code>, not to <code>s -&gt; a</code> as shown by: </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadState s <span style="color: green;">&#40;</span>Codensity <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span> s<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   get = Codensity <span style="color: green;">&#40;</span>\k s -&gt; k s s<span style="color: green;">&#41;</span>
+   put s = Codensity <span style="color: green;">&#40;</span>\k _ -&gt; k <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> s<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now, <code>Codensity</code> is a particular form of right Kan extension, which always yields a <code>Monad</code>, <b>without needing anything from <em>f</em></b>.</p>
+<p>Here we aren't so fortunate, but we do have the fact that <code>Yoneda f</code> is always a <code>Functor</code>, regardless of what <em>f</em> is, as shown by:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Yoneda f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Yoneda m<span style="color: green;">&#41;</span> = Yoneda <span style="color: green;">&#40;</span>\k -&gt; m <span style="color: green;">&#40;</span>k . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>which was obtained just by cutting and pasting the appropriate definition from <code>Codensity</code> or <code>ContT</code>, and comes about because <code>Yoneda</code> is a right Kan extension, like all of those. </p>
+<p>To get a <code>Monad</code> instance for <code>Yoneda f</code> we need to lean on <em>f</em> somehow.</p>
+<p>One way is to just borrow a <code>Monad</code> instance from <em>f</em>, since <code>f a</code> is isomorphic to <code>Yoneda f a</code>, if we have a <code>Functor</code> for <em>f</em>, and if we have a <code>Monad</code>, we can definitely have a <code>Functor</code>.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Yoneda m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Yoneda <span style="color: green;">&#40;</span>\f -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+  Yoneda m &gt;&gt;= k = Yoneda <span style="color: green;">&#40;</span>\f -&gt; m <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> &gt;&gt;= \a -&gt; runYoneda <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p><strong>Map Fusion and Reassociating Binds</strong></p>
+<p>Unlike <code>Codensity</code> the monad instance above isn't very satisfying, because it uses the <code>>>=</code> of the underlying monad, and as a result the <code>>>=</code>s will wind up in the same order they started.</p>
+<p>On the other hand, the <code>Functor</code> instance for <code>Yoneda f</code> is still pretty nice because the <code>(a -&gt; r)</code> part of the type acts as an accumulating parameter fusing together uses of <code>fmap</code>.</p>
+<p>This is apparent if you expand <code>lowerYoneda . fmap f . fmap g . liftYoneda </code>, whereupon you can see we only call <code>fmap</code> on the underlying <code>Functor</code> once.</p>
+<p>Intuitively, you can view <code>Yoneda</code> as a type level construction that ensures that you get <code>fmap</code> fusion, while <code>Codensity</code> is a type level construction that ensures that you right associate binds. It is important to note that <code>Codensity</code> also effectively accumulates <code>fmap</code>s, as it uses the same definition for <code>fmap</code> as <code>Yoneda</code>!</p>
+<p>With this in mind, it doesn't usually make much sense to use <code>Codensity (Codensity m)</code> or <code>Yoneda (Yoneda m)</code> because the purpose being served is redundant.</p>
+<p>Less obviously, <code>Codensity (Yoneda m)</code> is also redundant, because as noted above, <code>Codensity</code> also does <code>fmap</code> accumulation.</p>
+<p><strong>Other Yoneda-transformed Monads</strong></p>
+<p>Now, I said one way to define a <code>Monad</code> for <code>Yoneda f</code> was to borrow an underlying <code>Monad</code> instance for <em>f</em>, but this isn't the only way.</p>
+<p>Consider <code>Yoneda Endo</code>. Recall that <code>Endo</code> from <a href="http://www.haskell.org/ghc/docs/6.12.2/html/libraries/base-4.2.0.1/Data-Monoid.html">Data.Monoid</a> is given by</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Endo a = Endo <span style="color: green;">&#123;</span> appEndo :: a -&gt; a <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>Clearly <code>Endo</code> is not a <code>Monad</code>, it can't even be a <code>Functor</code>, because <em>a</em> occurs in both positive and negative position.</p>
+<p>Nevertheless <code>Yoneda Endo</code> <strong>can</strong> be made into a monad -- the continuation passing style version of the <code>Maybe</code> monad!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> YMaybe a = YMaybe <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> r. <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; r -&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I leave the rather straightforward derivation of this <code>Monad</code> for the reader. A version of it is present in <a href="../../../../haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html">monad-ran</a>.</p>
+<p>This lack of care for capital-F <code>Functor</code>iality also holds for <code>Codensity</code>, <code>Codensity Endo</code> can be used as a two-continuation list monad. It is isomorphic to the non-transformer version of <a href="http://okmij.org/ftp/papers/LogicT.pdf">Oleg et al.'s LogicT</a>, which is available on hackage as <a href="http://hackage.haskell.org/packages/archive/logict/0.4.2/doc/html/Control-Monad-Logic.html">logict</a> from my coworker, Dan Doel.</p>
+<p>The <code>Functor</code>, <code>Applicative</code>, <code>Monad</code>, <code>MonadPlus</code> and many other instances for <code>LogicT</code> can be rederived in their full glory from <code>Codensity (GEndo m)</code> automatically, where</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> GEndo m r = GEndo <span style="color: green;">&#40;</span>m r -&gt; m r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>without any need for conscious thought about how the continuations are plumbed through in the <code>Monad</code>.</p>
+<p><strong>Bananas in Space</strong></p>
+<p>One last digression,</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Rec f r = <span style="color: green;">&#40;</span>f r -&gt; r<span style="color: green;">&#41;</span> -&gt; r
+&nbsp;</pre>
+<p>came up once previously on this blog in <a href="../../../2008/rotten-bananas/index.html">Rotten Bananas</a>. In that post, I talked about how Fegaras and Sheard used a free monad (somewhat obliquely) in "<a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.36.2763">Revisiting catamorphisms over datatypes with embedded functions</a>" to extend catamorphisms to deal with strong HOAS, and then talked further about how Stephanie Weirich and Geoffrey Washburn <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.80.2219">used Rec</a> to replace the free monad used by Fegaras and Sheard. That said, they did so in a more restricted context, where any mapping was done by giving us both an embedding and a projection pair.</p>
+<p><strong>Going to Church</strong></p>
+<p>We can't just use <code>Rec f a</code> instead of <code>Free f a</code> here, because <code>Free f a</code> is a functor, while <code>Rec f a</code> is emphatically not. </p>
+<p>However, if we apply <code>Yoneda</code> to <code>Rec f</code>, we obtain a Church-encoded continuation-passing-style version of <code>Free</code>!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> F f a = F <span style="color: green;">&#123;</span> runF :: <span style="color: #06c; font-weight: bold;">forall</span> r. <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>f r -&gt; r<span style="color: green;">&#41;</span> -&gt; r <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>Since this is of the form of <code>Yoneda (Rec f)</code>, it is clearly a <code>Functor</code>:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>F f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>F g<span style="color: green;">&#41;</span> = F <span style="color: green;">&#40;</span>\kp -&gt; g <span style="color: green;">&#40;</span>kp . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>And nicely, <strong>without knowing anything about <em>f</em></strong>, we also get a <code>Monad</code>!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>F f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = F <span style="color: green;">&#40;</span>\kp _ -&gt; kp a<span style="color: green;">&#41;</span>
+   F m &gt;&gt;= f = F <span style="color: green;">&#40;</span>\kp kf -&gt; m <span style="color: green;">&#40;</span>\a -&gt; runF <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> kp kf<span style="color: green;">&#41;</span> kf<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>But when we <code>>>=</code> all we do is change the continuation for <code>(a -&gt; r)</code>, leaving the <em>f</em>-algebra, <code>(f r -&gt; r)</code>, untouched.</p>
+<p>Now, <code>F</code> is a monad transformer:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadTrans F <span style="color: #06c; font-weight: bold;">where</span>
+   lift f = F <span style="color: green;">&#40;</span>\kp kf -&gt; kf <span style="color: green;">&#40;</span>liftM kp f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>which is unsurprisingly, effectively performing the same operation as lifting did in <code>Free</code>.</p>
+<p>Heretofore, we've ignored everything about <em>f</em> entirely. </p>
+<p>This has pushed the need for the <code>Functor</code> on <em>f</em> into the wrapping operation:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; MonadFree f <span style="color: green;">&#40;</span>F f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   wrap f = F <span style="color: green;">&#40;</span>\kp kf -&gt; kf <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>\ <span style="color: green;">&#40;</span>F m<span style="color: green;">&#41;</span> -&gt; m kp kf<span style="color: green;">&#41;</span> f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now, we can clearly transform from our representation to any other free monad representation:</p>
+<pre class="haskell">&nbsp;
+fromF :: MonadFree f m =&gt; F f a -&gt; m a
+fromF <span style="color: green;">&#40;</span>F m<span style="color: green;">&#41;</span> = m <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> wrap
+&nbsp;</pre>
+<p>or to it from our original canonical ADT-based free monad representation:</p>
+<pre class="haskell">&nbsp;
+toF :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; Free f a -&gt; F f a
+toF xs = F <span style="color: green;">&#40;</span>\kp kf -&gt; go kp kf xs<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  go kp _  <span style="color: green;">&#40;</span>Pure a<span style="color: green;">&#41;</span> = kp a
+  go kp kf <span style="color: green;">&#40;</span>Free fma<span style="color: green;">&#41;</span> = kf <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>go kp kf<span style="color: green;">&#41;</span> fma<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>So, <code>F f a</code> is isomorphic to <code>Free f a</code>.</p>
+<p>So, looking at <code>Codensity (F f) a</code> as <code>Codensity (Yoneda (Rec f))</code>, it just seems silly. </p>
+<p>As we mentioned before, we should be able to go from <code>Codensity (Yoneda (Rec f)) a</code> to <code>Codensity (Rec f) a</code>, since <code>Yoneda</code> was just fusing uses of <code>fmap</code>, while <code>Codensity</code> was fusing <code>fmap</code> while right-associating <code>(>>=)</code>'s.</p>
+<p><strong>Swallowing the Bigger Fish</strong></p>
+<p>So, the obvious choice is to try to optimize to <code>Codensity (Rec f) a</code>. If you go through the motions of encoding that you get:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> CF f a = CF <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> r. <span style="color: green;">&#40;</span>a -&gt; <span style="color: green;">&#40;</span>f r -&gt; r<span style="color: green;">&#41;</span> -&gt; r<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>f r -&gt; r<span style="color: green;">&#41;</span> -&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>which is in some sense larger than <code>F f a</code>, because the first continuation gets both an <em>a</em> and an <em>f</em>-algebra <code>(f r -&gt; r)</code>.</p>
+<p>But tellingly, once you write the code, the first continuation <strong>never uses the extra <em>f</em>-algebra you supplied it!</strong></p>
+<p>So <code>Codensity (Yoneda (Rec f)) a</code> gives us nothing of interest that we don't already have in <code>Yoneda (Rec f) a</code>.</p>
+<p>Consequently, in this special case rather than letting <code>Codensity (Yoneda x) a</code> swallow the <code>Yoneda</code> to get <code>Codensity x a</code> we can actually let the <code>Yoneda</code> swallow the surrounding <code>Codensity</code> obtaining <code>Yoneda (Rec f) a</code>, the representation we started with.</p>
+<p><strong>Scott Free</strong></p>
+<p>Finally, you might ask if a Church encoding is as simple as we could go. After all a Scott encoding</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> ScottFree f a = ScottFree
+    <span style="color: green;">&#123;</span> runScottFree :: <span style="color: #06c; font-weight: bold;">forall</span> r.
+       <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>ScottFree f a<span style="color: green;">&#41;</span> -&gt; r<span style="color: green;">&#41;</span> -&gt; r
+    <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>would admit easier pattern matching, and a nice pun, and seems somewhat conceptually simpler, while remaining isomorphic.</p>
+<p>But the <code>Monad</code> instance:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>ScottFree f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = ScottFree <span style="color: green;">&#40;</span>\kp _ -&gt; kp a<span style="color: green;">&#41;</span>
+   ScottFree m &gt;&gt;= f = ScottFree
+       <span style="color: green;">&#40;</span>\kb kf -&gt; m <span style="color: green;">&#40;</span>\a -&gt; runScottFree <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> kb kf<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>kf . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>&gt;&gt;= f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>needs to rely on the underlying bind, and you can show that it won't do the right thing with regards to reassociating.</p>
+<p>So, alas, we cannot get away with <code>ScottFree</code>.</p>
+<p><strong>Nobody Sells for Less</strong></p>
+<p>So, now we can rebuild Voigtländer's <code>improve</code> using our Church-encoded / Yoneda-based free monad <code>F</code>, which is precisely isomorphic to <code>Free</code>, by using</p>
+<pre class="haskell">&nbsp;
+lowerF :: F f a -&gt; Free f a
+lowerF <span style="color: green;">&#40;</span>F f<span style="color: green;">&#41;</span> = f Pure Free
+&nbsp;</pre>
+<p>to obtain</p>
+<pre class="haskell">&nbsp;
+improve :: <span style="color: green;">&#40;</span><span style="color: #06c; font-weight: bold;">forall</span> a. MonadFree f m =&gt; m a<span style="color: green;">&#41;</span> -&gt; Free f a
+improve m = lowerF m
+&nbsp;</pre>
+<p>And since our Church-encoded free monad is isomorphic to the simple ADT encoding, our new solution is as small as it can get.</p>
+<p>Next time, we'll see this construction in action!</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">3 Responses to &#8220;Free Monads for Less (Part 2 of 3): Yoneda&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-61475">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=a45975b050304c416d0e3a736c8d44ff&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Mathnerd314</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61475" title="">June 25th, 2011 at 5:01 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Your blog theme cuts off the type for ScottFree</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-61478">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61478" title="">June 25th, 2011 at 5:13 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Fixed.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-104638">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=263366f6318ce617f95d7282883402c0&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Philip J-F</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-104638" title="">April 27th, 2012 at 12:01 am</a> </small>
+			<br clear="all"/>
+
+			<p>shouldn&#8217;t the type of improve  be </p>
+<p>Functor f =&gt; (forall m. MonadFree f m =&gt; m a) -&gt; Free f a</p>
+<p>instead of  </p>
+<p>(forall a. MonadFree f m =&gt; m a) -&gt; Free f a</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="243" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Jun 23rd, 2011 at 11:49 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> and  <a href="../../../category/mathematics/index.html" title="View all posts in Mathematics" rel="category tag">Mathematics</a> and  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2011/free-monads-for-less-2/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:10:15 GMT -->
+</html>

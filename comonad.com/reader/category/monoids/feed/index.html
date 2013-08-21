@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Monoids</title>
+	<atom:link href="http://comonad.com/reader/category/monoids/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Abstracting with Applicatives</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/</link>
+		<comments>http://comonad.com/reader/2012/abstracting-with-applicatives/#comments</comments>
+		<pubDate>Thu, 27 Dec 2012 01:25:13 +0000</pubDate>
+		<dc:creator>Gershom Bazerman</dc:creator>
+				<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Monoids]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756</guid>
+		<description><![CDATA[Consider the humble Applicative. More than a functor, less than a monad. It gives us such lovely syntax. Who among us still prefers to write liftM2 foo a b when we could instead write foo &#60;$> a &#60;*> b? But we seldom use the Applicative as such — when Functor is too little, Monad is [...]]]></description>
+			<content:encoded><![CDATA[<p>Consider the humble Applicative. More than a functor, less than a monad. It gives us such lovely syntax. Who among us still prefers to write <code>liftM2 foo a b</code> when we could instead write <code>foo &lt;$> a &lt;*> b</code>? But we seldom use the Applicative as such — when Functor is too little, Monad is too much, but a lax monoidal functor is just right. I noticed lately a spate of proper uses of Applicative —<a href="http://groups.inf.ed.ac.uk/links/formlets/">Formlets</a> (and their later incarnation in the <a href="http://hackage.haskell.org/package/reform">reform</a> library), <a href="http://hackage.haskell.org/package/optparse-applicative">OptParse-Applicative</a> (and its competitor library <a href=""http://hackage.haskell.org/package/cmdtheline>CmdTheLine</a>), and a <a href="http://gergo.erdi.hu/blog/2012-12-01-static_analysis_with_applicatives/">post by Gergo Erdi</a> on applicatives for declaring dependencies of computations. I also ran into a very similar genuine use for applicatives in working on the Panels library (part of <a href="http://hackage.haskell.org/package/jmacro-rpc">jmacro-rpc</a>), where I wanted to determine dependencies of a dynamically generated dataflow computation. And then, again, I stumbled into an applicative while cooking up a form validation library, which turned out to be a reinvention of the same ideas as formlets.</p>
+<p>Given all this, It seems post on thinking with applicatives is in order, showing how to build them up and reason about them. One nice thing about the approach we'll be taking is that it uses a "final" encoding of applicatives, rather than building up and then later interpreting a structure. This is in fact how we typically write monads (pace operational, free, etc.), but since we more often only determine our data structures are applicative after the fact, we often get some extra junk lying around (OptParse-Applicative, for example, has a GADT that I think is entirely extraneous).</p>
+<p>So the usual throat clearing:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">{-# LANGUAGE TypeOperators, MultiParamTypeClasses, FlexibleInstances,
+StandaloneDeriving, FlexibleContexts, UndecidableInstances,
+GADTs, KindSignatures, RankNTypes #-}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">module</span> Main <span style="color: #06c; font-weight: bold;">where</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Const<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Sum, Product<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Identity a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = <span style="color: #3c7331;">&quot;(Identity &quot;</span> ++ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> x ++ <span style="color: #3c7331;">&quot;)&quot;</span></pre>
+<p>And now, let's start with a classic applicative, going back to the <a href="http://www.soi.city.ac.uk/~ross/papers/Applicative.pdf">Applicative Programming With Effects</a> paper:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Const mo a = Const mo <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> = Const mo
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid mo =&gt; Applicative <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure _ = Const mempty
+    <span style="color: green;">&#40;</span>Const f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> = Const <span style="color: green;">&#40;</span>f &lt;&gt; x<span style="color: green;">&#41;</span></pre>
+<p>(<code>Const</code> lives in <a href="http://hackage.haskell.org/package/transformers">transformers</a> as the <code>Constant</code> functor, or in base as <code>Const</code>)</p>
+<p>Note that <code>Const</code> is not a monad. We've defined it so that its structure is independent of the `a` type. Hence if we try to write <code>(>>=) </code>of type <code>Const mo a -> (a -> Const mo b) -> Const mo b</code>, we'll have no way to "get out" the first `a` and feed it to our second argument.</p>
+<p>One great thing about Applicatives is that there is no distinction between applicative transformers and applicatives themselves. This is to say that the composition of two applicatives is cleanly and naturally always also an applicative. We can capture this like so:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Compose f g a = Compose <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a><span style="color: green;">&#41;</span> f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure = Compose . pure . pure
+    <span style="color: green;">&#40;</span>Compose f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span>&lt; *&gt;<span style="color: green;">&#41;</span> &lt; $&gt; f &lt; *&gt; x</pre>
+<p>(<code>Compose</code> also lives in transformers)</p>
+<p>Note that Applicatives compose <b>two</b> ways. We can also write:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Product f g a = Product <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Product <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span></pre>
+<p>(<code>Product</code> lives in transformers as well)</p>
+<p>This lets us now construct an extremely rich set of applicative structures from humble beginnings. For example, we can reconstruct the Writer Applicative.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Writer mo = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+tell :: mo -&gt; Writer mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tell x = Product <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span></pre>
+<pre>-- tell [1] *> tell [2]
+-- > Product (Const [1,2]) (Identity ())</pre>
+<p>Note that if we strip away the newtype noise, Writer turns into <code>(mo,a)</code> which is isomorphic to the Writer monad. However, we've learned something along the way, which is that the monoidal component of Writer (as long as we stay within the rules of applicative) is entirely independent from the "identity" component. However, if we went on to write the Monad instance for our writer (by defining <code>>>=</code>), we'd have to "reach in" to the identity component to grab a value to hand back to the function yielding our monoidal component. Which is to say we would destroy this nice seperation of "trace" and "computational content" afforded by simply taking the product of two Applicatives.</p>
+<p>Now let's make things more interesting. It turns out that just as the composition of two applicatives may be a monad, so too the composition of two monads may be no stronger than an applicative!</p>
+<p>We'll see this by introducing Maybe into the picture, for possibly failing computations.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FailingWriter mo = Compose <span style="color: green;">&#40;</span>Writer mo<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a>
+&nbsp;
+tellFW :: Monoid mo =&gt; mo -&gt; FailingWriter mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tellFW x = Compose <span style="color: green;">&#40;</span>tell x *&gt; pure <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+failFW :: Monoid mo =&gt; FailingWriter mo a
+failFW = Compose <span style="color: green;">&#40;</span>pure <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Nothing"><span style="font-weight: bold;">Nothing</span></a><span style="color: green;">&#41;</span></pre>
+<pre>-- tellFW [1] *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Just ()))
+
+-- tellFW [1] *> failFW *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Nothing))</pre>
+<p>Maybe over Writer gives us the same effects we'd get in a Monad — either the entire computation fails, or we get the result and the trace. But Writer over Maybe gives us new behavior. We get the entire trace, even if some computations have failed! This structure, just like Const, cannot be given a proper Monad instance. (In fact if we take Writer over Maybe as a Monad, we get only the trace until the first point of failure).</p>
+<p>This seperation of a monoidal trace from computational effects (either entirely independent of a computation [via a product] or independent between parts of a computation [via Compose]) is the key to lots of neat tricks with applicative functors.</p>
+<p>Next, let's look at Gergo Erdi's "Static Analysis with Applicatives" that is built using free applicatives. We can get essentially the same behavior directly from the product of a constant monad with an arbitrary effectful monad representing our ambient environment of information. As long as we constrain ourselves to only querying it with the takeEnv function, then we can either read the left side of our product to statically read dependencies, or the right side to actually utilize them.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> HasEnv k m = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>k<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> m
+takeEnv :: <span style="color: green;">&#40;</span>k -&gt; m a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k m a
+takeEnv f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span></pre>
+<p>If we prefer, we can capture queries of a static environment directly with the standard Reader applicative, which is just a newtype over the function arrow. There are other varients of this that perhaps come closer to exactly how Erdi's post does things, but I think this is enough to demonstrate the general idea.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Reader r a = Reader <span style="color: green;">&#40;</span>r -&gt; a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f . x<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Reader $ pure x
+    <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+&nbsp;
+runReader :: <span style="color: green;">&#40;</span>Reader r a<span style="color: green;">&#41;</span> -&gt; r -&gt; a
+runReader <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> = f
+&nbsp;
+takeEnvNew :: <span style="color: green;">&#40;</span>env -&gt; k -&gt; a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> a
+takeEnvNew f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Reader $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> f x<span style="color: green;">&#41;</span></pre>
+<p>So, what then is a full formlet? It's something that can be executed in one context as a monoid that builds a form, and in another as a parser. so the top level must be a product.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletOne mo a = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity a</pre>
+<p>Below the product, we read from an environment and perhaps get an answer. So that's reader with a maybe.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletTwo mo env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span> a</pre>
+<p>Now if we fail, we want to have a trace of errors. So we expand out the Maybe into a product as well to get the following, which adds monoidal errors:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletThree mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Product <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> a</pre>
+<p>But now we get errors whether or not the parse succeeds. We want to say either the parse succeeds or we get errors. For this, we can turn to the typical Sum functor, which currently lives as Coproduct in comonad-transformers, but will hopefully be moving as Sum to the transformers library in short order.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Sum f g a = InL <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> | InR <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span></pre>
+<p>The Functor instance is straightforward for Sum, but the applicative instance is puzzling. What should "pure" do? It needs to inject into either the left or the right, so clearly we need some form of "bias" in the instance. What we really need is the capacity to "work in" one side of the sum until compelled to switch over to the other, at which point we're stuck there. If two functors, F and G are in a relationship such that we can always send <code>f x -> g x</code> in a way that "respects" fmap (that is to say, such that (<code>fmap f . fToG == ftoG . fmap f</code>) then we call this a natural transformation. The action that sends f to g is typically called "eta". (We actually want something slightly stronger called a "monoidal natural transformation" that respects not only the functorial action <code>fmap</code> but the applicative action <code>&lt;*></code>, but we can ignore that for now).</p>
+<p>Now we can assert that as long as there is a natural transformation between g and f, then Sum f g can be made an Applicative, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">class</span> Natural f g <span style="color: #06c; font-weight: bold;">where</span>
+    eta :: f a -&gt; g a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g, Natural g f<span style="color: green;">&#41;</span> =&gt;
+  Applicative <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = InR $ pure x
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; eta x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>eta g &lt; *&gt; x<span style="color: green;">&#41;</span></pre>
+<p>The natural transformation we'll tend to use simply sends any functor to Const.</p>
+<pre>instance Monoid mo => Natural f (Const mo) where
+    eta = const (Const mempty)</pre>
+<p>However, there are plenty of other natural transformations that we could potentially make use of, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">instance</span> Applicative f =&gt;
+  Natural g <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative g, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural f g<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product x <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural g f<span style="color: green;">&#41;</span> =&gt; Natural g <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span> x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product x _ <span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> g <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product _ x<span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural g f =&gt; Natural <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = x
+    eta <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = eta y
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural Identity <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = pure x</pre>
+<p>In theory, there should also be a natural transformation that can be built magically from the product of any other two natural transformations, but that will just confuse the Haskell typechecker hopelessly. This is because we know that often different "paths" of typeclass choices will often be isomorphic, but the compiler has to actually pick one "canonical" composition of natural transformations to compute with, although multiple paths will typically be possible.</p>
+<p>For similar reasons of avoiding overlap, we can't both have the terminal homomorphism that sends everything to "Const" <b>and</b> the initial homomorphism that sends "Identity" to anything like so:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- instance Applicative g =&gt; Natural Identity g where</span>
+<span style="color: #5d478b; font-style: italic;">--     eta (Identity x) = pure x</span>
+&nbsp;</pre>
+<p>We choose to keep the terminal transformation around because it is more generally useful for our purposes. As the comments below point out, it turns out that a version of "Sum" with the initial transformation baked in now lives in transformers as <code>Lift</code>.</p>
+<p>In any case we can now write a proper Validation applicative:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Validation mo = Sum <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+validationError :: Monoid mo =&gt; mo -&gt; Validation mo a
+validationError x = InL <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span></pre>
+<p>This applicative will yield either a single result, or an accumulation of monoidal errors. It exists on hackage in the <a href="http://hackage.haskell.org/package/Validation">Validation</a> package.</p>
+<p>Now, based on the same principles, we can produce a full Formlet.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Formlet mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span>
+                     <span style="color: green;">&#40;</span>Sum <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> Identity<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    a</pre>
+<p>All the type and newtype noise looks a bit ugly, I'll grant. But the idea is to <strong>think</strong> with structures built with applicatives, which gives guarantees that we're building applicative structures, and furthermore, structures with certain guarantees in terms of which components can be interpreted independently of which others. So, for example, we can strip away the newtype noise and find the following:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletClean mo err env a = <span style="color: green;">&#40;</span>mo, env -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> err a<span style="color: green;">&#41;</span></pre>
+<p>Because we built this up from our basic library of applicatives, we also know how to write its applicative instance directly.</p>
+<p>Now that we've gotten a basic algebraic vocabulary of applicatives, and especially now that we've produced this nifty Sum applicative (which I haven't seen presented before), we've gotten to where I intended to stop.</p>
+<p>But lots of other questions arise, on two axes. First, what other typeclasses beyond applicative do our constructions satisfy? Second, what basic pieces of vocabulary are missing from our constructions — what do we need to add to flesh out our universe of discourse? (Fixpoints come to mind).</p>
+<p>Also, what statements can we make about "completeness" — what portion of the space of all applicatives can we enumerate and construct in this way? Finally, why is it that monoids seem to crop up so much in the course of working with Applicatives? I plan to tackle at least some of these questions in future blog posts.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/abstracting-with-applicatives/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Free Modules and Functional Linear Functionals</title>
+		<link>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/</link>
+		<comments>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/#comments</comments>
+		<pubDate>Mon, 11 Jul 2011 20:58:04 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Linear Algebra]]></category>
+		<category><![CDATA[Monads]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Type Hackery]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=356</guid>
+		<description><![CDATA[Today I hope to start a new series of posts exploring constructive abstract algebra in Haskell.  
+In particular, I want to talk about a novel encoding of linear functionals, polynomials and linear maps in Haskell, but first we're going to have to build up some common terminology.
+Having obtained the blessing of Wolfgang Jeltsch, I [...]]]></description>
+			<content:encoded><![CDATA[<p>Today I hope to start a new series of posts exploring constructive abstract algebra in Haskell.  </p>
+<p>In particular, I want to talk about a novel encoding of linear functionals, polynomials and linear maps in Haskell, but first we're going to have to build up some common terminology.</p>
+<p>Having obtained the blessing of Wolfgang Jeltsch, I replaced the <a href="http://hackage.haskell.org/package/algebra">algebra</a> package on hackage with something... bigger, although still very much a work in progress.</p>
+<p><span id="more-356"></span></p>
+<p><strong>(Infinite) Modules over Semirings</strong></p>
+<p>Recall that a vector space <strong>V</strong> over a field <strong>F</strong> is given by an additive Abelian group on <strong>V</strong>, and a scalar multiplication operator<br />
+   <code>(.*) :: F -> V -> V</code> subject to distributivity laws</p>
+<pre class="haskell">&nbsp;
+s .* <span style="color: green;">&#40;</span>u + v<span style="color: green;">&#41;</span> = s .* u + s .* v
+<span style="color: green;">&#40;</span>s + t<span style="color: green;">&#41;</span> .* v = s .* v + t .* v
+&nbsp;</pre>
+<p>and associativity laws</p>
+<pre class="haskell">&nbsp;
+   <span style="color: green;">&#40;</span>s * t<span style="color: green;">&#41;</span> .* v = s .* <span style="color: green;">&#40;</span>t .* v<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and respect of the unit of the field.</p>
+<pre class="haskell">&nbsp;
+   <span style="color: red;">1</span> .* v = v
+&nbsp;</pre>
+<p>Since multiplication on a field is commutative, we can also add</p>
+<pre class="haskell">&nbsp;
+  <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> :: V -&gt; F -&gt; V
+  v *. f = f .* v
+&nbsp;</pre>
+<p>with analogous rules.</p>
+<p>But when F is only a <a href="http://en.wikipedia.org/wiki/Ring_(mathematics)">Ring</a>, we call the analogous structure a module, and in a ring, we can't rely on the commutativity of multiplication, so we may have to deal left-modules and right-modules, where only one of those products is available.</p>
+<p>We can weaken the structure still further. If we lose the negation in our Ring we and go to a <a href="http://en.wikipedia.org/wiki/Semiring">Rig</a> (often called a Semiring), now our module is an additive moniod.</p>
+<p>If we get rid of the additive and multiplicative unit on our Rig we get down to what some authors call a Ringoid, but which we'll call a <a href="http://hackage.haskell.org/packages/archive/algebra/0.3.0/doc/html/Numeric-Semiring-Class.html">Semiring</a> here, because it makes the connection between semiring and semigroup clearer, and the <em>-oid</em> suffix is dangerously overloaded due to category theory.</p>
+<p>First we'll define additive semigroups, because I'm going to need both additive and multiplicative monoids over the same types, and Data.Monoid has simultaneously too much and too little structure.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- (a + b) + c = a + (b + c)</span>
+<span style="color: #06c; font-weight: bold;">class</span> Additive m <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> :: m -&gt; m -&gt; m
+  replicate1p :: Whole n =&gt; n -&gt; m -&gt; m <span style="color: #5d478b; font-style: italic;">-- (ignore this for now)</span>
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p>their Abelian cousins</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- a + b = b + a</span>
+<span style="color: #06c; font-weight: bold;">class</span> Additive m =&gt; Abelian m
+&nbsp;</pre>
+<p>and Multiplicative semigroups</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- (a * b) * c = a * (b * c)</span>
+<span style="color: #06c; font-weight: bold;">class</span> Multiplicative m <span style="color: #06c; font-weight: bold;">where</span>
+  <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> :: m -&gt; m -&gt; m
+  pow1p :: Whole n =&gt; m -&gt; n -&gt; m
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p>Then we can define a semirings</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- a*(b + c) = a*b + a*c</span>
+<span style="color: #5d478b; font-style: italic;">-- (a + b)*c = a*c + b*c</span>
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Additive m, Abelian m, Multiplicative m<span style="color: green;">&#41;</span> =&gt; Semiring
+&nbsp;</pre>
+<p>With that we can define modules over a semiring:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- r .* (x + y) = r .* x + r .* y</span>
+<span style="color: #5d478b; font-style: italic;">-- (r + s) .* x = r .* x + s .* x</span>
+<span style="color: #5d478b; font-style: italic;">-- (r * s) .* x = r .* (s .* x)</span>
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Semiring r, Additive m<span style="color: green;">&#41;</span> =&gt; LeftModule r m
+   <span style="color: green;">&#40;</span>.*<span style="color: green;">&#41;</span> :: r -&gt; m -&gt; m
+&nbsp;</pre>
+<p>and analogously:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span>Semiring r, Additive m<span style="color: green;">&#41;</span> =&gt; RightModule r m
+   <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> :: m -&gt; r -&gt; m
+&nbsp;</pre>
+<p>For instance every additive semigroup forms a semiring module over the positive natural numbers (1,2..) using replicate1p.</p>
+<p>If we know that our addition forms a monoid, then we can form a module over the naturals as well</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | zero + a = a = a + zero</span>
+<span style="color: #06c; font-weight: bold;">class</span>
+    <span style="color: green;">&#40;</span>LeftModule Natural m,
+    RightModule Natural m
+    <span style="color: green;">&#41;</span> =&gt; AdditiveMonoid m <span style="color: #06c; font-weight: bold;">where</span>
+   zero :: m
+   replicate :: Whole n =&gt; n -&gt; m -&gt; m
+&nbsp;</pre>
+<p>and if our addition forms a group, then we can form a module over the integers</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | a + negate a = zero = negate a + a</span>
+<span style="color: #06c; font-weight: bold;">class</span>
+    <span style="color: green;">&#40;</span>LeftModule <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> m
+    , RightModule <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a> m
+    <span style="color: green;">&#41;</span> =&gt; AdditiveGroup m <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a> :: m -&gt; m
+  times :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integral"><span style="background-color: #efefbf; font-weight: bold;">Integral</span></a> n =&gt; n -&gt; m -&gt; m
+  <span style="color: #5d478b; font-style: italic;">-- ...</span>
+&nbsp;</pre>
+<p><strong>Free Modules over Semirings</strong></p>
+<p>A free module on a set E, is a module where the basis vectors are elements of E. Basically it is |E| copies of some (semi)ring.</p>
+<p>In Haskell we can represent the free module of a ring directly by defining the action of the (semi)group pointwise.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Additive m =&gt; Additive <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   f + g = \x -&gt; f x + g x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Abelian m =&gt; Abelian <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveMonoid m =&gt; AdditiveMonoid <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   zero = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> zero
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveGroup m =&gt; AdditveGroup <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   f - g = \x -&gt; f x - g x
+&nbsp;</pre>
+<p>We could define the following</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Semiring r =&gt; LeftModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   r .* f = \x -&gt; r * f x
+&nbsp;</pre>
+<p>but then we'd have trouble dealing with the Natural and Integer constraints above, so instead we lift modules</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> LeftModule r m =&gt; LeftModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <span style="color: green;">&#40;</span>.*<span style="color: green;">&#41;</span> m f e = m .* f e
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> RightModule r m =&gt; RightModule r <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <span style="color: green;">&#40;</span>*.<span style="color: green;">&#41;</span> f m e = f e *. m
+&nbsp;</pre>
+<p>We <strong>could</strong> go one step further and define multiplication pointwise, but while the direct product of |e| copies of a ring _does_ define a ring, and this ring is the one provided by the Conal Elliot's <a href="http://code.haskell.org/vector-space/"><code>vector-space</code></a> package, it isn't the most general ring we could construct. But we'll need to take a detour first.</p>
+<p><strong>Linear Functionals</strong></p>
+<p>A Linear functional f on a module M is a linear function from a M to its scalars R.</p>
+<p>That is to say that, f : M -> R such that</p>
+<pre class="haskell">&nbsp;
+f <span style="color: green;">&#40;</span>a .* x + y<span style="color: green;">&#41;</span> = a * f x + f y
+&nbsp;</pre>
+<p>Consequently linear functionals also form a module over R. We call this module the dual module M*.</p>
+<p>Dan Piponi has blogged about these dual vectors (or covectors) in the context of trace diagrams.</p>
+<p>If we limit our discussion to free modules, then M = E -> R, so a linear functional on M looks like <code>(E -> R) -> R</code><br />
+<em>subject to additional linearity constraints</em> on the result arrow. </p>
+<p>The main thing we're not allowed to do in our function is apply our function from E -> R to two different E's and then multiply the results together. Our pointwise definitions above satisfy those linearity constraints, but for example:</p>
+<pre class="haskell">&nbsp;
+bad f = f <span style="color: red;">0</span> * f <span style="color: red;">0</span>
+&nbsp;</pre>
+<p>does not.</p>
+<p>We <em>could</em> capture this invariant in the type by saying that instead we want</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> LinearM r e =
+  LinearM <span style="color: green;">&#123;</span>
+    runLinearM :: <span style="color: #06c; font-weight: bold;">forall</span> r. LeftModule r m =&gt; <span style="color: green;">&#40;</span>e -&gt; m<span style="color: green;">&#41;</span> -&gt; m
+  <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>we'd have to make a new such type every time we subclassed Semiring. I'll leave further exploration of this more exotic type to another time. (Using some technically illegal module instances we can recover more structure that you'd expect.)</p>
+<p>Now we can package up the type of covectors/linear functionals:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">0</span> $*
+<span style="color: #06c; font-weight: bold;">newtype</span> Linear r a = Linear <span style="color: green;">&#123;</span> <span style="color: green;">&#40;</span>$*<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; r <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>The sufficiently observant may have already noticed that this type is the same as the Cont monad (subject to the linearity restriction on the result arrow).</p>
+<p>In fact the <code>Functor</code>, <code>Monad</code>, <code>Applicative</code> instances for <code>Cont</code> all carry over, and <strong>preserve linearity</strong>. </p>
+<p>(We lose <code>callCC</code>, but that is at least partially due to the fact that <code>callCC</code> has a less than ideal type signature.)</p>
+<p>In addition we get a number of additional instances for <code>Alternative</code>, <code>MonadPlus</code>, by exploiting the knowledge that r is ring-like:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> AdditiveMonoid r =&gt; Alternative <span style="color: green;">&#40;</span>Linear r a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Linear f &lt; |&gt; Linear g = Linear <span style="color: green;">&#40;</span>f + g<span style="color: green;">&#41;</span>
+  empty = Linear zero
+&nbsp;</pre>
+<p>Note that the <code>(+)</code> and <code>zero</code> there are the ones defined on functions from our earlier free module construction!</p>
+<p><strong>Linear Maps</strong></p>
+<p>Since <code>Linear r</code> is a monad, <code>Kleisli (Linear r)</code> forms an <code>Arrow</code>:</p>
+<pre class="haskell">&nbsp;
+b -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> ~&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>where the ~> denotes the arrow that is constrained to be linear.</p>
+<p>If we swap the order of the arguments so that</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> ~&gt; <span style="color: green;">&#40;</span>b -&gt; r<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>this arrow has a very nice meaning! (See <a href="http://hackage.haskell.org/packages/archive/algebra/0.4.0/doc/html/Numeric-Map-Linear.html">Numeric.Map.Linear</a>)</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">0</span> $#
+<span style="color: #06c; font-weight: bold;">newtype</span> Map r b a = Map <span style="color: green;">&#123;</span> <span style="color: green;">&#40;</span>$#<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; r<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p><code>Map r b a</code> represents the type of <a href="http://en.wikipedia.org/wiki/Linear_map">linear maps</a> from <code>a -> b</code>. Unfortunately due to contravariance the arguments wind up in the "wrong" order.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Category <span style="color: green;">&#40;</span>Map r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Map f . Map g = Map <span style="color: green;">&#40;</span>g . f<span style="color: green;">&#41;</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> = Map <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>So we can see that a linear map from a module A with basis <code>a</code> to a vector space with basis <code>b</code> effectively consists of |b| linear functionals on A.</p>
+<p><code>Map r b a</code> provides a lot of structure. It is a valid instance of <a href="https://github.com/ekmett/algebra/blob/master/Numeric/Map/Linear.hs">an insanely large number of classes</a>.</p>
+<p><strong>Vectors and Covectors</strong></p>
+<p>In physics, we sometimes call linear functionals <a href="http://www.euclideanspace.com/maths/algebra/vectors/related/covector/index.htm">covectors</a> or covariant vectors, and if we're feeling particularly loquacious, we'll refer to vectors as contravariant vectors.</p>
+<p>This has to do with the fact that when you change basis, you change map the change over covariant vectors covariantly, and map the change over vectors contravariantly. (This distinction is beautifully captured by <a href="http://en.wikipedia.org/wiki/Einstein_notation">Einstein's summation notation</a>.)</p>
+<p>We also have a notion of <a href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)">covariance and contravariance in computer science</a>! </p>
+<p>Functions vary covariantly in their result, and contravariant in their argument. <code>E -> R</code> is contravariant in E. But we chose this representation for our free modules, so the vectors in our free vector space (or module) are contravariant in E.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Contravariant f <span style="color: #06c; font-weight: bold;">where</span>
+  contramap :: <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; f a -&gt; f b
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | Dual function arrows.</span>
+<span style="color: #06c; font-weight: bold;">newtype</span> Op a b = Op <span style="color: green;">&#123;</span> getOp :: b -&gt; a <span style="color: green;">&#125;</span> 
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Contravariant <span style="color: green;">&#40;</span>Op a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  contramap f g = Op <span style="color: green;">&#40;</span>getOp g . f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>On the other hand <code>(E -> R) ~> R</code> varies covariantly with the change of <code>E</code>.</p>
+<p>as witnessed by the fact that it is a <code>Functor</code>.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Linear r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f m = Linear $ \k -&gt; m $* k . f
+&nbsp;</pre>
+<p>We have lots of classes for manipulating covariant structures, and most of them apply to both (Linear r) and (Map r b).</p>
+<p><strong>Other Representations and Design Trade-offs</strong></p>
+<p>One common representation of vectors in a free vector space is as some kind of normalized list of scalars and basis vectors. In particular, David Amos's wonderful <a href="http://www.polyomino.f2s.com/david/haskell/main.html">HaskellForMaths</a> uses</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Vect r a = Vect <span style="color: green;">&#123;</span> runVect :: <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span>r,a<span style="color: green;">&#41;</span><span style="color: green;">&#93;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>for free vector spaces, only considering them up to linearity, paying for normalization as it goes.</p>
+<p>Given the insight above we can see that Vect isn't a representation of vectors in the free vector space, but instead represents the covectors of that space, quite simply because Vect r a varies covariantly with change of basis!</p>
+<p>Now the price of using the <code>Monad</code> on <code>Vect r</code> is that the monad denormalizes the representation. In particular, you can have multiple copies of the same basis vector., so any function that uses <code>Vect r a</code> has to merge them together.</p>
+<p>On the other hand with the directly encoded linear functionals we've described here, we've placed no obligations on the consumer of a linear functional. They can feed the directly encoded linear functional <strong>any vector</strong> they want! </p>
+<p>In fact, it'll even be quite a bit more efficient to compute, </p>
+<p>To see this, just consider:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MultiplicativeMonoid r =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Vect r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+   <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Vect <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,a<span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+   Vect <span style="color: #06c; font-weight: bold;">as</span> &gt;&gt;= f = Vect
+       <span style="color: green;">&#91;</span> <span style="color: green;">&#40;</span>p*q, b<span style="color: green;">&#41;</span> | <span style="color: green;">&#40;</span>p,a<span style="color: green;">&#41;</span> &lt; - <span style="color: #06c; font-weight: bold;">as</span>, <span style="color: green;">&#40;</span>q,b<span style="color: green;">&#41;</span> &lt;- runVect <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span> <span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>Every >>= must pay for multiplication. Every return will multiply the element by one. On the other hand, the price of return and bind in Linear r is function application.</p>
+</pre>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Linear r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Linear $ \k -&gt; k a
+  m &gt;&gt;= f = Linear $ \k -&gt; m $* \a -&gt; f a $* k
+&nbsp;</pre>
+<p><strong>A Digression on Free Linear Functionals</strong></p>
+<p>To wax categorical for a moment, we can construct a forgetful functor <code>U : Vect_F -> Set</code> that takes a vector space over F to just its set of covectors.</p>
+<pre lang="haskell>
+U (V,F,+,.*) = V ~> F
+</pre>
+<p>Then we can construct <code>F : Set -> Vect_F</code> which takes a set E and gives the vector space</p>
+<pre class="haskell">&nbsp;
+F E = <span style="color: green;">&#40;</span>E -&gt; F, F,\f g x -&gt; f x + g x ,\r f x -&gt; r * f x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>using the pointwise constructions we built earlier.</p>
+<p>Then in a classical setting, you can show that F is left adjoint to U.</p>
+<p>In particular the witnesses of this adjunction provide the linear map from (E -> F) to V and the function E -> (V ~> F) giving a linear functional on V for each element of E.</p>
+<p>In a classical setting you can go a lot farther, and show that all vector spaces (but not all modules) are free.</p>
+<p>But in a constructive setting, such as Haskell, we need a fair bit to go back and forth, in particular we wind up need E to be finitely enumerable to go one way, and for it to have decidable equality to go in the other. The latter is fairly easy to see, because even going from <code>E -> (E -> F)</code> requires that we can define and partially apply something like <a href="http://en.wikipedia.org/wiki/Kronecker_delta">Kronecker's delta</a>:</p>
+<pre class="haskell">&nbsp;
+delta :: <span style="color: green;">&#40;</span>Rig r, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a<span style="color: green;">&#41;</span> =&gt; e -&gt; e -&gt; r
+delta i j | i == j = one
+             | <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:otherwise"><span style="font-weight: bold;">otherwise</span></a> = zero
+&nbsp;</pre>
+<p><strong>The Price of Power</strong></p>
+<p>The price we pay is that, given a <code>Rig</code>, we can go from <code>Vect r a</code> to <code>Linear r a</code> but going back requires <code>a</code> to be be finitely enumerable (or for our functional to satisfy other exotic side-conditions).  </p>
+<pre class="haskell">&nbsp;
+vectMap :: Rig r =&gt; Vect r a -&gt; Linear r a
+vectMap <span style="color: green;">&#40;</span>Vect <span style="color: #06c; font-weight: bold;">as</span><span style="color: green;">&#41;</span> = Map $ \k -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:sum"><span style="font-weight: bold;">sum</span></a> <span style="color: green;">&#91;</span> r * k a | <span style="color: green;">&#40;</span>r, a<span style="color: green;">&#41;</span> &lt; - <span style="color: #06c; font-weight: bold;">as</span> <span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>You can still probe <code>Linear r a</code> for individual coefficients, or pass it a vector for polynomial evaluation very easily, but for instance determining a degree of a polynomial efficiently requires attaching more structure to your semiring, because the only value you can get out of <code>Linear r a</code> is an <code>r</code>.</p>
+<p><strong>Optimizing Linear Functionals</strong></p>
+<p>In both the <code>Vect r</code> and <code>Linear r</code> cases, excessive use of <code>(>>=)</code> without somehow normalizing or tabulating your data will cause a <strong>lot</strong> of repeated work. </p>
+<p>This is perhaps easiest to see from the fact that <code>Vect r</code> never used the addition of <code>r</code>, so it distributed everything into a kind of disjunctive normal form. <code>Linear r</code> does the same thing.</p>
+<p>If you look at the Kleisli arrows of <code>Vect r</code> or <code>Linear r</code> as linear mappings, then you can see that Kleisli composition is going to explode the number of terms. </p>
+<p>So how can we collapse back down?</p>
+<p>In the <code>Kleisli (Vect r)</code> case we usually build up a map as we walk through the list then spit the list back out in order having added up like terms.</p>
+<p>In the <code>Map r</code> case, we can do better. My <a href="http://hackage.haskell.org/package/representable-tries"><code>representable-tries</code></a> package provides a readily instantiable <code>HasTrie</code> class, and the method:</p>
+</pre>
+<pre class="haskell">&nbsp;
+memo :: HasTrie a =&gt; <span style="color: green;">&#40;</span>a -&gt; r<span style="color: green;">&#41;</span> -&gt; a -&gt; r
+&nbsp;</pre>
+<p>which is responsible for providing a memoized version of the function from <code>a -> r</code> in a purely functional way. This is obviously a linear map!</p>
+<pre class="haskell">&nbsp;
+memoMap :: HasTrie a =&gt; Map r a a
+memoMap = Map memo
+&nbsp;</pre>
+<p>We can also flip memo around and memoize linear functionals.</p>
+<pre class="haskell">&nbsp;
+memoLinear :: HasTrie a =&gt; a -&gt; Linear r a
+memoLinear = Linear . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> memo
+&nbsp;</pre>
+<p>Next time, (co)associative (co)algebras and the myriad means of multiplying (co)vectors!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		</item>
+		<item>
+		<title>Brodal-Okasaki Heaps in Haskell</title>
+		<link>http://comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/</link>
+		<comments>http://comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/#comments</comments>
+		<pubDate>Sun, 16 May 2010 04:38:11 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Monoids]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=187</guid>
+		<description><![CDATA[I've uploaded a package named heaps to Hackage that provides Brodal-Okasaki bootstrapped skew-binomial heaps in Haskell.
+
+The main features of the library are that it provides a nice containers-like API with provably asymptotically optimal functional heap operations including O(1) insert and O(1) union, and that the library design jump through a number of hoops to provide [...]]]></description>
+			<content:encoded><![CDATA[<p>I've uploaded a package named <a href="http://hackage.haskell.org/packages/archive/heaps/0.2/doc/html/Data-Heap.html">heaps</a> to Hackage that provides <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.48.973">Brodal-Okasaki bootstrapped skew-binomial heaps</a> in Haskell.<br />
+<span id="more-187"></span></p>
+<p>The main features of the library are that it provides a nice <a href="http://hackage.haskell.org/package/containers">containers</a>-like API with provably asymptotically optimal functional heap operations including O(1) insert and O(1) union, and that the library design jump through a number of hoops to provide implementations of common Haskell typeclasses such as <a href="http://www.haskell.org/ghc/docs/6.12.1/html/libraries/base/Data-Foldable.html">Foldable</a>, Data and Typeable.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Iteratees, Parsec, and Monoids, Oh My!</title>
+		<link>http://comonad.com/reader/2009/iteratees-take-2/</link>
+		<comments>http://comonad.com/reader/2009/iteratees-take-2/#comments</comments>
+		<pubDate>Wed, 16 Sep 2009 02:51:08 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Boston Haskell]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=165</guid>
+		<description><![CDATA[I'll be giving a talk tomorrow, Wednesday, September 16th, 2009 at the Boston Haskell User Group in the MIT CSAIL  Reading Room (on the 8th floor of the William H. Gates tower of the Stata center) about mixing Oleg's iteratees with parsec and monoids to build practical parallel parsers and to cheaply reparse after [...]]]></description>
+			<content:encoded><![CDATA[<p>I'll be giving a talk tomorrow, Wednesday, September 16th, 2009 at the <a href="http://www.haskell.org/haskellwiki/Boston_Area_Haskell_Users'_Group">Boston Haskell User Group</a> in the MIT CSAIL  Reading Room (on the 8th floor of the William H. Gates tower of the Stata center) about mixing Oleg's iteratees with parsec and monoids to build practical parallel parsers and to cheaply reparse after local modifications are made to source code.</p>
+<p>Ravi is trying to organize some time before hand during which people can get together and work on Haskell projects, or spend some time learning Haskell, so its not all scary academic stuff. </p>
+<p>The meeting is scheduled from 7-9pm, and an ever growing number of us have been wandering down to the Cambridge Brewing Company afterwards to hang out and talk.</p>
+<p>If you are curious about Haskell, or even an expert, or just happen to be interested in parallel programming and find yourself in the area, come on by.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/iteratees-take-2/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Iteratees, Parsec and Monoids (Slides)</title>
+		<link>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/</link>
+		<comments>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/#comments</comments>
+		<pubDate>Thu, 20 Aug 2009 16:55:03 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=122</guid>
+		<description><![CDATA[Two talks from the Boston Area Haskell User Group:
+<ol>	
+       <li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/IntroductionToMonoids.pdf'>Introduction To Monoids (PDF)</a></li>
+	<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/A-Parsing-Trifecta.pdf'>Iteratees, Parsec and Monoids: A Parsing Trifecta (PDF)</a></li>
+</ol>]]></description>
+			<content:encoded><![CDATA[<p>I was asked to give two talks at the <a href="http://groups.google.com/group/bostonhaskell">Boston Area Haskell User Group</a> for this past Tuesday. The first was pitched at a more introductory level and the second was to go deeper into what I have been using monoids for lately.</p>
+<p>The first talk covers an introduction to the mathematical notion of a monoid, introduces some of the features of my Haskell monoids library on hackage, and starts to motivate the use of monoidal parallel/incremental parsing, and the modification use of compression algorithms to recycle monoidal results.</p>
+<p>The second talk covers a way to generate a locally-context sensitive parallel/incremental parser by modifying <a href="http://okmij.org/ftp/Haskell/Iteratee/Iteratee.hs">Iteratees</a> to enable them to drive a <a href="http://hackage.haskell.org/package/parsec-3.0.0">Parsec 3</a> lexer, and then wrapping that in a monoid based on <a href="http://dragonbook.stanford.edu/lecture-notes/Columbia-COMS-W4115/08-03-05.html">error productions</a> in the grammar before recycling these techniques at a higher level to deal with parsing seemingly stateful structures, such as Haskell layout.</p>
+<ol>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/IntroductionToMonoids.pdf'>Introduction To Monoids (PDF)</a></li>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/A-Parsing-Trifecta.pdf'>Iteratees, Parsec and Monoids: A Parsing Trifecta (PDF)</a></li>
+</ol>
+<p>Due to a late start, I was unable to give the second talk. However, I did give a quick run through to a few die-hards who stayed late and came to the <a href="http://www.cambrew.com/">Cambridge Brewing Company</a> afterwards. As I promised some people that I would post the slides after the talk, here they are. </p>
+<p>The current plan is to possibly give the second talk in full at either the September or October Boston Haskell User Group sessions, depending on scheduling and availability.</p>
+<p>[ <a href='http://comonad.com/reader/wp-content/uploads/2009/08/Iteratee.hs'>Iteratee.hs</a> ]</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Clearer Reflections</title>
+		<link>http://comonad.com/reader/2009/clearer-reflection/</link>
+		<comments>http://comonad.com/reader/2009/clearer-reflection/#comments</comments>
+		<pubDate>Sat, 15 Aug 2009 09:04:59 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Monads]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Type Hackery]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=93</guid>
+		<description><![CDATA[I have updated the reflection package on hackage to use an idea for avoiding dummy arguments posted to the Haskell cafe mailing list by Bertram Felgenhauer, which adapts nicely to the case of handling Reflection. The reflection package implements the ideas from the Functional Pearl: Implicit Configurations paper by Oleg Kiselyov and Chung-chieh Shan. 
+Now, [...]]]></description>
+			<content:encoded><![CDATA[<p>I have updated the <a href="http://hackage.haskell.org/package/reflection-0.2.0">reflection</a> package on hackage to use <a href="http://www.haskell.org/pipermail/haskell-cafe/2009-August/065237.html">an idea for avoiding dummy arguments</a> posted to the <a href="http://www.haskell.org/mailman/listinfo/haskell-cafe">Haskell cafe mailing list</a> by Bertram Felgenhauer, which adapts nicely to the case of handling Reflection. The reflection package implements the ideas from the <a href="http://www.cs.rutgers.edu/~ccshan/prepose/prepose.pdf">Functional Pearl: Implicit Configurations</a> paper by Oleg Kiselyov and Chung-chieh Shan. </p>
+<p>Now, you no longer need to use big scary undefineds throughout your code and can instead program with implicit configurations more naturally, using Applicative and Monad sugar.</p>
+<p><span id="more-93"></span></p>
+<pre class="haskell">&nbsp;
+*Data.Reflection&gt; reify <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>reflect &lt; *&gt; pure <span style="color: red;">1</span> &lt; *&gt; <span style="color: green;">&#40;</span>reflect &lt; *&gt; pure <span style="color: red;">2</span> &lt; *&gt; pure <span style="color: red;">3</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&gt; <span style="color: red;">6</span>
+&nbsp;</pre>
+<p>The Monad in question just replaces the lambda with a phantom type parameter, enabling the compiler to more readily notice that no instance can actually even try to use the value of the type parameter.</p>
+<p>An <a href="http://www.mail-archive.com/haskell-cafe@haskell.org/msg57747.html">example from the old API</a> can be seen on the Haskell cafe.</p>
+<p>This example can be made appreciably less scary now!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# LANGUAGE
+     MultiParamTypeClasses,
+     FlexibleInstances, Rank2Types,
+     FlexibleContexts, UndecidableInstances #-}</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative
+<span style="color: #06c; font-weight: bold;">import</span> Data.Reflection
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid
+<span style="color: #06c; font-weight: bold;">import</span> Data.Tagged
+&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> M s a = M a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Reifies s <span style="color: green;">&#40;</span>a,a → a → a<span style="color: green;">&#41;</span> ⇒ Monoid <span style="color: green;">&#40;</span>M s a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    mempty = tagMonoid $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a> &lt; $&gt; reflect
+    a `mappend` b = tagMonoid $
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a> &lt; $&gt; reflect &lt; *&gt; monoidTag a &lt; *&gt; monoidTag b
+&nbsp;
+monoidTag :: M s a → Tagged s a
+monoidTag <span style="color: green;">&#40;</span>M a<span style="color: green;">&#41;</span> = Tagged a
+&nbsp;
+tagMonoid :: Tagged s a → M s a
+tagMonoid <span style="color: green;">&#40;</span>Tagged a<span style="color: green;">&#41;</span> = M a
+&nbsp;
+withMonoid :: a → <span style="color: green;">&#40;</span>a → a → a<span style="color: green;">&#41;</span> →
+    <span style="color: green;">&#40;</span>∀s. Reifies s <span style="color: green;">&#40;</span>a, a → a → a<span style="color: green;">&#41;</span> ⇒ M s w<span style="color: green;">&#41;</span> → w
+withMonoid e op m = reify <span style="color: green;">&#40;</span>e,op<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>monoidTag m<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>And with that we can cram a Monoid dictionary -- or any other -- with whatever methods we want and our safety is assured by parametricity due to the rank 2 type, just like with the ST monad.</p>
+<pre class="haskell">&nbsp;
+*&gt; withMonoid <span style="color: red;">0</span> <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>M <span style="color: red;">5</span> `mappend` M <span style="color: red;">4</span> `mappend` mempty<span style="color: green;">&#41;</span>
+<span style="color: red;">9</span>
+&nbsp;</pre>
+<p>[Edit: factored Tagged out into Data.Tagged in a separate package, and modified reflection to use that instead, with an appropriate version bump to satisfy the package versioning policy]</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/clearer-reflection/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Slides from Hac Phi: &#8220;All About Monoids&#8221;</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/</link>
+		<comments>http://comonad.com/reader/2009/hac-phi-slides/#comments</comments>
+		<pubDate>Fri, 31 Jul 2009 15:41:16 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85</guid>
+		<description><![CDATA[Some people have requested my slides from the short talk I gave about monoids and monoidal parsing at Hac Phi. So, here they are.
+
+Hac Phi Slides (Powerpoint 2007)
+Hac Phi Slides (PDF)
+
+There will be more to come at the next Boston Haskell User Group in August, where it looks like I'll be giving two short talks [...]]]></description>
+			<content:encoded><![CDATA[<p>Some people have requested my slides from the short talk I gave about monoids and monoidal parsing at Hac Phi. So, here they are.</p>
+<ul>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/07/AllAboutMonoids.pptx'>Hac Phi Slides (Powerpoint 2007)</a></li>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/07/AllAboutMonoids.pdf'>Hac Phi Slides (PDF)</a></li>
+</ul>
+<p>There will be more to come at the next Boston Haskell User Group in August, where it looks like I'll be giving two short talks covering monoids. I may use the monoidal parsing engine from Kata as an example for the advanced talk if I have time and will start to cover parsing larger classes of grammars in general (regular languages, CFGs/TIGs, TAGs, PEGs, LALR, attribute-grammars, etc.)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/hac-phi-slides/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+	</channel>
+</rss>

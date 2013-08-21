@@ -1,0 +1,591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:10:27 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Monoids, specialized containers and a general map/reduce framework
+</TD
+></TR
+><TR
+><TD CLASS="section1"
+>Modules</TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD STYLE="width: 50em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:0')" ALT="show/hide"
+>Data</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:0" STYLE="display:block;"
+><TR
+><TD STYLE="width: 48em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:1')" ALT="show/hide"
+><A HREF="Data-Generator.html"
+>Data.Generator</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:1" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Generator-Combinators.html"
+>Data.Generator.Combinators</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 46em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:2')" ALT="show/hide"
+>Compressive</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:2" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Generator-Compressive-LZ78.html"
+>Data.Generator.Compressive.LZ78</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Generator-Compressive-RLE.html"
+>Data.Generator.Compressive.RLE</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Generator-Free.html"
+>Data.Generator.Free</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="width: 48em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:3')" ALT="show/hide"
+><A HREF="Data-Group.html"
+>Data.Group</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:3" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Group-Combinators.html"
+>Data.Group.Combinators</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Group-Sugar.html"
+>Data.Group.Sugar</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="width: 48em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:4')" ALT="show/hide"
+>Monoid</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:4" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Additive.html"
+>Data.Monoid.Additive</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Applicative.html"
+>Data.Monoid.Applicative</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Categorical.html"
+>Data.Monoid.Categorical</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Combinators.html"
+>Data.Monoid.Combinators</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-FromString.html"
+>Data.Monoid.FromString</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Instances.html"
+>Data.Monoid.Instances</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 46em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:5')" ALT="show/hide"
+>Lexical</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:5" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Monoid-Lexical-SourcePosition.html"
+>Data.Monoid.Lexical.SourcePosition</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 44em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:6')" ALT="show/hide"
+>UTF8</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:6" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 42em"
+><A HREF="Data-Monoid-Lexical-UTF8-Decoder.html"
+>Data.Monoid.Lexical.UTF8.Decoder</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Monoid-Lexical-Words.html"
+>Data.Monoid.Lexical.Words</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Monad.html"
+>Data.Monoid.Monad</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Multiplicative.html"
+>Data.Monoid.Multiplicative</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Ord.html"
+>Data.Monoid.Ord</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 46em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:7')" ALT="show/hide"
+><A HREF="Data-Monoid-Reducer.html"
+>Data.Monoid.Reducer</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:7" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Monoid-Reducer-Char.html"
+>Data.Monoid.Reducer.Char</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Monoid-Reducer-With.html"
+>Data.Monoid.Reducer.With</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Self.html"
+>Data.Monoid.Self</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Sugar.html"
+>Data.Monoid.Sugar</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Monoid-Union.html"
+>Data.Monoid.Union</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="width: 48em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:8')" ALT="show/hide"
+><A HREF="Data-Ring.html"
+>Data.Ring</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:8" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Ring-Boolean.html"
+>Data.Ring.Boolean</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Ring-FromNum.html"
+>Data.Ring.FromNum</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 46em"
+><A HREF="Data-Ring-ModularArithmetic.html"
+>Data.Ring.ModularArithmetic</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 46em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:9')" ALT="show/hide"
+><A HREF="Data-Ring-Module.html"
+>Data.Ring.Module</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:9" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Module-AutomaticDifferentiation.html"
+>Data.Ring.Module.AutomaticDifferentiation</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="width: 46em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:10')" ALT="show/hide"
+>Semi</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:10" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Semi-BitSet.html"
+>Data.Ring.Semi.BitSet</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Semi-Kleene.html"
+>Data.Ring.Semi.Kleene</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Semi-Natural.html"
+>Data.Ring.Semi.Natural</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="width: 44em"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'n:11')" ALT="show/hide"
+>Near</TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding: 0; padding-left: 2em" COLSPAN="3"
+><TABLE CLASS="vanilla2" CELLSPACING="0" CELLPADDING="0" ID="n:11" STYLE="display:block;"
+><TR
+><TD STYLE="padding-left: 1.25em;width: 42em"
+><A HREF="Data-Ring-Semi-Near-Trie.html"
+>Data.Ring.Semi.Near.Trie</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Semi-Ord.html"
+>Data.Ring.Semi.Ord</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+><TR
+><TD STYLE="padding-left: 1.25em;width: 44em"
+><A HREF="Data-Ring-Semi-Tropical.html"
+>Data.Ring.Semi.Tropical</A
+></TD
+><TD
+></TD
+><TD
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/doc/html/monoids/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:10:27 GMT -->
+</HTML
+>

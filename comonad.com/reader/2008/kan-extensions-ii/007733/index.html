@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2008/kan-extensions-ii/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Kan Extensions II: Adjunctions, Composition, Lifting</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../12/index.html' />
+	<link rel='archives' title='November 2008' href='../../11/index.html' />
+	<link rel='archives' title='June 2008' href='../../06/index.html' />
+	<link rel='archives' title='May 2008' href='../../05/index.html' />
+	<link rel='archives' title='April 2008' href='../../04/index.html' />
+	<link rel='archives' title='March 2008' href='../../03/index.html' />
+	<link rel='archives' title='January 2008' href='../../01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Kan Extensions II: Adjunctions, Composition, Lifting Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='Kan Extensions' href='../../kan-extensions/index.html' />
+<link rel='next' title='Kan Extensions III: As Ends and Coends' href='../../kan-extension-iii/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 22 May 2008</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Kan Extensions II: Adjunctions, Composition, Lifting">Kan Extensions II: Adjunctions, Composition, Lifting</a></h2>
+Posted by Edward Kmett under <a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> ,  <a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> ,  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a> <br/><a href="../index.html#comments" title="Comment on Kan Extensions II: Adjunctions, Composition, Lifting">[6] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>I want to spend some more time talking about Kan extensions, composition of Kan extensions, and the relationship between a monad and the monad generated by a monad.</p>
+<p>But first, I want to take a moment to recall adjunctions and show how they relate to some standard (co)monads, before tying them back to <a href="../../kan-extensions/index.html">Kan extensions</a>.</p>
+<p><b>Adjunctions 101</b></p>
+<p>An adjunction between categories <img src='../../../../latex/db5f7b3e9934fbc5a2859d88c4ba84a3.png' title='$\mathcal{C}$' alt='$\mathcal{C}$' align=absmiddle> and <img src='../../../../latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> consists of a pair of functors <img src='../../../../latex/643ec496aeec2eb4f7cdeeeab943a717.png' title='$F : \mathcal{C} -&gt; \mathcal{D}$' alt='$F : \mathcal{C} -&gt; \mathcal{D}$' align=absmiddle>, and <img src='../../../../latex/eaa04d33f0ae2a183ec4b02f98486860.png' title='$G : \mathcal{D} -&gt; \mathcal{C}$' alt='$G : \mathcal{D} -&gt; \mathcal{C}$' align=absmiddle> and a natural isomorphism:</p>
+<p><img src='../../../../latex/84b7d3e3e76f4dbe53fea154dac9b8f8.png' title='$\phi : \mathrm{Hom}_\mathcal{D} (F-, =) -&gt; \mathrm{Hom}_\mathcal{C} (-, G=)$' alt='$\phi : \mathrm{Hom}_\mathcal{D} (F-, =) -&gt; \mathrm{Hom}_\mathcal{C} (-, G=)$' align=absmiddle></p>
+<p>We call <img src='../../../../latex/b8bc815b5e9d5177af01fd4d3d3c2f10.png' title='$F$' alt='$F$' align=absmiddle> the left adjoint functor, and <img src='../../../../latex/5201385589993766eea584cd3aa6fa13.png' title='$G$' alt='$G$' align=absmiddle> the right adjoint functor and <img src='../../../../latex/599386ddd45d1479f1992f0f7183ac22.png' title='$(F,G)$' alt='$(F,G)$' align=absmiddle> an adjoint pair, and write this relationship as <img src='../../../../latex/754907e967821ca061438630f9c72a7d.png' title='$F \dashv G$' alt='$F \dashv G$' align=absmiddle></p>
+<p><span id="more-64"></span></p>
+<p>Borrowing a Haskell definition from Dave Menendez, an adjunction from the category of Haskell types (<strong>Hask</strong>) to <strong>Hask</strong> given by a pair of Haskell <code>Functor</code> instances can be defined as follows, where phi is witnessed by <img src='../../../../latex/f50853d41be7d55874e952eb0d80c53e.png' title='$\phi$' alt='$\phi$' align=absmiddle> = <code>leftAdjunct</code> and <img src='../../../../latex/0f615b0f2c4e9e9f67b2b7d0c33798f2.png' title='$\phi^{-1}$' alt='$\phi^{-1}$' align=absmiddle> = <code>rightAdjunct</code>. [<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html">haddock</a>]</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g | f -&gt; g, g -&gt; f <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>   :: a -&gt; g <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> :: f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> -&gt; a
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a>  :: <span style="color: green;">&#40;</span>f a -&gt; b<span style="color: green;">&#41;</span> -&gt; a -&gt; g b
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> :: <span style="color: green;">&#40;</span>a -&gt; g b<span style="color: green;">&#41;</span> -&gt; f a -&gt; b
+&nbsp;
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f . <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> f = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f
+&nbsp;</pre>
+<p><b>Currying and Uncurrying</b></p>
+<p>The most well known adjunction to a Haskell programmer is between the functors given by <code>((,)e)</code> and <code>((->)e)</code>. (Recall that you can read <code>((,)e)</code> as <code>(e,)</code> and <code>((->)e)</code> as <code>(e->)</code>; however, the latter syntax isn't valid Haskell as you aren't allowed to make <code>(,)</code> and <code>(->)</code> sections. We use this adjunction most every day in the form of the functions <code>curry</code> and <code>uncurry</code>. </p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:curry"><span style="font-weight: bold;">curry</span></a> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> -&gt; c<span style="color: green;">&#41;</span> -&gt; a -&gt; b -&gt; c
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:curry"><span style="font-weight: bold;">curry</span></a> f x y = f <span style="color: green;">&#40;</span>x,y<span style="color: green;">&#41;</span>
+&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> :: <span style="color: green;">&#40;</span>a -&gt; b -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> -&gt; c
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> f ~<span style="color: green;">&#40;</span>x,y<span style="color: green;">&#41;</span> = f x y
+&nbsp;</pre>
+<p>However the arguments are unfortunately slightly flipped around when we go to define this as an adjunction.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>e<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>e<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f a e  = f <span style="color: green;">&#40;</span>e,a<span style="color: green;">&#41;</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> f ~<span style="color: green;">&#40;</span>e,a<span style="color: green;">&#41;</span> = f a e
+&nbsp;</pre>
+<p>This adjunction defines the relationship between the anonymous <a href="http://www.haskell.org/all_about_monads/html/readermonad.html">reader monad</a> and the anonymous <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Reader.html">reader comonad</a> (aka the product comonad). </p>
+<p><b>All Readers are the Same</b></p>
+<p>As an aside, if you look at the reader arrow, reader monad and reader comonad all side by side you can see that they are all basically the same thing. Kleisli arrows for the anonymous reader monad have the form <code>a -> e -> b</code>. The Reader arrow takes the form <code>arr (a, e) b</code>, which when <code>arr</code> is <code>(->)</code> this reads as <code>(a,e) -> b</code>, which is just a curried Kleisli arrow for the Reader monad. On the other hand the reader comonad is <code>((,)e)</code>, and its CoKleisli arrows have the form <code>(e,a) -> b</code>. So, putting these side by side: </p>
+<pre class="haskell">&nbsp;
+a -&gt; e -&gt; b
+<span style="color: green;">&#40;</span>a , e<span style="color: green;">&#41;</span> -&gt; b
+<span style="color: green;">&#40;</span>e , a<span style="color: green;">&#41;</span> -&gt; b
+&nbsp;</pre>
+<p>You can clearly see these are all the same thing!</p>
+<p><b>State and Composing Adjunctions</b></p>
+<p>Once we define functor composition:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> O f g a = Compose <span style="color: green;">&#123;</span> decompose :: f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . decompose
+&nbsp;</pre>
+<p>We can see that every adjunction gives rise to a monad:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>g `O` f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> = Compose . <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>
+        m &gt;&gt;= f =
+             Compose .
+             <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> <span style="color: green;">&#40;</span>decompose . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> $
+             decompose m
+&nbsp;</pre>
+<p>and if you happen to have a <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html">Comonad typeclass</a> lying around, a comonad:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extract"><span style="font-weight: bold;">extract</span></a> :: w a -&gt; a
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:duplicate"><span style="font-weight: bold;">duplicate</span></a> :: w a -&gt; w <span style="color: green;">&#40;</span>w a<span style="color: green;">&#41;</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extend"><span style="font-weight: bold;">extend</span></a> :: <span style="color: green;">&#40;</span>w a -&gt; b<span style="color: green;">&#41;</span> -&gt; w a -&gt; w b
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extend"><span style="font-weight: bold;">extend</span></a> f = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f . <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:duplicate"><span style="font-weight: bold;">duplicate</span></a>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:duplicate"><span style="font-weight: bold;">duplicate</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extend"><span style="font-weight: bold;">extend</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extract"><span style="font-weight: bold;">extract</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . decompose
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#v:extend"><span style="font-weight: bold;">extend</span></a> f =
+                Compose .
+                <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> <span style="color: green;">&#40;</span>f . Compose<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> .
+                decompose
+&nbsp;</pre>
+<p>In reality, adjunction composition is of course not the only way you could form a monad by composition, so in practice a single composition constructor leads to ambiguity. Hence why in category-extras there is a base <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Composition.html"><code>CompF</code></a> functor, and <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t%3AACompF">specialized variations</a> for different desired instances. For simplicity, I'll stick to <code>`O`</code> here.</p>
+<p>We can compose adjunctions, yielding an adjunction, so long as we are careful to place things in the right order:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f1 g1, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f2 g2<span style="color: green;">&#41;</span> =&gt;
+    <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> <span style="color: green;">&#40;</span>f2 `O` f1<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g1 `O` g2<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> =
+               <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> .
+               <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> decompose<span style="color: green;">&#41;</span> .
+               decompose
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a> =
+               Compose .
+               <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> Compose . <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a><span style="color: green;">&#41;</span> .
+               <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a>
+&nbsp;</pre>
+<p>In fact, if we use the adjunction defined above, we can see that its just the <code>State</code> monad!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadState e <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>e `O` <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>e<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        get = compose $ \s -&gt; <span style="color: green;">&#40;</span>s,s<span style="color: green;">&#41;</span>
+        put s = compose $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> <span style="color: green;">&#40;</span>s,<span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Not that I'd be prone to consider using that representation, but we can also see that we get the <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Context.html">context comonad</a> this way:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html#t:Comonad"><span style="background-color: #efefbf; font-weight: bold;">Comonad</span></a> w =&gt;
+    ComonadContext s w | w -&gt; s <span style="color: #06c; font-weight: bold;">where</span>
+        getC :: w a -&gt; s
+        modifyC :: <span style="color: green;">&#40;</span>s -&gt; s<span style="color: green;">&#41;</span> -&gt; w a -&gt; a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> ComonadContext e <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>e `O` <span style="color: green;">&#40;</span>-&gt;<span style="color: green;">&#41;</span>e<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        getC = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a> . decompose
+        modifyC f = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:uncurry"><span style="font-weight: bold;">uncurry</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> . f<span style="color: green;">&#41;</span> . decompose
+&nbsp;</pre>
+<p><b>Adjunctions as Kan Extensions</b></p>
+<p>Unsurprisingly, since pretty much all of category theory comes around to being an observation about Kan extensions in the end, we can find some laws relating left- and right- Kan extensions to adjunctions.</p>
+<p>Recall the definitions for right and left Kan extensions over <b>Hask</b>:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g h a = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a>
+        <span style="color: green;">&#123;</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> :: <span style="color: #06c; font-weight: bold;">forall</span> b. <span style="color: green;">&#40;</span>a -&gt; g b<span style="color: green;">&#41;</span> -&gt; h b <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">data</span> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> g h a = <span style="color: #06c; font-weight: bold;">forall</span> b. <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>g b -&gt; a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>h b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Formally, <img src='../../../../latex/5b71d6dacbdcea5e00e534e92b576d55.png' title='F \dashv G' alt='F \dashv G' align=absmiddle> if and only if the right Kan extension <img src='../../../../latex/775c574bc0cb7d42c94f7417ba8350b4.png' title='$\mathrm{Ran}_G 1$' alt='$\mathrm{Ran}_G 1$' align=absmiddle> exists and is preserved by <img src='../../../../latex/5201385589993766eea584cd3aa6fa13.png' title='$G$' alt='$G$' align=absmiddle>. (Saunders Mac Lane, Categories for the Working Mathematician p248). We can use this  in Haskell to define a <a href="http://en.wikipedia.org/wiki/Natural_transformation">natural isomorphism</a> between <code>f</code> and <code>Ran g Identity</code> witnessed by <code>adjointToRan</code> and <code>ranToAdjoint</code> below:</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:adjointToRan"><span style="font-weight: bold;">adjointToRan</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; f a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g Identity a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:adjointToRan"><span style="font-weight: bold;">adjointToRan</span></a> f = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\a -&gt; Identity $ <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> a f<span style="color: green;">&#41;</span>
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:ranToAdjoint"><span style="font-weight: bold;">ranToAdjoint</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g Identity a -&gt; f a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:ranToAdjoint"><span style="font-weight: bold;">ranToAdjoint</span></a> r = runIdentity <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> r <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can construct a similar natural isomorphism for the right adjoint <code>g</code> of a <code>Functor</code> <code>f</code> and <code>Lan f Identity</code>:</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:adjointToLan"><span style="font-weight: bold;">adjointToLan</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; g a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f Identity a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:adjointToLan"><span style="font-weight: bold;">adjointToLan</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . Identity
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lanToAdjoint"><span style="font-weight: bold;">lanToAdjoint</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f Identity a -&gt; g a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lanToAdjoint"><span style="font-weight: bold;">lanToAdjoint</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f v<span style="color: green;">&#41;</span> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f <span style="color: green;">&#40;</span>runIdentity v<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>So, with that in hand we can see that <code>Ran f Identity -| f -| Lan f Identity</code>, presuming <code>Ran f Identity</code> and <code>Lan f Identity</code> exist. </p>
+<p><b>A More General Connection</b></p>
+<p>Now, the first isomorphism above can be seen as a special case of a more general law relating functor composition and Kan extensions, where <code>h = Identity</code> in the composition below:</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:ranToComposedAdjoint"><span style="font-weight: bold;">ranToComposedAdjoint</span></a> ::
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt;
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g h a -&gt; <span style="color: green;">&#40;</span>h `O` f<span style="color: green;">&#41;</span> a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:ranToComposedAdjoint"><span style="font-weight: bold;">ranToComposedAdjoint</span></a> r = Compose <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> r <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:unit"><span style="font-weight: bold;">unit</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composedAdjointToRan"><span style="font-weight: bold;">composedAdjointToRan</span></a> ::
+        <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> h, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g<span style="color: green;">&#41;</span> =&gt;
+        <span style="color: green;">&#40;</span>h `O` f<span style="color: green;">&#41;</span> a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g h a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composedAdjointToRan"><span style="font-weight: bold;">composedAdjointToRan</span></a> f =
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\a -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:rightAdjunct"><span style="font-weight: bold;">rightAdjunct</span></a> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>decompose f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Similarly , we get the more generalize relationship for <code>Lan</code>:</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lanToComposedAdjoint"><span style="font-weight: bold;">lanToComposedAdjoint</span></a> ::
+        <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> h, <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g<span style="color: green;">&#41;</span> =&gt;
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f h a -&gt; <span style="color: green;">&#40;</span>h `o` g<span style="color: green;">&#41;</span> a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lanToComposedAdjoint"><span style="font-weight: bold;">lanToComposedAdjoint</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f v<span style="color: green;">&#41;</span> =
+        Compose <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:leftAdjunct"><span style="font-weight: bold;">leftAdjunct</span></a> f<span style="color: green;">&#41;</span> v<span style="color: green;">&#41;</span>
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composedAdjointToLan"><span style="font-weight: bold;">composedAdjointToLan</span></a> ::
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#t:Adjunction"><span style="background-color: #efefbf; font-weight: bold;">Adjunction</span></a> f g =&gt;
+        <span style="color: green;">&#40;</span>h `o` g<span style="color: green;">&#41;</span> a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f h a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composedAdjointToLan"><span style="font-weight: bold;">composedAdjointToLan</span></a> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-Adjunction.html#v:counit"><span style="font-weight: bold;">counit</span></a> . decompose
+&nbsp;</pre>
+<p><b>Composing Kan Extensions</b></p>
+<p>Using the above with the laws for composing right Kan extensions:</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composeRan"><span style="font-weight: bold;">composeRan</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g h<span style="color: green;">&#41;</span> a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> h a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composeRan"><span style="font-weight: bold;">composeRan</span></a> r =
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\f -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> r <span style="color: green;">&#40;</span>decompose . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:decomposeRan"><span style="font-weight: bold;">decomposeRan</span></a> ::
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> h a -&gt;  <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> g h<span style="color: green;">&#41;</span> a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:decomposeRan"><span style="font-weight: bold;">decomposeRan</span></a> r =
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\f -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\g -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> r <span style="color: green;">&#40;</span>Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g . f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>or the laws for composing left Kan extensions: </p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composeLan"><span style="font-weight: bold;">composeLan</span></a> ::
+        <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> g h<span style="color: green;">&#41;</span> a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> h a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:composeLan"><span style="font-weight: bold;">composeLan</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> g h<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =
+        <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>f . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g . decompose<span style="color: green;">&#41;</span> h
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:decomposeLan"><span style="font-weight: bold;">decomposeLan</span></a> :: <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>f `O` g<span style="color: green;">&#41;</span> h a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> g h<span style="color: green;">&#41;</span> a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:decomposeLan"><span style="font-weight: bold;">decomposeLan</span></a> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> f h<span style="color: green;">&#41;</span> = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <span style="color: green;">&#40;</span>f . compose<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Lan"><span style="background-color: #efefbf; font-weight: bold;">Lan</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> h<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>can give you a lot of ways to construct monads:</p>
+<p><b>Right Kan Extension as (almost) a Monad Transformer</b></p>
+<p>You can lift many of operations from a monad m to the codensity monad of <code>m</code>. Unfortunately, we don't have quite the right type signature for an instance of <code>MonadTrans</code>, so we'll have to make do with our own methods:</p>
+<p>[Edit: this has been since factored out into <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Monad-Codensity.html">Control.Monad.Codensity</a> to allow <code>Codensity</code> to actually be an instance of <code>MonadTrans</code>]</p>
+<pre class="haskell">&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; m a -&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> m m a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> m = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>m &gt;&gt;=<span style="color: green;">&#41;</span>
+&nbsp;
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lowerRan"><span style="font-weight: bold;">lowerRan</span></a> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> m m a -&gt; m a
+<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:lowerRan"><span style="font-weight: bold;">lowerRan</span></a> a = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> a <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadReader r m =&gt;
+    MonadReader r <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> m m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        ask = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> ask
+        local f m = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> <span style="color: green;">&#40;</span>\c -&gt; ask &gt;&gt;=
+              \r -&gt; local f <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:runRan"><span style="font-weight: bold;">runRan</span></a> m <span style="color: green;">&#40;</span>local <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> r<span style="color: green;">&#41;</span> . c<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadIO m =&gt;
+    MonadIO <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> m m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        liftIO = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> . liftIO
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadState s m =&gt;
+    MonadState s <span style="color: green;">&#40;</span><a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#t:Ran"><span style="background-color: #efefbf; font-weight: bold;">Ran</span></a> m m<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+        get = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> get
+        put = <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension.html#v:liftRan"><span style="font-weight: bold;">liftRan</span></a> . put
+&nbsp;</pre>
+<p>In fact the list of things you can lift is pretty much the same as what you can lift over the <code>ContT</code> monad transformer due to the similarity in the types. However, just because you lifted the operation into the right or left Kan extension, doesn't mean that it has the same asymptotic performance.</p>
+<p>Similarly we can lift many comonadic operations to the <code>Density</code> comonad of a comonad using <code>Lan</code>.</p>
+<p>[Edit: Refactored out into <a href="../../../../haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Density.html">Control.Comonad.Density</a>]</p>
+<p><b>Changing Representation</b></p>
+<p>Given a <code>f -| g</code>, <code>g `O` f</code> is a monad, and <code>Ran (g `O` f) (g `O` f)</code> is the monad generated by <code>(g `O` f)</code>, described in the previous post. We showed above that this monad can do many of the same things that the original monad could do. From there you can <code>decomposeRan</code> to get <code>Ran g (Ran f (g `O` f))</code>, which you can show to be yet another monad, and you can continue on from there. </p>
+<p>Each of these monads may have different operational characteristics and performance tradeoffs. For instance the codensity monad of a monad can offer <a href="http://wwwtcs.inf.tu-dresden.de/~voigt/mpc08.pdf">better asymptotic performance</a> in some usage scenarios.</p>
+<p>Similarly the left Kan extension can be used to manipulate the representation of a comonad.</p>
+<p>All of this code is encapsulated in <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/category-extras">category-extras</a> [<a href="../../../../haskell/category-extras/dist/doc/html/category-extras/index.html">docs</a>] [<a href="../../../../haskell/category-extras/index.html">darcs</a>] as of release 0.51.0</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">6 Responses to &#8220;Kan Extensions II: Adjunctions, Composition, Lifting&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-1418">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1418" title="">May 23rd, 2008 at 12:06 am</a> </small>
+			<br clear="all"/>
+
+			<p>Update: The current version of category-extras on hackage should now build correctly on ghc 6.8.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-1476">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../kan-extension-iii/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Kan Extensions III: As Ends and Coends</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1476" title="">May 26th, 2008 at 7:23 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] Grant B. asked me to post the derivation for the right and left Kan extension formula used in previous Kan Extension posts (1,2). For that we can turn to the definition of Kan extensions in terms of ends, but first we need to take a couple of steps back to find a way to represent (co)ends in Haskell. [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1613">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../representing-adjunctions/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Representing Adjunctions</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-1613" title="">June 5th, 2008 at 11:49 am</a> </small>
+			<br clear="all"/>
+
+			<p>[...] I&#8217;ve had a few people ask me questions about Adjunctions since my recent post and a request for some more introductory material, so I figured I would take a couple of short posts to tie Adjunctions to some other concepts. [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-61224">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../2011/free-monads-for-less/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Free Monads for Less (Part 1 of 3): Codensity</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-61224" title="">June 24th, 2011 at 1:22 am</a> </small>
+			<br clear="all"/>
+
+			<p>[...] arise in a subsequent post) on this blog previously, in a series of posts on Kan Extensions. [ 1, 2, [...]</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-62286">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../2011/a-product-of-an-imperfect-union/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; A Product of an Imperfect Union</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-62286" title="">June 30th, 2011 at 10:55 pm</a> </small>
+			<br clear="all"/>
+
+			<p>[...] The latter few steps require identities established in my second post on Kan extensions. [...]</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-106676">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../2012/unnatural-transformations-and-quantifiers/index.html' rel='external nofollow' class='url'>The Comonad.Reader &raquo; Unnatural Transformations and Quantifiers</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-106676" title="">November 22nd, 2012 at 1:43 am</a> </small>
+			<br clear="all"/>
+
+			<p>[...] , where  is enriched in . Provided the above end exists,  is a monad regardless of whether  has an adjoint, which is the usual way one thinks of functors (in general) giving rise to [...]</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="64" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, May 22nd, 2008 at 7:13 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/category-theory/index.html" title="View all posts in Category Theory" rel="category tag">Category Theory</a> and  <a href="../../../category/comonads/index.html" title="View all posts in Comonads" rel="category tag">Comonads</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../../category/kan-extensions/index.html" title="View all posts in Kan Extensions" rel="category tag">Kan Extensions</a> and  <a href="../../../category/monads/index.html" title="View all posts in Monads" rel="category tag">Monads</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2008/kan-extensions-ii/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:41 GMT -->
+</html>

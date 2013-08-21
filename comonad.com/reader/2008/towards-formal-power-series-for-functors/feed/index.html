@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Towards Formal Power Series for Functors</title>
+	<atom:link href="http://comonad.com/reader/2008/towards-formal-power-series-for-functors/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: The Comonad.Reader &#187; Generatingfunctorology</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1295</link>
+		<dc:creator>The Comonad.Reader &#187; Generatingfunctorology</dc:creator>
+		<pubDate>Wed, 14 May 2008 07:45:48 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1295</guid>
+		<description>[...] Ok, I decided to take a step back from my flawed approach in the last post and play with the idea of power series of functors from a different perspective. [...]</description>
+		<content:encoded><![CDATA[<p>[...] Ok, I decided to take a step back from my flawed approach in the last post and play with the idea of power series of functors from a different perspective. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1289</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 14 May 2008 01:41:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1289</guid>
+		<description>Hrmm, 
+
+So a simple encoding of the basic AD rules leaves your Dual class, just one level up.
+
+data D f g a = D (f a) (g a)
+
+type family (:+&gt;) (f :: * -&gt; *) (g :: * -&gt; *) :: * -&gt; *
+type family (:*&gt;) (f :: * -&gt; *) (g :: * -&gt; *) :: * -&gt; *
+type family DLift (f :: (* -&gt; *) -&gt; * -&gt; *) (f&#039; :: (* -&gt; *) -&gt; * -&gt; *) (g :: * -&gt; *) :: * -&gt; *
+type instance (D x a :+&gt; D y b) = D (x :+: y) (a :+: b)
+type instance (D x a :*&gt; D y b) = D (x :*: y) (x :*: b :+: a :*: y)
+type instance DLift f f&#039; (D x a) = D (f x) (a :+: f&#039; x)
+
+dConst :: a -&gt; D Identity Zero a
+dConst z = D (Identity z) zero
+
+dVar :: a -&gt; D Identity One a
+dVar z = D (Identity z) (suck zero)
+
+I think the general AD case requires polymorphic kinds, so yeah something like Omega is probably better suited. Alas.</description>
+		<content:encoded><![CDATA[<p>Hrmm, </p>
+<p>So a simple encoding of the basic AD rules leaves your Dual class, just one level up.</p>
+<p>data D f g a = D (f a) (g a)</p>
+<p>type family (:+>) (f :: * -> *) (g :: * -> *) :: * -> *<br />
+type family (:*>) (f :: * -> *) (g :: * -> *) :: * -> *<br />
+type family DLift (f :: (* -> *) -> * -> *) (f&#8217; :: (* -> *) -> * -> *) (g :: * -> *) :: * -> *<br />
+type instance (D x a :+> D y b) = D (x :+: y) (a :+: b)<br />
+type instance (D x a :*> D y b) = D (x :*: y) (x :*: b :+: a :*: y)<br />
+type instance DLift f f&#8217; (D x a) = D (f x) (a :+: f&#8217; x)</p>
+<p>dConst :: a -> D Identity Zero a<br />
+dConst z = D (Identity z) zero</p>
+<p>dVar :: a -> D Identity One a<br />
+dVar z = D (Identity z) (suck zero)</p>
+<p>I think the general AD case requires polymorphic kinds, so yeah something like Omega is probably better suited. Alas.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1288</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Wed, 14 May 2008 01:04:55 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1288</guid>
+		<description>Yeah, mostly i was just trying to see what an inductive family of types built over an open type function would look like.
+
+I left the fixed point cases off because I was still trying to get the finite cases to terminate and once I ran up against the wall  of type-ability I didn&#039;t check that what I had so far was what I thought I had so far.
+
+It has been a while since I did anything with classical analysis. Hrmm. Back to the drawing board I guess until I figure out how to do what I really want.</description>
+		<content:encoded><![CDATA[<p>Yeah, mostly i was just trying to see what an inductive family of types built over an open type function would look like.</p>
+<p>I left the fixed point cases off because I was still trying to get the finite cases to terminate and once I ran up against the wall  of type-ability I didn&#8217;t check that what I had so far was what I thought I had so far.</p>
+<p>It has been a while since I did anything with classical analysis. Hrmm. Back to the drawing board I guess until I figure out how to do what I really want.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: sigfpe</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1286</link>
+		<dc:creator>sigfpe</dc:creator>
+		<pubDate>Wed, 14 May 2008 00:14:12 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1286</guid>
+		<description>Oh yeah, I almost forgot. Check out Conor McBride et al&#039;s handling of derivatives &lt;a href=&quot;http://strictlypositive.org/Holes.pdf&quot; rel=&quot;nofollow&quot;&gt;here&lt;/a&gt;. It includes the handling of fixed points.</description>
+		<content:encoded><![CDATA[<p>Oh yeah, I almost forgot. Check out Conor McBride et al&#8217;s handling of derivatives <a href="http://strictlypositive.org/Holes.pdf" rel="nofollow">here</a>. It includes the handling of fixed points.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: sigfpe</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1285</link>
+		<dc:creator>sigfpe</dc:creator>
+		<pubDate>Wed, 14 May 2008 00:10:12 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1285</guid>
+		<description>I&#039;m confused. This doesn&#039;t look like AD to me. The rules you give are the standard Leibniz rules for symbolic differentiation and then I think you&#039;re trying to use those to get a (compile time) list of all derivatives. This is a really neat thing to attempt (though I have a hunch it&#039;s not possible in Haskell) but it seems quite different to AD to me. Anyway, I suspect a language like Omega may be better suited for what you are doing.</description>
+		<content:encoded><![CDATA[<p>I&#8217;m confused. This doesn&#8217;t look like AD to me. The rules you give are the standard Leibniz rules for symbolic differentiation and then I think you&#8217;re trying to use those to get a (compile time) list of all derivatives. This is a really neat thing to attempt (though I have a hunch it&#8217;s not possible in Haskell) but it seems quite different to AD to me. Anyway, I suspect a language like Omega may be better suited for what you are doing.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: apfelmus</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1282</link>
+		<dc:creator>apfelmus</dc:creator>
+		<pubDate>Tue, 13 May 2008 20:30:53 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1282</guid>
+		<description>Concerning the division, we can appeal to the special case
+
+&lt;code&gt;   a^n / n! = Bag n a&lt;/code&gt;
+
+i.e. the multiset (bag) with n elements of type a. So, the power series expansion for a data type just counts how many different sets of elements it may contain. So, &lt;code&gt;a :*: a&lt;/code&gt; contains two bags of two a (one for each permutation in the tuple).
+
+Btw, as the differential equation for the list type suggests, we have the power series expansion
+&lt;code&gt;   [a] = 1 + a + a^2 + a^3 + ... &lt;/code&gt;
+which &quot;is&quot; 1/(1-a).</description>
+		<content:encoded><![CDATA[<p>Concerning the division, we can appeal to the special case</p>
+<p><code>   a^n / n! = Bag n a</code></p>
+<p>i.e. the multiset (bag) with n elements of type a. So, the power series expansion for a data type just counts how many different sets of elements it may contain. So, <code>a :*: a</code> contains two bags of two a (one for each permutation in the tuple).</p>
+<p>Btw, as the differential equation for the list type suggests, we have the power series expansion<br />
+<code>   [a] = 1 + a + a^2 + a^3 + ... </code><br />
+which &#8220;is&#8221; 1/(1-a).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dan Doel</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1280</link>
+		<dc:creator>Dan Doel</dc:creator>
+		<pubDate>Tue, 13 May 2008 20:21:07 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1280</guid>
+		<description>Although the context on Functor (AD f) is sufficient, it seems (to me) like the wrong place to specify it. Since
+
+AD f a ~~ (f a, AD (D f) a)
+
+With (Derivable f) =&gt; Functor (AD f) you only need (Derivable (D f)) to justify using bimap (fmap f) (fmap f). So, it seems like what you&#039;d really want is:
+
+class (Functor f, Derivable (D f)) =&gt; Derivable f where
+  type D f :: * -&gt; *
+
+instance (Derivable f) =&gt; Functor (AD f) where ...
+
+Where the context on Derivable enforces that all such functors are arbitrarily differentiable. But, of course, GHC complains about a cycle there (in 6.8, at least. I don&#039;t have 6.9 handy).
+
+Simplification should, I think, be possible with total type families once they go into 6.9. For instance:
+
+type family (f :: * -&gt; *) :+: (g :: * -&gt; *) :: * -&gt; * where
+  Zero :+: g = g
+  f :+: Zero = f
+  f :+: g = Lift Either f g
+
+You&#039;re allowed to overlap instances for total type families, because they&#039;re closed.</description>
+		<content:encoded><![CDATA[<p>Although the context on Functor (AD f) is sufficient, it seems (to me) like the wrong place to specify it. Since</p>
+<p>AD f a ~~ (f a, AD (D f) a)</p>
+<p>With (Derivable f) =&gt; Functor (AD f) you only need (Derivable (D f)) to justify using bimap (fmap f) (fmap f). So, it seems like what you&#8217;d really want is:</p>
+<p>class (Functor f, Derivable (D f)) =&gt; Derivable f where<br />
+  type D f :: * -&gt; *</p>
+<p>instance (Derivable f) =&gt; Functor (AD f) where &#8230;</p>
+<p>Where the context on Derivable enforces that all such functors are arbitrarily differentiable. But, of course, GHC complains about a cycle there (in 6.8, at least. I don&#8217;t have 6.9 handy).</p>
+<p>Simplification should, I think, be possible with total type families once they go into 6.9. For instance:</p>
+<p>type family (f :: * -&gt; *) :+: (g :: * -&gt; *) :: * -&gt; * where<br />
+  Zero :+: g = g<br />
+  f :+: Zero = f<br />
+  f :+: g = Lift Either f g</p>
+<p>You&#8217;re allowed to overlap instances for total type families, because they&#8217;re closed.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1278</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 13 May 2008 16:43:08 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1278</guid>
+		<description>Oh, maybe a more interesting instance for this would probably be the notion of a derivative for a list since that doesn&#039;t zero out:
+
+instance Derivable [] where
+        type D [] = [] :*: []
+
+I also would like to find out a way to include a simplification step in the type function to go through and do the Zero :*: x = Zero step, etc to make the encoding a little less naive.</description>
+		<content:encoded><![CDATA[<p>Oh, maybe a more interesting instance for this would probably be the notion of a derivative for a list since that doesn&#8217;t zero out:</p>
+<p>instance Derivable [] where<br />
+        type D [] = [] :*: []</p>
+<p>I also would like to find out a way to include a simplification step in the type function to go through and do the Zero :*: x = Zero step, etc to make the encoding a little less naive.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1277</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 13 May 2008 16:32:36 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1277</guid>
+		<description>True enough. I just started down this path because I was thinking in terms of inductive families of types, and realized with open type functions that you could put a more interesting operation in than just a pair, etc.
+
+And yeah, without a notion of type division (maybe using &lt;a href=&quot;http://lambda-the-ultimate.org/node/2785&quot; rel=&quot;nofollow&quot;&gt;species&lt;/a&gt;?), I don&#039;t see how to get from this form of AD to a power series.</description>
+		<content:encoded><![CDATA[<p>True enough. I just started down this path because I was thinking in terms of inductive families of types, and realized with open type functions that you could put a more interesting operation in than just a pair, etc.</p>
+<p>And yeah, without a notion of type division (maybe using <a href="http://lambda-the-ultimate.org/node/2785" rel="nofollow">species</a>?), I don&#8217;t see how to get from this form of AD to a power series.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: apfelmus</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/comment-page-1/#comment-1275</link>
+		<dc:creator>apfelmus</dc:creator>
+		<pubDate>Tue, 13 May 2008 16:08:04 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comment-1275</guid>
+		<description>Yeah, just
+&lt;code&gt;instance Differentiable f =&gt; Differentiable (D f)&lt;/code&gt;
+doesn&#039;t work.
+
+And concerning the power series, I think what you really want is
+
+&lt;code&gt;newtype Power f a = Power (f () :+: (a :*: Power (D f) a))&lt;/code&gt;
+
+but that&#039;s wrong too, because you would have to divide by $latex \frac1{n!}$ somewhere. Power series are different from (but related to) automatic differentiation! Most likely, the impossible division can be included by using bags of n elements instead of powers &lt;code&gt;a :*: a :*: ...&lt;/code&gt; (= ordered pairs) of n elements. In any case, the functor instance for power series is no problem, since a is used explicitly.
+
+Not sure in the case of automatic differentiation; the main problem here is indeed to somehow tell the compiler that
+&lt;code&gt;instance Functor f =&gt; Functor (D f)&lt;/code&gt;
+But since type families are open, I guess that&#039;s not possible. I mean, a &quot;mischievous&quot; person could add a new case for this type family which violates this condition. So, the problem is not that the compiler doesn&#039;t grok it, the problem is that there is a good reason that the compiler doesn&#039;t accept it.</description>
+		<content:encoded><![CDATA[<p>Yeah, just<br />
+<code>instance Differentiable f =&gt; Differentiable (D f)</code><br />
+doesn&#8217;t work.</p>
+<p>And concerning the power series, I think what you really want is</p>
+<p><code>newtype Power f a = Power (f () :+: (a :*: Power (D f) a))</code></p>
+<p>but that&#8217;s wrong too, because you would have to divide by $latex \frac1{n!}$ somewhere. Power series are different from (but related to) automatic differentiation! Most likely, the impossible division can be included by using bags of n elements instead of powers <code>a :*: a :*: ...</code> (= ordered pairs) of n elements. In any case, the functor instance for power series is no problem, since a is used explicitly.</p>
+<p>Not sure in the case of automatic differentiation; the main problem here is indeed to somehow tell the compiler that<br />
+<code>instance Functor f =&gt; Functor (D f)</code><br />
+But since type families are open, I guess that&#8217;s not possible. I mean, a &#8220;mischievous&#8221; person could add a new case for this type family which violates this condition. So, the problem is not that the compiler doesn&#8217;t grok it, the problem is that there is a good reason that the compiler doesn&#8217;t accept it.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

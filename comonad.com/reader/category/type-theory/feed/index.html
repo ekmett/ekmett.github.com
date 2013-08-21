@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Type Theory</title>
+	<atom:link href="http://comonad.com/reader/category/type-theory/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Homotopy and Directed Type Theory Slides</title>
+		<link>http://comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/</link>
+		<comments>http://comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/#comments</comments>
+		<pubDate>Fri, 28 Oct 2011 02:38:34 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Boston Haskell]]></category>
+		<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Type Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=425</guid>
+		<description><![CDATA[As requested, here are the slides from Dan Doel's excellent presentation on Homotopy and Directed Type Theory from this past Monday's Boston Haskell.
+]]></description>
+			<content:encoded><![CDATA[<p>As requested, here are the slides from Dan Doel's excellent presentation on <a href='http://comonad.com/reader/wp-content/uploads/2011/10/slides.pdf'>Homotopy and Directed Type Theory</a> from this past Monday's <a href="http://groups.google.com/group/bostonhaskell/browse_thread/thread/9892caece9ebb4d4">Boston Haskell</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Generatingfunctorology</title>
+		<link>http://comonad.com/reader/2008/generatingfunctorology/</link>
+		<comments>http://comonad.com/reader/2008/generatingfunctorology/#comments</comments>
+		<pubDate>Wed, 14 May 2008 07:45:38 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Type Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2008/generatingfunctorology/</guid>
+		<description><![CDATA[Ok, I decided to take a step back from my flawed approach in the last post and play with the idea of power series of functors from a different perspective.
+I dusted off my copy of Herbert Wilf's generatingfunctionology and switched goals to try to see some well known recursive functors or species as formal power [...]]]></description>
+			<content:encoded><![CDATA[<p>Ok, I decided to take a step back from my flawed approach in the <a href="http://comonad.com/reader/2008/towards-formal-power-series-for-functors">last post</a> and play with the idea of power series of functors from a different perspective.</p>
+<p>I dusted off my copy of Herbert Wilf's <a href="http://www.math.upenn.edu/~wilf/DownldGF.html">generatingfunctionology</a> and switched goals to try to see some well known recursive functors or <a href="http://www.cas.mcmaster.ca/~carette/species/msfp08_species.pdf">species</a> as formal power series. It appears that we can pick a few things out about the generating functions of polynomial functors.</p>
+<p>As an example:</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> x = <span style="color: red;">1</span> + x
+&nbsp;</pre>
+<p>Ok. We're done. Thank you very much. I'll be here all week. Try the veal... </p>
+<p>For a more serious example, the formal power series for the list [x] is just a <a href="http://en.wikipedia.org/wiki/Geometric_series">geometric series</a>:</p>
+<p><span id="more-58"></span></p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span> = mu y . <span style="color: red;">1</span> + x y  <span style="color: #5d478b; font-style: italic;">-- the mu here is a pleasant fiction, more below</span>
+    = <span style="color: red;">1</span> + x <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    = <span style="color: red;">1</span> + x + x^<span style="color: red;">2</span> + x^<span style="color: red;">3</span> + ...
+    = <span style="color: red;">1</span>/<span style="color: green;">&#40;</span><span style="color: red;">1</span>-x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Given the power series of a functor, its nth coefficient * n! tells you how many distinguishable ways its constructors can house n values. If we see that a list of n values can be permuted n! ways this has some interesting possibilities for linearizing the storage of some functors. The list case is boring, we can store a <i>finite</i> list of n elements by supplying the length of the array and an array of n elements, hence (among other reasons) the mu above.</p>
+<p>Lets try decorated binary trees:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Tree x = Leaf | Node <span style="color: green;">&#40;</span>Tree x<span style="color: green;">&#41;</span> x <span style="color: green;">&#40;</span>Tree x<span style="color: green;">&#41;</span>
+&nbsp;
+Tree x = mu y. <span style="color: red;">1</span> + x * y * y
+       = <span style="color: red;">1</span> + x * <span style="color: green;">&#40;</span><span style="color: red;">1</span> + x * <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span>^<span style="color: red;">2</span><span style="color: green;">&#41;</span>^<span style="color: red;">2</span>
+       = <span style="color: red;">1</span> + x + 2x^<span style="color: red;">2</span> + 5x^<span style="color: red;">3</span> + 14x^<span style="color: red;">4</span> + 42x^<span style="color: red;">5</span> + ...
+&nbsp;</pre>
+<p>It turns out the coefficients of our generating function are the <a href="http://en.wikipedia.org/wiki/Catalan_number">Catalan numbers</a>, <a href="http://www.research.att.com/~njas/sequences/A000108">A000108</a>, commonly denoted C(n), which happen to be well known for among other things, being the number of ways you can build a binary tree of n nodes.</p>
+<p>This tells us we could store a tree by storing a number <em>n</em> of nodes it contains, an array of that many nodes, and an index 0 < = i < C(n) to tell you which particular tree you selected. Not that this is likely to be an incredibly time-efficient encoding, but you could then fmap over the tree by just fmapping over your array.</p>
+<p>For a formal power series,</p>
+<p><img src='http://comonad.com/latex/7b6fb5aa61c9491ac598d6ebbfcfe5c9.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' align=absmiddle></p>
+<p>its derivative is given by differentiating the series term by term:</p>
+<p><img src='http://comonad.com/latex/da09bd9c7661fddc0b0d62cfd6f139b8.png' title='$f&#039;(x) = \sum_{i=1}^{\infty} n a_n x^{n - 1} = a_1 + 2 a_2 x + 3 a_3 x^2 + ...$' alt='$f&#039;(x) = \sum_{i=1}^{\infty} n a_n x^{n - 1} = a_1 + 2 a_2 x + 3 a_3 x^2 + ...$' align=absmiddle></p>
+<p>Consequently we can take the derivative of a list:</p>
+<p>([]') x = 1 + 2x + 3x^2 + ... = 1/(1-x)^2 = ([] :*: []) x</p>
+<p>and rederive the notion that a derivative/one hole context of a list can be represented by a pair of lists.</p>
+<p>If we step slightly outside of the Haskell users' comfort zone and notion of a Functor and allow other Species, we get (as noted by apfelmus the other day) that Exp a is just a bag of elements with no predetermined order.</p>
+<pre class="haskell">&nbsp;
+Exp x = <span style="color: red;">1</span> + x + x^<span style="color: red;">2</span>/<span style="color: red;">2</span>! + x^<span style="color: red;">3</span>/<span style="color: red;">3</span>! + ... = Bag x
+&nbsp;
+Since there are n! ways to order n elements <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:and"><span style="font-weight: bold;">and</span></a> Bag manages to forget that information, we can get a feeling for the meaning <span style="color: #06c; font-weight: bold;">of</span> division <span style="color: #06c; font-weight: bold;">in</span> this setting.
+&nbsp;
+Similarly we can define:
+&lt;pre lang=<span style="color: #3c7331;">&quot;haskell&quot;</span>&gt;
+Sinh x = x + x^<span style="color: red;">3</span>/<span style="color: red;">3</span>! + ... <span style="color: #5d478b; font-style: italic;">-- a Bag of some odd number of elements.</span>
+Cosh x = <span style="color: red;">1</span> + x^<span style="color: red;">2</span>/<span style="color: red;">2</span>! + ... <span style="color: #5d478b; font-style: italic;">--  a Bag of some even number of elements.</span>
+&nbsp;</pre>
+<p>Then by construction:</p>
+<pre class="haskell">&nbsp;
+Exp = Cosh :+: Sinh
+&nbsp;</pre>
+<p>The derivative of Exp is Exp, of Cosh is Sinh, of Sinh is Cosh, all as you would expect.</p>
+<p>We can handle other species as well:</p>
+<pre class="haskell">&nbsp;
+Cycle a = <span style="color: red;">1</span> + x^<span style="color: red;">2</span>/<span style="color: red;">2</span> + x^<span style="color: red;">3</span>/<span style="color: red;">3</span> + x^<span style="color: red;">4</span>/<span style="color: red;">4</span> + ... <span style="color: #5d478b; font-style: italic;">-- cycles</span>
+Cycle_n a = x^n/n <span style="color: #5d478b; font-style: italic;">-- cycles of n elements</span>
+Bag_n a = x^n/n!  <span style="color: #5d478b; font-style: italic;">-- bags of n elements</span>
+&nbsp;</pre>
+<p>That said, there seem to be some problems, not every functor is well behaved in this way. Lets take for instance the type of natural numbers given by the functor:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Nat a = S <span style="color: green;">&#40;</span>Nat a<span style="color: green;">&#41;</span> | Z
+&nbsp;</pre>
+<p>Then the recurrence blows up, the coefficient for 0 is <img src='http://comonad.com/latex/05337ee7dbe333d118d371bc95c44f7a.png' title='$\aleph_0$' alt='$\aleph_0$' align=absmiddle>!</p>
+<p>Similarly, if we parameterized a functor on another value we have to deal with the number of cases that other value can denote.</p>
+<pre class="haskell">&nbsp;
+<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> a x = |a| + x
+<span style="color: green;">&#40;</span>a,x<span style="color: green;">&#41;</span> = |a| x
+&nbsp;</pre>
+<p>This is both good and bad, using the above, we can quickly establish an isomorphism between Either () and the Maybe Functor, but we blow up again for Either Integer. This gets even worse if we allow 'functors in space.' (i.e. functors that can contain functions)</p>
+<p>On the other extreme, we might modify our tree example and remove the leaves, yielding infinite decorated cotrees.</p>
+<pre class="haskell">&nbsp;
+Tree x = nu y. x * y * y
+       = x * <span style="color: green;">&#40;</span>x * <span style="color: green;">&#40;</span>...<span style="color: green;">&#41;</span>^<span style="color: red;">2</span><span style="color: green;">&#41;</span>^<span style="color: red;">2</span>
+       = <span style="color: red;">0</span> + 0x + 0x^<span style="color: red;">2</span> + 0x^<span style="color: red;">3</span> + ...
+&nbsp;</pre>
+<p>Then a_n = 0 for all n in the natural numbers, so you can't use the coefficients of the generating function to tell you about the behavior of an infinite structure! It would appear that the generating function of a functor does not capture what happens in the greatest fixed point case, so we can only use generating functions to describe the behavior of data defined with mu, not in general codata defined by nu.</p>
+<p>The Bags and Cycles above are nice examples, but if we wanted to rule out the non-polynomial Functors (from the Haskell perspective) in the above then we can simply limit ourselves to <a href="http://en.wikipedia.org/wiki/Generating_function#Ordinary_generating_function_2">ordinary generating functions</a> with natural number coefficients, that is to say generating functions of the form:</p>
+<p><img src='http://comonad.com/latex/7b6fb5aa61c9491ac598d6ebbfcfe5c9.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n = a_0 + a_1 x + a_2 x^2 + ... $' align=absmiddle></p>
+<p>To choose to admit bags,  cycles and other species etc. then you need merely also permit <a href="http://en.wikipedia.org/wiki/Generating_function#Exponential_generating_function_2">exponential generating functions</a> with natural coefficients, that is to say, generating functions of the form:</p>
+<p><img src='http://comonad.com/latex/c30686528791fe1a38720bf5006b81a3.png' title='$f(x) = \sum_{i=0}^{\infty} a_n x^n / n! = a_0 + a_1 x / 1! + a_2 x^2 / 2! + ... $' alt='$f(x) = \sum_{i=0}^{\infty} a_n x^n / n! = a_0 + a_1 x / 1! + a_2 x^2 / 2! + ... $' align=absmiddle></p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2008/generatingfunctorology/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+		</item>
+		<item>
+		<title>Towards Formal Power Series for Functors</title>
+		<link>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/</link>
+		<comments>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/#comments</comments>
+		<pubDate>Tue, 13 May 2008 09:22:19 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Type Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2008/towards-formal-power-series-for-functors/</guid>
+		<description><![CDATA[The post below will only compile on a version of GHC >= 6.9, since it uses type families.
+
+There has been a lot of posting recently about automatic differentiation in Haskell, and I wanted to try the same thing with functors in the spirit of Conor McBride's Clowns to the Left of me, Jokers to the [...]]]></description>
+			<content:encoded><![CDATA[<p>The post below will only compile on a version of GHC >= 6.9, since it uses type families.</p>
+<p><span id="more-57"></span></p>
+<p>There has been a lot of posting recently about automatic differentiation in Haskell, and I wanted to try the same thing with functors in the spirit of Conor McBride's <a href="http://strictlypositive.org/CJ.pdf">Clowns to the Left of me, Jokers to the Right</a> and <a href="http://citeseer.ist.psu.edu/472190.html">The derivative of a regular type is its type of one hole contexts</a>, figuring that a Power Series could fully generalize Christophe Poucet's <a href="http://notvincenz.blogspot.com/2007/07/higher-order-zippers.html">Higher Order Zippers</a>, and might provide me with a neat extension to the zipper comonadic automata I've been aluding to recently.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# OPTIONS -fglasgow-exts -fallow-undecidable-instances -fallow-overlapping-instances #-}</span>
+<span style="color: #06c; font-weight: bold;">module</span> Derivatives <span style="color: #06c; font-weight: bold;">where</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">import</span> Control.Arrow <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>+++<span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span>***<span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span>&amp;&amp;&amp;<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">9</span> :.:
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">7</span> :*:
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">6</span> :+:
+&nbsp;</pre>
+<p>To avoid importing <a href="http://hackage.haskell.org/cgi-bin/hackage-scripts/package/category-extras-0.44.4">category-extras</a> and keep this post self-contained (modulo GHC 6.9!), we'll define some preliminaries such as Bifunctors:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Bifunctor f <span style="color: #06c; font-weight: bold;">where</span>
+	bimap :: <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b -&gt; d<span style="color: green;">&#41;</span> -&gt; f a b -&gt; f c d
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Bifunctor <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	bimap f g ~<span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>f a, g b<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Bifunctor <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> <span style="color: #06c; font-weight: bold;">where</span>
+	bimap f _ <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> a<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Left"><span style="font-weight: bold;">Left</span></a> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+	bimap _ g <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Right"><span style="font-weight: bold;">Right</span></a> <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Constant functors:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Void
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> Void <span style="color: #06c; font-weight: bold;">where</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> _ = <span style="color: #3c7331;">&quot;Void&quot;</span>
+<span style="color: #06c; font-weight: bold;">newtype</span> Const k a = Const <span style="color: green;">&#123;</span> runConst :: k <span style="color: green;">&#125;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">type</span> Zero = Const Void
+<span style="color: #06c; font-weight: bold;">type</span> One = Const <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Const k<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Const . runConst
+&nbsp;</pre>
+<p>and functor products and coproducts:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Lift p f g a = Lift <span style="color: green;">&#123;</span> runLift ::  p <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">type</span> <span style="color: green;">&#40;</span>:+:<span style="color: green;">&#41;</span> = Lift <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a>
+<span style="color: #06c; font-weight: bold;">type</span> <span style="color: green;">&#40;</span>:*:<span style="color: green;">&#41;</span> = Lift <span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>p <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Lift p f g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> <span style="color: green;">&#40;</span>Lift x<span style="color: green;">&#41;</span> = <span style="color: #3c7331;">&quot;(Lift (&quot;</span> ++ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> x ++ <span style="color: #3c7331;">&quot;))&quot;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Bifunctor p, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Lift p f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Lift . bimap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . runLift
+&nbsp;</pre>
+<p>and finally functor composition</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> <span style="color: green;">&#40;</span>f :.: g<span style="color: green;">&#41;</span> a = Comp <span style="color: green;">&#123;</span> runComp :: f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f :.: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Comp . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . runComp
+&nbsp;</pre>
+<p>So then, an ideal type for repeated differentiation would look something like the following, for some definition of D.</p>
+<p>[Edit: sigfpe pointed out, quite rightly, that this is just repeated differentiation, and apfelmus pointed out that it not a power series, because I have no division!]</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> AD f a  = AD <span style="color: green;">&#123;</span> runAD :: <span style="color: green;">&#40;</span>f a,  AD <span style="color: green;">&#40;</span>D f<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>As a first crack at D, you might be tempted to just go with a type family:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-
+type family D (f :: * -&gt; *) :: * -&gt; *
+type instance D Identity = One
+type instance D (Const k) = Zero
+type instance D (f :+: g) = D f :+: D g
+type instance D (f :*: g) = f :*: D g :+: D f :*: g
+type instance D (f :.: g) = (D f :.: g) :*: D g
+-}</span>
+&nbsp;</pre>
+<p>This could take you pretty far, but unfortunately doesn't adequately provide you with any constraints on the type so that we can treat AD f as a functor.</p>
+<p>So, we'll go with:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>D f<span style="color: green;">&#41;</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; Derivable <span style="color: green;">&#40;</span>f :: * -&gt; *<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D f :: * -&gt; *
+&nbsp;</pre>
+<p>and cherry pick the instances necessary to handle the above cases:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Derivable Identity <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D Identity = One
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Derivable <span style="color: green;">&#40;</span>Const k<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D <span style="color: green;">&#40;</span>Const k<span style="color: green;">&#41;</span> = Zero
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Derivable f, Derivable g<span style="color: green;">&#41;</span> =&gt; Derivable <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D <span style="color: green;">&#40;</span>f :+: g<span style="color: green;">&#41;</span> = D f :+: D g 
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Derivable f, Derivable g<span style="color: green;">&#41;</span> =&gt; Derivable <span style="color: green;">&#40;</span>f :*: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D <span style="color: green;">&#40;</span>f :*: g<span style="color: green;">&#41;</span> = f :*: D g :+: D f :*: g
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Derivable f, Derivable g<span style="color: green;">&#41;</span> =&gt; Derivable <span style="color: green;">&#40;</span>f :.: g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<span style="color: #06c; font-weight: bold;">type</span> D <span style="color: green;">&#40;</span>f :.: g<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>D f :.: g<span style="color: green;">&#41;</span> :*: D g
+&nbsp;</pre>
+<p>With those instances in hand, we can define the definition of a Functor for the automatic differentiation of a Functor built out of these primitives:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Derivable f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>AD <span style="color: green;">&#40;</span>D f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>AD f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+	<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f = Power . bimap <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f<span style="color: green;">&#41;</span> . runPower
+&nbsp;</pre>
+<p>Unfortunately, here is where I run out of steam, because any attempt to actually use the construct in question blows the context stack because the recursion for Functor (AD f) isn't well founded and my attempts to force it to be so through overlapping-instances have thus-far failed.</p>
+<p>Thoughts?</p>
+<p>[<a href="http://comonad.com/haskell/Derivatives.hs">Source Code</a>]</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2008/towards-formal-power-series-for-functors/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+		</item>
+		<item>
+		<title>Parameterized Monads in Haskell</title>
+		<link>http://comonad.com/reader/2007/parameterized-monads-in-haskell/</link>
+		<comments>http://comonad.com/reader/2007/parameterized-monads-in-haskell/#comments</comments>
+		<pubDate>Fri, 13 Jul 2007 07:46:15 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Monads]]></category>
+		<category><![CDATA[Type Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2007/parameterized-monads-in-haskell/</guid>
+		<description><![CDATA[Recently Eric Kidd and Dan Piponi have used a bit of type hackery by Oleg Kiselyov and -fno-implicit-prelude to build some interesting restricted monads, like the Wadler Set and Bag monads.
+There is another interesting monad variation - a parameterized monad - where the monad carries around an additional parameter at the type level such as [...]]]></description>
+			<content:encoded><![CDATA[<p>Recently <a href="http://www.randomhacks.net/articles/2007/03/15/data-set-monad-haskell-macros">Eric Kidd</a> and <a href="http://sigfpe.blogspot.com/2007/06/how-to-write-tolerably-efficient.html">Dan Piponi</a> have used a bit of <a href="http://okmij.org/ftp/Haskell/types.html#restricted-datatypes">type hackery by Oleg Kiselyov</a> and -fno-implicit-prelude to build some interesting restricted monads, like the Wadler Set and Bag monads.</p>
+<p>There is another interesting monad variation - a parameterized monad - where the monad carries around an additional parameter at the type level such as a type-level set of effects. One really good example of this is the separation logic monad in <a href="http://www.eecs.harvard.edu/~aleks/papers/hoarelogic/jfpsep07.pdf">Hoare Type Theory</a>. The pre- and post- conditions can be viewed as the parameter carried around on that monad. <a href="http://citeseer.ist.psu.edu/254302.html">Wadler and Thiemann</a>, <a href="type.http://citeseer.ist.psu.edu/273929.html">Jean-Christophe Filliâtre</a> and others have explore this notion for encoding effects.</p>
+<p><span id="more-41"></span></p>
+<p>This prompts the question of if parameterized monads can be implemented directly in Haskell. Indeed they can, but a simple version fails with the signature:</p>
+<p><code type="haskell"><br />
+class BadHaskell m p p' p'' | p p' -> p'' where<br />
+    return :: a -> m p a<br />
+    fail :: a -> m p a<br />
+    (>>=) :: m p a -> (a -> m p' a) -> m p'' a<br />
+</code></p>
+<p>This of course runs afoul of the fact that all of the parameters are not mentioned in return, so we have to break it apart into two or three classes.</p>
+<p><code type="haskell"><br />
+class Return m p where<br />
+    return :: a -> m p a</p>
+<p>class Fail m p where<br />
+    fail :: String -> m p a</p>
+<p>class Bind m p p' p'' | p p' -> p'' where<br />
+    (>>=) :: m p a -> (a -> m p' a) -> m p'' a<br />
+</code></p>
+<p>By splitting off fail, we can make it so that it is illegal to use an incomplete pattern on certain monads, a small win, but it may be useful in a later post.</p>
+<p>However, there turns out to be quite some awkwardness from the perspective of type inference with this type. In particular we are used to the types of our monads being able to be inferred from the type of their results, but we lose this inference on return. Moreover, we can't just use existing monads under this syntax, we'd have to lift them into a newtype that accepted the additional parameter. </p>
+<p>Ignoring the problems with existing monads, and correcting the type inference problem directly by adding fundeps doesn't help as </p>
+<p><code type="haskell"><br />
+class Bind m p p' p''<br />
+  | p -> p' p''<br />
+  , p' -> p p''<br />
+  , p'' -> p p'<br />
+  where<br />
+    (>>=) :: m p a -> (a -> m p' a) -> m p'' a<br />
+</code></p>
+<p>is too restrictive and could be shown that under a strict interpretation of the laws, would never be able to be made to satisfy the monad laws except in the base case, because of the inability to construct an associative operation combining the parameters that isn't trivial.</p>
+<p>As an aside, speaking of failing monad laws, it is interesting to note that the Set restricted monad actually fails a monad law given that functions in haskell need not respect equality, since <img src='http://comonad.com/latex/897b3c5aa597494b81ac92874455d7af.png' title='x = y =&gt; f x = f y' alt='x = y =&gt; f x = f y' align=absmiddle> fails to hold in general for user defined equality as used by the Set monad, as noted by Andrea Vezzosi on #haskell, the order of association can make a difference as to the result of the computation. This is arguably a minor quibble as you wouldn't be using it unless you knew the type you were going to pass around and how your functions worked on it with respect to its notion of equality.</p>
+<p>Turning back to the issue of being unable to pass traditional monads into this type, we realize that having a separate m and p parameters to the type class is redundant as you can generate an equivalent notion by letting m vary.</p>
+<p><code type="haskell"><br />
+class Return m where<br />
+    return :: a -> m a</p>
+<p>class Fail m where<br />
+    fail :: String -> m a</p>
+<p>class Bind m m' m'' | m m' -> m'' where<br />
+    (>>=) :: m a -> (a -> m' a) -> m'' a<br />
+</code></p>
+<p>This still has the problem that the type of return is not inferable, but now at least we can derive instances of these classes for instances of Monad. Of course, if we create a generic instance for </p>
+<p><code type="haskell"><br />
+import qualified Control.Monad as Old<br />
+instance Old.Monad m => Bind m m m where (>>=) = (Old.>>=)<br />
+...<br />
+</code></p>
+<p>we then run afoul of the fact that we can't define any other interesting instances because the compiler won't know which way to go with type class inference.</p>
+<p>However, even without that we can import each monad in turn, and define some interesting interfaces between them:</p>
+<p><code type="haskell"><br />
+instance Bind Maybe [] [] where<br />
+    Just a >>= f = f a<br />
+    Nothing >>= _ = []</p>
+<p>-- testMaybeList :: [Int] = [2,4]<br />
+testMaybeList = Just 2 >>= \x -> [x*1,x*2]<br />
+</code></p>
+<p>Admittedly there is an <img src='http://comonad.com/latex/6595d679e306a127a3fe53268bcaddb2.png' title='n^2' alt='n^2' align=absmiddle> combinatorial explosion of combinations and not all of them have clear semantics, but we can choose to implement only the ones that have an unambiguous interpretation and leave off the rest and pay as we go, implementing them as needed. A more mature version of this might provide an interesting alternative/supplement to the MTL approach and can be viewed as a limited fragment of <a href="http://citeseer.ist.psu.edu/619712.html">Lüth and Ghani's monad composition through coproducts</a>.</p>
+<p>However, we still haven't solved the return problem, but it turns out that monad laws can come to the rescue. </p>
+<p>If we start to implement a number of these we notice a pattern when it comes to the Identity monad. In general we can define instances of Bind for the Identity monad for any monad presuming we can liftM, to handle the case on the right, but since liftM requires a sort of circular dependency loop, we choose to make Bind enforce the availability of fmap, allow overlapping instances, and then define:</p>
+<p><code type="haskell"><br />
+class (Functor m, Functor m', Functor m'') => Bind m m' m''<br />
+ | m m' -> m''<br />
+  where<br />
+    (>>=) :: m a -> (a -> m' b) -> (m'' b)<br />
+    (>>)  :: m a -> m' b -> m'' b<br />
+    m >> k = m >>= const k</p>
+<p>instance Functor a => Bind Identity a a where<br />
+    m >>= f = f (runIdentity m)</p>
+<p>instance Functor a => Bind a Identity a where<br />
+    m >>= f = fmap (runIdentity . f) m</p>
+<p>-- and to disambiguate between the above instances...<br />
+instance Bind Identity Identity Identity where<br />
+    m >>= f = f (runIdentity m)<br />
+</code></p>
+<p>The correctness of this is in fact enforced by the monad laws as these instances can be read as the familiar laws once you remove the noise of the Identity monad:</p>
+<p><code type="haskell"><br />
+     return m >>= f = f m<br />
+     m >>= return . f = fmap f m<br />
+     return m >>= f = f m<br />
+</code></p>
+<p>This gives us a single natural notion of return for all monads that we can use and still glue together via >>=:</p>
+<p><code type="haskell"><br />
+class Return m where<br />
+    returnM :: a -> m a</p>
+<p>return :: a -> Identity a<br />
+return = Old.return<br />
+</code></p>
+<p>Now the problem is if you write a statement like <code type="haskell">return 2 >>= \x -> return (x+1)</code>, you can have the Identity type percolate out of your monad expression, even when you were expecting a ListT or State monad or something more interesting, so we need a way to transform values from the Identity monad to an arbitrary monad for use when you want its type to conform to an external signature. </p>
+<p><code type="haskell"><br />
+class Go n m where<br />
+        go :: n a -> m a</p>
+<p>instance Return a => Go Identity a where<br />
+    go = returnM . runIdentity<br />
+instance Go a a where<br />
+    go = id<br />
+</code></p>
+<p>So, now we can tell our code to <code type="haskell">go (do something)</code> and it will transform any lingering Identities to whatever monadic type is inferred for the go statement in its current context.</p>
+<p>This has the advantage that pure fragments in our monadic sugar can avoid carrying around the rest of the monadic plumbing, even though they use the same bind operator to string it all together.</p>
+<p>We can perform similar surgery on the MonadPlus class, tearing it apart into two pieces, breaking out a canonical mzero implementation as a trivial monad that just projects everything to bottom, and having Go erase any lingering mzeros that percolate out of our expression. Rather than reproduce it here, I point to a darcs repository that I just created. You can use darcs to get <a href="http://comonad/com/haskell/monad-param">http://comonad/com/haskell/monad-param</a> or pull the package from hackage. The interesting bits are in Control.Monad.Parameterized and <a href="http://comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html">HTML documentation is available</a>.</p>
+<p>This package re-exports the MTL and STM monads to avoid the requirement that the end user explicitly import Control.Monad.* masking off the members of Control.Monad each time and it provides some interesting mixins. </p>
+<p>Caveat: It appears that GHC enforces the fact that the arguments and results of (>>=) must have a signature like</p>
+<p><code type="haskell">(>>=) :: forall m a. (...) => m a -> (a -> m b) -> m b</code></p>
+<p>insofar as when you use the do-sugar, your types will not be able to vary. Ideally it should be able to get by with a more liberal signature, but it seems like no one has needed it before now.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2007/parameterized-monads-in-haskell/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Overloaded Functions with Subtyping</title>
+		<link>http://comonad.com/reader/2006/overloaded-functions-with-subtyping/</link>
+		<comments>http://comonad.com/reader/2006/overloaded-functions-with-subtyping/#comments</comments>
+		<pubDate>Wed, 01 Nov 2006 08:35:30 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Type Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/2006/overloaded-functions-with-subtyping/</guid>
+		<description><![CDATA[Was reading Castagna, Ghelli, and Longo's 1995 paper on "A Calculus for Overloaded Functions with Subtyping" today and in it they have to jump through some hoops to index their '&#038;' types to keep them well behaved under &#946;-reduction.
+It seems to me, at least from my back-of-the-envelope scribblings, that if you CPS transform the calculus [...]]]></description>
+			<content:encoded><![CDATA[<p>Was reading Castagna, Ghelli, and Longo's 1995 paper on "<a href="http://citeseer.ist.psu.edu/125897.html">A Calculus for Overloaded Functions with Subtyping</a>" today and in it they have to jump through some hoops to index their '&' types to keep them well behaved under &beta;-reduction.</p>
+<p>It seems to me, at least from my back-of-the-envelope scribblings, that if you <a href="/reader/wiki?item=CPS+transformation">CPS transform</a> the calculus before, that the main technical innovation (overloaded functions using the tighter run-time type information) remains intact, but the need for this technical trick goes away. In this case you know what the reduction will evaluate out to regardless of call-by-value or call-by-need (just bottom), and if the specification changes during evaluation it is still sound, so no need for an index.</p>
+<div class="codeblock">
+<p align="center"><img src='http://comonad.com/latex/63ee3379bf761ad7074f3bb895da57d5.png' title=' \inference{\Gamma \vdash M:W_1 \leq \lbrace\neg U_i\rbrace_{i\leq(n-1)} &amp; \Gamma \vdash N : W_2 \leq \neg U_n}{\Gamma \vdash (M \binampersand N) : \lbrace \neg U_i \rbrace_{i \leq n }}[$\lbrace\rbrace$-I]' alt=' \inference{\Gamma \vdash M:W_1 \leq \lbrace\neg U_i\rbrace_{i\leq(n-1)} &amp; \Gamma \vdash N : W_2 \leq \neg U_n}{\Gamma \vdash (M \binampersand N) : \lbrace \neg U_i \rbrace_{i \leq n }}[$\lbrace\rbrace$-I]' align=absmiddle></p>
+<p align="center"><img src='http://comonad.com/latex/b5ad9c35b4aeb655526d34f61cc0b770.png' title=' \inference{\Gamma \vdash M : \lbrace \neg U_i \rbrace_{i \in I} &amp; \Gamma \vdash N : U &amp; U_j = \min_{i \in I} \lbrace U_i \vert U \leq U_i \rbrace } {\Gamma \vdash M \bullet N : \perp }[$\lbrace\rbrace$-E]' alt=' \inference{\Gamma \vdash M : \lbrace \neg U_i \rbrace_{i \in I} &amp; \Gamma \vdash N : U &amp; U_j = \min_{i \in I} \lbrace U_i \vert U \leq U_i \rbrace } {\Gamma \vdash M \bullet N : \perp }[$\lbrace\rbrace$-E]' align=absmiddle></p>
+</div>
+<p>The above then would requires explicit continuations and might interfere with rederiving tupling from the overloading mechanism alone, but seems to eliminate some of the barriers they mention to the higher order case. However, I'm not convinced it is a net win regardless, because it would require a notion of typecase.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2006/overloaded-functions-with-subtyping/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

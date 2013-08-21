@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: The Cofree Comonad and the Expression Problem</title>
+	<atom:link href="http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Richard Wallace</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-104596</link>
+		<dc:creator>Richard Wallace</dc:creator>
+		<pubDate>Tue, 24 Apr 2012 01:11:23 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-104596</guid>
+		<description>I&#039;ve really enjoyed studying and trying to understand this, but one thing has still got me hung up that I just can&#039;t seem to get past.
+
+I&#039;ve been trying, as an exercise, to get the addition example from Swierstra’s paper working in terms of Free and Cofree.  I translated Expr to Free successfully and am able to right an eval function 
+
+eval :: (Eval f, Functor f) =&gt; Free f Int -&gt; Int
+
+that works using cataFree.  I&#039;ve also taken the next step and eliminated the Eval type-class and written runArith and runVal functions that I can then compose in the way outlined in the comment above.
+
+But I just can&#039;t seem to take that mental leap to translate it using Cofree.  I think my problem is in determining what the dual of Addition and Val should be.
+
+An example of that would be greatly appreciated and hopefully shine light the last bits that are still eluding me.
+
+Thanks.</description>
+		<content:encoded><![CDATA[<p>I&#8217;ve really enjoyed studying and trying to understand this, but one thing has still got me hung up that I just can&#8217;t seem to get past.</p>
+<p>I&#8217;ve been trying, as an exercise, to get the addition example from Swierstra’s paper working in terms of Free and Cofree.  I translated Expr to Free successfully and am able to right an eval function </p>
+<p>eval :: (Eval f, Functor f) =&gt; Free f Int -&gt; Int</p>
+<p>that works using cataFree.  I&#8217;ve also taken the next step and eliminated the Eval type-class and written runArith and runVal functions that I can then compose in the way outlined in the comment above.</p>
+<p>But I just can&#8217;t seem to take that mental leap to translate it using Cofree.  I think my problem is in determining what the dual of Addition and Val should be.</p>
+<p>An example of that would be greatly appreciated and hopefully shine light the last bits that are still eluding me.</p>
+<p>Thanks.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: fetisch spiele</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-60990</link>
+		<dc:creator>fetisch spiele</dc:creator>
+		<pubDate>Wed, 22 Jun 2011 17:04:40 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-60990</guid>
+		<description>Its like you learn my mind! You seem to know so much about this, like you wrote the guide in it or something. I think that you just could do with some p.c. to power the message house a little bit, however instead of that, this is fantastic blog. An excellent read. I will certainly be back.</description>
+		<content:encoded><![CDATA[<p>Its like you learn my mind! You seem to know so much about this, like you wrote the guide in it or something. I think that you just could do with some p.c. to power the message house a little bit, however instead of that, this is fantastic blog. An excellent read. I will certainly be back.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Zapping Adjunctions</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1614</link>
+		<dc:creator>The Comonad.Reader &#187; Zapping Adjunctions</dc:creator>
+		<pubDate>Thu, 05 Jun 2008 19:29:20 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1614</guid>
+		<description>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</description>
+		<content:encoded><![CDATA[<p>[...] In an earlier post about the cofree comonad and the expression problem, I used a typeclass defining a form of duality that enables you to let two functors annihilate each other, letting one select the path whenever the other offered up multiple options. To have a shared set of conventions with the material in Zipping and Unzipping Functors, I have since remodeled that class slightly: [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: The Comonad.Reader &#187; Zipping and Unzipping Functors</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1154</link>
+		<dc:creator>The Comonad.Reader &#187; Zipping and Unzipping Functors</dc:creator>
+		<pubDate>Mon, 05 May 2008 03:01:27 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1154</guid>
+		<description>[...] Here we set aside the restriction that we only be able to Zip a comonad, and simply require that if the functor in question is a comonad, then it is a &quot;symmetric semi-monoidal comonad&quot;, which is to say that zipping and then extracting yields the same result as extracting from each separately. You may note a lot of similarity in the above to the definition for Control.Functor.Zap the Dual functor from the other day. [...]</description>
+		<content:encoded><![CDATA[<p>[...] Here we set aside the restriction that we only be able to Zip a comonad, and simply require that if the functor in question is a comonad, then it is a &#8220;symmetric semi-monoidal comonad&#8221;, which is to say that zipping and then extracting yields the same result as extracting from each separately. You may note a lot of similarity in the above to the definition for Control.Functor.Zap the Dual functor from the other day. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dave Menendez</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1126</link>
+		<dc:creator>Dave Menendez</dc:creator>
+		<pubDate>Sat, 03 May 2008 07:01:15 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1126</guid>
+		<description>Here&#039;s the URI: http://okmij.org/ftp/Haskell/generics.html#PolyVariant</description>
+		<content:encoded><![CDATA[<p>Here&#8217;s the URI: <a href="http://okmij.org/ftp/Haskell/generics.html#PolyVariant" rel="nofollow">http://okmij.org/ftp/Haskell/generics.html#PolyVariant</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dave Menendez</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1125</link>
+		<dc:creator>Dave Menendez</dc:creator>
+		<pubDate>Sat, 03 May 2008 07:00:39 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1125</guid>
+		<description>It&#039;s only two years old, but Oleg describes how to handle polymorphic variants using a record of functions in . He doesn&#039;t have the neat Dual class, though.</description>
+		<content:encoded><![CDATA[<p>It&#8217;s only two years old, but Oleg describes how to handle polymorphic variants using a record of functions in . He doesn&#8217;t have the neat Dual class, though.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1102</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 01 May 2008 15:36:33 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1102</guid>
+		<description>Here is a quick take on the Incr/Recall example.
+
+[Edit: typechecked, added to source code, and a couple typos corrected]
+
+data Incr t = Incr Int t
+data Recall t = Recall (Int -&gt; t)
+
+instance Functor Incr where
+        fmap f (Incr i t) = Incr i (f t)
+
+instance Functor Recall where
+        fmap f (Recall g) = Recall (f . g)
+
+(/+/) :: (Functor f, Functor g) =&gt; (f a -&gt; a) -&gt; (g a -&gt; a) -&gt; ((f :+: g) a -&gt; a)
+(f /+/ g) (Inl a) = f a
+(f /+/ g) (Inr b) = g b
+
+newtype Mem = Mem Int
+type RunAlg f a = f (Mem -&gt; (a,Mem)) -&gt; Mem -&gt; (a,Mem)
+
+incrRun :: RunAlg Incr a
+incrRun (Incr k r) (Mem i) = r (Mem (i + k))
+
+recallRun :: RunAlg Recall a
+recallRun (Recall r) (Mem i) = r i (Mem i)
+
+run :: Functor f =&gt; RunAlg f a -&gt; Free f a -&gt; Mem -&gt; (a, Mem)
+run = cataFree (,)
+
+runMyExpr :: Free (Incr :+: Recall) a -&gt; Mem -&gt; (a, Mem)
+runMyExpr = run (incrRun /+/ recallRun)</description>
+		<content:encoded><![CDATA[<p>Here is a quick take on the Incr/Recall example.</p>
+<p>[Edit: typechecked, added to source code, and a couple typos corrected]</p>
+<p>data Incr t = Incr Int t<br />
+data Recall t = Recall (Int -> t)</p>
+<p>instance Functor Incr where<br />
+        fmap f (Incr i t) = Incr i (f t)</p>
+<p>instance Functor Recall where<br />
+        fmap f (Recall g) = Recall (f . g)</p>
+<p>(/+/) :: (Functor f, Functor g) => (f a -> a) -> (g a -> a) -> ((f :+: g) a -> a)<br />
+(f /+/ g) (Inl a) = f a<br />
+(f /+/ g) (Inr b) = g b</p>
+<p>newtype Mem = Mem Int<br />
+type RunAlg f a = f (Mem -> (a,Mem)) -> Mem -> (a,Mem)</p>
+<p>incrRun :: RunAlg Incr a<br />
+incrRun (Incr k r) (Mem i) = r (Mem (i + k))</p>
+<p>recallRun :: RunAlg Recall a<br />
+recallRun (Recall r) (Mem i) = r i (Mem i)</p>
+<p>run :: Functor f => RunAlg f a -> Free f a -> Mem -> (a, Mem)<br />
+run = cataFree (,)</p>
+<p>runMyExpr :: Free (Incr :+: Recall) a -> Mem -> (a, Mem)<br />
+runMyExpr = run (incrRun /+/ recallRun)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Grant B</title>
+		<link>http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/comment-page-1/#comment-1098</link>
+		<dc:creator>Grant B</dc:creator>
+		<pubDate>Thu, 01 May 2008 09:45:13 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/#comment-1098</guid>
+		<description>I&#039;m interested in your variant approach to the expression problem, but I have a hard time comparing yours to Swierstra&#039;s. I tried working on the translation exercise you suggested but that led me nowhere. Could you please present at least one worked example taken from the original paper?</description>
+		<content:encoded><![CDATA[<p>I&#8217;m interested in your variant approach to the expression problem, but I have a hard time comparing yours to Swierstra&#8217;s. I tried working on the translation exercise you suggested but that led me nowhere. Could you please present at least one worked example taken from the original paper?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

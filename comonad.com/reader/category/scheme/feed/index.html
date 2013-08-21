@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Scheme</title>
+	<atom:link href="http://comonad.com/reader/category/scheme/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Curried Scheme</title>
+		<link>http://comonad.com/reader/2009/curried-scheme/</link>
+		<comments>http://comonad.com/reader/2009/curried-scheme/#comments</comments>
+		<pubDate>Sat, 29 Aug 2009 15:53:36 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Macros]]></category>
+		<category><![CDATA[Scheme]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=145</guid>
+		<description><![CDATA[I've been transcoding a lot of Haskell to Scheme lately and one of the things that I found myself needing was a macro for dealing with Currying of functions in a way that handles partial and over-application cleanly.
+
+I found a very elegant macro by Piet Delport that handles partial application, but that doesn't deal with [...]]]></description>
+			<content:encoded><![CDATA[<p>I've been transcoding a lot of Haskell to Scheme lately and one of the things that I found myself needing was a macro for dealing with Currying of functions in a way that handles partial and over-application cleanly.</p>
+<p><span id="more-145"></span></p>
+<p>I found a very elegant <a href="http://programming-musings.org/2007/02/03/scheme-code-capsule-currying/">macro by Piet Delport that handles partial application</a>, but that doesn't deal with the partial application of no arguments or that I'd like to also be able to say things like the following and have the extra arguments be passed along to the result.</p>
+<pre class="scheme">&nbsp;
+<span style="color: #66cc66;">&#40;</span>define-curried <span style="color: #66cc66;">&#40;</span>id x<span style="color: #66cc66;">&#41;</span> x<span style="color: #66cc66;">&#41;</span>
+<span style="color: #66cc66;">&#40;</span>id + <span style="color: #cc66cc;">1</span> <span style="color: #cc66cc;">2</span> <span style="color: #cc66cc;">3</span><span style="color: #66cc66;">&#41;</span> <span style="color: #808080; font-style: italic;">;;=&gt; 6</span>
+&nbsp;</pre>
+<p>This of course, becomes more useful for more complicated definitions.</p>
+<pre class="scheme">&nbsp;
+<span style="color: #66cc66;">&#40;</span>define-curried <span style="color: #66cc66;">&#40;</span>compose <span style="color: #b1b100;">f</span> g x<span style="color: #66cc66;">&#41;</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">f</span> <span style="color: #66cc66;">&#40;</span>g x<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+<span style="color: #66cc66;">&#40;</span>define-curried <span style="color: #66cc66;">&#40;</span>const a _<span style="color: #66cc66;">&#41;</span> a<span style="color: #66cc66;">&#41;</span>
+&nbsp;</pre>
+<p>While I could manually associate the parentheses to the left and nest lambdas everywhere, Haskell code is rife with these sorts of applications. In the spirit of Scheme, since I couldn't find a macro on the internet that did what I want, I tried my hand at rolling my own.</p>
+<pre class="scheme">&nbsp;
+<span style="color: #808080; font-style: italic;">;; curried lambda</span>
+<span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">define-syntax</span> curried
+  <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">syntax-rules</span> <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>_ <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span>
+     <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">lambda</span> args
+         <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">if</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">null?</span> args<span style="color: #66cc66;">&#41;</span>
+             body
+             <span style="color: #66cc66;">&#40;</span>apply body args<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>_ <span style="color: #66cc66;">&#40;</span>arg<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span>
+      <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">letrec</span>
+        <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>partial-application
+          <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">lambda</span> args
+            <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">if</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">null?</span> args<span style="color: #66cc66;">&#41;</span>
+                partial-application
+                <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">let</span> <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>arg <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">car</span> args<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+                      <span style="color: #66cc66;">&#40;</span>rest <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">cdr</span> args<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+                  <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">if</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">null?</span> rest<span style="color: #66cc66;">&#41;</span>
+                      body
+                      <span style="color: #66cc66;">&#40;</span>apply body rest<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+        partial-application<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>_ <span style="color: #66cc66;">&#40;</span>arg args ...<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span>
+     <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">letrec</span>
+       <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>partial-application
+         <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">lambda</span> all-args
+           <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">if</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">null?</span> all-args<span style="color: #66cc66;">&#41;</span>
+               partial-application
+               <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">let</span> <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>arg <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">car</span> all-args<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+                     <span style="color: #66cc66;">&#40;</span>rest <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">cdr</span> all-args<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+                 <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">let</span> <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>next <span style="color: #66cc66;">&#40;</span>curried <span style="color: #66cc66;">&#40;</span>args ...<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+                   <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">if</span> <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">null?</span> rest<span style="color: #66cc66;">&#41;</span>
+                       next
+                       <span style="color: #66cc66;">&#40;</span>apply next rest<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+       partial-application<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">;; curried defines</span>
+<span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">define-syntax</span> define-curried
+  <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">syntax-rules</span> <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>define-curried <span style="color: #66cc66;">&#40;</span>name args ...<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span>
+       <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">define</span> name <span style="color: #66cc66;">&#40;</span>curried <span style="color: #66cc66;">&#40;</span>args ...<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>define-curried <span style="color: #66cc66;">&#40;</span>name<span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span>
+       <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">define</span> name <span style="color: #66cc66;">&#40;</span>curried <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span> body<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span>
+    <span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#40;</span>define-curried name body<span style="color: #66cc66;">&#41;</span>
+       <span style="color: #66cc66;">&#40;</span><span style="color: #b1b100;">define</span> name body<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&#41;</span></pre>
+<p>While Scheme is not my usual programming language, I love the power of hygienic macros.</p>
+<p>I welcome feedback.</p>
+<p>[Edit: updated to change the base case for define-curried and added the if to the base case of curried to be more consistent with the other cases per the second comment below]</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/curried-scheme/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+	</channel>
+</rss>

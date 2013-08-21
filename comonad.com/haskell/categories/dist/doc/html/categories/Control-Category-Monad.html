@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Monad.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Monad</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>categories-0.3: Category Library</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Monad</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Categorical monads and comonads
+</A
+></DT
+><DT
+><A HREF="#2"
+>Traditional monad sugar
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Defines <TT
+><A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+></TT
+> and Comonad in a way that allows it to represent a (co)monad over 
+ other categories than just the category of types.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Functor-Pointed.html#t%3APointed"
+>Pointed</A
+> m k =&gt; <A HREF="#t%3AMonad"
+>Monad</A
+> m k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Abind"
+>bind</A
+> :: k a (m b) -&gt; k (m a) (m b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ajoin"
+>join</A
+> :: k (m (m a)) (m a)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmapMonad"
+>mapMonad</A
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m k =&gt; k a b -&gt; k (m a) (m b)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3D%3C%3C"
+>(=&lt;&lt;)</A
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3E%3E%3D"
+>(&gt;&gt;=)</A
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m a -&gt; (a -&gt; m b) -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3C%3C"
+>(&lt;&lt;)</A
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m b -&gt; m a -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3E%3E"
+>(&gt;&gt;)</A
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m a -&gt; m b -&gt; m b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Categorical monads and comonads
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Functor-Pointed.html#t%3APointed"
+>Pointed</A
+> m k =&gt; <A NAME="t%3AMonad"
+></A
+><B
+>Monad</B
+> m k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>Instances of Monad should satisfy the following laws:
+</P
+><PRE
+> bind k . return = k
+ bind return = id
+ map f = bind (return . f)
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Abind"
+></A
+><B
+>bind</B
+> :: k a (m b) -&gt; k (m a) (m b)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ajoin"
+></A
+><B
+>join</B
+> :: k (m (m a)) (m a)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Monad')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Monad" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> <A HREF="Control-Category-Functor-Identity.html#t%3AIdentity"
+>Identity</A
+> (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Comonad.html#t%3AComonad"
+>Comonad</A
+> w k =&gt; <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> w (<A HREF="Control-Category-Dual.html#t%3ADual"
+>Dual</A
+> k)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(Functor m, Monad m) =&gt; <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> (<A HREF="Control-Category-Functor-Native.html#t%3ANativeF"
+>NativeF</A
+> m) (-&gt;)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmapMonad"
+></A
+><B
+>mapMonad</B
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m k =&gt; k a b -&gt; k (m a) (m b)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>free definition of <TT
+><A HREF="Control-Category-Functor.html#t%3AFunctor"
+>Functor</A
+></TT
+> for a <TT
+><A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+></TT
+> <TT
+>m</TT
+> over a Category <TT
+>k</TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Traditional monad sugar
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3D%3C%3C"
+></A
+><B
+>(=&lt;&lt;)</B
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3E%3E%3D"
+></A
+><B
+>(&gt;&gt;=)</B
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m a -&gt; (a -&gt; m b) -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3C%3C"
+></A
+><B
+>(&lt;&lt;)</B
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m b -&gt; m a -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3E%3E"
+></A
+><B
+>(&gt;&gt;)</B
+> :: <A HREF="Control-Category-Monad.html#t%3AMonad"
+>Monad</A
+> m (-&gt;) =&gt; m a -&gt; m b -&gt; m b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Monad.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+</HTML
+>

@@ -1,0 +1,995 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Hex-Stage1.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:21 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Type.Hex.Stage1</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>type-int-0.4: Type Level 2s- and 16s- Complement Integers</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Type.Hex.Stage1</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTC, FD, TH, undecidable instances, missing constructors)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Stage1: Lay the ground work for all sorts of Template Haskell hackery 
+ in the later stages. Only a handful of class specifications in this file
+ are for later public consumption, and none of those are fleshed out here.
+</P
+><P
+>This multiple-stage implementation is necessitated by the way Template 
+ Haskell is implemented in GHC.
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmkXT"
+></A
+><B
+>mkXT</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Syntax.html#t%3AName"
+>Name</A
+> -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3ADecQ"
+>DecQ</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmkHT"
+></A
+><B
+>mkHT</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Syntax.html#t%3AName"
+>Name</A
+> -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3ADecQ"
+>DecQ</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ALSN"
+></A
+><B
+>LSN</B
+> a d a' | a -&gt; d a', d a' -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:LSN')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:LSN" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ALSN"
+>LSN</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> H0 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ALSN"
+>LSN</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> HF <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATrichotomy"
+></A
+><B
+>Trichotomy</B
+> n s | n -&gt; s</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Trichotomy')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Trichotomy" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATrichotomy"
+>Trichotomy</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Binary-Internals.html#t%3ASignZero"
+>SignZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATrichotomy"
+>Trichotomy</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Binary-Internals.html#t%3ANegative"
+>Negative</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATEven"
+></A
+><B
+>TEven</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TEven')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TEven" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATEven"
+>TEven</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATEven"
+>TEven</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATSucc"
+></A
+><B
+>TSucc</B
+> n m | n -&gt; m, m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TSucc')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TSucc" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (D1 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> (DE <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> n m, <A HREF="Data-Type-Hex-Stage2.html#t%3AExtF"
+>ExtF</A
+> n, <A HREF="Data-Type-Hex-Stage2.html#t%3AExt0"
+>Ext0</A
+> m) =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> (DF n) (D0 m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAddC%27"
+></A
+><B
+>TAddC'</B
+> a b c d | a b c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAddC%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAddC%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (D1 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (DE <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (DF a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (D0 b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (D0 a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (DF b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> b a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> (D0 a) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (DF b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> (DF a) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (D0 b)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNF%27"
+></A
+><B
+>TNF'</B
+> a b c | a -&gt; b c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNF%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNF%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (D0 a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (D0 c) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d) =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (D0 (D0 a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (D0 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>) <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (DF a) c b, <A HREF="Data-Type-Boolean.html#t%3ATIf"
+>TIf</A
+> b (DF c) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> d) =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (DF (DF a)) d b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> (DF <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>) <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATHex"
+></A
+><B
+>THex</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AfromTHex"
+></A
+><B
+>fromTHex</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> b =&gt; a -&gt; b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:THex')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:THex" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a, <A HREF="Data-Type-Hex-Stage2.html#t%3AExt0"
+>Ext0</A
+> a) =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D0 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D1 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D2 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D3 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D4 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D5 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D6 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D7 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D8 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (D9 a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DA a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DB a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DC a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DD a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DE a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> a, <A HREF="Data-Type-Hex-Stage2.html#t%3AExtF"
+>ExtF</A
+> a) =&gt; <A HREF="Data-Type-Hex-Stage1.html#t%3ATHex"
+>THex</A
+> (DF a)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ASHR1"
+></A
+><B
+>SHR1</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:SHR1')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:SHR1" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (DE <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H1 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (D1 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H1 <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> (DE <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+>)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Hex-Stage1.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:21 GMT -->
+</HTML
+>

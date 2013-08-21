@@ -1,0 +1,8 @@
+document
+SupplyT
+Split(T)
+Memoizing context
+Zipper comonads
+Differentiation/Dissection for functors
+(Co)monads over other categories. i.e. a comonad over the CategoryIO category would allow memoization without hacks.
+Elgot algebras

@@ -1,6 +1,0 @@
-[version #
-ekmett@gmail.com**20090330015125] {
-hunk ./reflection.cabal 2
--version:	    0.1.15
-+version:	    0.0
-}

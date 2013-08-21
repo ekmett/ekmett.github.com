@@ -1,0 +1,520 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Cartesian-Closed.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:51 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Cartesian.Closed</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Cartesian.Closed</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ehommett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Cartesian Closed Category
+</A
+></DT
+><DT
+><A HREF="#2"
+>Co-(Cartesian Closed Category)
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>NB: Some rewrite rules are disabled pending resolution of:
+ <A HREF="http://hackage.haskell.org/trac/ghc/ticket/2291"
+>http://hackage.haskell.org/trac/ghc/ticket/2291</A
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> hom prod i, <A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> hom prod i) =&gt; <A HREF="#t%3ACCC"
+>CCC</A
+> hom prod exp i | hom -&gt; prod exp i <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aapply"
+>apply</A
+> ::  hom (prod (exp a b) a) b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acurry"
+>curry</A
+> ::  hom (prod a b) c -&gt; hom a (exp b c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Auncurry"
+>uncurry</A
+> ::  hom a (exp b c) -&gt; hom (prod a b) c</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunitCCC"
+>unitCCC</A
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> hom prod exp i =&gt; hom a (exp b (prod b a))</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcounitCCC"
+>counitCCC</A
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> hom prod exp i =&gt; hom (prod b (exp b a)) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> hom sum i, <A HREF="Control-Category-Cartesian.html#t%3ACoCartesian"
+>CoCartesian</A
+> hom sum i) =&gt; <A HREF="#t%3ACoCCC"
+>CoCCC</A
+> hom sum coexp i | hom -&gt; sum coexp i <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acoapply"
+>coapply</A
+> ::  hom b (sum (coexp hom a b) a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acocurry"
+>cocurry</A
+> ::  hom c (sum a b) -&gt; hom (coexp hom b c) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Auncocurry"
+>uncocurry</A
+> ::  hom (coexp hom b c) a -&gt; hom c (sum a b)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AunitCoCCC"
+>unitCoCCC</A
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> hom sum coexp i =&gt; hom a (sum b (coexp hom b a))</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AcounitCoCCC"
+>counitCoCCC</A
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> hom sum coexp i =&gt; hom (coexp hom b (sum b a)) a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Cartesian Closed Category
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> hom prod i, <A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> hom prod i) =&gt; <A NAME="t%3ACCC"
+></A
+><B
+>CCC</B
+> hom prod exp i | hom -&gt; prod exp i <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+></TT
+> has full-fledged monoidal finite products and exponentials
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aapply"
+></A
+><B
+>apply</B
+> ::  hom (prod (exp a b) a) b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acurry"
+></A
+><B
+>curry</B
+> ::  hom (prod a b) c -&gt; hom a (exp b c)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Auncurry"
+></A
+><B
+>uncurry</B
+> ::  hom a (exp b c) -&gt; hom (prod a b) c</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AunitCCC"
+></A
+><B
+>unitCCC</B
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> hom prod exp i =&gt; hom a (exp b (prod b a))</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcounitCCC"
+></A
+><B
+>counitCCC</B
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> hom prod exp i =&gt; hom (prod b (exp b a)) a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Co-(Cartesian Closed Category)
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> hom sum i, <A HREF="Control-Category-Cartesian.html#t%3ACoCartesian"
+>CoCartesian</A
+> hom sum i) =&gt; <A NAME="t%3ACoCCC"
+></A
+><B
+>CoCCC</B
+> hom sum coexp i | hom -&gt; sum coexp i <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A Co-CCC has full-fledged comonoidal finite coproducts and coexponentials
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoapply"
+></A
+><B
+>coapply</B
+> ::  hom b (sum (coexp hom a b) a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acocurry"
+></A
+><B
+>cocurry</B
+> ::  hom c (sum a b) -&gt; hom (coexp hom b c) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Auncocurry"
+></A
+><B
+>uncocurry</B
+> ::  hom (coexp hom b c) a -&gt; hom c (sum a b)</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AunitCoCCC"
+></A
+><B
+>unitCoCCC</B
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> hom sum coexp i =&gt; hom a (sum b (coexp hom b a))</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcounitCoCCC"
+></A
+><B
+>counitCoCCC</B
+> :: <A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> hom sum coexp i =&gt; hom (coexp hom b (sum b a)) a</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Category-Cartesian-Closed.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:51 GMT -->
+</HTML
+>

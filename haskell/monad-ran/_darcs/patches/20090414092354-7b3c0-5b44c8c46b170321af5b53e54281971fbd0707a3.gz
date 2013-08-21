@@ -1,8 +1,0 @@
-[auto
-ekmett@gmail.com**20090414092354
- Ignore-this: 6f4fb90a5b4ca2eb4224ca0939a31efd
-] hunk ./Control/Monad/Ran.hs 126
--    type G (Either b) = Identity
--    type H (Either b) = ErrorH b
-+    type G (Either e) = Identity
-+    type H (Either e) = ErrorH b

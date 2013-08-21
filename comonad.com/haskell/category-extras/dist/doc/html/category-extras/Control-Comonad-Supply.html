@@ -1,0 +1,760 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Supply.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:50 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Comonad.Supply</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Comonad.Supply</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>provisional</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Creating supplies
+</A
+></DT
+><DT
+><A HREF="#2"
+>Obtaining values from supplies
+</A
+></DT
+><DT
+><A HREF="#3"
+>Generating new supplies from old
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>The technique for generating new values is based on the paper
+ ''On Generating Unique Names''
+ by Lennart Augustsson, Mikael Rittri, and Dan Synek.
+</P
+><P
+>Integrated from value-supply-0.1
+</P
+><P
+>TODO: a SupplyT Comonad Transformer
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Comonad.html"
+>Control.Comonad</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ASupply"
+>Supply</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewSupply"
+>newSupply</A
+> ::  a -&gt; (a -&gt; a) -&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewEnumSupply"
+>newEnumSupply</A
+> :: Enum a =&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AnewNumSupply"
+>newNumSupply</A
+> :: Num a =&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsupplyValue"
+>supplyValue</A
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsupplyLeft"
+>supplyLeft</A
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsupplyRight"
+>supplyRight</A
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmodifySupply"
+>modifySupply</A
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; b) -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit"
+>split</A
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; [<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit2"
+>split2</A
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit3"
+>split3</A
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Asplit4"
+>split4</A
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Control-Comonad.html"
+>Control.Comonad</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Creating supplies
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ASupply"
+></A
+><B
+>Supply</B
+> a </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A type that can be used to generate values on demand.
+ A supply may be turned into two different supplies by using
+ the functions <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyLeft"
+>supplyLeft</A
+></TT
+> and <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyRight"
+>supplyRight</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Supply')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Supply" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>Functor <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Functor-Extras.html#t%3AFunctorSplit"
+>FunctorSplit</A
+> <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Functor-Pointed.html#t%3ACopointed"
+>Copointed</A
+> <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Comonad.html#t%3AComonad"
+>Comonad</A
+> <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AnewSupply"
+></A
+><B
+>newSupply</B
+> ::  a -&gt; (a -&gt; a) -&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Creates a new supply of values.
+ The arguments specify how to generate values:
+ the first argument is an initial value, the
+ second specifies how to generate a new value from an existing one.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AnewEnumSupply"
+></A
+><B
+>newEnumSupply</B
+> :: Enum a =&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A supply of values that are in the <TT
+>Enum</TT
+> class.
+ The initial value is <TT
+>toEnum 0</TT
+>, new values are generates with <TT
+>succ</TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AnewNumSupply"
+></A
+><B
+>newNumSupply</B
+> :: Num a =&gt; IO (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A supply of values that are in the <TT
+>Num</TT
+> class.
+ The initial value is 0, new values are generated by adding 1.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Obtaining values from supplies
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AsupplyValue"
+></A
+><B
+>supplyValue</B
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Get the value of a supply.  This function, together with
+ <TT
+><A HREF="Control-Comonad-Supply.html#v%3AmodifySupply"
+>modifySupply</A
+></TT
+> forms a comonad on <TT
+><A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>Generating new supplies from old
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AsupplyLeft"
+></A
+><B
+>supplyLeft</B
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generate a new supply.  This supply is different from the one
+ generated with <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyRight"
+>supplyRight</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AsupplyRight"
+></A
+><B
+>supplyRight</B
+> :: <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generate a new supply. This supply is different from the one
+ generated with <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyLeft"
+>supplyLeft</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmodifySupply"
+></A
+><B
+>modifySupply</B
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; b) -&gt; <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> b</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generate a new supply by systematically applying a function
+ to an existing supply.  This function, together with <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyValue"
+>supplyValue</A
+></TT
+>
+ form a comonad on <TT
+><A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Asplit"
+></A
+><B
+>split</B
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; [<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a]</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Generate an infinite list of supplies by using <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyLeft"
+>supplyLeft</A
+></TT
+> and
+ <TT
+><A HREF="Control-Comonad-Supply.html#v%3AsupplyRight"
+>supplyRight</A
+></TT
+> repeatedly.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Asplit2"
+></A
+><B
+>split2</B
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Split a supply into two different supplies.
+ The resulting supplies are different from the input supply.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Asplit3"
+></A
+><B
+>split3</B
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Split a supply into three different supplies.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Asplit4"
+></A
+><B
+>split4</B
+> ::  <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a -&gt; (<A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a, <A HREF="Control-Comonad-Supply.html#t%3ASupply"
+>Supply</A
+> a)</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Split a supply into four different supplies.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Comonad-Supply.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:12:50 GMT -->
+</HTML
+>

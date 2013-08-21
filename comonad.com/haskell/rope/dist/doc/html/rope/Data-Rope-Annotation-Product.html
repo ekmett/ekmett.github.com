@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotation-Product.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:40 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Rope.Annotation.Product</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+><SCRIPT TYPE="text/javascript"
+>window.onload = function () {setSynopsis("mini_Data-Rope-Annotation-Product.html")};</SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>rope-0.4: Tools for manipulating fingertrees of bytestrings with optional annotations</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Rope-Annotation-Product.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Rope.Annotation.Product</FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  (f <A HREF="#t%3A%3A%2A%3A"
+>:*:</A
+> g) a = (f a) <A HREF="#v%3A%3A%2A%3A"
+>:*:</A
+> (g a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AfstF"
+>fstF</A
+> ::  (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g) a -&gt; f a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AsndF"
+>sndF</A
+> ::  (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g) a -&gt; g a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  (f <A NAME="t::*:"
+><A NAME="t%3A%3A%2A%3A"
+></A
+></A
+><B
+>:*:</B
+> g) a </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation-Product.html#%3A%2A%3A"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A Rope Annotation product.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+>Constructors</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="arg"
+>(f a) <A NAME="v::*:"
+><A NAME="v%3A%3A%2A%3A"
+></A
+></A
+><B
+>:*:</B
+> (g a)</TD
+><TD CLASS="rdoc"
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:%3A%2A%3A')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:%3A%2A%3A" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> f, <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> g) =&gt; <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Traversable.html#t%3ATraversable"
+>Traversable</A
+> f, <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Traversable.html#t%3ATraversable"
+>Traversable</A
+> g) =&gt; <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Traversable.html#t%3ATraversable"
+>Traversable</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Foldable.html#t%3AFoldable"
+>Foldable</A
+> f, <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Foldable.html#t%3AFoldable"
+>Foldable</A
+> g) =&gt; <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Data-Foldable.html#t%3AFoldable"
+>Foldable</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f, <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> g) =&gt; <A HREF="../../../../../../usr/share/doc/ghc6-doc/libraries/base/Control-Applicative.html#t%3AApplicative"
+>Applicative</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3ABreakableA"
+>BreakableA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3AReducerA"
+>ReducerA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> f, <A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> g) =&gt; <A HREF="Data-Rope-Annotation.html#t%3AMonoidA"
+>MonoidA</A
+> (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:fstF"
+><A NAME="v%3AfstF"
+></A
+></A
+><B
+>fstF</B
+> ::  (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g) a -&gt; f a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation-Product.html#fstF"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v:sndF"
+><A NAME="v%3AsndF"
+></A
+></A
+><B
+>sndF</B
+> ::  (f <A HREF="Data-Rope-Annotation-Product.html#t%3A%3A%2A%3A"
+>:*:</A
+> g) a -&gt; g a</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Rope-Annotation-Product.html#sndF"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.4.2</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotation-Product.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:15:40 GMT -->
+</HTML
+>

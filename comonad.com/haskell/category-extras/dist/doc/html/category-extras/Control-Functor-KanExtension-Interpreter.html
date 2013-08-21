@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension-Interpreter.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Functor.KanExtension.Interpreter</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>category-extras-0.53.6: Various modules and constructs inspired by category theory</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Functor.KanExtension.Interpreter</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (rank-2 polymorphism)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Ghani and Johann's Interp/InterpT types from ''Initial Algebra Semantics is Enough!''
+ <A HREF="http://crab.rutgers.edu/~pjohann/tlca07-rev.pdf"
+>http://crab.rutgers.edu/~pjohann/tlca07-rev.pdf</A
+> and its dual.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AInterpreter"
+></A
+><B
+>Interpreter</B
+> y g h = y <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> <A HREF="Control-Functor-KanExtension.html#t%3ARan"
+>Ran</A
+> g h</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3AInterpreterT"
+></A
+><B
+>InterpreterT</B
+> f g h = <SPAN CLASS="keyword"
+>forall</SPAN
+> y. Functor y =&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3AInterpreter"
+>Interpreter</A
+> y g h -&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3AInterpreter"
+>Interpreter</A
+> (f y) g h</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AinterpreterAlgebra"
+></A
+><B
+>interpreterAlgebra</B
+> ::  <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3AInterpreterT"
+>InterpreterT</A
+> f g h -&gt; <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f (<A HREF="Control-Functor-KanExtension.html#t%3ARan"
+>Ran</A
+> g h)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AalgebraInterpreter"
+></A
+><B
+>algebraInterpreter</B
+> :: <A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f =&gt; <A HREF="Control-Functor-HigherOrder.html#t%3AHAlgebra"
+>HAlgebra</A
+> f (<A HREF="Control-Functor-KanExtension.html#t%3ARan"
+>Ran</A
+> g h) -&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3AInterpreterT"
+>InterpreterT</A
+> f g h</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ACointerpreter"
+></A
+><B
+>Cointerpreter</B
+> y g h = <A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h <A HREF="Control-Functor-Extras.html#t%3A%3A~%3E"
+>:~&gt;</A
+> y</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+> <A NAME="t%3ACointerpreterT"
+></A
+><B
+>CointerpreterT</B
+> f g h = <SPAN CLASS="keyword"
+>forall</SPAN
+> y. Functor y =&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3ACointerpreter"
+>Cointerpreter</A
+> y g h -&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3ACointerpreter"
+>Cointerpreter</A
+> (f y) g h</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcointerpreterCoalgebra"
+></A
+><B
+>cointerpreterCoalgebra</B
+> ::  <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3ACointerpreterT"
+>CointerpreterT</A
+> f g h -&gt; <A HREF="Control-Functor-HigherOrder.html#t%3AHCoalgebra"
+>HCoalgebra</A
+> f (<A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h)</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AcoalgebraCointerpreter"
+></A
+><B
+>coalgebraCointerpreter</B
+> :: <A HREF="Control-Comonad-HigherOrder.html#t%3AHFunctor"
+>HFunctor</A
+> f =&gt; <A HREF="Control-Functor-HigherOrder.html#t%3AHCoalgebra"
+>HCoalgebra</A
+> f (<A HREF="Control-Functor-KanExtension.html#t%3ALan"
+>Lan</A
+> g h) -&gt; <A HREF="Control-Functor-KanExtension-Interpreter.html#t%3ACointerpreterT"
+>CointerpreterT</A
+> f g h</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.1.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Functor-KanExtension-Interpreter.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

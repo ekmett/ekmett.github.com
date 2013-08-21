@@ -1,0 +1,2113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Hex-Stage3.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:22 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Type.Hex.Stage3</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>type-int-0.4: Type Level 2s- and 16s- Complement Integers</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Type.Hex.Stage3</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTC, FD, TH, undecidable instances, missing constructors)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Stage3: Define everything else. The juicier bits are then exposed via <A HREF="Data-Type-Hex.html"
+>Data.Type.Hex</A
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSucc"
+>tSucc</A
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; n -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtPred"
+>tPred</A
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATNeg"
+>TNeg</A
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtNeg"
+>tNeg</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsPositive"
+>TIsPositive</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsPositive"
+>tIsPositive</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsNegative"
+>TIsNegative</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsNegative"
+>tIsNegative</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATIsZero"
+>TIsZero</A
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtIsZero"
+>tIsZero</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsZero"
+>TIsZero</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAddC%27"
+>tAddC'</A
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> a b c d =&gt; a -&gt; b -&gt; c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAddF%27"
+>tAddF'</A
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d =&gt; a -&gt; b -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATNF"
+>TNF</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtNF"
+>tNF</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATNF"
+>TNF</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAdd%27"
+>TAdd'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAdd%27"
+>tAdd'</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATSub%27"
+>TSub'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSub%27"
+>tSub'</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATSub%27"
+>TSub'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATAdd"
+>TAdd</A
+> a b c | a b -&gt; c, a c -&gt; b, b c -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtAdd"
+>tAdd</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtSub"
+>tSub</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; c -&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhexT"
+>hexT</A
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a =&gt; a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3ATypeQ"
+>TypeQ</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AhexE"
+>hexE</A
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a =&gt; a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3AExpQ"
+>ExpQ</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATMul"
+>TMul</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtMul"
+>tMul</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATHex2Binary"
+>THex2Binary</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtHex2Binary"
+>tHex2Binary</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary"
+>THex2Binary</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATBinary2Hex"
+>TBinary2Hex</A
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtBinary2Hex"
+>tBinary2Hex</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATBinary2Hex"
+>TBinary2Hex</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATHexBinary"
+>THexBinary</A
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATPow%27"
+>TPow'</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3ATPow"
+>TPow</A
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AtPow"
+>tPow</A
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow"
+>TPow</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSucc"
+></A
+><B
+>tSucc</B
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; n -&gt; m</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtPred"
+></A
+><B
+>tPred</B
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> n m =&gt; m -&gt; n</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNeg"
+></A
+><B
+>TNeg</B
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNeg')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNeg" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Boolean.html#t%3ATNot"
+>TNot</A
+> a b, <A HREF="Data-Type-Hex-Stage1.html#t%3ATSucc"
+>TSucc</A
+> b c) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> a c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtNeg"
+></A
+><B
+>tNeg</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsPositive"
+></A
+><B
+>TIsPositive</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsPositive')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsPositive" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATrichotomy"
+>Trichotomy</A
+> n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3APositive"
+>Positive</A
+> b) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsPositive"
+></A
+><B
+>tIsPositive</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsPositive"
+>TIsPositive</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsNegative"
+></A
+><B
+>TIsNegative</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsNegative')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsNegative" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATrichotomy"
+>Trichotomy</A
+> n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3ANegative"
+>Negative</A
+> b) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsNegative"
+></A
+><B
+>tIsNegative</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsNegative"
+>TIsNegative</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATIsZero"
+></A
+><B
+>TIsZero</B
+> n b | n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TIsZero')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TIsZero" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATrichotomy"
+>Trichotomy</A
+> n s, <A HREF="Data-Type-Ord.html#t%3ATEq"
+>TEq</A
+> s <A HREF="Data-Type-Binary-Internals.html#t%3ASignZero"
+>SignZero</A
+> b) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsZero"
+>TIsZero</A
+> n b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtIsZero"
+></A
+><B
+>tIsZero</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATIsZero"
+>TIsZero</A
+> n b =&gt; n -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAddC%27"
+></A
+><B
+>tAddC'</B
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> a b c d =&gt; a -&gt; b -&gt; c -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAddF%27"
+></A
+><B
+>tAddF'</B
+> :: <A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d =&gt; a -&gt; b -&gt; d</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATNF"
+></A
+><B
+>TNF</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TNF')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TNF" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage1.html#t%3ATNF%27"
+>TNF'</A
+> a b c =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATNF"
+>TNF</A
+> a b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtNF"
+></A
+><B
+>tNF</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATNF"
+>TNF</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAdd%27"
+></A
+><B
+>TAdd'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAdd%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAdd%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage1.html#t%3ATAddC%27"
+>TAddC'</A
+> a b <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> d, <A HREF="Data-Type-Hex-Stage3.html#t%3ATNF"
+>TNF</A
+> d d') =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a b d'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAdd%27"
+></A
+><B
+>tAdd'</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATSub%27"
+></A
+><B
+>TSub'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TSub%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TSub%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a b' c) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATSub%27"
+>TSub'</A
+> a b c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSub%27"
+></A
+><B
+>tSub'</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATSub%27"
+>TSub'</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATAdd"
+></A
+><B
+>TAdd</B
+> a b c | a b -&gt; c, a c -&gt; b, b c -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TAdd')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TAdd" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a b c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> b b', <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> c b' a, <A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> a a', <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> c a' b) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd"
+>TAdd</A
+> a b c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtAdd"
+></A
+><B
+>tAdd</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtSub"
+></A
+><B
+>tSub</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd"
+>TAdd</A
+> a b c =&gt; c -&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AhexT"
+></A
+><B
+>hexT</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a =&gt; a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3ATypeQ"
+>TypeQ</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>$(hexT n) returns the appropriate THex instance
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AhexE"
+></A
+><B
+>hexE</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#t%3AIntegral"
+>Integral</A
+> a =&gt; a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html#t%3AExpQ"
+>ExpQ</A
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>$(hexE n) returns an undefined value of the appropriate THex instance
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATMul"
+></A
+><B
+>TMul</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A simple peasant multiplier. TODO: exploit 2s complement and reverse the worst cases
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TMul')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TMul" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATNeg"
+>TNeg</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D0 b) c</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D1 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D2 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 a2 a3, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a3 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D3 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a4 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D4 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 a4 a5, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a5 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D5 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 a4 a6, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a6 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D6 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 a4 a6, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 a6 a7, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a7 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D7 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a8 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D8 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 a8 a9, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a9 c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (D9 b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 a8 aA, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aA c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DA b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 a8 a0, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 a0 aB, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aB c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DB b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a4 a8 aC, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aC c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DC b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a4 a8 aC, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 aC aD, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aD c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DD b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a4 a8 aC, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 aC aE, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aE c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DE b) d</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> (D0 a1) b c, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a1 a2, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a2 a4, <A HREF="Data-Type-Hex-Stage1.html#t%3ASHR1"
+>SHR1</A
+> H0 a4 a8, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a4 a8 aC, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a2 aC aE, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> a1 aE aF, <A HREF="Data-Type-Hex-Stage3.html#t%3ATAdd%27"
+>TAdd'</A
+> aF c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a1 (DF b) d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtMul"
+></A
+><B
+>tMul</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATHex2Binary%27"
+></A
+><B
+>THex2Binary'</B
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:THex2Binary%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:THex2Binary%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+> <A HREF="Data-Type-Boolean.html#t%3AT"
+>T</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D0 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D1 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D2 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D3 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D4 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D5 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D6 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D7 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D8 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (D9 a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DA a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DB a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DC a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DD a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DE a) (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> (DF a) (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> b))))</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATHex2Binary"
+></A
+><B
+>THex2Binary</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:THex2Binary')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:THex2Binary" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b, <A HREF="Data-Type-Binary-Internals.html#t%3ATNF"
+>TNF</A
+> b b') =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary"
+>THex2Binary</A
+> a b'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtHex2Binary"
+></A
+><B
+>tHex2Binary</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary"
+>THex2Binary</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATBinary2Hex"
+></A
+><B
+>TBinary2Hex</B
+> a b | a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TBinary2Hex')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TBinary2Hex" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary%27"
+>THex2Binary'</A
+> a b, <A HREF="Data-Type-Hex-Stage3.html#t%3ATNF"
+>TNF</A
+> a a') =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATBinary2Hex"
+>TBinary2Hex</A
+> b a'</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtBinary2Hex"
+></A
+><B
+>tBinary2Hex</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATBinary2Hex"
+>TBinary2Hex</A
+> a b =&gt; a -&gt; b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATHexBinary"
+></A
+><B
+>THexBinary</B
+> a b | a -&gt; b, b -&gt; a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:THexBinary')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:THexBinary" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary"
+>THex2Binary</A
+> a b, <A HREF="Data-Type-Hex-Stage3.html#t%3ATBinary2Hex"
+>TBinary2Hex</A
+> b a) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATHexBinary"
+>THexBinary</A
+> a b</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATPow%27"
+></A
+><B
+>TPow'</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>peasant exponentiator with explicit binary exponent
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TPow%27')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TPow%27" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+> (D1 <A HREF="Data-Type-Boolean.html#t%3AF"
+>F</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a k c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> c c d, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> a d e) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AI"
+>I</A
+> k) e</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a k c, <A HREF="Data-Type-Hex-Stage3.html#t%3ATMul"
+>TMul</A
+> c c d) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a (<A HREF="Data-Type-Binary-Internals.html#t%3AO"
+>O</A
+> k) d</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3ATPow"
+></A
+><B
+>TPow</B
+> a b c | a b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>peasant exponentiator
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:TPow')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:TPow" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Type-Hex-Stage3.html#t%3ATHex2Binary"
+>THex2Binary</A
+> b b', <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow%27"
+>TPow'</A
+> a b' c) =&gt; <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow"
+>TPow</A
+> a b c</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AtPow"
+></A
+><B
+>tPow</B
+> :: <A HREF="Data-Type-Hex-Stage3.html#t%3ATPow"
+>TPow</A
+> a b c =&gt; a -&gt; b -&gt; c</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Hex-Stage3.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:56:22 GMT -->
+</HTML
+>

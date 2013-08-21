@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/mini_Data-Rope-Annotated.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:32 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Rope.Annotated</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><DIV CLASS="outer"
+><DIV CLASS="mini-topbar"
+>Data.Rope.Annotated</DIV
+><DIV CLASS="mini-synopsis"
+><H1
+>Annotated <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+>s 
+</H1
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AA" TARGET="main"
+>A</A
+> s a</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AAnn" TARGET="main"
+>Ann</A
+> a f</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AMonoidA" TARGET="main"
+>MonoidA</A
+> f</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AReducerA" TARGET="main"
+>ReducerA</A
+> f</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3ABreakableA" TARGET="main"
+>BreakableA</A
+> f</DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3ArunAnn" TARGET="main"
+>runAnn</A
+></DIV
+> <H1
+>Unpacking Ropes
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Anull" TARGET="main"
+>null</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Ahead" TARGET="main"
+>head</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Alast" TARGET="main"
+>last</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aunpack" TARGET="main"
+>unpack</A
+></DIV
+> <H1
+>Building Annotated <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+>
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aempty" TARGET="main"
+>empty</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aappend" TARGET="main"
+>append</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aunit" TARGET="main"
+>unit</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Asnoc" TARGET="main"
+>snoc</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Acons" TARGET="main"
+>cons</A
+></DIV
+> <H1
+>Cutting An Annotated <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+>
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3AsplitAt" TARGET="main"
+>splitAt</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Adrop" TARGET="main"
+>drop</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Atake" TARGET="main"
+>take</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Abreak" TARGET="main"
+>break</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aspan" TARGET="main"
+>span</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3AtakeWhile" TARGET="main"
+>takeWhile</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3AdropWhile" TARGET="main"
+>dropWhile</A
+></DIV
+> <H1
+>Inspecting the ends of the <TT
+><A HREF="Data-Rope-Internal.html#t%3ARope"
+>Rope</A
+></TT
+>
+</H1
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Auncons" TARGET="main"
+>uncons</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3Aunsnoc" TARGET="main"
+>unsnoc</A
+></DIV
+> <H1
+>Type-level constructors
+</H1
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type family</SPAN
+> <A HREF="#t%3ADrop"
+>Drop</A
+> n a :: *</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type family</SPAN
+> <A HREF="#t%3ATake"
+>Take</A
+> n a :: *</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3ASnoc" TARGET="main"
+>Snoc</A
+> a s t</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3ACons" TARGET="main"
+>Cons</A
+> s t a</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3ATail" TARGET="main"
+>Tail</A
+> t a</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AInit" TARGET="main"
+>Init</A
+> a t</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AReturn" TARGET="main"
+>Return</A
+> a</DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3ANil" TARGET="main"
+>Nil</A
+> </DIV
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>type family</SPAN
+> a <A HREF="#t%3A%3A%3C%3E"
+>:&lt;&gt;</A
+> b :: *</DIV
+> <H1
+>Annotations
+</H1
+> <H2
+>Annotation Product
+</H2
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>&nbsp;(f <A HREF="Data-Rope-Annotated.html#t%3A%3A%2A%3A" TARGET="main"
+>:*:</A
+> g) a</DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3AfstF" TARGET="main"
+>fstF</A
+></DIV
+> <DIV CLASS="decl"
+><A HREF="Data-Rope-Annotated.html#v%3AsndF" TARGET="main"
+>sndF</A
+></DIV
+> <H2
+>Annotation Unit
+</H2
+> <DIV CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>&nbsp;<A HREF="Data-Rope-Annotated.html#t%3AUnit" TARGET="main"
+>Unit</A
+> a</DIV
+></DIV
+></DIV
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/rope/dist/doc/html/rope/mini_Data-Rope-Annotated.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:17:32 GMT -->
+</HTML
+>

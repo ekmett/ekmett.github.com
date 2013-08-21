@@ -1,5 +1,0 @@
-[need license
-ekmett@gmail.com**20070713020739] {
-hunk ./monad-param.cabal 13
--license-file:   LICENSE
-}

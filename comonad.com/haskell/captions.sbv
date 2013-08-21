@@ -1,0 +1,7189 @@
+0:00:00.809,0:00:05.180
+Hi everyone. I want to welcome 
+to the second New York Haskell meetup
+
+0:00:05.180,0:00:09.080
+It is a great crowd just like last time
+Thank everyone for coming, it was a great...
+
+0:00:09.080,0:00:11.419
+holiday party yesterday
+
+0:00:11.419,0:00:13.969
+I just want to make two quick pitches
+
+0:00:14.969,0:00:17.659
+First is we've got a great crowd but
+
+0:00:17.659,0:00:20.289
+there's room for more so if you know
+people that would be interested in
+
+0:00:20.289,0:00:24.499
+coming, publicity is great.
+We want to promote our great language
+
+0:00:24.499,0:00:28.889
+Number two, um... we're lining up a lot
+of good talks but it's always good to
+
+0:00:28.889,0:00:33.239
+have as many talks is possible lined up
+so if you are interested in giving a
+
+0:00:33.239,0:00:35.790
+talk be it a small talk,  a long talk
+
+0:00:35.790,0:00:40.110
+on just a little project you did or you
+know a lot more sort of lengthy
+
+0:00:40.110,0:00:42.190
+presentation um...
+
+0:00:42.190,0:00:46.160
+talk to myself .. That is Rich Minerich
+in the back there, he is one of
+
+0:00:46.160,0:00:50.670
+the organizers of the Haskell meet up as well 
+Doug is up here. If you want to
+
+0:00:50.670,0:00:53.710
+stand up and wave "hi," so people know who
+the organizer are who they could talk to about
+
+0:00:53.710,0:00:55.810
+whatever they want
+
+0:00:55.810,0:00:57.410
+Ryan is
+
+0:00:57.410,0:01:00.310
+somewhere and um... yes
+
+0:01:00.310,0:01:03.520
+That's one, two, three, four uh...
+
+0:01:03.520,0:01:07.300
+Am I forgetting.. Oz! but he's not
+here.. is he here tonight?
+
+0:01:07.300,0:01:12.790
+Okay, so those are the organizers.
+Come talk to us if you want to present or
+
+0:01:12.790,0:01:15.980
+about anything else.
+And now i'm going to introduce Ed Kmett.
+
+0:01:15.980,0:01:21.250
+Edward Kmett who is a co-worker
+of mine at Standard and Poor Capital I_Q_
+
+0:01:21.250,0:01:25.320
+He's written a zillion and one
+libraries and uh...
+
+0:01:25.320,0:01:29.200
+he discovered with the lens library
+that if he added documentation
+
+0:01:31.450,0:01:36.440
+that he got a lot more users! So this
+is actually rapidly acquiring
+
+0:01:36.440,0:01:40.960
+a reputation and finding widespread
+use and it's really cool, so he
+
+0:01:40.960,0:01:42.870
+going to tell us all about it.
+Thank you, Ed.
+
+0:01:42.870,0:01:46.240
+I'm going to waffle back and forth
+between
+
+0:01:46.240,0:01:49.770
+some slides that I have that have a
+lot of the theory and motivation
+
+0:01:49.770,0:01:52.510
+like from a technical standpoint
+for lenses
+
+0:01:52.510,0:01:54.680
+and just like a G_H_C_I_ session where
+
+0:01:54.680,0:01:56.359
+I'll use them in practice so that
+
+0:01:56.359,0:02:00.840
+even if you're having trouble following along
+with the theory and the derivation
+
+0:02:00.840,0:02:02.390
+you can see them used
+
+0:02:02.390,0:02:06.369
+and get a feel for how you'd use them in
+your own Haskell code. All right?
+
+0:02:10.159,0:02:12.939
+So, um...
+
+0:02:12.939,0:02:14.700
+I've got a lot of material to cover today.
+
+0:02:14.700,0:02:18.489
+So I'm going to ramble on for
+a couple of hours. I apologize.
+
+0:02:19.789,0:02:24.379
+So I guess the first question is:
+What is a lens?
+
+0:02:24.379,0:02:30.199
+In imperative code you can very easily
+
+0:02:30.199,0:02:35.389
+read and write to like nested getters and setters
+way down in a hierarchy.
+
+0:02:35.389,0:02:39.459
+I can call "foo . bar . baz . quux" and "+= 10"
+
+0:02:39.459,0:02:41.529
+and I don't really
+
+0:02:41.529,0:02:46.539
+think too hard about violating what.. what the
+
+0:02:46.539,0:02:48.620
+Eiffel guys call the Law of Demeter
+
+0:02:48.620,0:02:52.239
+and going down and accessing properties
+of properties of properties.
+
+0:02:52.239,0:02:57.950
+In a functional setting it's a lot
+harder to do that though, because
+
+0:02:57.950,0:03:02.479
+I have to.. maybe I use record syntax and
+I have to go in and
+
+0:03:02.479,0:03:06.599
+it costs me more and more, because I
+have to keep talking about the same objects
+
+0:03:06.599,0:03:08.689
+to go deeper and deeper.
+
+0:03:08.689,0:03:13.449
+So, record updates are not very
+compositional.
+
+0:03:13.449,0:03:14.419
+um...
+
+0:03:14.419,0:03:21.089
+and so PLT Borat based on.. actually I
+think a version of a talk Tony gave
+
+0:03:21.089,0:03:22.099
+on lenses..
+
+0:03:22.099,0:03:23.419
+Tony Morris
+
+0:03:24.290,0:03:27.110
+said something to the effect that
+costate comonad coalgebras are the equivalent of
+
+0:03:27.110,0:03:30.319
+Java's variable update technology for Haskell
+
+0:03:30.319,0:03:33.579
+And that
+
+0:03:33.579,0:03:37.269
+is really .. if you take nothing else away
+from what a lens is
+
+0:03:37.269,0:03:40.939
+it's getters and setters, we just
+
+0:03:40.939,0:03:43.979
+smash them together into
+
+0:03:43.979,0:03:47.760
+some kind of object.
+So simplest form of a lans that we might
+
+0:03:47.760,0:03:50.059
+make would be to pair
+
+0:03:50.059,0:03:52.279
+the getter let's call it "view" here
+
+0:03:52.279,0:03:53.389
+with a setter
+
+0:03:53.389,0:03:56.669
+so we will get an "a" out of an "s"
+
+0:03:56.669,0:03:58.069
+and we'll set
+
+0:03:58.069,0:03:59.369
+taking an "s"
+
+0:03:59.369,0:04:01.679
+and a new "a" that we want to replace into it
+
+0:04:01.679,0:04:03.309
+and well give you a new "s".
+
+0:04:03.309,0:04:06.260
+Okay? And we want to put some common
+sense laws on these.
+
+0:04:06.260,0:04:08.389
+Okay? We can actually drive these laws
+
+0:04:08.389,0:04:11.059
+about four or five different ways
+and they all give you the same laws so that
+
+0:04:11.059,0:04:11.979
+kind of gives us
+
+0:04:11.979,0:04:14.209
+a hint that we're onto the right abstraction
+
+0:04:15.369,0:04:19.100
+and one is is that if i "get" something
+
+0:04:19.100,0:04:20.749
+out of my "whole"
+
+0:04:20.749,0:04:21.889
+and i put it back
+
+0:04:21.889,0:04:26.720
+it's the same as if i didn't do anything,
+so a lens has no other effects.
+
+0:04:26.720,0:04:29.759
+Right? It doesn't bump a counter somewhere
+inside the object, it doesn't do
+
+0:04:29.759,0:04:31.199
+anything like that.
+
+0:04:31.199,0:04:34.399
+All I can do is read and write to part of it.
+
+0:04:34.399,0:04:40.330
+And if I put something in, I have
+to be able to get back out.
+
+0:04:40.330,0:04:44.379
+Okay? And finally, if i "set" twice.. I
+set it to something and i set it to
+
+0:04:44.379,0:04:50.249
+something else, it's just like I did the
+second setting. The first setting didn't matter
+
+0:04:50.249,0:04:58.990
+So these three laws let us reason
+about code that uses lenses.
+
+0:04:59.800,0:05:06.870
+I gave an answer on stack overflow that
+goes on for hundreds of lines about this
+
+0:05:06.870,0:05:09.580
+using this exact formulation of lenses.
+We're not going to be using this kind
+
+0:05:09.580,0:05:11.239
+of lens today.
+
+0:05:11.239,0:05:14.119
+[laughter]
+
+0:05:14.119,0:05:16.139
+um...
+
+0:05:16.139,0:05:21.029
+it goes so far and then stops.
+
+0:05:21.029,0:05:23.050
+So, to talk about that
+
+0:05:23.050,0:05:27.379
+costate comonad coalgebra,
+just long enough to throw it away:
+
+0:05:28.639,0:05:32.780
+So what that means is is that if we were
+to take this definition
+
+0:05:32.780,0:05:36.409
+they both start with an "s" and so I
+could theoretically just these two
+
+0:05:36.409,0:05:38.029
+functions together into one function.
+
+0:05:38.029,0:05:40.070
+I give you a function that
+gives you back a pair
+
+0:05:40.070,0:05:49.199
+of the "a" to "s" and the "a".
+Right? And that construction on the end
+
+0:05:49.199,0:05:53.539
+happens to be the store comonad
+or the costate comonad
+
+0:05:53.539,0:05:56.529
+if you want to go about it from a
+theoretical perspective.
+
+0:05:56.529,0:06:00.830
+and this is a store comonad coalgebra
+
+0:06:00.830,0:06:04.379
+and the laws to be a comonad coalgebra
+in this case are exactly the lens laws
+
+0:06:04.379,0:06:05.490
+that we just stated.
+
+0:06:05.490,0:06:09.409
+Okay? So that is a completely different
+way to give the exact same laws.
+
+0:06:09.409,0:06:13.129
+I think that the common sense version
+makes more sense.
+
+0:06:14.499,0:06:17.399
+This one is also in this is uh...
+
+0:06:17.399,0:06:20.879
+the approach that I used
+in my data-lens library.
+
+0:06:20.879,0:06:25.960
+That was the lens library that I used to
+sell everybody before this one.
+
+0:06:25.960,0:06:29.150
+I handed off maintainership on that and then I
+
+0:06:29.150,0:06:33.189
+subsequently stabbed poor Russell in the back
+by implementing a new lens library
+
+0:06:33.189,0:06:34.330
+[laughter]
+
+0:06:34.330,0:06:37.630
+So this is like if we were to look
+at the version inside of
+
+0:06:37.630,0:06:38.529
+data-lens
+
+0:06:38.529,0:06:41.330
+but the only reason why I wanted to point to this
+is that you can build a category
+
+0:06:41.330,0:06:43.459
+for these, where you can compose these.
+
+0:06:44.330,0:06:47.679
+The Category class basically says that
+you have (.) which lets you
+
+0:06:47.679,0:06:50.789
+compose things kind of like functions.
+
+0:06:50.789,0:06:52.999
+"You can compose arrows in the category."
+
+0:06:52.999,0:06:55.759
+and that there is an identity arrow for
+
+0:06:55.759,0:06:57.829
+every object
+
+0:06:57.829,0:07:01.339
+There will not be a test on this code.
+We're not going to use it.
+
+0:07:03.080,0:07:06.540
+The problem with this approach is that
+somebody has to remember to
+
+0:07:06.540,0:07:08.000
+import Control.Category
+
+0:07:08.000,0:07:10.919
+They have to hide a couple of
+things from the Prelude.
+
+0:07:10.919,0:07:12.099
+uh...
+
+0:07:12.099,0:07:14.969
+What I want to do is I want to write
+lenses that I don't need
+
+0:07:14.969,0:07:17.469
+to go off to Control.Category and grab id and (.)
+
+0:07:17.469,0:07:23.189
+and along the way we're going to get some
+extra stuff for free.
+
+0:07:23.189,0:07:26.809
+I was holding this up as kind of a straw man.
+
+0:07:26.809,0:07:28.030
+All right.
+
+0:07:28.030,0:07:31.779
+So there is a um...
+
+0:07:31.779,0:07:34.650
+This is a reference to a talk that was given
+by Eric Meijer
+
+0:07:34.650,0:07:37.719
+..probably ten years ago..
+
+0:07:37.719,0:07:41.559
+about a bunch of language features that
+eventually became um...
+
+0:07:41.559,0:07:45.740
+LINQ inside of C#
+
+0:07:45.740,0:07:47.810
+and it is what we need
+
+0:07:47.810,0:07:50.800
+I haskell we often have -- there's an idiom that
+we use over and over again
+
+0:07:50.800,0:07:53.219
+that you'll see in
+
+0:07:53.219,0:07:57.739
+certainly people's code ... that is,
+like, if we start with like say dot here
+
+0:07:57.739,0:08:01.080
+I can work with dot dot dot
+
+0:08:01.080,0:08:06.309
+okay and now it's like dot goes into
+a function of one argument.
+
+0:08:06.309,0:08:08.770
+"(.) . (.)" will go into
+
+0:08:08.770,0:08:14.990
+two functions deep. Right?
+
+0:08:14.990,0:08:16.490
+"(.) . (.) . (.)"
+
+0:08:16.490,0:08:20.319
+will go three functions deep.
+So, as many dots as I compose here
+
+0:08:20.319,0:08:25.089
+I am going to nest that many arguments
+in the function.
+
+0:08:25.089,0:08:27.369
+This is um..
+
+0:08:27.369,0:08:31.609
+I believe Conal Elliott called them
+semantic editor combinators and he
+
+0:08:31.609,0:08:33.510
+gave them all sorts of fancy names.
+
+0:08:33.510,0:08:35.800
+Uh... we can do this with "fmap".
+
+0:08:35.800,0:08:37.770
+instead of functions, because
+
+0:08:37.770,0:08:40.730
+the definition of
+
+0:08:40.730,0:08:44.160
+fmap for the function functor
+
+0:08:44.160,0:08:46.340
+for a function from "a" or whatever.
+
+0:08:46.340,0:08:47.930
+uh... is fmap
+
+0:08:47.930,0:08:49.550
+rather, fmap is (.).
+
+0:08:49.550,0:08:51.080
+we can generalize this pattern
+
+0:08:51.080,0:08:54.950
+and say, "well, I can go go and instead of
+going with fmap where I can go under
+
+0:08:54.950,0:08:55.910
+one functor
+
+0:08:55.910,0:08:58.420
+I can go under two or three.
+
+0:08:58.420,0:09:05.420
+"fmap" or "fmap . fmap" or "fmap . fmap . fmap".
+Okay?
+
+0:09:08.400,0:09:09.790
+Interestingly,
+
+0:09:09.790,0:09:12.950
+The order of these arguments is kind of
+reversed from what you'd expect as I'm
+
+0:09:12.950,0:09:13.850
+taking
+
+0:09:13.850,0:09:16.200
+upon function from "a" to "b"
+
+0:09:16.200,0:09:20.360
+to a function from ah..
+
+0:09:20.360,0:09:22.470
+"f a" to "f b". Er.. Lets go here:
+
+0:09:22.470,0:09:27.150
+A function from "a -> b" to a function
+from "f a -> f b".
+
+0:09:27.150,0:09:28.280
+and so
+
+0:09:28.280,0:09:30.630
+each one of the is
+
+0:09:30.630,0:09:33.540
+the dot is actually reading backwards
+from the way you would
+
+0:09:33.540,0:09:36.780
+come at it from a Haskell perspective.
+Er.. as you'd think about it from a Haskell
+
+0:09:36.780,0:09:39.050
+perspective usually.
+
+0:09:41.230,0:09:46.940
+So these are semantic editor combinators and...
+
+0:09:46.940,0:09:50.580
+Conal gave these all sorts of fun names.
+We have "result" was dot, and "element" was
+
+0:09:50.580,0:09:53.270
+"fmap" and "second", and you can compose
+
+0:09:53.270,0:09:56.800
+"element . result . second" and
+
+0:09:56.800,0:09:58.500
+walked down
+
+0:09:58.500,0:09:59.990
+in for
+
+0:09:59.990,0:10:02.800
+editing assignments and what not
+
+0:10:02.800,0:10:06.230
+uh... I'm going to make an alias for this
+just for sake of discussion, because this is going
+
+0:10:06.230,0:10:09.300
+to be the same pattern for aliases
+I'm going to use
+
+0:10:09.300,0:10:13.020
+for the kind of lenses that I want.
+
+0:10:13.020,0:10:14.110
+and so
+
+0:10:14.110,0:10:16.900
+a semantic editor combinator
+
+0:10:16.900,0:10:20.330
+is going to say given an "s"
+
+0:10:20.330,0:10:22.060
+and a function from "a" to "b"
+
+0:10:22.060,0:10:23.990
+I can give you a "t"
+
+0:10:23.990,0:10:26.910
+So this is like fmap
+
+0:10:26.910,0:10:34.210
+Right? If this was "f a" and this was "f b"
+this would be the signature of "fmap".
+
+0:10:34.210,0:10:38.830
+But also "fmap . fmap" firts this pattern,
+because I didn't actually prejudge that this
+
+0:10:38.830,0:10:41.460
+had the shape "f a"
+
+0:10:41.460,0:10:45.170
+"s" could be lots of different things.
+
+0:10:45.170,0:10:49.380
+So "fmap . fmap" is a semantic editor combinator.
+
+0:10:49.380,0:10:53.589
+and "fmap . fmap . fmap" or
+"result . element . second . first"
+
+0:10:53.589,0:11:03.930
+All of these would be valid semantic editor combinators.
+
+0:11:08.100,0:11:09.770
+And if you look at "fmap",
+
+0:11:09.770,0:11:12.810
+"fmap" is then a semantic editor combinator
+that says
+
+0:11:12.810,0:11:18.550
+given "f a" and a function from "a" to "b", I
+can give you an "f b"
+
+0:11:18.550,0:11:20.970
+You can just put a different signature on it.
+
+0:11:20.970,0:11:26.400
+Right? Because this expands to the existing definition of "fmap".
+
+0:11:26.400,0:11:29.710
+er.. the existing signature.
+
+0:11:29.710,0:11:31.840
+and then "first" will
+
+0:11:31.840,0:11:36.100
+walk over the first element of a pair.
+which while, this guy is obvious not a "functor"
+
+0:11:36.100,0:11:39.230
+you know in the capital "F" sense of "Functor"
+
+0:11:39.230,0:11:42.020
+but it still has that same kind of
+functoriality of it.
+
+0:11:42.020,0:11:47.010
+It's just the functor over
+the first half of a pair.
+
+0:11:47.010,0:11:50.880
+given a pair of "a" and "c"
+
+0:11:50.880,0:11:57.880
+and a function from "a" to "b",
+I can give you a pair of "b" and "c"
+
+0:12:00.140,0:12:03.180
+So this leads us to the first
+construction that we're gonna deal with
+
+0:12:03.180,0:12:05.560
+in the lens library that is not a lens.
+
+0:12:07.870,0:12:11.730
+We will talk about setters.
+
+0:12:11.730,0:12:13.350
+So, the same way that we built, er..
+
+0:12:13.350,0:12:14.920
+that we can compose dots
+
+0:12:14.920,0:12:17.660
+in series and we can compose "fmap"s in series
+
+0:12:17.660,0:12:21.560
+uh... these these are an idiom that a lot
+of people know in the Haskell world.
+
+0:12:21.560,0:12:25.590
+These get used a fair bit in real in
+real production code.
+
+0:12:25.590,0:12:30.630
+um... a less-known idiom is that you can
+compose Traversable functors the same way
+
+0:12:30.630,0:12:36.950
+How many people here are familiar with
+Data.Traversable? So I have some idea.
+
+0:12:36.950,0:12:42.420
+Ok..  How many are familiar with, like, "mapM"?
+
+0:12:42.420,0:12:45.910
+"traverse" is like a generalized "mapM".
+
+0:12:45.910,0:12:52.280
+uh... "Applicative" is slightly weaker than "Monad".
+
+0:12:52.280,0:12:54.520
+Okay? With an "Applicative" you don't get..
+
+0:12:54.520,0:13:00.900
+er you only get that there is a combinator "ap"
+
+0:13:00.900,0:13:05.080
+or "liftA2" or whatever that you can use
+that instead of "bind".
+
+0:13:05.080,0:13:08.000
+So you don't have all the power to
+choose the next calculation based on
+
+0:13:08.000,0:13:10.110
+what value you've gotten out before,
+
+0:13:10.110,0:13:15.630
+but you can still
+stitch together "Applicative" results
+
+0:13:15.630,0:13:16.740
+Okay?
+
+0:13:16.740,0:13:23.250
+And "traverse" looks like this:
+It says given a function from "a" to "b" that has
+
+0:13:23.250,0:13:25.610
+"Applicative" side-effects in "m",
+
+0:13:25.610,0:13:27.039
+I can take an "f a" and give you an "m (f b)"
+
+0:13:27.039,0:13:38.390
+and if this was "mapM", this would be 
+a "Monad" "m".
+
+0:13:38.390,0:13:40.480
+and if it's "mapM" out of "Control.Monad",
+
+0:13:40.480,0:13:47.480
+that'd probably have "[]" here.
+
+0:13:47.760,0:13:53.100
+So the "Traversable" class says "I don't care
+what kind of Applicative you give me..
+
+0:13:53.100,0:13:55.340
+you give me an Applicative, and I will
+
+0:13:55.340,0:14:09.980
+walk through my "f" and find all the "a"s in it
+turn them into "b"s and give you back "f b"
+
+0:14:09.980,0:14:12.670
+but if you look at the signature here
+
+0:14:12.670,0:14:17.650
+we can compose this! "traverse . traverse"
+looks a lot like "traverse"
+
+0:14:17.650,0:14:20.460
+just in the same way that "fmap . fmap"
+looked kind of like "fmap"
+
+0:14:21.410,0:14:30.350
+I just now have "f (g a)" and I'm not bolting
+a "Compose" newtype in here to make this really painful
+
+0:14:30.350,0:14:33.620
+to work with
+
+0:14:33.620,0:14:36.360
+here with "traverse . traverse"
+
+0:14:36.360,0:14:42.330
+I'm now saying if you give me "f (g a)",
+I'll go in there. I'll go into the "f"
+
+0:14:42.330,0:14:43.720
+I'll find all the "g a"s.
+
+0:14:43.720,0:14:47.690
+I'll go into the "g"s find all of the "a"s
+Transform them into "b"s using your
+
+0:14:47.690,0:14:49.200
+Applicative side-effects
+
+0:14:49.200,0:14:53.490
+and I'll pull the Applicative side-effects
+all the way out through the "f".
+
+0:14:53.490,0:14:55.930
+And similarly: "traverse . traverse . traverse"
+
+0:14:55.930,0:14:59.450
+So i can keep going deeper and deeper
+
+0:14:59.450,0:15:02.259
+you can actually mix and match these 
+"traverse . fmap . ...", but
+
+0:15:02.259,0:15:03.900
+they start doing strange things.
+You have to be careful.
+
+0:15:08.210,0:15:11.250
+And that actually leads us to why we
+want to do something slightly different
+
+0:15:11.250,0:15:16.970
+So I want a version of "fmap" that
+I can compose with "traverse" in the same way
+
+0:15:16.970,0:15:20.200
+So I could say I can go into a "Functor"
+where I only have a "Functor" for it, but
+
+0:15:20.200,0:15:25.230
+I have a "Traversable" for this other
+other outer container.
+
+0:15:25.230,0:15:29.480
+So if we look at the definition for the
+class of "Traversable"
+
+0:15:29.480,0:15:34.000
+"Traversable"s have two super classes.
+We're gonna gloss over one for
+
+0:15:34.000,0:15:38.230
+about ten minutes until I need it
+
+0:15:38.230,0:15:43.790
+But every "Traversable" is a "Functor"
+
+0:15:43.790,0:15:45.860
+because given the definition of "traverse"
+
+0:15:45.860,0:15:48.100
+i can choose an appropriate "Applicative"
+
+0:15:48.100,0:15:51.780
+to be able to derive the definition
+
+0:15:51.780,0:15:54.440
+of "fmap". i could use the "Identity"
+
+0:15:54.440,0:15:57.590
+monad, or the "Identity" "Applicative"
+
+0:15:57.590,0:16:00.770
+and then this becomes "a -> Identity b"
+
+0:16:00.770,0:16:01.589
+abated
+
+0:16:01.589,0:16:06.140
+and "f a -> Identity (f b)" and I can
+just put on or off the newtype wrapper.
+
+0:16:06.140,0:16:12.470
+and I can derivate "fmap" from "traverse".
+
+0:16:12.470,0:16:16.900
+Okay? So that motivates the superclass
+
+0:16:16.900,0:16:19.370
+of "Functor" for "Traversable".
+
+0:16:19.370,0:16:22.220
+And um...
+
+0:16:22.220,0:16:28.080
+there is an "fmapDefault" that is provided
+for you in "Data.Traversable".
+
+0:16:28.080,0:16:29.840
+which is
+
+0:16:29.840,0:16:33.430
+a valid definition of "fmap".
+
+0:16:33.430,0:16:37.510
+So if you've written a "Traversable" instance for a type
+you could just use "fmap = fmapDefault" and
+
+0:16:37.510,0:16:39.670
+you'll get the uh... the "Functor"
+
+0:16:39.670,0:16:42.020
+for it. It will define it for you.
+
+0:16:42.020,0:16:45.780
+You won't have to walk through your whole
+your syntax tree a second time doing
+
+0:16:45.780,0:16:51.820
+the same thing just without the
+"Applicative" side-effects
+
+0:16:51.820,0:16:56.380
+But let's take that guy apart.
+
+0:16:56.380,0:16:58.750
+The source code for "fmapDefault"
+
+0:16:58.750,0:16:59.620
+says
+
+0:16:59.620,0:17:00.750
+I'm going to "traverse"
+
+0:17:00.750,0:17:04.010
+I'm going to take the function that you gave me
+from "a -> b" and I'm going to
+
+0:17:04.010,0:17:08.510
+bolt an "Identity" in and I'm going to give you
+an (a -> Identity b) so not that is suitable so that
+
+0:17:08.510,0:17:11.740
+I can pass it to "traverse".
+
+0:17:11.740,0:17:12.770
+um...
+
+0:17:12.770,0:17:17.590
+Then this will be.. this will take in my "f a"s
+
+0:17:17.590,0:17:20.910
+and this is going give me back an "Identity (f b)"
+
+0:17:20.910,0:17:24.589
+So I'll "runIdentity" to rip the "Identity" of and
+I'll have an "f b".
+
+0:17:24.589,0:17:29.070
+This build "fmap" out of "traverse".
+
+0:17:29.070,0:17:32.320
+just using "Identity" out of like "Data.Functor.Identity"
+
+0:17:32.320,0:17:39.320
+This is in "transformers".
+
+0:17:39.880,0:17:41.860
+and these are the operations that
+you define for an "Applicative".
+
+0:17:41.860,0:17:48.860
+"pure" is like "return" and this
+is a weaker thing than "bind"
+
+0:17:54.270,0:17:56.400
+So, remember we had
+
+0:17:56.400,0:18:00.960
+"fmap . fmap . fmap" up there
+
+0:18:00.960,0:18:02.720
+uh...
+
+0:18:02.720,0:18:05.230
+uh... we can define
+
+0:18:05.230,0:18:07.600
+we could take the definition of "fmapDefault"
+
+0:18:07.600,0:18:09.810
+and we if we ripped out "traverse" here..
+
+0:18:09.810,0:18:13.610
+If we didn't make this use the "Traversable" class..
+
+0:18:13.610,0:18:16.980
+If we passed this in as an argument..
+
+0:18:16.980,0:18:21.740
+What Traversal I want to use
+
+0:18:21.740,0:18:27.670
+I could make a function that looks a lot like "fmapDefault".
+
+0:18:27.670,0:18:35.419
+We'll call it "over" -- I have "under" and
+some other ones that are related as well.
+
+0:18:35.419,0:18:40.290
+and then if we look at the definition of
+"over traverse f"
+
+0:18:40.290,0:18:43.090
+this is going to turn into 
+
+0:18:43.090,0:18:45.560
+"runIdentity . traverse (Identity . f)"
+
+0:18:45.560,0:18:48.660
+but we know this is just the definition
+of "fmapDefault"
+
+0:18:48.660,0:18:51.980
+and "fmapDefault" is a valid definition of "fmap"
+
+0:18:51.980,0:18:54.580
+so "over traverse"
+
+0:18:54.580,0:19:01.010
+is effectively going to the same amount
+of work as "fmap"
+
+0:19:01.010,0:19:04.760
+and if we give this thing a signature
+
+0:19:04.760,0:19:07.530
+uh... we're going to be able to go from
+
+0:19:07.530,0:19:11.450
+"(a -> Identity b) -> s -> Identity t"
+
+0:19:11.450,0:19:14.260
+to a function from "(a -> b)" to "(s -> t)".
+
+0:19:14.260,0:19:16.760
+This is a semantic editor combinator.
+
+0:19:16.760,0:19:18.539
+This is something I don't know.
+
+0:19:18.539,0:19:20.270
+this could be true
+
+0:19:20.270,0:19:21.550
+this could be
+
+0:19:21.550,0:19:23.410
+um...
+
+0:19:23.410,0:19:27.160
+the signature of "traverse".
+[Audience: are those parentheses unbalanced?]
+
+0:19:27.160,0:19:29.530
+What's that?
+
+0:19:29.530,0:19:31.890
+you can be put parens around this chunk..
+
+0:19:31.890,0:19:34.880
+Oh! I missed a paren over here.
+Yes, I screwed up
+
+0:19:34.880,0:19:41.880
+This should have a parenthesis. Here.
+
+0:19:43.450,0:19:44.550
+So
+
+0:19:44.550,0:19:52.610
+we'll call this type here, a "Setter" for right now.
+
+0:19:52.610,0:19:56.830
+And a setter lets me just update.
+I can't..
+
+0:19:56.830,0:19:59.150
+uh...
+
+0:19:59.150,0:20:01.150
+I can't do certain other things to it yet.
+
+0:20:01.150,0:20:06.300
+But a "Setter" can be used to generalize
+this "fmap . fmap . fmap" chain
+
+0:20:06.300,0:20:12.700
+just like semantic editor combinators did originally.
+
+0:20:12.700,0:20:15.530
+So let's make up something to build a "Setter".
+
+0:20:15.530,0:20:19.000
+We'll make a function named "mapped",
+
+0:20:19.000,0:20:23.760
+because "fmap" wasn't a "Setter".
+It was a semantic editor combinator.
+
+0:20:23.760,0:20:25.030
+Right? it had the..
+
+0:20:25.030,0:20:25.860
+it was the..
+
+0:20:25.860,0:20:28.299
+"(a -> b) -> (f a -> f b)"
+
+0:20:28.299,0:20:31.780
+but it didn't have a um..
+
+0:20:31.780,0:20:37.640
+"Identity" mucking things up.
+
+0:20:37.640,0:20:41.360
+"mapped" basically just bolts the "Identity" in.
+
+0:20:41.360,0:20:43.370
+and then if we lookat "over mapped f"
+
+0:20:43.370,0:20:47.640
+this is "runIdentity . mapped (Identity . f)"
+
+0:20:47.640,0:20:50.770
+but we can expand the definition of "mapped"
+
+0:20:50.770,0:20:56.860
+so this becomes
+"runIdentity . Identity . fmap (runIdentity . Identity . f)"
+
+0:20:56.860,0:21:00.450
+so we can collapse the "runIdentity . Identity"s and we just
+get fmap.
+
+0:21:00.450,0:21:06.299
+so we can see that "over mapped" is "fmap"
+and "over traverse" is "fmap".
+
+0:21:06.299,0:21:11.570
+So you can pass this thing "mapped", which would work
+for any "Functor" or we can pass
+would work for any bunker or we can pass
+
+0:21:11.570,0:21:13.770
+it "traverse"
+
+0:21:13.770,0:21:15.590
+or really anything that
+
+0:21:15.590,0:21:18.330
+I'll call a "Traversal" in a few minutes.
+
+0:21:18.330,0:21:22.280
+So we can we can just passed this
+function anything liked "mapped".
+
+0:21:22.280,0:21:25.270
+or "mapped . mapped"
+
+0:21:25.270,0:21:27.430
+and it will just work
+
+0:21:27.430,0:21:30.880
+so any any "Setter" that i can construct
+
+0:21:30.880,0:21:32.620
+I can pass to "mapped"!
+
+0:21:32.620,0:21:39.240
+And "traverse" can be made to be a "Setter"
+by just picking the "Functor", because
+
+0:21:39.240,0:21:41.799
+we're allowed to pick any "Functor" we want..
+
+0:21:41.799,0:21:44.779
+er.. any "Applicative" we want.
+We'll just pick the "Applicative" to be "Identity".
+
+0:21:44.779,0:21:51.779
+Right? The type system will do that for us when
+we go to pass it in to something that expected
+to pass it into something that expects a Setter.
+
+0:21:54.240,0:21:56.490
+So that gave us
+
+0:21:56.490,0:21:58.910
+the ability to
+
+0:21:58.910,0:21:59.679
+walk into something
+
+0:21:59.679,0:22:02.150
+so
+
+0:22:02.150,0:22:03.960
+but um...
+
+0:22:03.960,0:22:08.580
+lets maybe use that
+
+0:22:08.580,0:22:11.409
+himself, so "over mapped" add one to every element in this list.
+
+0:22:11.409,0:22:15.280
+that once you have really been the
+slowest
+
+0:22:15.280,0:22:20.700
+ignore the uh... laundry list of the modules loaded there..
+
+0:22:20.700,0:22:30.799
+Well maybe I want to say "over (mapped . mapped)"..
+
+0:22:31.870,0:22:41.600
+but notice that this -- unlike the lens 
+library that we described at the
+beginning of this -- that we can actually
+
+0:22:43.500,0:22:45.840
+change types here.
+
+0:22:45.840,0:22:51.820
+So my lenses can actually go in many structures deep
+change out the types and pull them back out. er..
+
+
+0:22:51.820,0:22:55.110
+I'm not actually using mapped as a lens, this is a "Setter"
+still.
+
+0:22:55.110,0:23:01.100
+but setters can still be used to change types.
+
+0:23:01.100,0:23:04.510
+so i said.. everywhere inside this thing
+
+0:23:04.510,0:23:06.100
+where i'm going two levels deep
+
+0:23:06.100,0:23:08.090
+you know mapping through structures
+
+0:23:08.090,0:23:14.910
+go through and compute the length of
+each of those strings
+
+0:23:14.910,0:23:16.809
+I just wanted to motivate this
+
+0:23:16.809,0:23:19.559
+with a little bit of an example.
+
+0:23:19.559,0:23:23.419
+Because, we've been talking a lot of theory for a while here.
+
+0:23:23.419,0:23:27.290
+So we can make lots of these things..
+like if i had "Data.Text".
+
+0:23:27.290,0:23:29.990
+"Data.Text" is now what you'd traditionally think of
+as a 'Functor".
+
+0:23:29.990,0:23:32.180
+It is not a container.
+
+0:23:32.180,0:23:35.130
+in the classic sense that it's
+polymorphic and what what it can hold
+
+0:23:35.130,0:23:37.950
+It can only hold characters.
+
+0:23:37.950,0:23:41.330
+but we can make a "Setter"
+
+0:23:41.330,0:23:44.170
+for the characters in a "String"
+
+0:23:44.170,0:23:46.760
+er.. in "Data.Text"
+
+0:23:46.760,0:23:48.340
+um.. so you say
+
+0:23:48.340,0:23:50.870
+if we unpack this thing, now we've got a string..
+
+0:23:50.870,0:23:52.559
+let's go map over the string
+
+0:23:52.559,0:23:55.730
+and then pack it back up
+
+0:23:55.730,0:23:57.410
+uh... and this
+
+0:23:57.410,0:23:59.769
+matches our definition for a Setter
+
+0:23:59.769,0:24:01.870
+and "over chars" will
+
+0:24:01.870,0:24:06.320
+go in and do the right thing.
+And we can go into lists of characters
+
+0:24:06.320,0:24:07.460
+or
+
+0:24:07.460,0:24:11.880
+any "Traversable" container holding other
+characters
+
+0:24:11.880,0:24:13.080
+er.. holding onto
+
+0:24:13.080,0:24:14.250
+"Text" fragments.
+
+0:24:14.250,0:24:15.680
+And we can map over each
+
+0:24:15.680,0:24:17.560
+of the characters inside of
+
+0:24:17.560,0:24:24.560
+my containers full of containers.
+
+0:24:25.899,0:24:28.600
+By the way? How readable is this?
+
+0:24:28.600,0:24:31.680
+I should have asked that,
+probably a long time ago.
+
+0:24:31.680,0:24:38.680
+This is a lot of small text. I apologize.
+
+0:24:40.310,0:24:44.580
+So derived from the "Functor" laws
+
+0:24:44.580,0:24:47.060
+..I think i can zoom..
+
+0:24:47.060,0:24:49.880
+..Control-zoom.. yay!..
+
+0:24:49.880,0:24:52.270
+so if we look at the "Functor" laws
+
+0:24:52.270,0:24:54.799
+that "fmap id = id".
+
+0:24:54.799,0:24:59.520
+and "fmap f . fmap g = fmap (f . g)"
+
+0:24:59.520,0:25:00.420
+um...
+
+0:25:00.420,0:25:04.450
+in in the in the case of "Functor" you
+can actually derive the second law from the first
+and parametricity.
+
+0:25:04.450,0:25:06.600
+uh... in the case of "Setters" you can't.
+
+0:25:06.600,0:25:09.120
+You.. you don't get this one for free, unfortunately.
+
+0:25:09.120,0:25:09.940
+uh...
+
+0:25:09.940,0:25:14.100
+we can make analogous laws for setters that we would
+like to have hold.
+
+0:25:14.100,0:25:18.289
+they say that if you go "over" a setter with "id"
+
+0:25:18.289,0:25:21.740
+it should be the identity.
+
+0:25:21.740,0:25:24.940
+and if you go over it with "f" and over it with "g"
+
+0:25:24.940,0:25:29.590
+it's the same as going over it with the composition.
+
+0:25:29.590,0:25:33.960
+but we can make setters that don't look anything like
+
+0:25:33.960,0:25:37.549
+uh...
+
+0:25:37.549,0:25:39.450
+a valid "Functor".
+
+0:25:39.450,0:25:45.299
+like here I'm going to walk over both halves of a pair.
+
+0:25:45.299,0:25:49.360
+Here you can give me a pair where the the two sides match in type and
+
+0:25:49.360,0:25:56.279
+I'll give you a new pair were the sides match in type as long as you
+give me a function from "a" to "b".
+
+0:25:56.279,0:26:00.799
+and I have to sprinkle the "Applicative" sugar through that
+
+0:26:00.799,0:26:05.010
+uh... or i can walk over the first element of this, so
+
+0:26:05.010,0:26:08.220
+given a pair of an "a" and a "c"
+
+0:26:08.220,0:26:12.250
+uh... if you want a "b" and a "c",
+give me a function from "a" to "b".
+
+0:26:12.250,0:26:14.470
+and i'll give you
+
+0:26:14.470,0:26:21.470
+a function from "(a,c)" to "(b,c)".
+
+0:26:26.929,0:26:30.000
+and we can actually see that in use over
+here
+
+0:26:30.000,0:26:32.740
+so if I want to go in here..
+
+0:26:32.740,0:26:39.740
+and say..
+
+0:26:41.200,0:26:45.070
+sorry for my colorful example..
+
+0:26:45.070,0:26:46.110
+there. um...
+
+0:26:46.110,0:26:50.080
+so now we're going into a list
+
+0:26:50.080,0:26:53.730
+and then into the pairs inside that list
+where the types of the
+
+0:26:53.730,0:26:56.810
+two halves of the pair have to match originally
+
+0:26:56.810,0:26:58.960
+and then they'll match in the output.
+
+0:26:58.960,0:27:02.840
+and here I'm passing in a function from "String -> Int"
+
+0:27:02.840,0:27:05.429
+and i'm getting out
+
+0:27:05.429,0:27:10.800
+a list of pairs of ints.
+
+0:27:10.800,0:27:17.800
+and we can of course do this in a smaller setting as well.
+
+0:27:23.470,0:27:27.280
+So there are lots of combinators for working with setters.
+I'm just throwing them up here
+
+0:27:27.280,0:27:32.090
+sort of like a scare slide I admit.
+
+0:27:32.090,0:27:33.930
+The substance of it is is that
+
+0:27:33.930,0:27:38.800
+you can construct a "Setter" from a
+semantic editor combinator or from a functor.
+
+0:27:38.800,0:27:41.350
+uh... you can..
+
+0:27:41.350,0:27:45.490
+You can actually use "traverse" directly as a "Setter".
+We saw that early on.
+
+0:27:45.490,0:27:48.539
+uh... there's lots of combinators for working with them:
+"over" ..
+
+0:27:48.539,0:27:52.590
+There is an infix version of "over" that is convenient
+in a lot of code.
+
+0:27:52.590,0:27:53.490
+um...
+
+0:27:53.490,0:27:57.760
+and then if you're used to just doing
+things like "+=", and "*=" and
+
+0:27:57.760,0:28:00.380
+those kinds of things inside of imperative code..
+
+0:28:00.380,0:28:02.770
+if you are working in a state monad..
+
+0:28:02.770,0:28:04.880
+and your state
+
+0:28:04.880,0:28:06.900
+is something that you have a lens into
+
+0:28:06.900,0:28:12.809
+you can do (+=) to modify part of that state
+
+0:28:12.809,0:28:16.380
+That will modify *all* the targets for
+the setter inside of the inside of your state.
+
+0:28:16.380,0:28:20.280
+So is actually more powerful than the
+(+=) notion that you are used to in imperative code,
+
+0:28:20.280,0:28:24.000
+because it can hit multiple targets.
+
+0:28:24.000,0:28:26.970
+um...
+
+0:28:26.970,0:28:30.720
+This (%=) is something where
+
+0:28:30.720,0:28:34.560
+if you think about it as "mod" like an imperative programmer.
+This is mod-equals, right? Thats why..
+
+0:28:34.560,0:28:36.860
+it's a modifying it with a function
+
+0:28:36.860,0:28:37.830
+um...
+
+0:28:37.830,0:28:40.179
+it's.. it was named for a pun
+
+0:28:40.179,0:28:44.700
+it at least gave me some mnemonic for what
+what the modify thing should be.
+
+0:28:44.700,0:28:46.909
+um...
+
+0:28:46.909,0:28:51.260
+and we can we can "set" or directly just
+change the value to its new target
+
+0:28:51.260,0:28:58.880
+This is like passing it "const b"
+for this function instead of
+
+0:28:58.880,0:29:01.190
+passing it an arbitrary function.
+
+0:29:01.190,0:29:02.870
+there's lots of thing to do with it
+
+0:29:02.870,0:29:06.789
+Setters I think make a nice entry point
+to the library because they hint
+
+0:29:06.789,0:29:09.290
+at the structure that we want
+
+0:29:09.290,0:29:12.950
+We got them directly by looking at
+the definition of "fmapDefault" that was already
+
+0:29:12.950,0:29:15.810
+there -- that was defined for us inside of
+
+0:29:15.810,0:29:17.840
+"Data.Traversable"
+
+0:29:17.840,0:29:20.790
+um...
+
+0:29:20.790,0:29:25.169
+We stole the laws wholesale from "Functor".
+We didn't have to make up laws for setters.
+
+0:29:25.169,0:29:26.920
+They were already given to us.
+
+0:29:26.920,0:29:27.999
+by the sort of
+
+0:29:27.999,0:29:34.999
+canonical choice of what a Setter should look like, 
+which is Functor.
+
+0:29:35.649,0:29:38.510
+So lets do Traversals.
+
+0:29:38.510,0:29:43.080
+So we saw that we could pass "traverse" as
+a "Setter".
+
+0:29:43.080,0:29:44.649
+What if we
+
+0:29:44.649,0:29:50.700
+tried to generalize _this_ pattern
+instead of just generalizing "fmap . fmap . fmap .."
+
+0:29:50.700,0:29:54.669
+Lets do "traverse" and "traverse . traverse".
+
+0:29:54.669,0:30:02.350
+Because, remember, "over traverse f" gave us "fmap f".
+
+0:30:02.350,0:30:05.630
+We might we might be able to find "mapM" in terms of traverse.
+
+0:30:05.630,0:30:11.130
+Actually, mapM is defined in terms of "traverse"
+inside "Data.Traversable".
+
+0:30:11.130,0:30:13.260
+but for the default definition of "mapM"
+
+0:30:13.260,0:30:15.940
+they use this "WrapMonad" and "unwrapMonad"
+
+0:30:15.940,0:30:16.990
+This is a newtype. They are
+
+0:30:16.990,0:30:19.029
+the putting on and taking it off.
+
+0:30:19.029,0:30:22.940
+Here this guy says, given a Monad for "m"
+
+0:30:22.940,0:30:27.010
+I'll give you an "Applicative" for "WrapMonad m"
+
+0:30:27.010,0:30:30.650
+okay and since i've got an "Applicative" I
+can go through "traverse" and now that I've gone through "traverse"
+
+0:30:30.650,0:30:37.429
+I can pull the "WrappedMonad" off and I'll have done the work.
+
+0:30:37.429,0:30:41.970
+Using that same pattern of just pulling 
+
+0:30:41.970,0:30:42.880
+um...
+
+0:30:42.880,0:30:47.000
+the "traverse" out of this definition and
+replacing it with an argument
+
+0:30:47.000,0:30:52.470
+we can get a similar definition for "mapM"
+
+0:30:52.470,0:30:54.880
+that takes the "Traversal".
+
+0:30:54.880,0:30:57.590
+and so the says if you give me an "s"
+
+0:30:57.590,0:31:01.130
+and any monadic function from "a -> m b"
+
+0:31:01.130,0:31:02.509
+i'll give you an "m t".
+
+0:31:02.509,0:31:03.980
+given a "Traversal" 
+
+0:31:03.980,0:31:06.290
+the goes from "s" to "t" and given
+
+0:31:06.290,0:31:08.580
+function from "a" to "m b" for any
+
+0:31:08.580,0:31:12.679
+monadic or applicative side effect you want.
+
+0:31:12.679,0:31:15.509
+so "mapMOf" could be defined
+
+0:31:15.509,0:31:16.750
+in terms of
+
+0:31:16.750,0:31:18.710
+our "Traversal", just by
+
+0:31:18.710,0:31:23.490
+pulling traverse out of the function
+
+0:31:23.490,0:31:26.000
+and so now "over traverse f" gave us "fmap f"
+
+0:31:26.000,0:31:28.320
+but "mapMOf traverse"
+
+0:31:28.320,0:31:31.730
+give us "unwrapMonad . traverse (WrapMonad . f)"
+which is exactly
+
+0:31:31.730,0:31:34.900
+the definition of "mapM" above.
+
+0:31:34.900,0:31:37.970
+So we can see that we've generalized the existing notion of "mapM"
+
+0:31:37.970,0:31:42.809
+by just pulling out the "Traversable".
+
+0:31:42.809,0:31:46.430
+and there are laws that we already know for "Data.Travesable"
+
+0:31:46.430,0:31:51.259
+The "Traversable" laws are just these:
+
+0:31:51.259,0:31:59.710
+"traverse pure = pure" and 
+"Compose . fmap (traverse f) . traverse g = traverse (Compose f . g)"
+
+0:31:59.710,0:32:03.260
+Now, in the end of the slides I have some
+references, Jeremy Gibbons wrote
+
+0:32:03.260,0:32:08.230
+a very wonderful paper on
+"The Essence of the Iterator Pattern"
+
+0:32:08.230,0:32:10.490
+In the process of working on this
+
+0:32:10.490,0:32:12.730
+with Russell O'Connor
+
+0:32:12.730,0:32:17.090
+He was able to prove that these
+are all of the laws that you need!
+
+0:32:17.090,0:32:19.920
+There were a couple side conditions
+that were floating around in
+
+0:32:19.920,0:32:21.149
+"The Essence of the Iterator Pattern"
+
+0:32:21.149,0:32:24.660
+Those turned out to all be consequences
+of those laws.
+
+0:32:24.660,0:32:28.419
+There's a paper he's been putting together
+
+0:32:28.419,0:32:31.670
+that actually goes through with the formal
+proof of this in Coq showing that all
+
+0:32:31.670,0:32:34.960
+traversals are finitary containers.
+
+0:32:34.960,0:32:37.130
+um...
+
+0:32:37.130,0:32:40.660
+So this spun off a little bit of research!
+
+0:32:40.660,0:32:44.810
+But the laws for a "Traversal" are just these. Just
+rip out "traverse" and replace it with "l".
+
+0:32:44.810,0:32:47.179
+so a valid "Traversal" "l"
+
+0:32:47.179,0:32:49.710
+"l pure" should be "pure"
+
+0:32:49.710,0:32:52.860
+uh...
+
+0:32:52.860,0:32:54.690
+and if pure was Identity you could see
+
+0:32:54.690,0:32:58.929
+how this gives the Functor law.
+
+0:32:58.929,0:33:03.470
+and "Compose . fmap (l f) . " etcetera
+
+0:33:03.470,0:33:06.330
+That one is a little bit ugly, its inside
+Jeremy Gibbons' paper
+
+0:33:06.330,0:33:09.080
+uh.. if you want more motivation.
+
+0:33:09.080,0:33:12.510
+But really what this guy is saying is
+that your traversal doesn't change the
+
+0:33:12.510,0:33:14.870
+number of targets for the next traversal.
+
+0:33:14.870,0:33:17.560
+so if you apply a traversal,
+
+0:33:17.560,0:33:19.860
+and you traversed seven elements
+
+0:33:19.860,0:33:21.690
+the next traversal
+
+0:33:21.690,0:33:25.010
+if you were to apply the same traversal
+would have to see seven elements again
+
+0:33:25.010,0:33:33.130
+That's a good litmus test of
+whether or not you have a legal traversal
+
+0:33:33.130,0:33:35.299
+uh...
+
+0:33:35.299,0:33:42.240
+So we've got lots of traversals. Um..
+"traverse" is a "Traversal"!
+
+0:33:42.240,0:33:44.910
+(let's see if i pan this correctly)
+
+0:33:44.910,0:33:48.000
+uh... "both", which we saw earlier
+
+0:33:48.000,0:33:50.740
+we wrote both as a "Setter" originally, all right?
+
+0:33:50.740,0:33:54.590
+but we were just using arbitrary "Applicative",
+
+0:33:54.590,0:33:57.140
+so both can be a traversal.
+
+0:33:57.140,0:34:01.200
+We can traverse the "Left" half of an "Either".
+
+0:34:01.200,0:34:02.960
+instead of having to "traverse" the "Right".
+
+0:34:02.960,0:34:07.919
+Well we don't even have the instance of "Traversable"
+for "Either", so..
+
+0:34:07.919,0:34:11.969
+oops. I think I was supposed to write that.
+(I should do that)
+
+0:34:11.969,0:34:15.589
+But in the meantime you can use a traversal!
+
+0:34:15.589,0:34:16.430
+uh...
+
+0:34:16.430,0:34:19.230
+actually these are called "_left" and
+"_right" and they are actually
+
+0:34:19.230,0:34:21.029
+more general than this
+
+0:34:21.029,0:34:24.919
+in the actual lens library
+
+0:34:24.919,0:34:30.769
+but then we can come down here and say
+"over _left (+1) (Left 3)"
+
+0:34:30.769,0:34:34.459
+but if I gave that guy "Right 3" it would
+just leave it alone
+
+0:34:34.459,0:34:38.579
+If I gave it (Right "hello") it wouldn't
+care about the type not matching, yeah.
+
+0:34:38.579,0:34:43.489
+It is only looking for the type on the "Left".
+
+0:34:43.489,0:34:44.789
+uh...
+
+0:34:44.789,0:34:48.559
+and if we compose these things it'll
+walk into the left half of an "Either"
+
+0:34:48.559,0:34:50.789
+there and then into both.
+
+0:34:50.789,0:34:52.759
+also notice something here, though.
+
+0:34:52.759,0:34:56.519
+the order of composition here is
+I'm going into this structure
+
+0:34:56.519,0:35:03.519
+and then into this one!
+The order reads left to right and not right to left.
+
+0:35:03.659,0:35:07.899
+and that will be really useful in a minute
+
+0:35:07.899,0:35:11.289
+because of the ordinary an
+imperative programmer would kind of expect
+
+0:35:11.289,0:35:13.209
+field acccessors to go, you know?
+
+0:35:13.209,0:35:20.159
+I'm accessing "foo.bar.baz.quux" and adding ten.
+
+0:35:20.159,0:35:22.469
+So,
+
+0:35:22.469,0:35:29.469
+If i said
+
+0:35:31.319,0:35:34.210
+uh... (&) here is just "flip ($)".
+
+0:35:34.210,0:35:39.159
+It makes for cute syntax. [laughter]
+
+0:35:39.159,0:35:44.989
+I could've written this thing with.. 
+Right?
+
+0:35:44.989,0:35:53.059
+And "_2" is a very interestingly named
+operator for basically "snd" as a lens.
+
+0:35:53.059,0:35:56.039
+uh... we have them up to "_9". They are
+actually polymorphic you can work with them
+
+0:35:56.039,0:35:57.459
+on
+
+0:35:57.459,0:35:59.819
+arbitrarily large tuples (up to 9)
+
+0:35:59.819,0:36:00.969
+um...
+
+0:36:00.969,0:36:07.969
+they just do the right thing
+
+0:36:07.969,0:36:20.749
+[.. A long, mostly inaudible question from
+Jay Sulzberger about the inability of Haskell
+to express naturals at the type level..]
+
+0:36:20.749,0:36:26.419
+We do have these around now, but..
+
+0:36:26.419,0:36:28.770
+but it but it's very hard to correlate
+those two
+
+0:36:28.770,0:36:30.149
+it is very hard to program
+
+0:36:30.149,0:36:32.509
+polymorphically over arbitrary sized tuples.
+
+0:36:32.509,0:36:34.680
+We don't have a k-tuple, where the kth tuple is
+indexed by n.
+
+0:36:34.680,0:36:40.939
+[Jay: That'll be in the next version]
+
+0:36:40.939,0:36:41.809
+[laughter]
+
+0:36:41.809,0:36:43.939
+Maybe.
+
+0:36:43.939,0:36:50.019
+Well, we'll have type level naturals anyways.
+
+0:36:50.019,0:36:52.219
+So let's let's us go through and edit part of the structure.
+
+0:36:52.219,0:36:53.109
+So,
+
+0:36:53.109,0:36:56.709
+The nice thing about building up..
+
+0:36:56.709,0:36:58.299
+in this order
+
+0:36:58.299,0:37:05.299
+is that if i start here
+
+0:37:05.449,0:37:06.390
+i can
+
+0:37:06.390,0:37:09.429
+start with say a blank record
+
+0:37:09.429,0:37:13.459
+and now it looks like build up a record
+by setting this field equal to this value
+
+0:37:13.459,0:37:14.989
+and this field equal to that value
+
+0:37:14.989,0:37:20.119
+Right? you can actually read it off
+
+0:37:20.119,0:37:21.919
+um...
+
+0:37:21.919,0:37:24.979
+and that this works for arbitrary
+
+0:37:24.979,0:37:28.729
+setters or traversals or
+
+0:37:28.729,0:37:30.979
+lenses as we'll see. heh..
+
+0:37:30.979,0:37:33.379
+they'll all just.. they'll all just work
+
+0:37:33.379,0:37:37.039
+uh... One a main goals of the
+lens library has been to make it so that
+
+0:37:37.039,0:37:39.489
+whenever you reach for any combinator
+
+0:37:39.489,0:37:42.199
+and almost any type that you think it
+could work with
+
+0:37:42.199,0:37:45.769
+it should "do it" and it should do the right thing.
+
+0:37:45.769,0:37:47.119
+uh...
+
+0:37:47.119,0:37:48.459
+and it it worked out
+
+0:37:48.459,0:37:51.749
+pleasantly by accident,
+but it worked out really well!
+
+0:37:51.749,0:37:54.999
+uh... so we've been trying to
+maintain that property
+
+0:37:54.999,0:37:56.739
+so..
+
+0:37:56.739,0:37:59.749
+if we go "over (traverseLeft.both)" ..
+
+0:37:59.749,0:38:02.169
+we'll be able to walk into
+
+0:38:02.169,0:38:05.679
+all of that.
+
+0:38:05.679,0:38:08.759
+So, those are Traversals.
+
+0:38:08.759,0:38:12.039
+There is a whole host of combinators for working with Traversals.
+
+0:38:12.039,0:38:14.879
+In "Data.Traversable" there is a whole bunch of combinators
+for working with any Traversable container.
+
+0:38:14.879,0:38:18.369
+If you take any of the combinators that are in there
+
+0:38:18.369,0:38:21.359
+and bolt "Of" on the end of the name of it
+it
+
+0:38:21.359,0:38:23.989
+you can pass it a
+
+0:38:23.989,0:38:28.199
+Traversal directly and it will work
+with any traversal you've written.
+
+0:38:28.199,0:38:32.619
+uh... and so that means that i wrote a
+_traversal_ now, for traversing
+
+0:38:32.619,0:38:35.149
+the characters in Data.Text..
+
+0:38:35.149,0:38:42.709
+If you look in the API for Data.Text,
+it duplicates almost the entire Prelude 
+for everything that deals with a list!
+
+0:38:42.709,0:38:45.940
+But most of those combinators are things you
+could derive from Traversable
+
+0:38:45.940,0:38:49.369
+if it was an actual "Traversable" instance.
+
+0:38:49.369,0:38:54.359
+and so what this lets me do a shrink the API
+
+0:38:54.359,0:38:58.869
+for working with Text down to more or
+less two functions..
+
+0:38:58.869,0:39:04.149
+and a bunch of combinators that work
+with everything.
+
+0:39:04.149,0:39:08.629
+So if you are looking for the
+selling point of this, its that
+
+0:39:08.629,0:39:12.069
+APIs like Data.Text are wonderful.
+They are really high-performance.
+
+0:39:12.069,0:39:13.409
+They work really well.
+
+0:39:13.409,0:39:16.349
+But they don't feel very Haskelly.
+You have to import a module..
+
+0:39:16.349,0:39:21.689
+but you have to import it qualified
+because all the names collide with 
+everything else from the Prelude.
+
+0:39:21.689,0:39:26.629
+With this, the API for working with Data.Text is
+compatible with the API for working with everything else.
+
+0:39:26.629,0:39:29.380
+You don't have to import anything
+qualified in order to work with these
+
+0:39:29.380,0:39:31.569
+text fragments.
+
+0:39:31.569,0:39:38.569
+um... and it really cleans up
+the code that results.
+
+0:39:41.399,0:39:44.739
+I an actually show that off.
+
+0:39:44.739,0:39:46.130
+load Data.Text
+
+0:39:46.130,0:39:48.849
+and load..
+
+0:39:48.849,0:39:52.089
+a little helper library
+
+0:39:52.089,0:39:54.189
+and say if i had
+
+0:39:54.189,0:39:56.119
+hello, packed
+
+0:39:56.119,0:39:59.349
+I'm going to use syntax I haven't introduced yet. I apologize.
+
+0:39:59.349,0:40:01.649
+If I look at that.
+
+0:40:01.649,0:40:03.409
+this is Text.
+
+0:40:03.409,0:40:05.129
+I'm saying use
+
+0:40:05.129,0:40:11.239
+something to read out
+
+0:40:11.239,0:40:12.460
+from a list, so that gave me Text.
+
+0:40:12.460,0:40:15.829
+and i could go through and say well if
+any of..
+
+0:40:15.829,0:40:18.269
+the text characters
+
+0:40:18.269,0:40:21.959
+are equal to 'c' in
+
+0:40:21.959,0:40:27.649
+[Audience member: can you zoom in?]
+
+0:40:27.649,0:40:29.379
+I totally can..
+
+0:40:29.379,0:40:30.619
+Well, that made it worse
+
+0:40:30.619,0:40:31.919
+eh...
+
+0:40:31.919,0:40:35.809
+that's about as good as I can go. That work?
+
+0:40:35.809,0:40:38.439
+so "anyOf text (=='c')"
+
+0:40:38.439,0:40:42.129
+and "hello", hrmm. that was a little too small.
+
+0:40:42.129,0:40:49.129
+uh...
+
+0:40:51.289,0:40:53.769
+I lost myself.
+
+0:40:53.769,0:40:57.839
+I can at least put it on the screen now.
+
+0:40:57.839,0:41:04.839
+and:
+anyOf text (=='c') ("chello"^.packed)
+
+0:41:08.019,0:41:11.349
+and this works
+
+0:41:11.349,0:41:13.679
+in "both.text"
+
+0:41:13.679,0:41:19.979
+if i had..
+
+0:41:19.979,0:41:22.059
+if I worked with "chello world"
+
+0:41:22.059,0:41:26.559
+we can walk into
+characters that are inside of
+
+0:41:26.559,0:41:30.399
+a pair of Text fragments
+
+0:41:30.399,0:41:32.079
+and "anyOf"..
+
+0:41:32.079,0:41:35.539
+"any" is a combinator in "Data.Foldable"
+
+0:41:35.539,0:41:40.509
+uh... I'm jumping all over the place.
+
+0:41:40.509,0:41:43.050
+[Audience member: Does this work with fusion in Data.Text?]
+Uh... no
+
+0:41:43.050,0:41:45.849
+You get a beautiful API.. and you lose all your fusion! [laughter]
+
+0:41:45.849,0:41:48.959
+That is the price. um..
+
+0:41:48.959,0:41:53.599
+Data.Text is very very performance
+conscious and if you really want
+
+0:41:53.599,0:41:57.799
+maintain that performance consciousness
+you probably have to use
+
+0:41:57.799,0:42:00.859
+qualified imports, but if you just wanted to
+munge some Text around..
+
+0:42:00.859,0:42:06.439
+and you already have the rest of this
+stuff open
+
+0:42:06.439,0:42:10.369
+it can in practice be quite useful.
+
+0:42:10.369,0:42:14.299
+so if I zoom back out..
+
+0:42:14.299,0:42:17.329
+"anyOf" actually doesn't need "Traversable"
+in needs
+
+0:42:17.329,0:42:20.489
+"Foldable"
+
+0:42:20.489,0:42:25.479
+When.. when I introduced Traversable
+I glossed over one of its ancestors.
+
+0:42:25.479,0:42:27.209
+and that is that
+
+0:42:27.209,0:42:31.619
+Foldable bassically provides you with
+[END OF CAPTIONING]
+
+0:42:31.619,0:42:35.309
+if you could you pick nothing away also
+involve all
+
+0:42:35.309,0:42:37.010
+they give you to rest
+
+0:42:37.010,0:42:41.739
+as a function visited seznam if you give
+me an acrobat give you a list of it
+
+0:42:41.739,0:42:45.670
+ad and wanted a company merritt says do
+you give me any model i'd
+
+0:42:45.670,0:42:49.999
+to any of the city where you have a
+socially law and you have a unit for it
+
+0:42:49.999,0:42:51.309
+and
+
+0:42:51.309,0:42:53.910
+papon to propose to market to know that
+my life
+
+0:42:53.910,0:42:56.259
+popping up all day
+
+0:42:56.259,0:43:03.259
+an up or if there's a modeling for less
+because the idealist and plus plus
+
+0:43:03.799,0:43:10.799
+so we can just use told not to get out
+bullets
+
+0:43:12.129,0:43:15.069
+soviet nuclear you'd never simple dot
+bored
+
+0:43:15.069,0:43:17.189
+i think it is there's two s
+
+0:43:17.189,0:43:22.669
+and you'll fill your burger because no
+
+0:43:22.669,0:43:24.319
+so now when we did
+
+0:43:24.319,0:43:27.929
+traversed at riverside riverside apm
+apple apple apple apple apple dot i dot
+
+0:43:27.929,0:43:28.989
+go dot
+
+0:43:28.989,0:43:30.259
+the
+
+0:43:30.259,0:43:34.079
+we do the same thing pullback
+
+0:43:34.079,0:43:35.289
+so-called not
+
+0:43:35.289,0:43:38.130
+unfold not dump all mapinfo mapinfo
+mapinfo map
+
+0:43:38.130,0:43:41.830
+all these guys were acceptance i don't
+miss this side of the people in that it
+
+0:43:41.830,0:43:42.399
+is
+
+0:43:42.399,0:43:49.399
+each of them
+
+0:43:53.479,0:43:59.839
+says that they have the same pattern
+that we have heard rumors
+
+0:43:59.839,0:44:01.409
+and
+
+0:44:01.409,0:44:04.749
+jurors will didn't just give us
+acceptable to give us bought map apple
+
+0:44:04.749,0:44:07.739
+they gave us inversion up all about for
+free
+
+0:44:07.739,0:44:09.679
+if you're not interested in playing
+
+0:44:09.679,0:44:11.799
+i can give you
+
+0:44:11.799,0:44:15.459
+ballmer
+
+0:44:15.459,0:44:19.069
+and here's where we need a generality
+
+0:44:19.069,0:44:21.139
+traverses walk-ins
+
+0:44:21.139,0:44:22.899
+such reversible
+
+0:44:22.899,0:44:25.450
+doesn't need a mona it needs it looked
+like it
+
+0:44:25.450,0:44:28.879
+breaking work within the party
+
+0:44:28.879,0:44:30.639
+remember quit
+
+0:44:30.639,0:44:34.809
+something that i can't make a monocle
+
+0:44:34.809,0:44:38.559
+constant constant provided by control of
+it
+
+0:44:38.559,0:44:42.270
+and and basically says if you give me an
+at the old constand a
+
+0:44:42.270,0:44:44.929
+doesn't have any agent
+
+0:44:44.929,0:44:47.799
+right just absent
+
+0:44:47.799,0:44:50.509
+but as the powdered really easily
+
+0:44:50.509,0:44:53.829
+i don't care about the age argument i
+could just throw it away and and you
+
+0:44:53.829,0:44:57.039
+know i can't i can't make and replica
+constants are dropping a bit of economic
+
+0:44:57.039,0:44:58.469
+blueprint
+
+0:44:58.469,0:45:01.969
+quite the only thing that i'd kept me up
+i got my emp no joint it was in my
+
+0:45:01.969,0:45:03.839
+thoughts
+
+0:45:03.839,0:45:07.969
+bob and i can make an instance of
+applicable for this uh... just by saying
+
+0:45:07.969,0:45:12.640
+well when i got a couple obscure value
+like return after the volcano of a were
+
+0:45:12.640,0:45:14.069
+as a good day to you
+
+0:45:14.069,0:45:16.069
+const ami
+
+0:45:16.069,0:45:18.429
+twenty to come up with an m_r_i_ nowhere
+
+0:45:18.429,0:45:21.009
+so i can use an update from my
+
+0:45:21.009,0:45:24.209
+my modeling
+
+0:45:24.209,0:45:26.919
+so this is an active can construct a
+value
+
+0:45:26.919,0:45:28.140
+i don't care what
+
+0:45:28.140,0:45:31.249
+value you gave me so i don't have a
+place but the air
+
+0:45:31.249,0:45:33.209
+and to throw it away
+
+0:45:33.209,0:45:35.189
+and you have to
+
+0:45:35.189,0:45:39.849
+const about his new york optimum
+together that's with that
+
+0:45:39.849,0:45:41.989
+uh... underscoring the used
+
+0:45:41.989,0:45:42.809
+mccann
+
+0:45:42.809,0:45:46.829
+that it'll elliott's pointed uh...
+through that one of these days
+
+0:45:46.829,0:45:48.829
+so i'm going to i'm going to
+
+0:45:48.829,0:45:51.960
+uh... use the op-art goggle
+
+0:45:51.960,0:45:54.430
+the binary operation of the remark
+
+0:45:54.430,0:45:56.030
+to stick stitched together by
+
+0:45:56.030,0:45:58.259
+women all of us
+
+0:45:58.259,0:46:02.009
+uh... so given a model i'd for amb
+
+0:46:02.009,0:46:03.010
+const of m
+
+0:46:03.010,0:46:04.539
+is afflicted
+
+0:46:04.539,0:46:07.589
+at the pump your regardless and this
+will be important later so i'm going to
+
+0:46:07.589,0:46:10.899
+make that distinction
+
+0:46:10.899,0:46:12.930
+constand is always a popular
+
+0:46:12.930,0:46:17.629
+and if you have a monogram it becomes a
+wicked
+
+0:46:17.629,0:46:22.079
+we need a moderate because we don't have
+any other way to magic up
+
+0:46:22.079,0:46:25.509
+uh... of value part when we don't use it
+
+0:46:25.509,0:46:31.609
+there were no one got out of it i think
+that we don't have a awaits the together
+
+0:46:31.609,0:46:32.740
+and beat
+
+0:46:32.740,0:46:36.090
+a socially of our of our moderate enough
+to get his wish to be one of the
+
+0:46:36.090,0:46:39.869
+equipment
+
+0:46:39.869,0:46:42.879
+now we can look at what we can look at
+fault not the fault the ball not
+
+0:46:42.879,0:46:44.719
+appalled
+
+0:46:44.719,0:46:49.069
+calico use right at any other here
+
+0:46:49.069,0:46:52.259
+just say uh...
+
+0:46:52.259,0:46:56.279
+read that you did they do and identity
+of bringing in a died in a t_v_ by this
+
+0:46:56.279,0:46:57.989
+wrapping up my enemy
+
+0:46:57.989,0:47:03.189
+bring to the same thing the rabbit
+getting const
+
+0:47:03.189,0:47:05.929
+and win again consummate aside so this
+is
+
+0:47:05.929,0:47:09.059
+he's the actor
+
+0:47:09.059,0:47:14.629
+sued basically saying that i really
+don't care what we should be made
+
+0:47:14.629,0:47:16.889
+because the act
+
+0:47:16.889,0:47:21.869
+are here i don't care what the choice of
+b you make because i'm just going to
+
+0:47:21.869,0:47:23.509
+const
+
+0:47:23.509,0:47:24.520
+and b
+
+0:47:24.520,0:47:31.520
+down and the unending
+
+0:47:31.789,0:47:33.289
+all napa all
+
+0:47:33.289,0:47:35.419
+is defined in terms of traverse
+
+0:47:35.419,0:47:38.669
+we've kind of established a pattern for
+what we do grip on tunes that look like
+
+0:47:38.669,0:47:40.839
+that though
+
+0:47:40.839,0:47:43.869
+um...
+
+0:47:43.869,0:47:44.640
+so
+
+0:47:44.640,0:47:46.679
+and you're right lou
+
+0:47:46.679,0:47:51.349
+stupidly dance again
+
+0:47:51.349,0:47:54.049
+so taken bold not default we debate
+apart
+
+0:47:54.049,0:47:55.889
+we can pull traverse out of there
+
+0:47:55.889,0:47:57.619
+replace it with
+
+0:47:57.619,0:48:00.699
+something local health for the past it
+in his argument
+
+0:48:00.699,0:48:04.400
+will put colon cancer dac i was hoping
+to get your is
+
+0:48:04.400,0:48:07.689
+and it will give us a signature that
+works
+
+0:48:07.689,0:48:10.599
+right uh... i didn't have to make
+anything out
+
+0:48:10.599,0:48:16.029
+beautiful view it should be
+
+0:48:16.029,0:48:17.919
+we can make op
+
+0:48:17.919,0:48:19.699
+kelly when we did
+
+0:48:19.699,0:48:22.779
+uh...
+
+0:48:22.779,0:48:27.049
+when we work with setters we we don't
+math so that over maps turned into act
+
+0:48:27.049,0:48:30.119
+up
+
+0:48:30.119,0:48:33.779
+i want some things that i can pass it so
+that when pulled up others applied to
+
+0:48:33.779,0:48:35.839
+say folded
+
+0:48:35.839,0:48:37.670
+this should be
+
+0:48:37.670,0:48:40.659
+would you give this issue resolved for
+that matter
+
+0:48:40.659,0:48:42.089
+what are the same thing
+
+0:48:42.089,0:48:43.989
+which was there for the cost
+
+0:48:43.989,0:48:48.169
+might characterize
+
+0:48:48.169,0:48:50.770
+so pulled map of was kept constant
+
+0:48:50.770,0:48:52.929
+that alcohol so that
+
+0:48:52.929,0:48:56.139
+if i choose folded to be const
+
+0:48:56.139,0:48:58.989
+that bold map i'll get on startup
+
+0:48:58.989,0:49:01.899
+then paul bappa folded
+
+0:49:01.899,0:49:05.169
+turns in to get cast of const
+
+0:49:05.169,0:49:09.289
+appalled that will get past that kant
+
+0:49:09.289,0:49:12.459
+and we can destroy these two
+
+0:49:12.459,0:49:17.199
+defcon stuck aunts
+
+0:49:17.199,0:49:20.699
+has become sport bab
+
+0:49:20.699,0:49:24.309
+we've gone through the relation we've
+proven that this is
+
+0:49:24.309,0:49:26.209
+you know sort of the
+
+0:49:26.209,0:49:27.430
+deeper
+
+0:49:27.430,0:49:30.029
+folders at work
+
+0:49:30.029,0:49:32.739
+and given any folder
+
+0:49:32.739,0:49:36.219
+weekend begin to find the stamina vocal
+view
+
+0:49:36.219,0:49:37.719
+and bureau says
+
+0:49:37.719,0:49:39.909
+i'm just gonna pass
+
+0:49:39.909,0:49:45.069
+const
+
+0:49:45.069,0:49:50.549
+and you can now get cut
+
+0:49:50.549,0:49:53.149
+going back to abusing things averages
+jet
+
+0:49:53.149,0:49:54.099
+uh...
+
+0:49:54.099,0:49:55.709
+why do you want out of
+
+0:49:55.709,0:50:02.709
+hello
+
+0:50:05.179,0:50:08.840
+uh... yes older not
+
+0:50:08.840,0:50:13.390
+uh... yeah
+
+0:50:13.390,0:50:20.339
+cook
+
+0:50:20.339,0:50:21.989
+review folded
+
+0:50:21.989,0:50:24.989
+will say if you give me any foldable
+half
+
+0:50:24.989,0:50:27.329
+and a model a big
+
+0:50:27.329,0:50:29.970
+uh... and i'm gonna give you another
+horrible projector
+
+0:50:29.970,0:50:31.779
+uh... i'll give you a day
+
+0:50:31.779,0:50:32.940
+a pontoon from
+
+0:50:32.940,0:50:35.699
+appleby two b
+
+0:50:35.699,0:50:38.259
+you're looking at
+
+0:50:38.259,0:50:41.569
+generalize to use that word of
+
+0:50:41.569,0:50:44.679
+uh... that the actual documentation for
+this is really nice thing to do about
+
+0:50:44.679,0:50:48.539
+ten makes type signatures you can look
+at the u_s_ having
+
+0:50:48.539,0:50:49.719
+think about it
+
+0:50:49.719,0:50:54.859
+um...
+
+0:50:54.859,0:50:56.689
+bone review bolded
+
+0:50:56.689,0:50:59.319
+uh... their inside of data that uh...
+uh...
+
+0:50:59.319,0:51:01.090
+foldable invincible double
+
+0:51:01.090,0:51:04.530
+their their sport map there's all are
+others walking generalization for the
+
+0:51:04.530,0:51:07.039
+common or video
+
+0:51:07.039,0:51:10.479
+and one of them is called for the masses
+basically saying if you have all
+
+0:51:10.479,0:51:14.699
+a container full of my moral values
+
+0:51:14.699,0:51:17.159
+i'm going to
+
+0:51:17.159,0:51:19.849
+uh...
+
+0:51:19.849,0:51:21.679
+what u
+
+0:51:21.679,0:51:25.769
+like calculate a mno some basic level
+like just the stitch decision together
+
+0:51:25.769,0:51:27.269
+with one of the notebook
+
+0:51:27.269,0:51:32.589
+the action has been a model
+
+0:51:32.589,0:51:34.149
+so we got a few folded
+
+0:51:34.149,0:51:36.549
+this is going to turn in to get concert
+on support that
+
+0:51:36.549,0:51:38.019
+because icons
+
+0:51:38.019,0:51:39.990
+this is called navid which is
+
+0:51:39.990,0:51:43.689
+e ful
+
+0:51:43.689,0:51:47.609
+and we can make up this guy will call up
+the odd couple there's going to say
+
+0:51:47.609,0:51:51.619
+that for any choice of m you pick any
+
+0:51:51.619,0:51:53.149
+this is missing a monitor
+
+0:51:53.149,0:51:54.010
+for all amb
+
+0:51:54.010,0:51:56.789
+such that there's a monogram
+
+0:51:56.789,0:52:00.889
+give me a a doubt const them of a i'll
+give you a pampered asked the cost of
+
+0:52:00.889,0:52:07.889
+about
+
+0:52:07.949,0:52:11.289
+so thats
+
+0:52:11.289,0:52:13.969
+they nice way to work with
+
+0:52:13.969,0:52:15.489
+here so we can work with
+
+0:52:15.489,0:52:20.029
+uh... anything that we do have bid up
+audible we can do with the pool
+
+0:52:20.029,0:52:21.699
+to like anne allen
+
+0:52:21.699,0:52:23.809
+some
+
+0:52:23.809,0:52:26.569
+product billable
+
+0:52:26.569,0:52:30.319
+fifty commenters however
+
+0:52:30.319,0:52:34.439
+um... they all general so some of both
+
+0:52:34.439,0:52:35.569
+will go through an adult
+
+0:52:35.569,0:52:39.659
+both on the toddler or some of traversed
+upload will go through
+
+0:52:39.659,0:52:42.199
+some traversed will be there for
+terrorist
+
+0:52:42.199,0:52:44.410
+in and out the values uh... all of the
+
+0:52:44.410,0:52:45.739
+both sides of the
+
+0:52:45.739,0:52:47.179
+workers' incentive
+
+0:52:47.179,0:52:54.179
+buzzword
+
+0:52:55.929,0:52:58.359
+what we want something that was
+
+0:52:58.359,0:52:59.939
+more powerful
+
+0:52:59.939,0:53:04.349
+than a traversed uh...
+
+0:53:04.349,0:53:07.059
+we look at the signature here
+
+0:53:07.059,0:53:09.109
+traverse all centerfold
+
+0:53:09.109,0:53:12.239
+we we're up we're up about
+nation-building and a whole piles up on
+
+0:53:12.239,0:53:14.409
+this planet
+
+0:53:14.409,0:53:17.029
+um... brother diversion appalled map of
+
+0:53:17.029,0:53:20.479
+to list of says there's a great you give
+me up
+
+0:53:20.479,0:53:21.809
+uh...
+
+0:53:21.809,0:53:23.669
+convert downward
+
+0:53:23.669,0:53:27.179
+i got underscore one which would walk
+over the first applecare
+
+0:53:27.179,0:53:28.819
+i don't need it
+
+0:53:28.819,0:53:31.189
+all of the power of the traverse will
+get
+
+0:53:31.189,0:53:32.649
+to result as that
+
+0:53:32.649,0:53:35.689
+you pick any applicable
+
+0:53:35.689,0:53:40.599
+and i have to be able to use fabio upon
+the facts are
+
+0:53:40.599,0:53:43.959
+here i'm only using
+
+0:53:43.959,0:53:47.059
+here i don't care about them online
+
+0:53:47.059,0:53:48.039
+met met
+
+0:53:48.039,0:53:52.079
+you know i mean are you doing underusing
+you are saying the beautiful before
+
+0:53:52.079,0:53:54.609
+but new mother cara bottom online
+
+0:53:54.609,0:53:57.760
+your al your your uh... your particular
+pull
+
+0:53:57.760,0:54:03.039
+might care about them online
+
+0:54:03.039,0:54:06.869
+the sublet it might as well this code
+without anything leaders on it i said do
+
+0:54:06.869,0:54:08.919
+you understand one out of ten
+
+0:54:08.919,0:54:13.009
+uh... out of a pair for the twenty will
+just give me back ten
+
+0:54:13.009,0:54:16.109
+uh... without a model eight on the
+continent
+
+0:54:16.109,0:54:18.709
+that will work
+
+0:54:18.709,0:54:24.219
+so i obviously missed something
+
+0:54:24.219,0:54:28.089
+so deadly fad
+
+0:54:28.089,0:54:32.319
+a couple of additional members this
+hierarchy we can fill in the gap
+
+0:54:32.319,0:54:34.289
+so that we can make
+
+0:54:34.289,0:54:36.189
+the signatures purview
+
+0:54:36.189,0:54:43.189
+and the signature of to list um... you
+know all the things that make sense
+
+0:54:46.509,0:54:50.589
+what we want your is elevens are lesser
+said getting
+
+0:54:50.589,0:54:51.559
+would be
+
+0:54:51.559,0:54:55.799
+i'm gonna get out something i'll use
+this particular model or this particular
+
+0:54:55.799,0:54:59.669
+confident that my
+
+0:54:59.669,0:55:02.919
+constructor it may not may not be
+anomaly because i'd i'm nothing at work
+
+0:55:02.919,0:55:08.079
+training on items that he works for our
+
+0:55:08.079,0:55:10.739
+and i must say in a caused art
+
+0:55:10.739,0:55:11.859
+as to plans are
+
+0:55:11.859,0:55:14.689
+so i want some power from paul
+
+0:55:14.689,0:55:18.669
+again the ability to
+
+0:55:18.669,0:55:20.149
+um...
+
+0:55:20.149,0:55:21.549
+but with this in particular
+
+0:55:21.549,0:55:26.369
+and if we just wrote the signature of u
+you would look like getting a out of
+
+0:55:26.369,0:55:27.979
+asking abt
+
+0:55:27.979,0:55:29.469
+survivors o
+
+0:55:29.469,0:55:35.309
+raspy eighty were saying they given upon
+too from a to b i gave you
+
+0:55:35.309,0:55:36.989
+it
+
+0:55:36.989,0:55:40.199
+uh... nolte in beer completely
+irrelevant
+
+0:55:40.199,0:55:41.339
+we don't care about them
+
+0:55:41.339,0:55:44.319
+was any of them so that we can actually
+pathname
+
+0:55:44.319,0:55:49.059
+when things will get our and for the
+summer
+
+0:55:49.059,0:55:50.029
+and
+
+0:55:50.029,0:55:52.279
+i'm gonna just past the sky const
+
+0:55:52.279,0:55:57.149
+susan allen to beat any const indeed
+
+0:55:57.149,0:56:00.969
+another's estimate as to constipated
+
+0:56:00.969,0:56:04.149
+it's like getting have that concept that
+i could get the any
+
+0:56:04.149,0:56:07.039
+i packed in here so
+
+0:56:07.039,0:56:08.839
+gives me a lot
+
+0:56:08.839,0:56:10.319
+interview
+
+0:56:10.319,0:56:12.549
+didn't demand of my life
+
+0:56:12.549,0:56:15.749
+out of the elements of my
+
+0:56:15.749,0:56:19.329
+if you happen is that with the fall
+
+0:56:19.329,0:56:21.399
+will demand a model
+
+0:56:21.399,0:56:26.549
+because the says this work as long as
+you you can become on a crab
+
+0:56:26.549,0:56:29.939
+but view itself doesn't demand a model
+
+0:56:29.939,0:56:33.869
+all mapa even doesn't banana market
+
+0:56:33.869,0:56:37.979
+right on doing a dime applying you're
+probably going to vegas some value card
+
+0:56:37.979,0:56:39.729
+we'll call it um...
+
+0:56:39.729,0:56:41.229
+the convenient
+
+0:56:41.229,0:56:43.129
+but i'm i'm rapid advance
+
+0:56:43.129,0:56:46.619
+so i did was presenting his view as both
+a function and
+
+0:56:46.619,0:56:48.429
+i'm getting the cars that i got
+
+0:56:48.429,0:56:49.989
+i'm getting
+
+0:56:49.989,0:56:51.129
+endeavour
+
+0:56:51.129,0:56:54.129
+it may or may not be a model
+
+0:56:54.129,0:56:57.159
+so i apply for map up to a fault
+
+0:56:57.159,0:56:59.079
+unlike the man
+
+0:56:59.079,0:57:00.169
+amato i don't know
+
+0:57:00.169,0:57:02.829
+but i fight together
+
+0:57:02.829,0:57:03.839
+journey
+
+0:57:03.839,0:57:04.889
+now
+
+0:57:04.889,0:57:11.889
+uh... i will not
+
+0:57:13.039,0:57:16.829
+so we get
+
+0:57:16.829,0:57:19.039
+is we can make
+
+0:57:19.039,0:57:20.479
+if centers
+
+0:57:20.479,0:57:22.059
+we have
+
+0:57:22.059,0:57:23.869
+getters are missing decker
+
+0:57:23.869,0:57:30.869
+that list
+
+0:57:31.209,0:57:34.120
+so we can do is we can make this notion
+of a lands
+
+0:57:34.120,0:57:38.250
+the any traverse eliza valid getter and
+i'm missing the point one three missing
+
+0:57:38.250,0:57:40.829
+jeter missing
+
+0:57:40.829,0:57:42.649
+um...
+
+0:57:42.649,0:57:47.089
+we read the definition of get extra tape
+
+0:57:47.089,0:57:49.339
+asking abt
+
+0:57:49.339,0:57:51.029
+yesterday
+
+0:57:51.029,0:57:55.759
+reports
+
+0:57:55.759,0:57:58.439
+results
+
+0:57:58.439,0:58:02.429
+even if a chilly conse parbe
+
+0:58:02.429,0:58:09.429
+i can give you an asteroids comets
+
+0:58:11.809,0:58:15.259
+so we can
+
+0:58:15.259,0:58:18.919
+the finest biology to v
+
+0:58:18.919,0:58:20.289
+were polled said
+
+0:58:20.289,0:58:24.749
+you can rely on the fact that i have a
+model
+
+0:58:24.749,0:58:27.309
+alligator doesn't give you this
+
+0:58:27.309,0:58:29.649
+so you have your if this does work for
+any
+
+0:58:29.649,0:58:31.989
+function who made a consular
+
+0:58:31.989,0:58:35.119
+which is just that there is a factor of
+fun to be a bunch of eight r
+
+0:58:35.119,0:58:39.709
+idea punch mass start liking of nothing
+about
+
+0:58:39.709,0:58:43.359
+if they can do anything about our i
+can't put together in any meaningful way
+
+0:58:43.359,0:58:44.380
+so i had to do is
+
+0:58:44.380,0:58:45.380
+fine
+
+0:58:45.380,0:58:48.219
+the won the hearts out of here
+
+0:58:48.219,0:58:49.559
+structure that this represent
+
+0:58:49.559,0:58:56.559
+this is a fancy way to say that i have a
+function for mass today
+
+0:58:59.589,0:59:02.089
+though i have
+
+0:59:02.089,0:59:04.399
+uh... governor skipper ornaments lights
+right
+
+0:59:04.399,0:59:05.679
+so i gather
+
+0:59:05.679,0:59:11.519
+is unified request and i will give you a
+better
+
+0:59:11.519,0:59:13.209
+which is that for all our
+
+0:59:13.209,0:59:18.179
+itic onstar
+
+0:59:18.179,0:59:20.699
+and we can build too
+
+0:59:20.699,0:59:24.059
+and this guy says if you have lunch from
+este
+
+0:59:24.059,0:59:27.299
+and i thought you know they are with the
+new right
+
+0:59:27.299,0:59:31.239
+i need a bunch rasool with me
+
+0:59:31.239,0:59:32.859
+let's
+
+0:59:32.859,0:59:36.189
+like flip-flop
+
+0:59:36.189,0:59:43.079
+antonyms
+
+0:59:43.079,0:59:43.999
+reads a
+
+0:59:43.999,0:59:45.409
+to his
+
+0:59:45.409,0:59:49.969
+i'm composers dupont jonsman ripped the
+consul off of the cutback
+
+0:59:49.969,0:59:53.169
+no
+
+0:59:53.169,0:59:54.759
+okay
+
+0:59:54.759,0:59:56.329
+it's got a boring
+
+0:59:56.329,1:00:00.589
+and there will be the review to you
+
+1:00:00.589,1:00:02.959
+this is going to be just like they did
+before
+
+1:00:02.959,1:00:08.099
+rupal plug in the definition of two
+picasa contradict absecon stand out
+
+1:00:08.099,1:00:12.459
+let them get all
+
+1:00:12.459,1:00:16.949
+regan leh pungent smell smelly mud drop
+bombs in the normal and arrival
+
+1:00:16.949,1:00:18.989
+ladies like white wine
+
+1:00:18.989,1:00:22.419
+and get something that's kinda like a
+land title of his reversal kinda like a
+
+1:00:22.419,1:00:23.849
+full
+
+1:00:23.849,1:00:28.299
+but it's just a pontoon to get one
+valley
+
+1:00:28.299,1:00:33.929
+and if you didn't demand it be a
+monolith it just worked
+
+1:00:33.929,1:00:38.489
+growing about website
+
+1:00:38.489,1:00:40.449
+so now
+
+1:00:40.449,1:00:42.829
+a lens
+
+1:00:42.829,1:00:44.289
+is just
+
+1:00:44.289,1:00:46.219
+eight reversal
+
+1:00:46.219,1:00:48.549
+that is a ballot yet
+
+1:00:48.549,1:00:51.409
+so if they traverse a loved one targeted
+side of the structure and they have to
+
+1:00:51.409,1:00:53.189
+cut in half a diverse one target
+
+1:00:53.189,1:00:55.080
+given there's no way to build
+
+1:00:55.080,1:00:55.880
+this ab
+
+1:00:55.880,1:00:59.129
+to give it back to you honored that you
+use your function
+
+1:00:59.129,1:01:01.329
+from a double date
+
+1:01:01.329,1:01:04.539
+right i have no not knowing audit up
+other than the fact that the bump in the
+
+1:01:04.539,1:01:08.129
+end of the bunker that battle
+
+1:01:08.129,1:01:09.779
+and of the laws on
+
+1:01:09.779,1:01:11.219
+on terms such that
+
+1:01:11.219,1:01:14.369
+really doesn't matter however over it if
+i have to happen in about the second
+
+1:01:14.369,1:01:18.469
+time i can always attach that the other
+
+1:01:18.469,1:01:20.099
+so
+
+1:01:20.099,1:01:23.469
+what what what that means is that i have
+to go into my house
+
+1:01:23.469,1:01:25.319
+find a day
+
+1:01:25.319,1:01:27.460
+somewhere i think that we can talk or
+not you know
+
+1:01:27.460,1:01:28.819
+a quicker
+
+1:01:28.819,1:01:30.839
+by an egg in a few by
+
+1:01:30.839,1:01:33.879
+pat calling upon check-in appleby out of
+it
+
+1:01:33.879,1:01:37.629
+and then full the rest of the crap that
+was inside a bass
+
+1:01:37.629,1:01:41.409
+under the answer inside of the model
+inside of that the parker
+
+1:01:41.409,1:01:45.019
+there's nothing else i can do
+
+1:01:45.019,1:01:46.419
+joel ends
+
+1:01:46.419,1:01:49.950
+now under this formulation is just
+andy's reversal
+
+1:01:49.950,1:01:51.239
+that happens to be
+
+1:01:51.239,1:01:53.089
+abella gather
+
+1:01:53.089,1:01:57.160
+because the debtor just said that the
+sweat that cost army nothing about this
+
+1:01:57.160,1:01:58.509
+but we knew that
+
+1:01:58.509,1:01:59.240
+are
+
+1:01:59.240,1:02:02.249
+was a functor no matter what choice of
+our wicca
+
+1:02:02.249,1:02:06.389
+its not applicable must we all my life
+
+1:02:06.389,1:02:11.399
+but we only have about a reality of it
+with your work with
+
+1:02:11.399,1:02:16.919
+and i went really faster that's a there
+will be hopefully video not cook up a
+
+1:02:16.919,1:02:18.289
+bit nervous
+
+1:02:18.289,1:02:20.779
+uh...
+
+1:02:20.779,1:02:24.879
+or we can do it is now as we had view
+and sat
+
+1:02:24.879,1:02:28.989
+uh... setlist like bright too
+
+1:02:28.989,1:02:33.199
+and view let us re renew our way back to
+the anymore and i think i would never do
+
+1:02:33.199,1:02:35.529
+anything and public threw it out
+
+1:02:35.529,1:02:39.399
+we can now derived the definitions from
+that's like
+
+1:02:39.399,1:02:43.019
+in terms of this much crazier looking
+construction
+
+1:02:43.019,1:02:44.569
+work
+
+1:02:44.569,1:02:46.259
+uh... here
+
+1:02:46.259,1:02:53.259
+deal with picking declined to be
+
+1:02:53.869,1:02:55.660
+constand
+
+1:02:55.660,1:03:00.859
+and satisfy king it to be agony
+
+1:03:00.859,1:03:04.039
+british choosing two different bunkers
+
+1:03:04.039,1:03:04.959
+probably
+
+1:03:04.959,1:03:10.219
+there were a lot of attorney bob we
+walked on giving them the item in here
+
+1:03:10.219,1:03:13.059
+and so using that that power
+
+1:03:13.059,1:03:17.069
+we can read the single target out
+
+1:03:17.069,1:03:18.399
+or we can set up
+
+1:03:18.399,1:03:21.589
+but interestingly if i pass this guy up
+all
+
+1:03:21.589,1:03:22.390
+now
+
+1:03:22.390,1:03:27.329
+spontaneously this is going to start
+demanding that this argument be among
+
+1:03:27.329,1:03:29.390
+if you don't owe money for the net
+
+1:03:29.390,1:03:32.419
+you the answer a fault who doesn't have
+any weight a smash together
+
+1:03:32.419,1:03:35.209
+all of the different response
+
+1:03:35.209,1:03:39.099
+so view works for polled say works for
+lenses that works for commercial
+
+1:03:39.099,1:03:43.099
+leverage over sold about fall
+
+1:03:43.099,1:03:46.849
+so it will just be wild card to the
+commercial
+
+1:03:46.849,1:03:50.059
+uh... and what we can sort of a
+subtyping relationship between all of
+
+1:03:50.059,1:03:53.549
+these different right there with
+
+1:03:53.549,1:03:54.779
+where
+
+1:03:54.779,1:03:58.969
+using them in different contacts cause
+these commentators demand according to
+
+1:03:58.969,1:04:05.969
+the
+
+1:04:06.039,1:04:09.519
+when we did buell earlier we reviewed
+underscore one out of
+
+1:04:09.519,1:04:12.489
+hello
+
+1:04:12.489,1:04:15.039
+underscore one
+
+1:04:15.039,1:04:17.199
+was owens
+
+1:04:17.199,1:04:19.109
+a length of the vote getter
+
+1:04:19.109,1:04:25.119
+by getter can reads exactly one target
+doesn't men amano tell us when we got a
+
+1:04:25.119,1:04:28.209
+but i wanted you both have said that she
+would have to do something to that it's
+
+1:04:28.209,1:04:34.959
+got a state that should be getting
+anyone trying to rescue strengths
+
+1:04:34.959,1:04:37.789
+just any as the model a first reading
+
+1:04:37.789,1:04:42.849
+there
+
+1:04:42.849,1:04:46.629
+uh...
+
+1:04:46.629,1:04:52.779
+and if we really want we can get them
+out separately conflicts converts a list
+
+1:04:52.779,1:04:58.079
+well if there is yours is gonna complain
+that does not do this
+
+1:04:58.079,1:05:00.709
+there was nothing to have a
+
+1:05:00.709,1:05:03.929
+we can say jimmy's and some of us
+
+1:05:03.929,1:05:06.909
+if that's going to pick up my life is
+good inject them into the some model
+
+1:05:06.909,1:05:08.239
+item n
+
+1:05:08.239,1:05:15.239
+steelworker
+
+1:05:22.179,1:05:23.750
+there yes and and and do that
+
+1:05:23.750,1:05:29.109
+that is the instance of my my purse
+strings
+
+1:05:29.109,1:05:33.359
+just yes it was a by default
+
+1:05:33.359,1:05:37.249
+you couldn't you could make up as a
+moderate for any
+
+1:05:37.249,1:05:40.719
+yes because they did you really want to
+adam you are more quiet
+
+1:05:40.719,1:05:44.199
+you know you it does not mean you could
+
+1:05:44.199,1:05:47.799
+so wet when there's no one right before
+we just don't people
+
+1:05:47.799,1:05:51.479
+usually then you have to pick up
+anything
+
+1:05:51.479,1:05:54.039
+well you can make it you can use any
+type reveron like
+
+1:05:54.039,1:05:55.750
+that i could use um...
+
+1:05:55.750,1:05:57.889
+view both of
+
+1:05:57.889,1:06:04.889
+uh... district is not something that
+missile effect
+
+1:06:14.919,1:06:17.239
+that's on the pillow talk
+
+1:06:17.239,1:06:19.799
+hypocritical
+
+1:06:19.799,1:06:21.429
+um...
+
+1:06:21.429,1:06:22.739
+kal okay
+
+1:06:22.739,1:06:23.819
+so now
+
+1:06:23.819,1:06:26.359
+we were able to build with view and sat
+
+1:06:26.359,1:06:31.269
+we can construct a lens given a
+
+1:06:31.269,1:06:32.459
+and a setter
+
+1:06:32.459,1:06:36.650
+but now we've got these funny b_n_p_
+backgrounder winner wage but we think
+
+1:06:36.650,1:06:38.829
+about why that changed
+
+1:06:38.829,1:06:42.499
+right because we're we're allowed to
+change the type are targets right
+
+1:06:42.499,1:06:46.629
+so before we talk about when the the
+very beginning we just said that
+
+1:06:46.629,1:06:49.469
+well if i if i start with a alum
+
+1:06:49.469,1:06:51.039
+passing it made out
+
+1:06:51.039,1:06:52.129
+ever got up
+
+1:06:52.129,1:06:55.739
+an awsome and you and i can go back in
+again you are
+
+1:06:55.739,1:06:58.490
+here what i'm saying is maybe wanting to
+pay for that part
+
+1:06:58.490,1:07:00.209
+or all of the targets
+
+1:07:00.209,1:07:02.399
+involved wondered is were the ones
+
+1:07:02.399,1:07:05.229
+if you change the type of that target
+will be
+
+1:07:05.229,1:07:07.169
+the new technology
+
+1:07:07.169,1:07:10.209
+again then turned out that you get this
+family structure where
+
+1:07:10.209,1:07:13.869
+you've got like the out her family and
+in her family and they they both have
+
+1:07:13.869,1:07:15.469
+indexes and i
+
+1:07:15.469,1:07:16.399
+written up
+
+1:07:16.399,1:07:19.119
+blog post on the topic is that if we
+want to do indeed
+
+1:07:19.119,1:07:20.129
+uh... but
+
+1:07:20.129,1:07:22.209
+the
+
+1:07:22.209,1:07:25.179
+structure here usually sit is
+
+1:07:25.179,1:07:28.409
+a good way to tell if you've got a bell
+atlantic you could all if you can always
+
+1:07:28.409,1:07:29.579
+pick
+
+1:07:29.579,1:07:32.859
+testicle steven eight will be
+
+1:07:32.859,1:07:34.200
+if you can't than you
+
+1:07:34.200,1:07:35.799
+probably screwed up and you don't have a
+look
+
+1:07:35.799,1:07:38.579
+well the government you know
+
+1:07:38.579,1:07:42.779
+is a good witness trucks
+
+1:07:42.779,1:07:44.659
+if i gotta go from este
+
+1:07:44.659,1:07:46.110
+and a piano that's totally
+
+1:07:46.110,1:07:49.369
+and it came to a couple of pieces can i
+have a nice
+
+1:07:49.369,1:07:52.569
+i date my aspirate last day
+
+1:07:52.569,1:07:56.019
+by midday if you'd like what you may not
+be used
+
+1:07:56.019,1:08:00.739
+niigata annapolis bees like that that
+will be looking at the movies
+
+1:08:00.739,1:08:02.349
+thank you compete
+
+1:08:02.349,1:08:04.299
+that was in my computer
+
+1:08:04.299,1:08:06.669
+and the absolute pleasure
+
+1:08:06.669,1:08:09.869
+and smash together guarantees nyah nyah
+forties
+
+1:08:09.869,1:08:11.089
+and i need
+
+1:08:11.089,1:08:18.089
+that's an extra bed
+
+1:08:18.829,1:08:22.130
+their stockbridge
+
+1:08:22.130,1:08:25.979
+so again a lens update the single target
+and you can define a lens in terms of a
+
+1:08:25.979,1:08:27.480
+debtor
+
+1:08:27.480,1:08:31.290
+in practice i'd never bothered to do it
+this way
+
+1:08:31.290,1:08:33.599
+because its
+
+1:08:33.599,1:08:35.609
+is here for me and practice just a
+
+1:08:35.609,1:08:38.650
+closer to about and a pair of a and b
+
+1:08:38.650,1:08:39.650
+should look like
+
+1:08:39.650,1:08:41.799
+where the now
+
+1:08:41.799,1:08:46.639
+reminders wicker shelf life
+
+1:08:46.639,1:08:50.719
+that's alliance
+
+1:08:50.719,1:08:57.719
+as soon as i have everything
+
+1:08:59.359,1:09:00.729
+uh... um
+
+1:09:00.729,1:09:02.030
+also know something here
+
+1:09:02.030,1:09:05.549
+i didn't have to import my library to
+write back
+
+1:09:05.549,1:09:07.219
+there
+
+1:09:07.219,1:09:10.549
+brett so you can write lenses that are
+compatible with the lens library
+
+1:09:10.549,1:09:13.370
+unifying commercials that are compatible
+with the lens library
+
+1:09:13.370,1:09:14.279
+without dip
+
+1:09:14.279,1:09:18.609
+pending fumble and wiper
+
+1:09:18.609,1:09:22.410
+ratkai just used this guy could be a
+staff map of the prelude i wouldn't have
+
+1:09:22.410,1:09:24.920
+been
+
+1:09:24.920,1:09:27.970
+orgasm using just the prelude you can
+define the land
+
+1:09:27.970,1:09:32.479
+it is perfectly compatible with pollock
+commons i give you a cooler
+
+1:09:32.479,1:09:34.779
+and one of the reasons that this is
+important is
+
+1:09:34.779,1:09:36.519
+is that did you view
+
+1:09:36.519,1:09:40.299
+kab all kind of like an onion their
+entire something where he like
+
+1:09:40.299,1:09:44.459
+packages come along and they may just
+get calendar layers on the onion
+
+1:09:44.459,1:09:46.520
+uh... later packages
+
+1:09:46.520,1:09:49.279
+how do you have to provide all of the
+
+1:09:49.279,1:09:50.109
+stuff
+
+1:09:50.109,1:09:51.319
+per pack a dessert
+
+1:09:51.319,1:09:55.330
+deeper than them in in in uh... in the
+west is really hard inverted dependency
+
+1:09:55.330,1:09:56.989
+in the fall world
+
+1:09:56.989,1:09:58.289
+uh...
+
+1:09:58.289,1:10:00.719
+and you can have cycles
+
+1:10:00.719,1:10:04.969
+so if i were to come along later in the
+final library
+
+1:10:04.969,1:10:08.780
+i do have some great instances for
+containers i'd better put them on my
+
+1:10:08.780,1:10:13.639
+library because there's no way i'm
+getting containers depend on me
+
+1:10:13.639,1:10:15.840
+on the other hand with business
+
+1:10:15.840,1:10:20.460
+i could say i did try and convince your
+honor degree somebody and other gotta go
+
+1:10:20.460,1:10:22.260
+alligator steam
+
+1:10:22.260,1:10:24.030
+to make a
+
+1:10:24.030,1:10:31.030
+islands to go to burst the offer
+argument on the part of the
+
+1:10:31.059,1:10:32.219
+and
+
+1:10:32.219,1:10:35.139
+that might be an argument i could win
+
+1:10:35.139,1:10:37.939
+uh... and so this is this
+
+1:10:37.939,1:10:40.859
+uh... somebody made a joke that i've got
+to the point where bob might well
+
+1:10:40.859,1:10:43.079
+aberrational point we don't have to
+depend on them
+
+1:10:43.079,1:10:48.090
+anymore popularity of any of them uh...
+not
+
+1:10:48.090,1:10:48.780
+um
+
+1:10:48.780,1:10:52.469
+i think is a really big selling point
+for this kind of lands
+
+1:10:52.469,1:10:54.030
+if nothing else
+
+1:10:54.030,1:10:57.860
+uh... because it solves that twelve
+which might lead to invite radio i
+
+1:10:57.860,1:10:59.530
+provide lens for
+
+1:10:59.530,1:11:06.530
+uh... you don't have to become a
+dependency in his right about here
+
+1:11:08.750,1:11:10.429
+yeah
+
+1:11:10.429,1:11:12.719
+itself
+
+1:11:12.719,1:11:14.849
+so this this is by the critical
+
+1:11:14.849,1:11:17.369
+uh... and then the other thing is is
+this just magically become the
+
+1:11:17.369,1:11:20.489
+commercial if i started to say
+
+1:11:20.489,1:11:21.760
+well and
+
+1:11:21.760,1:11:28.760
+walk this one too
+
+1:11:30.639,1:11:34.449
+objects o traverse als and pump and
+lenders can both be provided by any
+
+1:11:34.449,1:11:35.260
+library
+
+1:11:35.260,1:11:39.699
+without leaving depending on
+
+1:11:39.699,1:11:46.699
+link line doesn't have a some are all
+yet
+
+1:11:46.809,1:11:47.570
+if you can
+
+1:11:47.570,1:11:49.389
+breaker prep
+
+1:11:49.389,1:11:51.909
+yep so given
+
+1:11:51.909,1:11:52.909
+upare
+
+1:11:52.909,1:11:53.860
+apiece
+
+1:11:53.860,1:11:56.050
+and a bunch of repute up badly than ever
+
+1:11:56.050,1:12:00.580
+apparent
+
+1:12:00.580,1:12:01.579
+but now
+
+1:12:01.579,1:12:04.940
+because i have to be able to smash
+together the answers
+
+1:12:04.940,1:12:07.590
+immediately
+
+1:12:07.590,1:12:10.110
+and that's the thing that will magically
+make independent amato right when you go
+
+1:12:10.110,1:12:12.320
+to use
+
+1:12:12.320,1:12:15.329
+one of the old comic
+
+1:12:15.329,1:12:17.550
+so you can use this traverse or as a
+whole
+
+1:12:17.550,1:12:19.650
+as it were sold
+
+1:12:19.650,1:12:21.030
+it just works
+
+1:12:21.030,1:12:23.070
+you use this lands
+
+1:12:23.070,1:12:24.489
+reminders were too
+
+1:12:24.489,1:12:30.359
+as a old garrett reversal all things are
+good may just happen to be instantiation
+
+1:12:30.359,1:12:37.359
+to the fact that we can
+
+1:12:38.919,1:12:41.150
+so we can now make
+
+1:12:41.150,1:12:43.930
+missing the definition of that
+
+1:12:43.930,1:12:46.570
+uh...
+
+1:12:46.570,1:12:48.590
+so we want to go defying
+
+1:12:48.590,1:12:50.229
+elan's into a map
+
+1:12:50.229,1:12:54.539
+like innately might say won't give it a
+key into them
+
+1:12:54.539,1:12:57.570
+i want to go get you the value at that
+
+1:12:57.570,1:12:59.109
+it like
+
+1:12:59.109,1:13:02.669
+that doesn't white
+
+1:13:02.669,1:13:05.550
+what about you mention what value liking
+you
+
+1:13:05.550,1:13:07.539
+at the end with your father
+
+1:13:07.539,1:13:09.550
+so i can't do this
+
+1:13:09.550,1:13:11.369
+i try to write the paper
+
+1:13:11.369,1:13:14.219
+delicate reversal birth you know
+
+1:13:14.219,1:13:19.340
+and that you updated if it's already
+present
+
+1:13:19.340,1:13:23.060
+but that's not letting you know
+
+1:13:23.060,1:13:27.159
+create akeel or
+
+1:13:27.159,1:13:34.159
+but what i can do
+
+1:13:36.469,1:13:42.489
+so we can say mapped out from us this
+terrible amount
+
+1:13:42.489,1:13:44.080
+so this is at the site
+
+1:13:44.080,1:13:47.199
+uh... matthew to insert delete and do it
+
+1:13:47.199,1:13:48.330
+it builds up
+
+1:13:48.330,1:13:52.040
+annoys size balanced binary tree
+
+1:13:52.040,1:13:59.039
+performed really well
+
+1:13:59.039,1:14:00.699
+so we can read it up a lot
+
+1:14:00.699,1:14:07.699
+this is an ethical review
+
+1:14:08.929,1:14:10.800
+we do reiki is not present
+
+1:14:10.800,1:14:17.800
+in dozens of april levees that's getting
+out and maybe
+
+1:14:20.499,1:14:24.219
+close to a permit
+
+1:14:24.219,1:14:26.070
+so i can read and write to it
+
+1:14:26.070,1:14:29.929
+but i can i can only read in right now
+is akin to leap from the map using
+
+1:14:29.929,1:14:32.849
+eleven
+
+1:14:32.849,1:14:36.500
+and that's how i can meet the landforms
+
+1:14:36.500,1:14:39.040
+is that not only do i read
+
+1:14:39.040,1:14:39.850
+and right
+
+1:14:39.850,1:14:42.070
+i can delete because i can go from
+
+1:14:42.070,1:14:43.330
+given a key
+
+1:14:43.330,1:14:47.500
+i give you a lens that looks at the
+value that he had to present
+
+1:14:47.500,1:14:49.489
+or gives you nothing of its not
+
+1:14:49.489,1:14:52.860
+and it will insert it when you put up a
+bit suggest
+
+1:14:52.860,1:14:58.030
+and will be a lead if you put up with
+them
+
+1:14:58.030,1:15:03.889
+now act is actually generalize that
+worked with it option somewhat but
+
+1:15:03.889,1:15:07.420
+in fact conceptually you can think of
+that as having the signature with a
+
+1:15:07.420,1:15:14.420
+maybe a again
+
+1:15:17.469,1:15:18.740
+although i pull the wool
+
+1:15:18.740,1:15:21.189
+we talked about
+
+1:15:21.189,1:15:22.360
+um...
+
+1:15:22.360,1:15:24.940
+there's a whole bunch of numbers you
+carry dupre
+
+1:15:24.940,1:15:28.059
+opal hit up a little right
+
+1:15:28.059,1:15:29.730
+but a lot of them
+
+1:15:29.730,1:15:30.889
+uh... we did we get them all
+
+1:15:30.889,1:15:33.659
+uh... but this of
+
+1:15:33.659,1:15:35.100
+convention
+
+1:15:35.100,1:15:36.059
+um...
+
+1:15:36.059,1:15:38.689
+burning lens provide something like six
+or seven hundred different names with
+
+1:15:38.689,1:15:39.269
+things
+
+1:15:39.269,1:15:42.909
+that um... i actually did a good word
+search like frequency analysis against
+
+1:15:42.909,1:15:44.149
+package before
+
+1:15:44.149,1:15:48.199
+releasing the library the try minimize
+their complex so that's why we do the of
+
+1:15:48.199,1:15:49.760
+convention in suffolk va
+
+1:15:49.760,1:15:53.559
+um we have lots of past tenses i take
+names and places that nobody does feel
+
+1:15:53.559,1:15:55.730
+like we use joined in person
+
+1:15:55.730,1:15:56.469
+huh
+
+1:15:56.469,1:15:59.920
+sojourn so we we who eating
+
+1:15:59.920,1:16:01.400
+and sort of you know
+
+1:16:01.400,1:16:04.380
+so that's what's holding them pull their
+guns without
+
+1:16:04.380,1:16:08.409
+past tenses so things things that get us
+names that are declarative
+
+1:16:08.409,1:16:11.399
+but our relatively underutilized
+portions of the namespace of the people
+
+1:16:11.399,1:16:15.139
+can import lands unqualified because
+control dot length brief and all the
+
+1:16:15.139,1:16:16.909
+stuff
+
+1:16:16.909,1:16:17.950
+uh...
+
+1:16:17.950,1:16:19.559
+at that point
+
+1:16:19.559,1:16:23.320
+and i really didn't want people happy
+import something qualified or explicitly
+
+1:16:23.320,1:16:25.300
+near everything they do so
+
+1:16:25.300,1:16:28.050
+because it's really hard to give a talk
+if you have to name
+
+1:16:28.050,1:16:31.520
+every door detroit using your card
+before you can use it
+
+1:16:31.520,1:16:32.769
+here
+
+1:16:32.769,1:16:37.169
+uh... it it's it's much nicer to having
+large vocabulary that you could just
+
+1:16:37.169,1:16:39.070
+reach for
+
+1:16:39.070,1:16:40.920
+and and in many ways
+
+1:16:40.920,1:16:45.230
+the lead bribery of all about building
+that vocabulary for working with bunkers
+
+1:16:45.230,1:16:46.500
+and pull the wool
+
+1:16:46.500,1:16:50.519
+and reversible and function that we
+already know how to use right
+
+1:16:50.519,1:16:54.300
+uh... so all we did all i did was to
+take the pieces that we already know
+
+1:16:54.300,1:16:56.460
+although we are not a reason about
+
+1:16:56.460,1:16:58.210
+those those poor things
+
+1:16:58.210,1:17:01.150
+and put them together in a form that
+makes them more comfortable
+
+1:17:01.150,1:17:03.590
+and makes them more applicable to that i
+can to say
+
+1:17:03.590,1:17:07.399
+just grab this coming around chocolate
+to give them has limited portion of them
+
+1:17:07.399,1:17:12.920
+and i can apply for the entire gamut of
+over possible
+
+1:17:12.920,1:17:14.500
+uh... and so
+
+1:17:14.500,1:17:18.019
+the problem is a really convenient if
+you have a poll
+
+1:17:18.019,1:17:22.599
+or a traverse all metlife is probably
+furor when a woman few you have like
+
+1:17:22.599,1:17:23.510
+maybe
+
+1:17:23.510,1:17:25.400
+they didn't give me an answer may be a
+while
+
+1:17:25.400,1:17:27.130
+um... this
+
+1:17:27.130,1:17:30.519
+this guy will go do you know the per
+capita gin
+
+1:17:30.519,1:17:32.699
+the request matured a lot
+
+1:17:32.699,1:17:34.929
+uh... care about dot
+
+1:17:34.929,1:17:37.570
+get you a list of all the answers
+
+1:17:37.570,1:17:43.229
+on so i can do you think your not which
+is uh... arm
+
+1:17:43.229,1:17:44.199
+its view
+
+1:17:44.199,1:17:50.559
+weapon into court
+
+1:17:50.559,1:17:52.949
+so the
+
+1:17:52.949,1:17:55.690
+killed on the others for like setting
+operations like
+
+1:17:55.690,1:17:57.540
+it's functional centers
+
+1:17:57.540,1:18:00.210
+that supply this operator
+
+1:18:00.210,1:18:03.099
+and carrot dot as you carrot something
+usually
+
+1:18:03.099,1:18:04.710
+i'm reading from a
+
+1:18:04.710,1:18:06.449
+compared
+
+1:18:06.449,1:18:09.330
+so here i am reading from a pull
+
+1:18:09.330,1:18:11.300
+and giving you maybe
+
+1:18:11.300,1:18:14.090
+here i'm reading from a hold of giving
+you all the others the dot that should
+
+1:18:14.090,1:18:18.879
+be indicative of that but that that's
+the best that you know yeah
+
+1:18:18.879,1:18:24.239
+so we got your essay given one too
+
+1:18:24.239,1:18:30.459
+and i'd lost my ability that the gospel
+
+1:18:30.459,1:18:34.309
+meat-packing
+
+1:18:34.309,1:18:36.510
+browning
+
+1:18:36.510,1:18:39.969
+uh...
+
+1:18:39.969,1:18:42.090
+one too
+
+1:18:42.090,1:18:44.289
+lee for
+
+1:18:44.289,1:18:51.289
+traversing the me though
+
+1:18:59.179,1:19:06.179
+or both double right
+
+1:19:07.330,1:19:13.580
+and then let's say that we had
+
+1:19:13.580,1:19:15.280
+three
+
+1:19:15.280,1:19:22.280
+tell me whether or not
+
+1:19:27.840,1:19:31.190
+and so most of the things you can do it
+then the whole blvd recollection all the
+
+1:19:31.190,1:19:35.820
+things you can do to a beloved and in
+doing a lot of things a build-up
+
+1:19:35.820,1:19:38.210
+the structure actually got the most
+loving that you can use to build a
+
+1:19:38.210,1:19:44.249
+political action if the user deriva four
+
+1:19:44.249,1:19:46.730
+parents who writes departments like this
+
+1:19:46.730,1:19:49.550
+again urgent order
+
+1:19:49.550,1:19:51.570
+uh...
+
+1:19:51.570,1:19:55.030
+together just like functions
+
+1:19:55.030,1:19:59.849
+this is what you are supposed to drink
+
+1:19:59.849,1:20:02.310
+uh...
+
+1:20:02.310,1:20:05.290
+actually implement these are a little
+bit of away like up until now i've been
+
+1:20:05.290,1:20:06.599
+saying that i got that
+
+1:20:06.599,1:20:09.269
+you just pick identity or you pick
+
+1:20:09.269,1:20:13.719
+uh...
+
+1:20:13.719,1:20:15.249
+const
+
+1:20:15.249,1:20:18.049
+uh... actually used
+
+1:20:18.049,1:20:19.340
+classwork
+
+1:20:19.340,1:20:22.370
+because if i don't get by user id by
+actually just pet
+
+1:20:22.370,1:20:23.760
+conficker identity
+
+1:20:23.760,1:20:27.269
+and i know that i want to go green from
+center
+
+1:20:27.269,1:20:28.860
+or write you a debtor
+
+1:20:28.860,1:20:32.150
+i would get a terrible looking
+unification earth it would be like
+
+1:20:32.150,1:20:33.689
+srinu
+
+1:20:33.689,1:20:38.139
+okay but instead i quickens our class
+constraint on it it will unify and then
+
+1:20:38.139,1:20:40.320
+it will look for instance that isn't
+there
+
+1:20:40.320,1:20:44.919
+and i want to say no instance perak
+others saleable music uh... access or no
+
+1:20:44.919,1:20:46.829
+inference of double nuclear
+
+1:20:46.829,1:20:52.540
+and now looks much nicer in some adopted
+him getting into it what they did wrong
+
+1:20:52.540,1:20:55.010
+uh... so i actually can't match
+
+1:20:55.010,1:20:59.879
+that const construction by making a
+class were things that are double
+
+1:20:59.879,1:21:02.349
+maganda setting for separate appleby
+
+1:21:02.349,1:21:04.420
+and why is that not about
+
+1:21:04.420,1:21:08.480
+wrapping up half people's court
+
+1:21:08.480,1:21:12.019
+so this this can't happen any minute
+
+1:21:12.019,1:21:13.489
+because
+
+1:21:13.489,1:21:16.530
+you know in order to satisfy that law
+
+1:21:16.530,1:21:20.340
+use the functions uh... map of it
+
+1:21:20.340,1:21:22.420
+uh... and so once i get done with that
+
+1:21:22.420,1:21:26.409
+now debtors not quite
+
+1:21:26.409,1:21:28.530
+uh... way that we go
+
+1:21:28.530,1:21:33.039
+reversible
+
+1:21:33.039,1:21:34.480
+art reversible and left
+
+1:21:34.480,1:21:35.920
+record reversal in lands
+
+1:21:35.920,1:21:40.400
+used functor looking at here using
+double
+
+1:21:40.400,1:21:44.719
+and then
+
+1:21:44.719,1:21:47.640
+so it's an obsessive opinion of going
+out to put it
+
+1:21:47.640,1:21:50.949
+polling often bring back on a new
+contract or understand course
+
+1:21:50.949,1:21:56.829
+turnover may internet would be visit
+yeah i know that that big a role
+
+1:21:56.829,1:21:57.990
+and getting
+
+1:21:57.990,1:22:03.030
+can still pick it to be accessories as a
+friend inundated constantly
+
+1:22:03.030,1:22:10.030
+the standard
+
+1:22:17.169,1:22:17.920
+lenders
+
+1:22:17.920,1:22:21.670
+agis anything above the gutter of
+commercial
+
+1:22:21.670,1:22:24.530
+uh... we had a whole piled commenters
+really is um...
+
+1:22:24.530,1:22:26.219
+so today shouldn't you
+
+1:22:26.219,1:22:28.349
+um...
+
+1:22:28.349,1:22:29.389
+updating
+
+1:22:29.389,1:22:30.189
+the target
+
+1:22:30.189,1:22:32.919
+i can read the answer that i wrote
+
+1:22:32.919,1:22:34.570
+at the same because
+
+1:22:34.570,1:22:38.179
+uh... if they are beginning to go are
+updated by
+
+1:22:38.179,1:22:41.849
+cutbacks variable count and that
+happened over here
+
+1:22:41.849,1:22:44.219
+uh...
+
+1:22:44.219,1:22:47.329
+so i quit yes you can go through and to
+find something like
+
+1:22:47.329,1:22:49.650
+i know left freshen equals
+
+1:22:49.650,1:22:56.449
+uh...
+
+1:22:56.449,1:22:59.179
+uh...
+
+1:22:59.179,1:23:01.169
+normal marxism
+
+1:23:01.169,1:23:05.270
+structured the
+
+1:23:05.270,1:23:06.929
+back cat
+
+1:23:06.929,1:23:09.820
+social say in any money at stake
+
+1:23:09.820,1:23:11.959
+that have caused the cut
+
+1:23:11.959,1:23:14.679
+uh... that has an america it
+
+1:23:14.679,1:23:15.920
+by ken
+
+1:23:15.920,1:23:17.619
+bump the car by one
+
+1:23:17.619,1:23:19.149
+and read the new value
+
+1:23:19.149,1:23:22.079
+online
+
+1:23:22.079,1:23:23.959
+are you would be identity lanphear
+
+1:23:23.959,1:23:29.579
+pledged by the way is just the identity
+function
+
+1:23:29.579,1:23:33.229
+seven composing these things all im but
+i haven't really talked about why they
+
+1:23:33.229,1:23:37.280
+compose right lol
+
+1:23:37.280,1:23:40.020
+if we look at this this is a function
+
+1:23:40.020,1:23:40.999
+from
+
+1:23:40.999,1:23:42.949
+in appleby too
+
+1:23:42.949,1:23:45.330
+estaba meat
+
+1:23:45.330,1:23:51.159
+and when i compose them i'm compiling
+those functions the outer rappers
+
+1:23:51.159,1:23:53.330
+timeline from ada theater
+
+1:23:53.330,1:23:55.800
+as a victim here that goes well
+
+1:23:55.800,1:24:00.449
+uh... xd af of why eight af of b so i
+compose those night open ac staff of y
+
+1:24:00.449,1:24:04.690
+de step
+
+1:24:04.690,1:24:08.389
+composing these larger box that's why i
+can use dot mcgrew
+
+1:24:08.389,1:24:10.769
+you can actually build these things
+using a rupture there if you really want
+
+1:24:10.769,1:24:12.330
+to
+
+1:24:12.330,1:24:16.819
+you know that arabs
+
+1:24:16.819,1:24:18.280
+just passport
+
+1:24:18.280,1:24:20.320
+uh...
+
+1:24:20.320,1:24:22.940
+everything composers backwards because
+we're
+
+1:24:22.940,1:24:29.369
+if you look at this is a kind of sepia
+
+1:24:29.369,1:24:31.460
+so
+
+1:24:31.460,1:24:35.730
+we've got lots of things we know lenses
+
+1:24:35.730,1:24:37.290
+built you know i gather
+
+1:24:37.290,1:24:40.389
+built up just a c_b_s_ function
+
+1:24:40.389,1:24:44.179
+put into effect on that uh...
+
+1:24:44.179,1:24:46.489
+now let's do something fun
+
+1:24:46.489,1:24:48.260
+um... yeah
+
+1:24:48.260,1:24:50.119
+so up until now
+
+1:24:50.119,1:24:56.309
+we men just kind of manipulating happier
+
+1:24:56.309,1:24:58.760
+uh... there is a hack that i came up
+with
+
+1:24:58.760,1:25:01.239
+fallible four years ago that are used to
+know
+
+1:25:01.239,1:25:04.610
+a little play
+
+1:25:04.610,1:25:07.860
+overloading function application
+everybody says you can't do this let
+
+1:25:07.860,1:25:10.780
+them and not everybody but a lot of
+people so you can do this
+
+1:25:10.780,1:25:13.739
+uh... but again
+
+1:25:13.739,1:25:15.239
+right you know what to make
+
+1:25:15.239,1:25:20.099
+uh... datatype where you define how it
+applies to values
+
+1:25:20.099,1:25:23.599
+but what we can do as we can make a
+class such that are datatype is an
+
+1:25:23.599,1:25:25.030
+instance of the class
+
+1:25:25.030,1:25:25.890
+and
+
+1:25:25.890,1:25:29.080
+a function isn't it for the class and
+then we can get overloaded function
+
+1:25:29.080,1:25:31.329
+application
+
+1:25:31.329,1:25:32.809
+and what i want to score
+
+1:25:32.809,1:25:37.570
+is i just want to be able to find a
+function which i can run backwards
+
+1:25:37.570,1:25:41.169
+okay and i'm gonna turn it into a lot
+
+1:25:41.169,1:25:41.900
+berlet's
+
+1:25:41.900,1:25:43.559
+residents like
+
+1:25:43.559,1:25:44.659
+in small steps
+
+1:25:44.659,1:25:47.920
+and this is the slides hit the slight
+here is a bit of a lot to learn how we
+
+1:25:47.920,1:25:50.860
+have to do it will end early mornings
+this is the way we did up until three
+
+1:25:50.860,1:25:52.170
+points
+
+1:25:52.170,1:25:54.459
+electric one seven stretched
+
+1:25:54.459,1:26:01.459
+but um... i think this is about her
+vision than that
+
+1:26:02.010,1:26:03.700
+but but the district would work
+
+1:26:03.700,1:26:06.040
+in the wild desperately
+
+1:26:06.040,1:26:07.689
+so what's are you wanted to make
+
+1:26:07.689,1:26:09.429
+isomorphism
+
+1:26:09.429,1:26:12.359
+specialize market with a bunch of that
+you can apply like any other function an
+
+1:26:12.359,1:26:14.429
+asshole
+
+1:26:14.429,1:26:16.110
+but you could also use from
+
+1:26:16.110,1:26:18.469
+but right around
+
+1:26:18.469,1:26:21.690
+united workers on the other direction so
+you can you could've life but then from
+
+1:26:21.690,1:26:26.139
+that from would be it
+
+1:26:26.139,1:26:27.939
+so i did was arrested
+
+1:26:27.939,1:26:31.089
+i'm a disc last night for want of a
+better day might i called if by some
+
+1:26:31.089,1:26:32.330
+arctic
+
+1:26:32.330,1:26:35.810
+it's something that i can construct a
+black market
+
+1:26:35.810,1:26:37.500
+survive if i have
+
+1:26:37.500,1:26:38.850
+a function from eight a b_
+
+1:26:38.850,1:26:42.820
+and a function from being a pain felt
+that there could be emerges uh... uh...
+
+1:26:42.820,1:26:45.340
+they're usually work with
+
+1:26:45.340,1:26:49.039
+i can give your pay
+
+1:26:49.039,1:26:51.179
+personal
+
+1:26:51.179,1:26:53.209
+and i can make
+
+1:26:53.209,1:26:54.580
+functions themselves
+
+1:26:54.580,1:26:56.090
+the essence of isomorphic
+
+1:26:56.090,1:26:58.979
+just by lorraine this thing
+
+1:26:58.979,1:27:00.369
+i can construct a function
+
+1:27:00.369,1:27:03.900
+repeatedly in the park may be able to
+
+1:27:03.900,1:27:05.760
+that ripple
+
+1:27:05.760,1:27:07.230
+and i can make a good night
+
+1:27:07.230,1:27:08.459
+isomorphism
+
+1:27:08.459,1:27:11.070
+which actually captured both
+
+1:27:11.070,1:27:14.550
+and this would also be a perfectly valid
+instance of isomorphic when they got
+
+1:27:14.550,1:27:19.560
+marbled with instructor look after the
+eighty will capture the beauty of it
+
+1:27:19.560,1:27:21.610
+values both sides of the first time
+
+1:27:21.610,1:27:23.619
+delivery
+
+1:27:23.619,1:27:26.000
+bringing a category-four isomorphism
+
+1:27:26.000,1:27:27.840
+so we can compose isomorphism
+
+1:27:27.840,1:27:30.159
+so you have two important role i
+category
+
+1:27:30.159,1:27:32.280
+to get its version of dot ended
+
+1:27:32.280,1:27:33.789
+inordinately composi
+
+1:27:33.789,1:27:34.719
+if you didn't
+
+1:27:34.719,1:27:37.119
+there's going to come down to functions
+
+1:27:37.119,1:27:38.679
+when you put them
+
+1:27:38.679,1:27:42.179
+actually perfectly good
+
+1:27:42.179,1:27:43.100
+so now
+
+1:27:43.100,1:27:44.399
+we'd say
+
+1:27:44.399,1:27:47.820
+you know it is nice work even if you
+have any questions if you have
+
+1:27:47.820,1:27:50.920
+the the the the
+
+1:27:50.920,1:27:54.050
+nationally on the way along with that
+
+1:27:54.050,1:27:57.400
+uh... we didn't have much more press
+more for them
+
+1:27:57.400,1:28:01.780
+millions though that they don't give up
+a doing time being
+
+1:28:01.780,1:28:04.280
+is anything alleged market
+
+1:28:04.280,1:28:05.489
+that day
+
+1:28:05.489,1:28:07.559
+from katie from katie
+
+1:28:07.559,1:28:11.260
+so this can be checked this can choose
+this day to be a poncho if you had any
+
+1:28:11.260,1:28:13.309
+contact would have to be a fun trip
+
+1:28:13.309,1:28:16.750
+higgins used in the eyes of our ability
+to you that i think like from
+
+1:28:16.750,1:28:18.829
+or it has to be a nice marcus
+
+1:28:18.829,1:28:23.210
+so if i need access to both sides of the
+pontiff i can turn this time around
+
+1:28:23.210,1:28:27.659
+and give you a new
+
+1:28:27.659,1:28:29.820
+so now would best i could say
+
+1:28:29.820,1:28:31.290
+you know um...
+
+1:28:31.290,1:28:32.650
+isomorphic
+
+1:28:32.650,1:28:36.239
+plus one and subtract one
+
+1:28:36.239,1:28:38.189
+didn't mean that function apt
+
+1:28:38.189,1:28:40.770
+and i can apply after five intuitively
+
+1:28:40.770,1:28:43.369
+six like it's a from half
+
+1:28:43.369,1:28:46.619
+six would be fine
+
+1:28:46.619,1:28:50.800
+uh... and with the composition works
+
+1:28:50.800,1:28:52.289
+so this gives us
+
+1:28:52.289,1:28:54.550
+overload isomorphism so work is
+functions
+
+1:28:54.550,1:28:57.469
+but i want them as lenses write one of
+the ways that we don't like that a lot
+
+1:28:57.469,1:28:58.669
+of other one library
+
+1:28:58.669,1:29:02.210
+louis what happened to me by so we just
+give the isomorphism lightweight
+
+1:29:02.210,1:29:05.409
+kinda forget the fact that we
+constructed out a whole clocked the
+
+1:29:05.409,1:29:07.179
+other way
+
+1:29:07.179,1:29:11.010
+you just get will use this is the center
+
+1:29:11.010,1:29:12.729
+and we just ignoring me
+
+1:29:12.729,1:29:15.519
+david were packed
+
+1:29:15.519,1:29:20.409
+but i want to have that that that full
+power ternal ends around depict is it
+
+1:29:20.409,1:29:27.409
+means to an isomorphism i wonder when it
+backward
+
+1:29:27.590,1:29:28.830
+so it like i did
+
+1:29:28.830,1:29:32.929
+inc here with the plus one of the crack
+with them
+
+1:29:32.929,1:29:34.709
+so
+
+1:29:34.709,1:29:35.709
+let's make
+
+1:29:35.709,1:29:37.150
+i think so
+
+1:29:37.150,1:29:39.199
+kinda like london commercial
+
+1:29:39.199,1:29:42.150
+boring to do there's a run-up etc
+
+1:29:42.150,1:29:46.269
+came here the outer function that the
+budget we're between a double b_ enough
+
+1:29:46.269,1:29:47.179
+seventy
+
+1:29:47.179,1:29:48.860
+nikkei
+
+1:29:48.860,1:29:51.959
+work his finances of isomorphic
+
+1:29:51.959,1:29:54.869
+and so now i can give you a punch enough
+of me
+
+1:29:54.869,1:29:56.290
+that at seven p
+
+1:29:56.290,1:29:57.829
+or i can give you
+
+1:29:57.829,1:30:01.199
+past apathy made up a bit
+
+1:30:01.199,1:30:05.649
+i can pivot around that central error
+
+1:30:05.649,1:30:08.879
+okay this is the old way
+
+1:30:08.879,1:30:11.320
+the signature
+
+1:30:11.320,1:30:14.199
+but there's at least get you intuition
+
+1:30:14.199,1:30:18.090
+uh... and so this used to require us to
+provide us all four function the new
+
+1:30:18.090,1:30:21.110
+version actually let slice of the both
+of these
+
+1:30:21.110,1:30:21.999
+in order
+
+1:30:21.999,1:30:24.719
+wife
+
+1:30:24.719,1:30:27.800
+um...
+
+1:30:27.800,1:30:28.870
+but
+
+1:30:28.870,1:30:32.130
+all we're going to do is say you give me
+that you two sets of mutually inverse
+
+1:30:32.130,1:30:33.560
+functions and i can give you
+
+1:30:33.560,1:30:38.280
+isomorphism family that works helical
+and family
+
+1:30:38.280,1:30:40.780
+and then we go through and say
+
+1:30:40.780,1:30:46.439
+we make an isomorphism between spring
+apcst
+
+1:30:46.439,1:30:47.760
+so that
+
+1:30:47.760,1:30:48.719
+taxed
+
+1:30:48.719,1:30:50.889
+or the senate
+
+1:30:50.889,1:30:52.600
+will this will take
+
+1:30:52.600,1:30:56.630
+street attacks by packing uh... opted
+out of it uh...
+
+1:30:56.630,1:30:57.309
+will take
+
+1:30:57.309,1:31:00.320
+texas land mine back again
+
+1:31:00.320,1:31:01.820
+call it an isomorphism
+
+1:31:01.820,1:31:04.570
+ignoring illegal characters but without
+that
+
+1:31:04.570,1:31:07.499
+because before pope
+
+1:31:07.499,1:31:11.440
+and then we can define our text reversal
+earlier on
+
+1:31:11.440,1:31:12.909
+just from packed
+
+1:31:12.909,1:31:13.810
+the payments
+
+1:31:13.810,1:31:15.760
+by some of them
+
+1:31:15.760,1:31:18.939
+write backwards
+
+1:31:18.939,1:31:20.590
+an introvert combat
+
+1:31:20.590,1:31:22.429
+now i can post a nice o
+
+1:31:22.429,1:31:23.679
+with a drummer soul
+
+1:31:23.679,1:31:28.090
+and i got back to russel
+
+1:31:28.090,1:31:29.839
+because what happened was
+
+1:31:29.839,1:31:31.989
+when i do want to do this composition
+
+1:31:31.989,1:31:32.949
+this
+
+1:31:32.949,1:31:35.819
+forced me outside to be an actual punch
+in a row
+
+1:31:35.819,1:31:41.760
+so there's activity on general which is
+a balance is awesome arctic
+
+1:31:41.760,1:31:43.409
+uh... your return
+
+1:31:43.409,1:31:47.169
+packed around three years that at
+isomorphism
+
+1:31:47.169,1:31:48.190
+but katie
+
+1:31:48.190,1:31:50.999
+dat chose pay to be a culture
+
+1:31:50.999,1:31:53.360
+and which option
+
+1:31:53.360,1:32:00.360
+and so this is where the cello world a
+couple actually disposed
+
+1:32:02.110,1:32:03.900
+in practice we use
+
+1:32:03.900,1:32:05.780
+of what we're going to the pressure of
+
+1:32:05.780,1:32:10.209
+that lets us de l'alma minimalist
+
+1:32:10.209,1:32:12.459
+and there's actually
+
+1:32:12.459,1:32:14.989
+face similar construction for these
+things we called prism set up a
+
+1:32:14.989,1:32:17.249
+mechanism to go to prison for that
+
+1:32:17.249,1:32:21.460
+presenter what happens if you'd like to
+take a categorical warble lands
+
+1:32:21.460,1:32:23.829
+so they might have what you access one
+field
+
+1:32:23.829,1:32:26.159
+about product like thing
+
+1:32:26.159,1:32:28.199
+or part of a product
+
+1:32:28.199,1:32:29.770
+and a
+
+1:32:29.770,1:32:34.039
+uh... prism but you access one
+constructor out of a song
+
+1:32:34.039,1:32:37.069
+and so like left and right are excellent
+president but not commercial both the
+
+1:32:37.069,1:32:40.760
+left mike kinsley
+
+1:32:40.760,1:32:42.690
+uh...
+
+1:32:42.690,1:32:44.400
+that's the bulk of the top
+
+1:32:44.400,1:32:45.820
+about is what i'd like
+
+1:32:45.820,1:32:49.669
+show like a deep dive in a couple of
+quick things
+
+1:32:49.669,1:32:51.760
+think i'm done
+
+1:32:51.760,1:32:53.539
+i'm a democrat
+
+1:32:53.539,1:32:56.469
+okay that's about her
+
+1:32:56.469,1:32:58.309
+so
+
+1:32:58.309,1:33:02.760
+there's a how many of the view of using
+a player ever to be in a place
+
+1:33:02.760,1:33:05.689
+seeing a play a library for doing it our
+programming at school with written by
+
+1:33:05.689,1:33:06.709
+dale mitchell
+
+1:33:06.709,1:33:11.360
+armpits it should really nice it
+performs really well it's fast
+
+1:33:11.360,1:33:12.689
+uh...
+
+1:33:12.689,1:33:16.909
+i embedded a copy of your plate inside
+of less which seems kind of redundant
+
+1:33:16.909,1:33:20.619
+but what i did was iri defined the
+interplay commentator so that they are
+
+1:33:20.619,1:33:21.770
+ballot reversals
+
+1:33:21.770,1:33:25.909
+are rather so the commentators can take
+any traversal
+
+1:33:25.909,1:33:31.010
+and so that and that you know
+play-by-play are actually commercials
+
+1:33:31.010,1:33:33.600
+i was actually saw the number probably
+in a playpen then
+
+1:33:33.600,1:33:35.979
+as a side of the coming up
+
+1:33:35.979,1:33:37.749
+uh... dude
+
+1:33:37.749,1:33:38.699
+tender
+
+1:33:38.699,1:33:41.519
+so we can as you can define a class with
+us at the say
+
+1:33:41.519,1:33:44.800
+played it as a class that knows how that
+is a traverse alot of thinking about a
+
+1:33:44.800,1:33:46.489
+minute
+
+1:33:46.489,1:33:49.709
+it's like go find all of the sub trees
+of my children that you have a syntax
+
+1:33:49.709,1:33:53.499
+tree go find me all the childhood one
+level down you gave me a descendant
+
+1:33:53.499,1:33:58.439
+targets of extreme of the same time
+provided some expression shin
+
+1:33:58.439,1:34:00.530
+them say by the balkans in order
+
+1:34:00.530,1:34:03.199
+it uses one of these guys that you
+cannot do that
+
+1:34:03.199,1:34:07.790
+that builder complicate leaving all why
+the complex tall also nearby brings a
+
+1:34:07.790,1:34:08.919
+bottle
+
+1:34:08.919,1:34:11.889
+uh...
+
+1:34:11.889,1:34:15.080
+in heels library he go thirty buildup by
+data structure
+
+1:34:15.080,1:34:18.329
+uh... kinda mimic the shape of the
+intermediate structure
+
+1:34:18.329,1:34:21.469
+and i don't have to adjust captured in
+the environment and sizes are not
+
+1:34:21.469,1:34:24.329
+building up and hearing something down i
+save all that time and that's world
+
+1:34:24.329,1:34:26.719
+speed
+
+1:34:26.719,1:34:28.389
+uh...
+
+1:34:28.389,1:34:30.840
+but you can make explicit in slow plated
+
+1:34:30.840,1:34:34.479
+and then unlike like his coming would
+like rewrite which would take
+
+1:34:34.479,1:34:36.039
+parkinson's and in a play
+
+1:34:36.039,1:34:38.399
+because this his classname
+
+1:34:38.399,1:34:39.569
+um...
+
+1:34:39.569,1:34:41.119
+we just have rewrite uh...
+
+1:34:41.119,1:34:42.530
+which grammar right on
+
+1:34:42.530,1:34:43.790
+this case the center
+
+1:34:43.790,1:34:45.780
+most and take a traverse all
+
+1:34:45.780,1:34:48.749
+uh... ignore those scary looking
+signatures that we really can't there's
+
+1:34:48.749,1:34:51.079
+no model
+
+1:34:51.079,1:34:53.560
+uh...
+
+1:34:53.560,1:34:55.750
+but
+
+1:34:55.750,1:34:57.949
+the
+
+1:34:57.949,1:35:02.129
+these governors are actually really nice
+in that
+
+1:35:02.129,1:35:03.219
+organism
+
+1:35:03.219,1:35:05.639
+critical years things like uh...
+
+1:35:05.639,1:35:08.969
+using these purging our programming
+being used by quick to say
+
+1:35:08.969,1:35:10.899
+don't look in
+
+1:35:10.899,1:35:14.070
+this word go look for hello world
+
+1:35:14.070,1:35:16.869
+uh...
+
+1:35:16.869,1:35:18.320
+there
+
+1:35:18.320,1:35:20.300
+strings
+
+1:35:20.300,1:35:25.040
+in here
+
+1:35:25.040,1:35:26.599
+and go for it all
+
+1:35:26.599,1:35:28.639
+uh... post-riot
+
+1:35:28.639,1:35:32.929
+that uh... data lengths
+
+1:35:32.929,1:35:34.450
+his prolific list of the
+
+1:35:34.450,1:35:37.860
+and define all the strengths rather than
+all the events
+
+1:35:37.860,1:35:39.809
+and so that went into
+
+1:35:39.809,1:35:41.300
+returnable didn't like that
+
+1:35:41.300,1:35:44.690
+use mac we're going to find all the
+string anywhere inside a researcher as
+
+1:35:44.690,1:35:47.329
+long as it is searcher keep it that was
+it is the data
+
+1:35:47.329,1:35:50.579
+and the thing that i was looking forward
+
+1:35:50.579,1:35:53.849
+uh... but i can also update from
+
+1:35:53.849,1:35:57.550
+yeah because as a traverse ult
+
+1:35:57.550,1:36:00.290
+yet
+
+1:36:00.290,1:36:01.710
+so take that thing
+
+1:36:01.710,1:36:03.530
+and sets
+
+1:36:03.530,1:36:04.629
+fell by play
+
+1:36:04.629,1:36:06.420
+to modify everything
+
+1:36:06.420,1:36:11.449
+uh... converted all about the case
+
+1:36:11.449,1:36:18.449
+bosnian too
+
+1:36:21.919,1:36:24.659
+the
+
+1:36:24.659,1:36:27.159
+uh...
+
+1:36:27.159,1:36:31.619
+or my map m of underscore which will go
+through an action
+
+1:36:31.619,1:36:34.119
+on bike way
+
+1:36:34.119,1:36:40.159
+puts your line
+
+1:36:40.159,1:36:44.479
+renew our lease things all of our dinner
+current reversals just work
+
+1:36:44.479,1:36:47.539
+uh... and were able used by put his head
+of a magic commercial it'll just be
+
+1:36:47.539,1:36:50.920
+whatever commercial we kinda want
+
+1:36:50.920,1:36:53.800
+uh... savior chile's you to write
+controversial
+
+1:36:53.800,1:36:57.360
+it's there
+
+1:36:57.360,1:36:58.719
+socheata play it
+
+1:36:58.719,1:37:00.260
+no
+
+1:37:00.260,1:37:01.560
+in lens form
+
+1:37:01.560,1:37:04.330
+army combo it come to a lot of
+commenters that were in the original
+
+1:37:04.330,1:37:06.510
+unified or really really handy
+
+1:37:06.510,1:37:10.000
+for rewriting contract reason what not
+like i rewrite up will say
+
+1:37:10.000,1:37:11.179
+do you mean
+
+1:37:11.179,1:37:15.059
+by saturday goes that knows how to get a
+delays and giving off onto my computer
+
+1:37:15.059,1:37:16.059
+mediated
+
+1:37:16.059,1:37:19.519
+that like is a real early michael
+applied maybe it goes realtor needed
+
+1:37:19.519,1:37:22.859
+literals and turns them into literal
+that is the negative value
+
+1:37:22.859,1:37:24.409
+insiders and a tree
+
+1:37:24.409,1:37:27.320
+soviet negative wit ok alternative
+
+1:37:27.320,1:37:28.040
+live
+
+1:37:28.040,1:37:30.619
+the negative right
+
+1:37:30.619,1:37:32.369
+um...
+
+1:37:32.369,1:37:35.780
+and we'll do is we'll plan it in a
+bottom-up matter it'll work
+
+1:37:35.780,1:37:37.650
+they'll go into the eighties
+
+1:37:37.650,1:37:39.679
+the the descendants of a
+
+1:37:39.679,1:37:42.460
+of your your your problem with russian
+look through some of her infant son
+
+1:37:42.460,1:37:45.179
+which was lapd you're going down
+
+1:37:45.179,1:37:48.110
+apply the the subject of the rewrite
+roulette believes
+
+1:37:48.110,1:37:51.170
+until it doesn't apply anymore and then
+walk into a tree
+
+1:37:51.170,1:37:54.110
+does one commentator and it works
+
+1:37:54.110,1:37:57.300
+um... bird doing hierarchical rewrites
+
+1:37:57.300,1:37:58.999
+not complex of
+
+1:37:58.999,1:38:03.560
+holes are both find all the one whole
+contacts as a complex problem
+
+1:38:03.560,1:38:05.040
+that's a start on that
+
+1:38:05.040,1:38:07.780
+from the beginning of the talk
+
+1:38:07.780,1:38:09.280
+um...
+
+1:38:09.280,1:38:12.179
+all these nominees were derived from
+
+1:38:12.179,1:38:15.449
+they all work directly in an age
+reversal
+
+1:38:15.449,1:38:16.770
+um...
+
+1:38:16.770,1:38:20.260
+it's a ticket is an incredibly powerful
+efficient library and then there's one
+
+1:38:20.260,1:38:21.150
+other
+
+1:38:21.150,1:38:25.770
+kind of like the diving capital to do it
+but we don't like
+
+1:38:25.770,1:38:26.789
+uh...
+
+1:38:26.789,1:38:29.079
+and that is different
+
+1:38:29.079,1:38:31.170
+so one of the questions i could ask a
+lot are
+
+1:38:31.170,1:38:35.139
+what is the connection between zippers
+and lenses
+
+1:38:35.139,1:38:38.880
+uh... and historically there really
+hasn't meant a lot of but now there is
+
+1:38:38.880,1:38:41.020
+from
+
+1:38:41.020,1:38:42.950
+so zipper provides
+
+1:38:42.950,1:38:45.599
+are pretty nice if you know
+
+1:38:45.599,1:38:49.109
+so leaders and its allies tipper into
+
+1:38:49.109,1:38:52.719
+something let's atlas oracle were little
+
+1:38:52.719,1:38:54.189
+what is the type of us
+
+1:38:54.189,1:38:58.579
+so this is a separate uh... and for the
+wamu view these things they look like my
+
+1:38:58.579,1:39:01.969
+country
+
+1:39:01.969,1:39:02.739
+um...
+
+1:39:02.739,1:39:04.929
+so we're starting at the top
+
+1:39:04.929,1:39:11.929
+and we're looking at him
+
+1:39:12.379,1:39:15.999
+and go down in up
+
+1:39:15.999,1:39:17.409
+no
+
+1:39:17.409,1:39:19.919
+uh... you were people we're conflicting
+with new people
+
+1:39:19.919,1:39:22.559
+and so now i'm for joe if you see the
+senate but
+
+1:39:22.559,1:39:25.570
+a new premises are messed with it if you
+would like a bread from calicut you're
+
+1:39:25.570,1:39:26.810
+going to our website
+
+1:39:26.810,1:39:29.020
+there's a saying returning at the top
+
+1:39:29.020,1:39:36.020
+into a pair of strengths or down in one
+st word word word outlook express
+
+1:39:40.929,1:39:45.959
+full and now we're looking at a single
+character
+
+1:39:45.959,1:39:47.220
+and i want you to change
+
+1:39:47.220,1:39:51.190
+the focused element
+
+1:39:51.190,1:39:52.460
+and
+
+1:39:52.460,1:39:55.659
+i want you to move all the way to the
+right
+
+1:39:55.659,1:40:01.699
+and change the focused on that uh... why
+
+1:40:01.699,1:40:03.349
+whatever type of progress with
+
+1:40:03.349,1:40:05.929
+show you the the answer to that
+
+1:40:05.929,1:40:08.349
+there
+
+1:40:08.349,1:40:09.829
+we walked down
+
+1:40:09.829,1:40:12.239
+into the first half of her
+
+1:40:12.239,1:40:14.239
+we walked down into the last year
+
+1:40:14.239,1:40:17.659
+scrub within like basically make such a
+level where we can move left word in
+
+1:40:17.659,1:40:20.780
+rightward within the level so we take a
+commercial
+
+1:40:20.780,1:40:24.929
+we can move left and right within the
+traverse off
+
+1:40:24.929,1:40:29.099
+uh... so like left and right inside of a
+zipper traditionally something where you
+
+1:40:29.099,1:40:33.459
+hafta make up a notion about the right
+to make sense for your syntax rearward
+
+1:40:33.459,1:40:37.089
+and you had that figure out a class or
+something browser coble workers like
+
+1:40:37.089,1:40:38.100
+that
+
+1:40:38.100,1:40:39.710
+now
+
+1:40:39.710,1:40:41.909
+you give me a terrific
+
+1:40:41.909,1:40:43.820
+zipper
+
+1:40:43.820,1:40:45.570
+doesn't have any constraints on that
+
+1:40:45.570,1:40:48.230
+i'd walk in anything
+
+1:40:48.230,1:40:49.810
+um...
+
+1:40:49.810,1:40:50.880
+music brenda one
+
+1:40:50.880,1:40:55.210
+whatsoever yeah
+
+1:40:55.210,1:40:58.989
+on those tenets
+
+1:40:58.989,1:41:03.679
+and give me are when we have to come in
+to replace
+
+1:41:03.679,1:41:06.959
+that's ones
+
+1:41:06.959,1:41:09.150
+and traversed
+
+1:41:09.150,1:41:10.379
+the and
+
+1:41:10.379,1:41:11.489
+from within
+
+1:41:11.489,1:41:14.989
+that's about
+
+1:41:14.989,1:41:21.989
+and set the focus equal to
+
+1:41:24.139,1:41:27.969
+mannerism
+
+1:41:27.969,1:41:31.500
+so i went into individual bets a manager
+
+1:41:31.500,1:41:34.380
+starting at last
+
+1:41:34.380,1:41:36.090
+uh... releasing every at bat
+
+1:41:36.090,1:41:39.300
+i can't move left and right through the
+bats setting them
+
+1:41:39.300,1:41:40.820
+pop back out of it
+
+1:41:40.820,1:41:44.949
+images use of the fact that i can tours
+individual bets is out of in america
+
+1:41:44.949,1:41:45.729
+uh...
+
+1:41:45.729,1:41:49.139
+any data type that you want as long as
+you can build some kind of windsor
+
+1:41:49.139,1:41:54.899
+traverse a lender that you can use the
+zippers become abundantly
+
+1:41:54.899,1:41:56.039
+and then
+
+1:41:56.039,1:41:59.260
+pop and downed power plug breadcrumb
+trail
+
+1:41:59.260,1:42:01.159
+proper portion of our country up
+
+1:42:01.159,1:42:03.840
+so given a lens it'll go down
+
+1:42:03.840,1:42:05.439
+argument reversal
+
+1:42:05.439,1:42:08.599
+that could welcomed there might not be a
+personal note for the purpose of the
+
+1:42:08.599,1:42:09.849
+millions
+
+1:42:09.849,1:42:11.840
+so with investigative have maybe
+
+1:42:11.840,1:42:15.150
+you succeeded in doing
+
+1:42:15.150,1:42:18.119
+latin right actually became leftward
+rightward
+
+1:42:18.119,1:42:21.580
+use geyser lawson record as well
+
+1:42:21.580,1:42:23.540
+the upcoming expert on
+
+1:42:23.540,1:42:26.929
+injure which let you tiger jerk the
+zipper lock correct
+
+1:42:26.929,1:42:31.399
+of acute argument erection it will go
+and gently snobby and if you jerk ipl
+
+1:42:31.399,1:42:35.719
+it will bail not coca
+
+1:42:35.719,1:42:39.900
+so the triangle reviewed toddler up in
+your article at most element that will
+
+1:42:39.900,1:42:40.640
+it will
+
+1:42:40.640,1:42:45.959
+stay where you are if you'd rather go up
+it'll just
+
+1:42:45.959,1:42:47.729
+um... it so it's
+
+1:42:47.729,1:42:48.929
+ability
+
+1:42:48.929,1:42:52.650
+but companies but the names were not
+taken i checked
+
+1:42:52.650,1:42:54.130
+picture
+
+1:42:54.130,1:42:56.800
+nobody wanted to use those names returns
+
+1:42:56.800,1:42:57.820
+uh... dot
+
+1:42:57.820,1:43:00.590
+one opposites library at churches like
+appeared riveted
+
+1:43:00.590,1:43:02.260
+uh...
+
+1:43:02.260,1:43:06.880
+no acc
+
+1:43:06.880,1:43:08.389
+and um...
+
+1:43:08.389,1:43:12.169
+so that that's basically what i got
+receptors uh... they're actually happens
+
+1:43:12.169,1:43:14.929
+to be a lot more in the library um...
+
+1:43:14.929,1:43:18.559
+we've got a there's still a few if
+you're interested in more uh... there's
+
+1:43:18.559,1:43:22.000
+a hassle and channel on fri node is
+about forty five of us lurking in the
+
+1:43:22.000,1:43:25.309
+channel at all times that's right
+answering one question for work in the
+
+1:43:25.309,1:43:26.250
+library
+
+1:43:26.250,1:43:29.139
+a lot of about them
+
+1:43:29.139,1:43:32.429
+i think we have separate matters in the
+library now helmets
+
+1:43:32.429,1:43:37.099
+making very alarming progress running
+version three point seven
+
+1:43:37.099,1:43:39.780
+uh... my certify months ago
+
+1:43:39.780,1:43:41.339
+uh... yeah
+
+1:43:41.339,1:43:45.149
+sorry for the whoever breaking a p_i_
+but um... it's better that it is about a
+
+1:43:45.149,1:43:46.530
+live report
+
+1:43:46.530,1:43:47.929
+uh...
+
+1:43:47.929,1:43:50.360
+the um...
+
+1:43:50.360,1:43:52.889
+so the community has been pretty good
+there's arm
+
+1:43:52.889,1:43:54.879
+there's a number of resources out there
+
+1:43:54.879,1:43:57.210
+for learning more about lenses um...
+
+1:43:57.210,1:43:59.880
+so first of all there is v
+
+1:43:59.880,1:44:03.249
+uh... lens back it up dot com we'll give
+you a very
+
+1:44:03.249,1:44:05.309
+uh...
+
+1:44:05.309,1:44:08.199
+nothing on my screen website uh...
+
+1:44:08.199,1:44:11.059
+gives you you know um...
+
+1:44:11.059,1:44:16.699
+more about them in the tutorial in stop
+
+1:44:16.699,1:44:19.929
+and so there's a longer tutorial on how
+to use lenses
+
+1:44:19.929,1:44:22.079
+various um the actual
+
+1:44:22.079,1:44:23.599
+did rob website for lands
+
+1:44:23.599,1:44:27.169
+uh... feel free to port library define
+something wrong with the haddock to
+
+1:44:27.169,1:44:28.119
+recover
+
+1:44:28.119,1:44:28.809
+there's about
+
+1:44:28.809,1:44:33.339
+five hundred example back that's that
+actually run every time we check in
+
+1:44:33.339,1:44:34.699
+uh... but but
+
+1:44:34.699,1:44:36.590
+keep the people's honest
+
+1:44:36.590,1:44:39.429
+about the documentation um...
+
+1:44:39.429,1:44:42.389
+beers spares a wiki
+
+1:44:42.389,1:44:43.550
+that has a lot of
+
+1:44:43.550,1:44:46.599
+the the stuff that i work through a
+matter of asian
+
+1:44:46.599,1:44:50.389
+op bak about why we do a good thing
+certain way it's etcetera
+
+1:44:50.389,1:44:53.639
+on there's a lot of resources out there
+uh... try to get as much of it is
+
+1:44:53.639,1:44:56.109
+community in the morning enough it was
+possible
+
+1:44:56.109,1:44:57.820
+'cause i'm only one person
+
+1:44:57.820,1:45:00.309
+and person reportedly warn you this
+
+1:45:00.309,1:45:01.859
+um...
+
+1:45:01.859,1:45:03.889
+and
+
+1:45:03.889,1:45:06.139
+are you
+
+1:45:06.139,1:45:11.129
+what people the understand lenses gotten
+uh... not
+
+1:45:11.129,1:45:13.480
+i hope is that the useful
+
+1:45:13.480,1:45:15.030
+um...
+
+1:45:15.030,1:45:16.199
+that's all i've done
+
+1:45:16.199,1:45:23.199
+a
+
+1:45:37.069,1:45:38.269
+heart-rendering
+
+1:45:38.269,1:45:41.189
+for are cat
+
+1:45:41.189,1:45:44.959
+uh... might wrap up this whole
+collection by various for instance uh...
+
+1:45:44.959,1:45:47.300
+if you look at like math intel
+collections
+
+1:45:47.300,1:45:50.840
+they're not map rather they're they're
+they're map
+
+1:45:50.840,1:45:55.739
+traverses pairs of key values where you
+can't really reason about like the park
+
+1:45:55.739,1:45:57.630
+a reality of mac
+
+1:45:57.630,1:46:00.940
+so if you want to work with map you have
+to map over mail and i converted to
+
+1:46:00.940,1:46:02.230
+malcolm
+
+1:46:02.230,1:46:05.349
+literally so in order to work with map
+europe was always working like that
+
+1:46:05.349,1:46:08.049
+three bodies that have happened in it
+
+1:46:08.049,1:46:09.479
+uh...
+
+1:46:09.479,1:46:13.239
+and so uh... to me i'm one of the
+strongest things that i get out of
+
+1:46:13.239,1:46:16.659
+are haskell is is permitted in the event
+and lost
+
+1:46:16.659,1:46:17.749
+um...
+
+1:46:17.749,1:46:20.290
+when i when i look at the scala
+collections library
+
+1:46:20.290,1:46:23.570
+there's very little that you can use out
+of it parametric where there's very
+
+1:46:23.570,1:46:26.480
+little that you can go all this whole
+because all containers i could be jesus
+
+1:46:26.480,1:46:27.340
+come later
+
+1:46:27.340,1:46:30.209
+i have used at hotmail ad-hoc
+
+1:46:30.209,1:46:37.209
+on a proper collection base a basis
+
+1:46:38.349,1:46:41.619
+presence here we have indexed reversals
+for for maps
+
+1:46:41.619,1:46:44.330
+so there's a whole i didn't talk about
+an expendable
+
+1:46:44.330,1:46:47.270
+uh... but like if you want to have
+access to the keys inside of your mouth
+
+1:46:47.270,1:46:50.270
+while you walk over and i had something
+very similar to that isomorphism ac
+
+1:46:50.270,1:46:53.530
+telecoms work within next reversals as
+well so you have access to the keys and
+
+1:46:53.530,1:46:55.789
+putting up a huge reversal is that uh...
+
+1:46:55.789,1:46:59.749
+evolving you get index list of the cover
+
+1:46:59.749,1:47:05.139
+i find that particular approach to be
+much more practically reasonable
+
+1:47:05.139,1:47:06.420
+van
+
+1:47:06.420,1:47:09.530
+the um... scholar collections approach
+where
+
+1:47:09.530,1:47:13.900
+now i can mash i can map over the
+contents but i can't reason about that
+
+1:47:13.900,1:47:18.949
+map out that map g equals map f tuje
+because i might map in the meantime i
+
+1:47:18.949,1:47:22.039
+might smashed through two pulls together
+that
+
+1:47:22.039,1:47:23.540
+now make my mouth
+
+1:47:23.540,1:47:26.110
+i know if you were omens of
+controversial
+
+1:47:26.110,1:47:27.729
+um...
+
+1:47:27.729,1:47:31.030
+i likewise i'd like the ability to other
+understand
+
+1:47:31.030,1:47:32.170
+demigod
+
+1:47:32.170,1:47:34.519
+in my experience writing a lot of celica
+
+1:47:34.519,1:47:41.289
+i have not had that
+
+1:47:41.289,1:47:44.139
+thinkin
+
+1:47:44.139,1:47:46.300
+he quickly
+
+1:47:46.300,1:47:49.510
+you know i really sitting in the library
+cover souls or something but the nobody
+
+1:47:49.510,1:47:50.530
+wrote that
+
+1:47:50.530,1:47:53.630
+uh... no
+
+1:47:53.630,1:47:58.120
+at it really really is all about
+politics i happen to be able to use the
+
+1:47:58.120,1:47:59.719
+lens commenters graph
+
+1:47:59.719,1:48:03.119
+um... and not lenses in themselves
+because everybody hears the word lands
+
+1:48:03.119,1:48:07.820
+ago ally note that as i've looked at efi
+labels that access url phalanx
+
+1:48:07.820,1:48:08.989
+um...
+
+1:48:08.989,1:48:10.940
+and really
+
+1:48:10.940,1:48:14.849
+i think after going through the content
+of that doc al you've got a feeling that
+
+1:48:14.849,1:48:17.280
+this is not about that
+
+1:48:17.280,1:48:18.750
+it's
+
+1:48:18.750,1:48:21.770
+it's basically everything that i can
+take out of the other hand for classes
+
+1:48:21.770,1:48:23.929
+that we already know how to use in-house
+golan
+
+1:48:23.929,1:48:30.929
+and generalize applicable dot
+
+1:48:32.929,1:48:36.429
+though about the texans yes
+
+1:48:36.429,1:48:37.360
+arm
+
+1:48:37.360,1:48:39.979
+actually you know what they can do about
+it
+
+1:48:39.979,1:48:46.659
+uh... i i i i have a yarnell diagram nah
+we are so i think i added that in our
+
+1:48:46.659,1:48:47.860
+settlers have
+
+1:48:47.860,1:48:51.580
+accessories that
+
+1:48:51.580,1:48:52.939
+craft
+
+1:48:52.939,1:48:53.939
+no
+
+1:48:53.939,1:48:56.609
+so i was i actually a mouth agar i'm
+describing the relationship between
+
+1:48:56.609,1:48:58.489
+those different classes right
+
+1:48:58.489,1:49:01.560
+so we can say that every traverse eliza
+ballad bold
+
+1:49:01.560,1:49:05.570
+right beverage reversals of alexander
+
+1:49:05.570,1:49:09.130
+uh... every getter reaction of these
+things ho actions were not according to
+
+1:49:09.130,1:49:10.659
+the chance to talk about
+
+1:49:10.659,1:49:12.309
+uh...
+
+1:49:12.309,1:49:15.550
+bring them down and i a gram and see
+that everyone's canoes directly at the
+
+1:49:15.550,1:49:17.729
+debtor
+
+1:49:17.729,1:49:22.219
+everyone everyone's commute to work for
+network in the above the fold
+
+1:49:22.219,1:49:25.819
+and as a way that i thought
+
+1:49:25.819,1:49:29.230
+sabri isomorphism is a valid lands and
+develop prism
+
+1:49:29.230,1:49:31.320
+which is the period or just talk about
+
+1:49:31.320,1:49:38.320
+and by the visa valid commercial
+
+1:49:41.839,1:49:45.949
+offshore comment about the slides by
+just by one of the
+
+1:49:45.949,1:49:48.360
+sneak that in there
+
+1:49:48.360,1:49:55.360
+i think that works
+
+1:49:57.699,1:50:00.280
+is as soon as i dropped up your
+
+1:50:00.280,1:50:01.689
+and ab
+
+1:50:01.689,1:50:08.689
+by gamblers
+
+1:50:11.429,1:50:14.980
+saudi arabia weak and pump tear so that
+the bunker doesn't use the argument
+
+1:50:14.980,1:50:18.300
+you get get a ball which is that class
+and it is briefly
+
+1:50:18.300,1:50:20.969
+right then and you get a better
+
+1:50:20.969,1:50:24.340
+did you have got to get a bulletin for
+
+1:50:24.340,1:50:26.619
+then you have the actual getter
+
+1:50:26.619,1:50:29.050
+class that we use
+
+1:50:29.050,1:50:30.010
+and that you have a
+
+1:50:30.010,1:50:34.429
+irritable and apply get a you have the
+ability to smash values together
+
+1:50:34.429,1:50:36.880
+with your and
+
+1:50:36.880,1:50:39.889
+but you know that the arguably actual
+values that you use preparer don't
+
+1:50:39.889,1:50:40.929
+matter
+
+1:50:40.929,1:50:43.139
+and seattle
+
+1:50:43.139,1:50:44.690
+so gavel
+
+1:50:44.690,1:50:47.159
+applicable bunker
+
+1:50:47.159,1:50:54.159
+hierarchy is how you value can derive
+everything except the tether
+
+1:50:57.499,1:51:01.349
+yes that in this cut in this case in
+practice i have a sellable class that's
+
+1:51:01.349,1:51:04.310
+as sites market on a uh...
+
+1:51:04.310,1:51:08.419
+it stated that has built no prob other
+than me
+
+1:51:08.419,1:51:11.899
+and i actually abuse those classes to
+make
+
+1:51:11.899,1:51:15.099
+on his number come in and i didn't get
+the job here like there's backward and
+
+1:51:15.099,1:51:18.850
+forward but like reverse it reversal
+aural and or s letter
+
+1:51:18.850,1:51:23.450
+or a drummer or or i gather or a portly
+other they'll turn like melissa of all
+
+1:51:23.450,1:51:26.729
+the things that's going to visit
+services in the opposite order
+
+1:51:26.729,1:51:29.829
+u_n_ brought restrict actually knows
+actually wind up being
+
+1:51:29.829,1:51:32.679
+kind of like acquitted friend former
+client like that with that but i don't
+
+1:51:32.679,1:51:33.699
+know
+
+1:51:33.699,1:51:37.069
+also actually abuse back last thing that
+i had to do so that i could get better
+
+1:51:37.069,1:51:38.340
+tigers
+
+1:51:38.340,1:51:39.389
+uh... to make
+
+1:51:39.389,1:51:46.389
+a lot of very generic company allotment
+
+1:51:47.250,1:51:50.210
+yeah i'd say it's really just how we
+instantiate applicants richard but i
+
+1:51:50.210,1:51:52.260
+doubt that that use
+
+1:51:52.260,1:51:57.530
+how these things that are operating that
+that's how we get
+
+1:51:57.530,1:52:04.530
+i guess they've sort of alcock
+overloading that makes lansdale
+
+1:52:06.069,1:52:11.289
+yet of the deadly whether or not it's
+allowed to be any model under any value
+
+1:52:11.289,1:52:18.289
+it has to be a particular value
+
+1:52:19.570,1:52:22.369
+uh... and then i get that these are
+actually all implemented by class with a
+
+1:52:22.369,1:52:29.369
+couple getting which is
+
+1:52:32.980,1:52:38.409
+reserved for heads up
+
+1:52:38.409,1:52:45.409
+well i tell ya personnel
+
+1:52:49.719,1:52:53.139
+whole arm
+
+1:52:53.139,1:52:57.010
+there is there is a that notion of
+strength of a of a cover contra strong
+
+1:52:57.010,1:53:01.050
+and haskell so that we abuse very could
+not be able to patient
+
+1:53:01.050,1:53:05.230
+um... of lending here abuses the
+strength of reconquer nasco
+
+1:53:05.230,1:53:08.839
+so one way to construct a prism is to
+abuse sco strength
+
+1:53:08.839,1:53:14.520
+of of certain bunkers that allow you to
+go search for
+
+1:53:14.520,1:53:16.530
+uh...
+
+1:53:16.530,1:53:21.929
+weaken left dike an a in a half would be
+to uh... apathy and b
+
+1:53:21.929,1:53:23.859
+ever ever every pondering cast list
+right
+
+1:53:23.859,1:53:26.909
+uh... because the way the advocate
+environment
+
+1:53:26.909,1:53:27.630
+um...
+
+1:53:27.630,1:53:31.760
+not every quarter and haskell is coastal
+
+1:53:31.760,1:53:34.149
+blog post on strict discussed right
+
+1:53:34.149,1:53:39.139
+i think it's driving trek from waiting
+that sort of like that not
+
+1:53:39.139,1:53:43.619
+not
+
+1:53:43.619,1:53:46.250
+on what i'm talking about dot com
+
+1:53:46.250,1:53:49.310
+now though at least explain the fact is
+buckled up
+
+1:53:49.310,1:53:51.840
+account of the that um... the constraint
+
+1:53:51.840,1:53:54.109
+proper driving for them
+
+1:53:54.109,1:53:56.179
+uh... because we don't have potential
+
+1:53:56.179,1:53:57.579
+i'll read
+
+1:53:57.579,1:53:58.920
+though a
+
+1:53:58.920,1:54:00.000
+um...
+
+1:54:00.000,1:54:01.499
+he he was
+
+1:54:01.499,1:54:03.499
+sort of the theoretical side of
+
+1:54:03.499,1:54:05.829
+um... for them so i drive them one way
+
+1:54:05.829,1:54:10.190
+just from like reading about them really
+are not matter in writing respectable
+
+1:54:10.190,1:54:16.540
+them the conversion exacting definition
+so we were very happy that we got
+
+1:54:16.540,1:54:20.360
+i feel like i was one two three we could
+drive lost like four five always welcome
+
+1:54:20.360,1:54:22.879
+the same laws
+
+1:54:22.879,1:54:29.879
+uh... only had one more
+
+1:54:29.879,1:54:31.439
+warlock theory
+
+1:54:31.439,1:54:33.629
+millwall
+
+1:54:33.629,1:54:38.550
+it no
+
+1:54:38.550,1:54:40.320
+uh...
+
+1:54:40.320,1:54:40.679
+well thank you
+

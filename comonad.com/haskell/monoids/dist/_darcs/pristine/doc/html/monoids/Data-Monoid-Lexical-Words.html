@@ -1,0 +1,1105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Lexical-Words.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:04 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Monoid.Lexical.Words</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monoids-0.1.36: Monoids, specialized containers and a general map/reduce framework</TD
+><TD CLASS="topbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html"
+>Source code</A
+></TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Monoid.Lexical.Words</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (MPTCs, OverloadedStrings)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>ekmett@gmail.com</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Words
+</A
+></DT
+><DT
+><A HREF="#2"
+>Lines
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A simple demonstration of tokenizing a <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> into distinct words 
+ and/or lines using a word-parsing <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+> that accumulates partial 
+ information about words and then builds up a token stream.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer-Char.html"
+>Data.Monoid.Reducer.Char</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AWords"
+>Words</A
+> m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArunWords"
+>runWords</A
+> ::  <A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m -&gt; [m]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AUnspaced"
+>Unspaced</A
+> m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AwordsFrom"
+>wordsFrom</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> n, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> o) =&gt; m -&gt; c -&gt; [(m, n, o)]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3ALines"
+>Lines</A
+> m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3ArunLines"
+>runLines</A
+> ::  <A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m -&gt; [m]</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A HREF="#t%3AUnlined"
+>Unlined</A
+> m</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AlinesFrom"
+>linesFrom</A
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> n, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> o) =&gt; m -&gt; c -&gt; [(m, n, o)]</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="Data-Monoid-Reducer-Char.html"
+>Data.Monoid.Reducer.Char</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Words
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AWords"
+></A
+><B
+>Words</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#Words"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+></TT
+> transformer that breaks a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+> <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> into distinct words, feeding a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> each line in turn
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Words')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Words" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> m =&gt; <A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3ArunWords"
+></A
+><B
+>runWords</B
+> ::  <A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+> m -&gt; [m]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#runWords"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Extract the matched words from the <TT
+><A HREF="Data-Monoid-Lexical-Words.html#t%3AWords"
+>Words</A
+></TT
+> <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AUnspaced"
+></A
+><B
+>Unspaced</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#Unspaced"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+></TT
+> transformer that strips out any character matched by <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/GHC-Unicode.html#v%3AisSpace"
+>isSpace</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Unspaced')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Unspaced" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Copointed <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> m =&gt; <A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnspaced"
+>Unspaced</A
+> m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AwordsFrom"
+></A
+><B
+>wordsFrom</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> n, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> o) =&gt; m -&gt; c -&gt; [(m, n, o)]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#wordsFrom"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Utility function to extract words using accumulator, inside-word, and until-next-word monoids
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Lines
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3ALines"
+></A
+><B
+>Lines</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#Lines"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+></TT
+> transformer that breaks a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+> <TT
+><A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+></TT
+> into distinct lines, feeding a <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+></TT
+> <TT
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+></TT
+> each line in turn.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Lines')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Lines" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> m =&gt; <A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3ArunLines"
+></A
+><B
+>runLines</B
+> ::  <A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+> m -&gt; [m]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#runLines"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Extract the matched lines from the <TT
+><A HREF="Data-Monoid-Lexical-Words.html#t%3ALines"
+>Lines</A
+></TT
+> <TT
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><SPAN CLASS="keyword"
+>data</SPAN
+>  <A NAME="t%3AUnlined"
+></A
+><B
+>Unlined</B
+> m </TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#Unlined"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>A <TT
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+></TT
+> transformer that strips out newlines
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Unlined')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Unlined" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Pointed <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>Copointed <A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Eq.html#t%3AEq"
+>Eq</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Ord.html#t%3AOrd"
+>Ord</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Read.html#t%3ARead"
+>Read</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Text-Show.html#t%3AShow"
+>Show</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-String.html#t%3AIsString"
+>IsString</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> m =&gt; <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> m =&gt; <A HREF="Data-Monoid-Reducer-Char.html#t%3ACharReducer"
+>CharReducer</A
+> (<A HREF="Data-Monoid-Lexical-Words.html#t%3AUnlined"
+>Unlined</A
+> m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="topdecl"
+><TABLE CLASS="declbar"
+><TR
+><TD CLASS="declname"
+><A NAME="v%3AlinesFrom"
+></A
+><B
+>linesFrom</B
+> :: (<A HREF="Data-Generator.html#t%3AGenerator"
+>Generator</A
+> c, <A HREF="Data-Generator.html#t%3AElem"
+>Elem</A
+> c ~ <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+>, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> m, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> n, <A HREF="Data-Monoid-Reducer.html#t%3AReducer"
+>Reducer</A
+> <A HREF="../../../../../../../../usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html#t%3AChar"
+>Char</A
+> o) =&gt; m -&gt; c -&gt; [(m, n, o)]</TD
+><TD CLASS="declbut"
+><A HREF="src/Data-Monoid-Lexical-Words.html#linesFrom"
+>Source</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="doc"
+>Utility function to extract lines using accumulator, inside-line, and until-next-line monoids
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 2.3.0</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Lexical-Words.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:18:04 GMT -->
+</HTML
+>

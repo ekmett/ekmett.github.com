@@ -1,0 +1,16 @@
+pristine:0000000732-028a99a5da194ffd4e1661374c66d9376f3d77eb26acafa180708d8716a5dfdf
+[repository initialized on a hacked up version of bytestring
+ekmett@gmail.com**20100318012037
+ Ignore-this: 12077dd84183777ee9414da4f73b965d
+] 
+hash: 0000271198-b69480b0fb2f44354fd7168e823f2c67330213f1ca35e8175fb102ff6fc49384
+[working towards ropes
+ekmett@gmail.com**20100319040539
+ Ignore-this: 7685789e6811b7106cf7dff8fbec82b1
+] 
+hash: 0000344300-cb4154faf2fd918017ade791c6bbfbe380cd530e4ad8bd190886229669300d11
+[Added preliminary take on Data.Buffer.Rope. Implementing Data.Buffer.Rope.Word8.
+ekmett@gmail.com**20100319080138
+ Ignore-this: 21c2d3c1a1d217bcd460b54ce603ad40
+] 
+hash: 0000041863-bfe8867137148c04b93ca29d238039c722e1d57ffc77755a9a8169f550f3ea04

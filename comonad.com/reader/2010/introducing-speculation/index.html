@@ -1,0 +1,530 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2010/introducing-speculation/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:54 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Introducing Speculation</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../feed/atom/index.html" />
+	<link rel="pingback" href="../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../2012/12/index.html' />
+	<link rel='archives' title='September 2012' href='../../2012/09/index.html' />
+	<link rel='archives' title='August 2012' href='../../2012/08/index.html' />
+	<link rel='archives' title='June 2012' href='../../2012/06/index.html' />
+	<link rel='archives' title='May 2012' href='../../2012/05/index.html' />
+	<link rel='archives' title='April 2012' href='../../2012/04/index.html' />
+	<link rel='archives' title='December 2011' href='../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../07/index.html' />
+	<link rel='archives' title='May 2010' href='../05/index.html' />
+	<link rel='archives' title='April 2010' href='../04/index.html' />
+	<link rel='archives' title='September 2009' href='../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Introducing Speculation Comments Feed" href="feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../index.html' />
+<link rel='start' title='Hello, World!' href='../../2006/hello-world/index.html' />
+<link rel='prev' title='Boston Haskell June' href='../boston-haskell-june/index.html' />
+<link rel='next' title='Free Monads for Less (Part 1 of 3): Codensity' href='../../2011/free-monads-for-less/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Thu 22 Jul 2010</p>
+<div class="post-info"><h2 class="post-title"><a href="index.html" rel="bookmark" title="Permanent Link: Introducing Speculation">Introducing Speculation</a></h2>
+Posted by Edward Kmett under <a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../category/haskell/boston-haskell/index.html" title="View all posts in Boston Haskell" rel="category tag">Boston Haskell</a> ,  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> <br/><a href="index.html#comments" title="Comment on Introducing Speculation">[11] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>A couple of days ago, I gave a talk at Boston Haskell about a shiny new speculative evaluation library, <a href="http://hackage.haskell.org/package/speculation">speculation</a> on hackage, that I have implemented in Haskell. The implementation is based on the material presented as <a href="http://research.microsoft.com/apps/pubs/default.aspx?id=118795">"Safe Programmable Speculative Parallelism"</a> by Prakash Prabhu, G Ramalingam, and Kapil Vaswani at last month's PLDI.</p>
+<p>I've uploaded a copy of my slides here:</p>
+<p>* Introducing Speculation [<a href='../../wp-content/uploads/2010/07/Speculation.pptx'>PowerPoint</a> | <a href='../../wp-content/uploads/2010/07/Speculation.pdf'>PDF</a>]</p>
+<p><span id="more-205"></span></p>
+<p>This package provides speculative function application and speculative folds. Speculative STM transactions take the place of the transactional rollback machinery from the paper, but transactions are not always required in pure code. To get a feel for the shape of the library, here is an excerpt from the <a href="http://hackage.haskell.org/package/speculation">documentation</a> for one of the combinators:</p>
+<blockquote><p>
+<code><br />
+     spec :: Eq a => a -> (a -> b) -> a -> b<br />
+</code></p>
+<p><code>spec g f a</code> evaluates <code>f g</code> while forcing <code>a</code>, if <code>g == a</code> then <code>f g</code> is returned, otherwise <code>f a</code> is evaluated and returned. Furthermore, if the argument has already been evaluated, we skip the <code>f g</code> computation entirely. If a good guess at the value of <code>a</code> is available, this is one way to induce parallelism in an otherwise sequential task. However, if the guess isn't available more cheaply than the actual answer, then this saves no work and if the guess is wrong, you risk evaluating the function twice. Under high load, since <code>f g</code> is computed via the spark queue, the speculation will be skipped and you will obtain the same answer as <code>f $! a</code>.
+</p></blockquote>
+<p>ASCII art time-lines of how this can speed up evaluation are available in both the slides and the documentation linked to above, but assuming an otherwise serial problem, you effectively wager otherwise idle CPU time and the time to generate your guess on the quality of your guess.</p>
+<p>Note that <a href="http://hackage.haskell.org/trac/ghc/ticket/4167">numSparks# feature request</a> that was mentioned in the slides has already been implemented in GHC HEAD, and support shall be added to improve the performance of the speculative STM transactions under high load as mentioned in the slides.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">11 Responses to &#8220;Introducing Speculation&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-18497">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=e8fa5fee74c03d8a94df0d295fc840cf&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Asger Ottar Alstrup</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18497" title="">July 23rd, 2010 at 4:00 pm</a> </small>
+			<br clear="all"/>
+
+			<p>The techniques about inspecting the tags and the spark queue are interesting. It seems they would be very useful for search algorithms that continuously guess at solutions, until a solution that is good enough is found, or the entire search space has been exhausted, or time has run out.</p>
+<p>I.e. think of genetic algorithms, swarm optimization, and other randomized or heuristic search algorithms.</p>
+<p>Do you think the speculation primitive could be used to express such algorithms in a way that would exploit those tricks?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-18645">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18645" title="">July 28th, 2010 at 8:34 am</a> </small>
+			<br clear="all"/>
+
+			<p>@Asger: You could likely exploit the speculation primitive if you supply your own equality check that checked fitness instead of value and used it to wrap the continuation, but I&#8217;ll admit I haven&#8217;t thought it through in depth.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-18767">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=7b2dd177659b9a6b38efbe5559d0a490&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>pepeiborra</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18767" title="">August 1st, 2010 at 6:37 am</a> </small>
+			<br clear="all"/>
+
+			<p>Looking at the unboxed version of unsafeGetTagBits, defined as:</p>
+<p>unsafeGetTagBits a = W# (and# (unsafeCoerce# a) (int2Word# mask#))</p>
+<p>I believe that this performs some evaluation of its argument. The program</p>
+<p>import Data.TagBits<br />
+import Debug.Trace</p>
+<p>main = do<br />
+  let i = trace &#8220;X&#8221; [1]<br />
+  print (unsafeGetTagBits i)<br />
+  print i<br />
+  print (unsafeGetTagBits i)</p>
+<p>produces the output</p>
+<p>X<br />
+2<br />
+[1]<br />
+2</p>
+<p>Also, I have been experiencing segfaults with this unboxed version.</p>
+<p>The boxed version does not segfault nor perform any evaluation, but in my experiments it seems to return always the value 0.<br />
+For the program above, I obtain</p>
+<p>0<br />
+X<br />
+[1]<br />
+0</p>
+<p>Concretely, I am using this code:</p>
+<p>data Box a = Box a<br />
+unsafeGetTagBits a = unsafeCoerce (Box a) .&amp;. fromIntegral (sizeOf (undefined :: Int) &#8211; 1)</p>
+<p>Any idea of what is going on?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-18776">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18776" title="">August 1st, 2010 at 1:39 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Pepe: There are a couple of things happening here.</p>
+<p>You definitely shouldn&#8217;t be getting segfaults on the unboxed version. If so, then I have faulty reasoning and will need to revert to the boxed version.</p>
+<p>With regards to the boxed version still showing unevaluated-ness, what you&#8217;re experiencing is that the &#8216;i&#8217; value at that point still points to the indirection because a garbage collection hasn&#8217;t happened yet to propagate the tag bits. I&#8217;d hazard that if you inserted a call to performGc in the middle there that you&#8217;d start seeing the tags.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-18803">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=7b2dd177659b9a6b38efbe5559d0a490&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>pepeiborra</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18803" title="">August 2nd, 2010 at 10:03 am</a> </small>
+			<br clear="all"/>
+
+			<p>Ed,</p>
+<p>thanks for the tips. I tried inserting a call to performGC in the example, but it didn&#8217;t help the boxed version. </p>
+<p>main = do<br />
+  let i = trace &#8220;&#8211;&gt; evaluated&#8221; ()<br />
+  putStrLn $ &#8220;tagbits: &#8221; ++ show (unsafeGetTagBits i)<br />
+  print i<br />
+  performGC &gt;&gt; putStrLn &#8220;&#8211;&gt; GC performed&#8221;<br />
+  putStrLn $ &#8220;tagbits: &#8221; ++ show (unsafeGetTagBits i)</p>
+<p>pepe:~/Dropbox/code/snippets$ ghc &#8211;make TagBits&amp;&amp; ./TagBits<br />
+Linking TagBits &#8230;<br />
+tagbits: 0<br />
+&#8211;&gt; evaluated<br />
+()<br />
+&#8211;&gt; GC performed<br />
+tagbits: 0</p>
+<p>Nevertheless, I have gone back to my actual use case (pruning the non-evaluated branches of an incomplete infinite proof tree, for display purposes), and found I was traversing the tree bottom-up, with a non strict fold. In a bottom-up traversal, the boxed version was *correctly* returning False for subtrees (since the fold is lazy), whereas the unboxed version was actually seq&#8217;ing subtrees and returning True, which in the particular example at hand was what I expected. Hence the unboxed version was hiding an actual mistake in my reasoning. Now the boxed version works as expected with a top-down traversal. </p>
+<p>To see why the unboxed version forces evaluation of the argument, let&#8217;s look at the core generated by ghc:</p>
+<p>Data.TagBits.unsafeGetTagBits =<br />
+  \ (@ a_aqz) (a_syV :: a_aqz) -&gt;<br />
+    case a_syV<br />
+         `cast` (CoUnsafe a_aqz GHC.Prim.Word# :: a_aqz ~ GHC.Prim.Word#)<br />
+    of wild_syX { __DEFAULT -&gt;<br />
+    case GHC.Prim.and# wild_syX __word 3 of sat_sz3 { __DEFAULT -&gt;<br />
+    GHC.Word.W# sat_sz3<br />
+    }<br />
+    }</p>
+<p>There is a case expression where the scrutinee is the argument. Unless I am wrong, this case expression forces the evaluation of the argument.</p>
+<p>If you are curious I also cooked a version of unsafeIsEvaluated which avoids the tricky pointer tagging business and looks directly at the info table: <a href="http://gist.github.com/504764" rel="nofollow">http://gist.github.com/504764</a></p>
+		</li>
+
+	
+	
+		<li class="" id="comment-18804">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18804" title="">August 2nd, 2010 at 10:26 am</a> </small>
+			<br clear="all"/>
+
+			<p>I was deliberately avoiding reading the info table to avoid dealing with variations in ghc compilation options changing the layout.</p>
+<p>I&#8217;ll revert to the boxed version for now I guess and then see if I can get a better way to do the unsafeCoerce# without forcing.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-18805">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-18805" title="">August 2nd, 2010 at 10:30 am</a> </small>
+			<br clear="all"/>
+
+			<p>That said, it might be worthwhile to add that as a second check, assuming we can get something like the unboxed version to work in the first place.</p>
+<p>That way it could check the tag bits, and if zero, before giving up it could double check the info table, that way we avoid having to actually use the target object in case where the tag bits having been propagated, which potentially avoids paging it in.</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-20828">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-20828" title="">September 16th, 2010 at 6:11 am</a> </small>
+			<br clear="all"/>
+
+			<p>FYI, I did wind up adding that info table check to the tag-bits library, although I do so only after checking the tag bits themselves as a fallback.</p>
+<p>It works well, and lets the library be useful even from ghci. </p>
+<p>Thanks!</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-21221">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-21221" title="">September 22nd, 2010 at 3:28 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Apparently, undefined will sometimes claim to be evaluated. Now I need to chase bottoms too!</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-30823">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9ed01afca2cc6c4d7d0c4d134fe5bde4&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Rafael Calsaverini</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-30823" title="">December 25th, 2010 at 10:22 pm</a> </small>
+			<br clear="all"/>
+
+			<p>This may be useful for Markov Chain Monte Carlo simulations by using the guess that the new sample proposal will be rejected&#8230; seems interesting.</p>
+		</li>
+
+	
+	
+		<li class="alt" id="comment-30881">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite><a href='../../../index.html' rel='external nofollow' class='url'>Edward Kmett</a></cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-30881" title="">December 26th, 2010 at 3:45 pm</a> </small>
+			<br clear="all"/>
+
+			<p>@Rafael: Good idea =)</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="205" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Thursday, Jul 22nd, 2010 at 2:53 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../category/haskell/boston-haskell/index.html" title="View all posts in Boston Haskell" rel="category tag">Boston Haskell</a> and  <a href="../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733/index.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2010/introducing-speculation/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:07:54 GMT -->
+</html>

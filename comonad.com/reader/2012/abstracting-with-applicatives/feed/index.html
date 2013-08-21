@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Abstracting with Applicatives</title>
+	<atom:link href="http://comonad.com/reader/2012/abstracting-with-applicatives/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2012/abstracting-with-applicatives/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Z. Yang</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107149</link>
+		<dc:creator>Edward Z. Yang</dc:creator>
+		<pubDate>Sat, 29 Dec 2012 15:18:06 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107149</guid>
+		<description>Cool post, reminds me about a similar observation I made about the writer monad (http://blog.ezyang.com/2012/10/generalizing-the-programmable-semicolon/); namely, that the tracing behaviour of writer is independent of the computational component.</description>
+		<content:encoded><![CDATA[<p>Cool post, reminds me about a similar observation I made about the writer monad (<a href="http://blog.ezyang.com/2012/10/generalizing-the-programmable-semicolon/)" rel="nofollow">http://blog.ezyang.com/2012/10/generalizing-the-programmable-semicolon/)</a>; namely, that the tracing behaviour of writer is independent of the computational component.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gershom Bazerman</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107130</link>
+		<dc:creator>Gershom Bazerman</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 17:45:23 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107130</guid>
+		<description>Thanks for the comments -- I&#039;ve fixed the post appropriately. I came across &quot;Sum&quot; on my own, and I wasn&#039;t familiar with the &quot;Lift&quot; specialization of it in transformers. Not surprised that Conor and Ross beat me to it!
+
+As the edited post notes, we can&#039;t actually add that Identity instance for Natural without overlapping too often with the Const instance. The poor typechecker can&#039;t decide if it should send everything to Const, or Identity to anything.</description>
+		<content:encoded><![CDATA[<p>Thanks for the comments &#8212; I&#8217;ve fixed the post appropriately. I came across &#8220;Sum&#8221; on my own, and I wasn&#8217;t familiar with the &#8220;Lift&#8221; specialization of it in transformers. Not surprised that Conor and Ross beat me to it!</p>
+<p>As the edited post notes, we can&#8217;t actually add that Identity instance for Natural without overlapping too often with the Const instance. The poor typechecker can&#8217;t decide if it should send everything to Const, or Identity to anything.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Charles</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107128</link>
+		<dc:creator>Oliver Charles</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 16:53:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107128</guid>
+		<description>In the example of the FailingWriter, you write &#039;runFailingWriter $ ...&#039;, but don&#039;t provide a definition of it. From the actual output, I don&#039;t think you actually meant to write it, as the current output makes it seem that the definition would just be `id`. Or perhaps you meant to provide a definition that would yield a different output, perhaps (monoid, Maybe a), stripping away the newtype noise?</description>
+		<content:encoded><![CDATA[<p>In the example of the FailingWriter, you write &#8216;runFailingWriter $ &#8230;&#8217;, but don&#8217;t provide a definition of it. From the actual output, I don&#8217;t think you actually meant to write it, as the current output makes it seem that the definition would just be `id`. Or perhaps you meant to provide a definition that would yield a different output, perhaps (monoid, Maybe a), stripping away the newtype noise?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sjoerd Visscher</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107123</link>
+		<dc:creator>Sjoerd Visscher</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 10:05:29 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107123</guid>
+		<description>Great article!
+
+I came across the Sum applicative for the first time just two days ago in this comment on Stack Overflow by Conor McBride [1]. There he notes Identity is the initial Applicative functor, so you can replace that last Natural instance with:
+
+instance Applicative g =&gt; Natural Identity g where
+    eta (Identity x) = pure x
+
+[1] http://stackoverflow.com/questions/14022791/what-is-control-applicative-lift-useful-for/14022871#comment19369023_14022871</description>
+		<content:encoded><![CDATA[<p>Great article!</p>
+<p>I came across the Sum applicative for the first time just two days ago in this comment on Stack Overflow by Conor McBride [1]. There he notes Identity is the initial Applicative functor, so you can replace that last Natural instance with:</p>
+<p>instance Applicative g =&gt; Natural Identity g where<br />
+    eta (Identity x) = pure x</p>
+<p>[1] <a href="http://stackoverflow.com/questions/14022791/what-is-control-applicative-lift-useful-for/14022871#comment19369023_14022871" rel="nofollow">http://stackoverflow.com/questions/14022791/what-is-control-applicative-lift-useful-for/14022871#comment19369023_14022871</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107120</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 01:52:27 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107120</guid>
+		<description>Const c &gt;&gt;= f doesn&#039;t work
+
+return a &gt;&gt;= f = f a is a Monad law.
+
+Consider:
+
+return a &gt;&gt;= \ _ -&gt; Const &quot;hello&quot;
+
+But from that definition 
+
+return a &gt;&gt;= \ _ -&gt; Const &quot;hello&quot; = Const &quot;&quot;
+
+but
+
+(\ _ -&gt; Const &quot;hello&quot;) a = Const &quot;hello&quot;
+
+Your proposal only works when mempty is the only value of your monoid. It works for Const (), but nothing else really.</description>
+		<content:encoded><![CDATA[<p>Const c >>= f doesn&#8217;t work</p>
+<p>return a >>= f = f a is a Monad law.</p>
+<p>Consider:</p>
+<p>return a >>= \ _ -> Const &#8220;hello&#8221;</p>
+<p>But from that definition </p>
+<p>return a >>= \ _ -> Const &#8220;hello&#8221; = Const &#8220;&#8221;</p>
+<p>but</p>
+<p>(\ _ -> Const &#8220;hello&#8221;) a = Const &#8220;hello&#8221;</p>
+<p>Your proposal only works when mempty is the only value of your monoid. It works for Const (), but nothing else really.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Luke Palmer</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107119</link>
+		<dc:creator>Luke Palmer</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 01:46:22 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107119</guid>
+		<description>Oh, I see.  You couldn&#039;t define bind in a way that is consistent with the Applicative instance (and we had Monoid c anyway so return wouldn&#039;t have been a problem).  Sloppy reading :-/</description>
+		<content:encoded><![CDATA[<p>Oh, I see.  You couldn&#8217;t define bind in a way that is consistent with the Applicative instance (and we had Monoid c anyway so return wouldn&#8217;t have been a problem).  Sloppy reading :-/</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Luke Palmer</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/comment-page-1/#comment-107118</link>
+		<dc:creator>Luke Palmer</dc:creator>
+		<pubDate>Thu, 27 Dec 2012 01:43:23 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756#comment-107118</guid>
+		<description>It seems to me that the reason that Const c is not a monad is because of return, not bind.  Const c &gt;&gt;= f = Const c  should do the trick.</description>
+		<content:encoded><![CDATA[<p>It seems to me that the reason that Const c is not a monad is because of return, not bind.  Const c &gt;&gt;= f = Const c  should do the trick.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

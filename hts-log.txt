@@ -1,0 +1,486 @@
+HTTrack3.47-22 launched on Tue, 20 Aug 2013 17:03:15 at http://comonad.com
+(httrack -s0 http://comonad.com )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+17:03:16	Warning: 	Found for comonad.com/
+17:03:16	Warning: 	File has moved from comonad.com/ to http://comonad.com/reader/
+17:06:23	Error: 	"Not Found" (404) at link comonad.com/reader/source;item=libraries (from comonad.com/reader/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/wiki;item=October 2006;August 2006;July 2006 (from comonad.com/reader/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/wiki;item=Harmless+Algorithms;fine-occlusion+culling (from comonad.com/reader/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/007733 (from comonad.com/reader/)
+17:07:49	Error: 	"Authorization Required" (401) at link comonad.com/reader/wp-login.php (from comonad.com/reader/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2013/05/007733 (from comonad.com/reader/2013/05/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2013/04/007733 (from comonad.com/reader/2013/04/)
+17:07:49	Error: 	"Error when decompressing" (-1) at link comonad.com/reader/2012/abstracting-with-applicatives (from comonad.com/reader/2013/01/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2013/01/007733 (from comonad.com/reader/2013/01/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/12/007733 (from comonad.com/reader/2012/12/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/09/007733 (from comonad.com/reader/2012/09/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/08/007733 (from comonad.com/reader/2012/08/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/06/007733 (from comonad.com/reader/2012/06/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/05/007733 (from comonad.com/reader/2012/05/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2012/04/007733 (from comonad.com/reader/2012/04/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2011/12/007733 (from comonad.com/reader/2011/12/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2011/11/007733 (from comonad.com/reader/2011/11/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2011/10/007733 (from comonad.com/reader/2011/10/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2011/09/007733 (from comonad.com/reader/2011/09/)
+17:07:49	Error: 	"Not Found" (404) at link comonad.com/reader/2011/07/007733 (from comonad.com/reader/2011/07/)
+17:07:53	Error: 	"Not Found" (404) at link comonad.com/reader/2011/06/007733 (from comonad.com/reader/2011/06/)
+17:08:24	Error: 	"Not Found" (404) at link comonad.com/reader/2010/07/007733 (from comonad.com/reader/2010/07/)
+17:08:26	Error: 	"Not Found" (404) at link comonad.com/reader/2010/05/007733 (from comonad.com/reader/2010/05/)
+17:08:27	Error: 	"Not Found" (404) at link comonad.com/reader/2010/04/007733 (from comonad.com/reader/2010/04/)
+17:08:29	Error: 	"Not Found" (404) at link comonad.com/reader/2009/09/007733 (from comonad.com/reader/2009/09/)
+17:08:32	Error: 	"Not Found" (404) at link comonad.com/reader/2009/08/007733 (from comonad.com/reader/2009/08/)
+17:08:33	Error: 	"Not Found" (404) at link comonad.com/reader/2009/07/007733 (from comonad.com/reader/2009/07/)
+17:08:35	Error: 	"Not Found" (404) at link comonad.com/reader/2009/06/007733 (from comonad.com/reader/2009/06/)
+17:08:39	Error: 	"Not Found" (404) at link comonad.com/reader/2009/03/007733 (from comonad.com/reader/2009/03/)
+17:08:40	Error: 	"Not Found" (404) at link comonad.com/reader/2008/12/007733 (from comonad.com/reader/2008/12/)
+17:08:40	Error: 	"Not Found" (404) at link comonad.com/reader/2008/11/007733 (from comonad.com/reader/2008/11/)
+17:08:56	Error: 	"Not Found" (404) at link comonad.com/reader/2008/06/007733 (from comonad.com/reader/2008/06/)
+17:09:24	Error: 	"Not Found" (404) at link comonad.com/reader/2008/05/007733 (from comonad.com/reader/2008/05/)
+17:09:28	Error: 	"Not Found" (404) at link comonad.com/reader/2008/04/007733 (from comonad.com/reader/2008/04/)
+17:09:31	Error: 	"Not Found" (404) at link comonad.com/reader/2008/03/007733 (from comonad.com/reader/2008/03/)
+17:09:31	Error: 	"Error when decompressing" (-1) at link comonad.com/reader/2008/elgot-coalgebras (from comonad.com/reader/2008/01/)
+17:09:31	Error: 	"Not Found" (404) at link comonad.com/reader/2008/01/007733 (from comonad.com/reader/2008/01/)
+17:09:37	Error: 	"Not Found" (404) at link comonad.com/reader/2007/07/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/2007/07/)
+17:09:37	Error: 	"Not Found" (404) at link comonad.com/reader/2007/07/007733 (from comonad.com/reader/2007/07/)
+17:09:39	Error: 	"Not Found" (404) at link comonad.com/reader/2007/05/007733 (from comonad.com/reader/2007/05/)
+17:09:42	Error: 	"Not Found" (404) at link comonad.com/reader/2006/11/007733 (from comonad.com/reader/2006/11/)
+17:09:43	Error: 	"Not Found" (404) at link comonad.com/reader/wiki;item=slipwave (from comonad.com/reader/2006/10/)
+17:09:43	Error: 	"Not Found" (404) at link comonad.com/reader/source;item=Data;Haskell (from comonad.com/reader/2006/10/)
+17:09:43	Error: 	"Not Found" (404) at link comonad.com/reader/2006/10/007733 (from comonad.com/reader/2006/10/)
+17:09:43	Error: 	"Not Found" (404) at link comonad.com/reader/wiki;item=Harmless+Algorithms (from comonad.com/reader/about/)
+17:09:43	Error: 	"Not Found" (404) at link comonad.com/reader/wiki;item=ECMAScript+4 (from comonad.com/reader/about/)
+17:09:44	Warning: 	Found for comonad.com/reader/2013/representing-applicatives/trackback/
+17:09:44	Warning: 	File has moved from comonad.com/reader/2013/representing-applicatives/trackback/ to http://comonad.com/reader/2013/representing-applicatives/
+17:09:44	Error: 	"Not Found" (404) at link comonad.com/reader/category/uncategorized/007733 (from comonad.com/reader/category/uncategorized/)
+17:09:44	Warning: 	Found for comonad.com/reader/2012/abstracting-with-applicatives/trackback/
+17:09:44	Warning: 	File has moved from comonad.com/reader/2012/abstracting-with-applicatives/trackback/ to http://comonad.com/reader/2012/abstracting-with-applicatives/
+17:09:45	Warning: 	Found for comonad.com/reader/2013/algebras-of-applicatives/trackback/
+17:09:45	Warning: 	File has moved from comonad.com/reader/2013/algebras-of-applicatives/trackback/ to http://comonad.com/reader/2013/algebras-of-applicatives/
+17:09:45	Warning: 	Found for comonad.com/reader/2013/japanese-workshop-1/trackback/
+17:09:45	Warning: 	File has moved from comonad.com/reader/2013/japanese-workshop-1/trackback/ to http://comonad.com/reader/2013/japanese-workshop-1/
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/japan/007733 (from comonad.com/reader/category/haskell/japan/)
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/lenses/007733 (from comonad.com/reader/category/lenses/)
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/mathematics/007733 (from comonad.com/reader/category/mathematics/)
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/category-theory/007733 (from comonad.com/reader/category/category-theory/)
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/data-structures/007733 (from comonad.com/reader/category/data-structures/)
+17:09:46	Error: 	"Not Found" (404) at link comonad.com/reader/category/monoids/007733 (from comonad.com/reader/category/monoids/)
+17:09:46	Warning: 	Found for comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/trackback/
+17:09:46	Warning: 	File has moved from comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/trackback/ to http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/
+17:09:46	Warning: 	Found for comonad.com/reader/2012/unnatural-transformations-and-quantifiers/trackback/
+17:09:46	Warning: 	File has moved from comonad.com/reader/2012/unnatural-transformations-and-quantifiers/trackback/ to http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/
+17:09:47	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/007733 (from comonad.com/reader/category/haskell/)
+17:09:47	Error: 	"Not Found" (404) at link comonad.com/reader/category/kan-extensions/007733 (from comonad.com/reader/category/kan-extensions/)
+17:09:48	Error: 	"Not Found" (404) at link comonad.com/reader/category/monads/007733 (from comonad.com/reader/category/monads/)
+17:09:48	Warning: 	Found for comonad.com/reader/2012/hackage-mirror/trackback/
+17:09:48	Warning: 	File has moved from comonad.com/reader/2012/hackage-mirror/trackback/ to http://comonad.com/reader/2012/hackage-mirror/
+17:09:49	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/infrastructure/007733 (from comonad.com/reader/category/haskell/infrastructure/)
+17:09:49	Warning: 	Found for comonad.com/reader/2012/mirrored-lenses/trackback/
+17:09:49	Warning: 	File has moved from comonad.com/reader/2012/mirrored-lenses/trackback/ to http://comonad.com/reader/2012/mirrored-lenses/
+17:09:49	Error: 	"Not Found" (404) at link comonad.com/reader/category/algorithms/007733 (from comonad.com/reader/category/algorithms/)
+17:09:49	Warning: 	Found for comonad.com/reader/2012/wheres-waldo/trackback/
+17:09:49	Warning: 	File has moved from comonad.com/reader/2012/wheres-waldo/trackback/ to http://comonad.com/reader/2012/wheres-waldo/
+17:09:50	Warning: 	Found for comonad.com/reader/2012/catamorphism-knol/trackback/
+17:09:50	Warning: 	File has moved from comonad.com/reader/2012/catamorphism-knol/trackback/ to http://comonad.com/reader/2012/catamorphism-knol/
+17:09:50	Error: 	"Not Found" (404) at link comonad.com/reader/2008/catamorphism/ (from comonad.com/haskell/catamorphisms.html)
+17:09:50	Warning: 	Found for comonad.com/reader/2012/wadlers-law-revisited/trackback/
+17:09:50	Warning: 	File has moved from comonad.com/reader/2012/wadlers-law-revisited/trackback/ to http://comonad.com/reader/2012/wadlers-law-revisited/
+17:09:51	Error: 	"Not Found" (404) at link comonad.com/reader/category/meta/007733 (from comonad.com/reader/category/meta/)
+17:09:51	Warning: 	Found for comonad.com/reader/2011/searching-infinity/trackback/
+17:09:51	Warning: 	File has moved from comonad.com/reader/2011/searching-infinity/trackback/ to http://comonad.com/reader/2011/searching-infinity/
+17:09:51	Error: 	"Not Found" (404) at link comonad.com/reader/category/logic/007733 (from comonad.com/reader/category/logic/)
+17:09:51	Error: 	"Not Found" (404) at link comonad.com/reader/category/type-hackery/007733 (from comonad.com/reader/category/type-hackery/)
+17:09:51	Warning: 	Found for comonad.com/reader/2011/what-constraints-entail-part-2/trackback/
+17:09:51	Warning: 	File has moved from comonad.com/reader/2011/what-constraints-entail-part-2/trackback/ to http://comonad.com/reader/2011/what-constraints-entail-part-2/
+17:09:52	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/constraint-kinds/007733 (from comonad.com/reader/category/haskell/constraint-kinds/)
+17:09:52	Warning: 	Found for comonad.com/reader/2011/what-constraints-entail-part-1/trackback/
+17:09:52	Warning: 	File has moved from comonad.com/reader/2011/what-constraints-entail-part-1/trackback/ to http://comonad.com/reader/2011/what-constraints-entail-part-1/
+17:09:52	Warning: 	Found for comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/trackback/
+17:09:52	Warning: 	File has moved from comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/trackback/ to http://comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/
+17:09:53	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/boston-haskell/007733 (from comonad.com/reader/category/haskell/boston-haskell/)
+17:09:53	Error: 	"Not Found" (404) at link comonad.com/reader/category/type-theory/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/category/type-theory/)
+17:09:53	Error: 	"Not Found" (404) at link comonad.com/reader/category/type-theory/007733 (from comonad.com/reader/category/type-theory/)
+17:09:53	Warning: 	Found for comonad.com/reader/2011/hac-boston/trackback/
+17:09:53	Warning: 	File has moved from comonad.com/reader/2011/hac-boston/trackback/ to http://comonad.com/reader/2011/hac-boston/
+17:09:53	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/boston-haskell/hac-boston/007733 (from comonad.com/reader/category/haskell/boston-haskell/hac-boston/)
+17:09:53	Warning: 	Found for comonad.com/reader/2011/a-parsec-full-of-rats-part-2/trackback/
+17:09:53	Warning: 	File has moved from comonad.com/reader/2011/a-parsec-full-of-rats-part-2/trackback/ to http://comonad.com/reader/2011/a-parsec-full-of-rats-part-2/
+17:09:54	Error: 	"Not Found" (404) at link comonad.com/reader/category/parsing/007733 (from comonad.com/reader/category/parsing/)
+17:09:54	Warning: 	Found for comonad.com/reader/2011/a-parsec-full-of-rats/trackback/
+17:09:54	Warning: 	File has moved from comonad.com/reader/2011/a-parsec-full-of-rats/trackback/ to http://comonad.com/reader/2011/a-parsec-full-of-rats/
+17:09:54	Warning: 	Found for comonad.com/reader/2011/free-modules-and-functional-linear-functionals/trackback/
+17:09:54	Warning: 	File has moved from comonad.com/reader/2011/free-modules-and-functional-linear-functionals/trackback/ to http://comonad.com/reader/2011/free-modules-and-functional-linear-functionals/
+17:09:55	Error: 	"Not Found" (404) at link comonad.com/reader/category/mathematics/linear-algebra/007733 (from comonad.com/reader/category/mathematics/linear-algebra/)
+17:09:55	Warning: 	Found for comonad.com/reader/2011/a-product-of-an-imperfect-union/trackback/
+17:09:55	Warning: 	File has moved from comonad.com/reader/2011/a-product-of-an-imperfect-union/trackback/ to http://comonad.com/reader/2011/a-product-of-an-imperfect-union/
+17:09:56	Error: 	"Not Found" (404) at link comonad.com/reader/category/comonads/007733 (from comonad.com/reader/category/comonads/)
+17:09:56	Warning: 	Found for comonad.com/reader/2011/monads-from-comonads/trackback/
+17:09:56	Warning: 	File has moved from comonad.com/reader/2011/monads-from-comonads/trackback/ to http://comonad.com/reader/2011/monads-from-comonads/
+17:09:57	Warning: 	Found for comonad.com/reader/2011/monad-transformers-from-comonads/trackback/
+17:09:57	Warning: 	File has moved from comonad.com/reader/2011/monad-transformers-from-comonads/trackback/ to http://comonad.com/reader/2011/monad-transformers-from-comonads/
+17:09:58	Error: 	"Not Found" (404) at link comonad.com/reader/page/2/007733 (from comonad.com/reader/page/2/)
+17:09:58	Warning: 	Found for comonad.com/reader/2011/more-on-comonads-as-monad-transformers/trackback/
+17:09:58	Warning: 	File has moved from comonad.com/reader/2011/more-on-comonads-as-monad-transformers/trackback/ to http://comonad.com/reader/2011/more-on-comonads-as-monad-transformers/
+17:09:58	Warning: 	Found for comonad.com/reader/2011/free-monads-for-less-3/trackback/
+17:09:58	Warning: 	File has moved from comonad.com/reader/2011/free-monads-for-less-3/trackback/ to http://comonad.com/reader/2011/free-monads-for-less-3/
+17:10:14	Warning: 	Found for comonad.com/reader/2011/free-monads-for-less-2/trackback/
+17:10:14	Warning: 	File has moved from comonad.com/reader/2011/free-monads-for-less-2/trackback/ to http://comonad.com/reader/2011/free-monads-for-less-2/
+17:10:15	Warning: 	Found for comonad.com/reader/2011/free-monads-for-less/trackback/
+17:10:15	Warning: 	File has moved from comonad.com/reader/2011/free-monads-for-less/trackback/ to http://comonad.com/reader/2011/free-monads-for-less/
+17:10:15	Warning: 	Found for comonad.com/reader/2010/introducing-speculation/trackback/
+17:10:15	Warning: 	File has moved from comonad.com/reader/2010/introducing-speculation/trackback/ to http://comonad.com/reader/2010/introducing-speculation/
+17:10:16	Warning: 	Found for comonad.com/reader/2010/boston-haskell-june/trackback/
+17:10:16	Warning: 	File has moved from comonad.com/reader/2010/boston-haskell-june/trackback/ to http://comonad.com/reader/2010/boston-haskell-june/
+17:10:16	Warning: 	Found for comonad.com/reader/2010/hac-phi/trackback/
+17:10:16	Warning: 	File has moved from comonad.com/reader/2010/hac-phi/trackback/ to http://comonad.com/reader/2010/hac-phi/
+17:10:17	Warning: 	Found for comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/trackback/
+17:10:17	Warning: 	File has moved from comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/trackback/ to http://comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/
+17:10:18	Warning: 	Found for comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/trackback/
+17:10:18	Warning: 	File has moved from comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/trackback/ to http://comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/
+17:11:52	Warning: 	Found for comonad.com/reader/2010/finger-trees/trackback/
+17:11:52	Warning: 	File has moved from comonad.com/reader/2010/finger-trees/trackback/ to http://comonad.com/reader/2010/finger-trees/
+17:11:53	Warning: 	Found for comonad.com/reader/2009/iteratees-take-2/trackback/
+17:11:53	Warning: 	File has moved from comonad.com/reader/2009/iteratees-take-2/trackback/ to http://comonad.com/reader/2009/iteratees-take-2/
+17:11:54	Warning: 	Found for comonad.com/reader/2009/remodeling-precision/trackback/
+17:11:54	Warning: 	File has moved from comonad.com/reader/2009/remodeling-precision/trackback/ to http://comonad.com/reader/2009/remodeling-precision/
+17:11:54	Warning: 	Found for comonad.com/reader/2009/curried-scheme/trackback/
+17:11:54	Warning: 	File has moved from comonad.com/reader/2009/curried-scheme/trackback/ to http://comonad.com/reader/2009/curried-scheme/
+17:11:54	Error: 	"Not Found" (404) at link comonad.com/reader/category/macros/007733 (from comonad.com/reader/category/macros/)
+17:11:54	Error: 	"Not Found" (404) at link comonad.com/reader/category/scheme/007733 (from comonad.com/reader/category/scheme/)
+17:11:54	Warning: 	Found for comonad.com/reader/2009/iteratees-parsec-and-monoid/trackback/
+17:11:54	Warning: 	File has moved from comonad.com/reader/2009/iteratees-parsec-and-monoid/trackback/ to http://comonad.com/reader/2009/iteratees-parsec-and-monoid/
+17:11:55	Warning: 	Found for comonad.com/reader/2009/clearer-reflection/trackback/
+17:11:55	Warning: 	File has moved from comonad.com/reader/2009/clearer-reflection/trackback/ to http://comonad.com/reader/2009/clearer-reflection/
+17:11:55	Warning: 	Found for comonad.com/reader/2009/hac-phi-slides/trackback/
+17:11:55	Warning: 	File has moved from comonad.com/reader/2009/hac-phi-slides/trackback/ to http://comonad.com/reader/2009/hac-phi-slides/
+17:11:56	Warning: 	Found for comonad.com/reader/2009/recursion-schemes/trackback/
+17:11:56	Warning: 	File has moved from comonad.com/reader/2009/recursion-schemes/trackback/ to http://comonad.com/reader/2009/recursion-schemes/
+17:11:56	Warning: 	Found for comonad.com/reader/2008/still-alive/trackback/
+17:11:56	Warning: 	File has moved from comonad.com/reader/2008/still-alive/trackback/ to http://comonad.com/reader/2008/still-alive/
+17:11:57	Error: 	"Not Found" (404) at link comonad.com/reader/1970/elgot-algebras/ (from comonad.com/reader/2008/elgot-coalgebras/)
+17:11:57	Warning: 	Found for comonad.com/reader/2008/elgot-coalgebras/trackback/
+17:11:57	Warning: 	File has moved from comonad.com/reader/2008/elgot-coalgebras/trackback/ to http://comonad.com/reader/2008/elgot-coalgebras/
+17:12:12	Warning: 	Found for comonad.com/reader/2009/incremental-folds/trackback/
+17:12:12	Warning: 	File has moved from comonad.com/reader/2009/incremental-folds/trackback/ to http://comonad.com/reader/2009/incremental-folds/
+17:12:12	Error: 	"Not Found" (404) at link comonad.com/reader/category/squiggol/007733 (from comonad.com/reader/category/squiggol/)
+17:12:12	Warning: 	Found for comonad.com/reader/2008/the-pointed-set-comonad/trackback/
+17:12:12	Warning: 	File has moved from comonad.com/reader/2008/the-pointed-set-comonad/trackback/ to http://comonad.com/reader/2008/the-pointed-set-comonad/
+17:12:13	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 1297): comonad.com/haskell/category-extras/Diana.hs
+17:12:16	Warning: 	Found for comonad.com/reader/2008/zapping-strong-adjunctions/trackback/
+17:12:16	Warning: 	File has moved from comonad.com/reader/2008/zapping-strong-adjunctions/trackback/ to http://comonad.com/reader/2008/zapping-strong-adjunctions/
+17:12:16	Warning: 	Found for comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/trackback/
+17:12:16	Warning: 	File has moved from comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/trackback/ to http://comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/
+17:12:17	Error: 	"Not Found" (404) at link comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Bifunctor.html (from comonad.com/reader/2008/zipping-and-unzipping-functors/)
+17:12:17	Error: 	"Not Found" (404) at link comonad.com/haskell/category-extras/src/Control/Bifunctor/Fix.hs (from comonad.com/reader/2008/zipping-and-unzipping-functors/)
+17:12:17	Error: 	"Not Found" (404) at link comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Bifunctor-Composition.html (from comonad.com/reader/2008/zipping-and-unzipping-functors/)
+17:12:17	Warning: 	Found for comonad.com/reader/2008/zipping-and-unzipping-functors/trackback/
+17:12:17	Warning: 	File has moved from comonad.com/reader/2008/zipping-and-unzipping-functors/trackback/ to http://comonad.com/reader/2008/zipping-and-unzipping-functors/
+17:12:18	Warning: 	Found for comonad.com/reader/2008/representing-adjunctions/trackback/
+17:12:18	Warning: 	File has moved from comonad.com/reader/2008/representing-adjunctions/trackback/ to http://comonad.com/reader/2008/representing-adjunctions/
+17:12:41	Warning: 	Found for comonad.com/reader/2008/kan-extensions-ii/trackback/
+17:12:41	Warning: 	File has moved from comonad.com/reader/2008/kan-extensions-ii/trackback/ to http://comonad.com/reader/2008/kan-extensions-ii/
+17:12:46	Warning: 	Found for comonad.com/reader/2008/linear-bloom-filters/trackback/
+17:12:46	Warning: 	File has moved from comonad.com/reader/2008/linear-bloom-filters/trackback/ to http://comonad.com/reader/2008/linear-bloom-filters/
+17:12:47	Warning: 	Found for comonad.com/reader/2008/kan-extension-iii/trackback/
+17:12:47	Warning: 	File has moved from comonad.com/reader/2008/kan-extension-iii/trackback/ to http://comonad.com/reader/2008/kan-extension-iii/
+17:12:47	Warning: 	Found for comonad.com/reader/2008/kan-extensions/trackback/
+17:12:47	Warning: 	File has moved from comonad.com/reader/2008/kan-extensions/trackback/ to http://comonad.com/reader/2008/kan-extensions/
+17:12:47	Warning: 	Found for comonad.com/reader/2008/forgetful-laziness/trackback/
+17:12:47	Warning: 	File has moved from comonad.com/reader/2008/forgetful-laziness/trackback/ to http://comonad.com/reader/2008/forgetful-laziness/
+17:12:48	Warning: 	Found for comonad.com/reader/2008/generatingfunctorology/trackback/
+17:12:48	Warning: 	File has moved from comonad.com/reader/2008/generatingfunctorology/trackback/ to http://comonad.com/reader/2008/generatingfunctorology/
+17:12:48	Warning: 	Found for comonad.com/reader/2008/towards-formal-power-series-for-functors/trackback/
+17:12:48	Warning: 	File has moved from comonad.com/reader/2008/towards-formal-power-series-for-functors/trackback/ to http://comonad.com/reader/2008/towards-formal-power-series-for-functors/
+17:12:49	Warning: 	Found for comonad.com/reader/2008/just-fokkinga-abide/trackback/
+17:12:49	Warning: 	File has moved from comonad.com/reader/2008/just-fokkinga-abide/trackback/ to http://comonad.com/reader/2008/just-fokkinga-abide/
+17:12:49	Warning: 	Found for comonad.com/reader/2008/cozipping/trackback/
+17:12:49	Warning: 	File has moved from comonad.com/reader/2008/cozipping/trackback/ to http://comonad.com/reader/2008/cozipping/
+17:12:49	Warning: 	Found for comonad.com/reader/2008/deriving-strength-from-laziness/trackback/
+17:12:49	Warning: 	File has moved from comonad.com/reader/2008/deriving-strength-from-laziness/trackback/ to http://comonad.com/reader/2008/deriving-strength-from-laziness/
+17:12:50	Error: 	"Not Found" (404) at link comonad.com/haskell/category-extras/dist/doc/html/category-extras/ekmett@gmail.com (from comonad.com/haskell/category-extras/dist/doc/html/category-extras/Control-Comonad.html)
+17:12:50	Warning: 	Found for comonad.com/reader/2008/dynamorphisms-as-chronomorphisms/trackback/
+17:12:50	Warning: 	File has moved from comonad.com/reader/2008/dynamorphisms-as-chronomorphisms/trackback/ to http://comonad.com/reader/2008/dynamorphisms-as-chronomorphisms/
+17:12:50	Warning: 	Found for comonad.com/reader/2008/time-for-chronomorphisms/trackback/
+17:12:50	Warning: 	File has moved from comonad.com/reader/2008/time-for-chronomorphisms/trackback/ to http://comonad.com/reader/2008/time-for-chronomorphisms/
+17:12:51	Warning: 	Found for comonad.com/reader/2008/unnatural-transformations/trackback/
+17:12:51	Warning: 	File has moved from comonad.com/reader/2008/unnatural-transformations/trackback/ to http://comonad.com/reader/2008/unnatural-transformations/
+17:12:51	Warning: 	Found for comonad.com/reader/2008/generalized-hylomorphisms/trackback/
+17:12:51	Warning: 	File has moved from comonad.com/reader/2008/generalized-hylomorphisms/trackback/ to http://comonad.com/reader/2008/generalized-hylomorphisms/
+17:12:51	Warning: 	Found for comonad.com/reader/2008/monads-for-free/trackback/
+17:12:51	Warning: 	File has moved from comonad.com/reader/2008/monads-for-free/trackback/ to http://comonad.com/reader/2008/monads-for-free/
+17:12:52	Warning: 	Found for comonad.com/reader/2008/higher-order-abstract-syntax-a-la-carte/trackback/
+17:12:52	Warning: 	File has moved from comonad.com/reader/2008/higher-order-abstract-syntax-a-la-carte/trackback/ to http://comonad.com/reader/2008/higher-order-abstract-syntax-a-la-carte/
+17:12:52	Warning: 	Found for comonad.com/reader/2008/rotten-bananas/trackback/
+17:12:52	Warning: 	File has moved from comonad.com/reader/2008/rotten-bananas/trackback/ to http://comonad.com/reader/2008/rotten-bananas/
+17:12:53	Warning: 	Found for comonad.com/reader/2007/updated-datatype/trackback/
+17:12:53	Warning: 	File has moved from comonad.com/reader/2007/updated-datatype/trackback/ to http://comonad.com/reader/2007/updated-datatype/
+17:17:04	Error: 	"Not Found" (404) at link comonad.com/reader/2007/parameterized-monads-in-haskell/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/2007/parameterized-monads-in-haskell/)
+17:17:22	Warning: 	Found for comonad.com/reader/2007/parameterized-monads-in-haskell/trackback/
+17:17:22	Warning: 	File has moved from comonad.com/reader/2007/parameterized-monads-in-haskell/trackback/ to http://comonad.com/reader/2007/parameterized-monads-in-haskell/
+17:17:27	Warning: 	Found for comonad.com/reader/2007/javascript-interpreter-recompiler-atomizer-threading-library/trackback/
+17:17:27	Warning: 	File has moved from comonad.com/reader/2007/javascript-interpreter-recompiler-atomizer-threading-library/trackback/ to http://comonad.com/reader/2007/javascript-interpreter-recompiler-atomizer-threading-library/
+17:17:31	Error: 	"Not Found" (404) at link comonad.com/reader/category/javascript/007733 (from comonad.com/reader/category/javascript/)
+17:17:32	Warning: 	Found for comonad.com/reader/2006/generalizing-dot/trackback/
+17:17:32	Warning: 	File has moved from comonad.com/reader/2006/generalizing-dot/trackback/ to http://comonad.com/reader/2006/generalizing-dot/
+17:17:36	Warning: 	Found for comonad.com/reader/2006/logic/trackback/
+17:17:36	Warning: 	File has moved from comonad.com/reader/2006/logic/trackback/ to http://comonad.com/reader/2006/logic/
+17:17:36	Warning: 	Found for comonad.com/reader/2006/overloaded-functions-with-subtyping/trackback/
+17:17:36	Warning: 	File has moved from comonad.com/reader/2006/overloaded-functions-with-subtyping/trackback/ to http://comonad.com/reader/2006/overloaded-functions-with-subtyping/
+17:17:37	Warning: 	Found for comonad.com/reader/2006/wikipress/trackback/
+17:17:37	Warning: 	File has moved from comonad.com/reader/2006/wikipress/trackback/ to http://comonad.com/reader/2006/wikipress/
+17:17:37	Warning: 	Found for comonad.com/reader/2006/hello-world/trackback/
+17:17:37	Warning: 	File has moved from comonad.com/reader/2006/hello-world/trackback/ to http://comonad.com/reader/2006/hello-world/
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/about/007733/007733 (from comonad.com/reader/about/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2013/representing-applicatives/007733/007733 (from comonad.com/reader/2013/representing-applicatives/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/abstracting-with-applicatives/007733/007733 (from comonad.com/reader/2012/abstracting-with-applicatives/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2013/algebras-of-applicatives/007733/007733 (from comonad.com/reader/2013/algebras-of-applicatives/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2013/japanese-workshop-1/007733/007733 (from comonad.com/reader/2013/japanese-workshop-1/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/category/category-theory/page/2/007733 (from comonad.com/reader/category/category-theory/page/2/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/007733/007733 (from comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/unnatural-transformations-and-quantifiers/007733/007733 (from comonad.com/reader/2012/unnatural-transformations-and-quantifiers/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/page/2/007733 (from comonad.com/reader/category/haskell/page/2/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/category/monads/page/2/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/category/monads/page/2/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/category/monads/page/2/007733 (from comonad.com/reader/category/monads/page/2/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/hackage-mirror/007733/007733 (from comonad.com/reader/2012/hackage-mirror/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/mirrored-lenses/007733/007733 (from comonad.com/reader/2012/mirrored-lenses/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/wheres-waldo/007733/007733 (from comonad.com/reader/2012/wheres-waldo/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/catamorphism-knol/007733/007733 (from comonad.com/reader/2012/catamorphism-knol/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2012/wadlers-law-revisited/007733/007733 (from comonad.com/reader/2012/wadlers-law-revisited/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/searching-infinity/007733/007733 (from comonad.com/reader/2011/searching-infinity/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/what-constraints-entail-part-2/007733/007733 (from comonad.com/reader/2011/what-constraints-entail-part-2/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/what-constraints-entail-part-1/007733/007733 (from comonad.com/reader/2011/what-constraints-entail-part-1/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/007733/007733 (from comonad.com/reader/2011/homotopy-and-directed-type-theory-slides/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/hac-boston/007733/007733 (from comonad.com/reader/2011/hac-boston/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/a-parsec-full-of-rats-part-2/007733/007733 (from comonad.com/reader/2011/a-parsec-full-of-rats-part-2/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/a-parsec-full-of-rats/007733/007733 (from comonad.com/reader/2011/a-parsec-full-of-rats/007733/)
+17:17:38	Error: 	"Not Found" (404) at link comonad.com/reader/2011/free-modules-and-functional-linear-functionals/007733/007733 (from comonad.com/reader/2011/free-modules-and-functional-linear-functionals/007733/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/2011/a-product-of-an-imperfect-union/007733/007733 (from comonad.com/reader/2011/a-product-of-an-imperfect-union/007733/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/2011/monads-from-comonads/007733/007733 (from comonad.com/reader/2011/monads-from-comonads/007733/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/2011/monad-transformers-from-comonads/007733/007733 (from comonad.com/reader/2011/monad-transformers-from-comonads/007733/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/page/3/007733 (from comonad.com/reader/page/3/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/2011/more-on-comonads-as-monad-transformers/007733/007733 (from comonad.com/reader/2011/more-on-comonads-as-monad-transformers/007733/)
+17:17:39	Error: 	"Not Found" (404) at link comonad.com/reader/2011/free-monads-for-less-3/007733/007733 (from comonad.com/reader/2011/free-monads-for-less-3/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Monad Transformer.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Trans.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Applicative.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Monad.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Prim.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Error.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Either.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/System-IO-Error.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/System-IO.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Monoid.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Strict.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-RWS-Lazy.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Strict.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Lazy.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Strict.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Lazy.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Reader.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-State-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Writer-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/GHC-Conc.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Monad-ST.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Maybe.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Identity.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Monad-Fix.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/mtl/Control-Monad-Cont-Class.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Eq.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Ord.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Text-Read.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Text-Show.html (from comonad.com/haskell/monad-ran/dist/doc/html/monad-ran/Control-Monad-Ran.html)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2011/free-monads-for-less-2/007733/007733 (from comonad.com/reader/2011/free-monads-for-less-2/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2011/free-monads-for-less/007733/007733 (from comonad.com/reader/2011/free-monads-for-less/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/introducing-speculation/007733/007733 (from comonad.com/reader/2010/introducing-speculation/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/boston-haskell-june/007733/007733 (from comonad.com/reader/2010/boston-haskell-june/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/hac-phi/007733/007733 (from comonad.com/reader/2010/hac-phi/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/007733/007733 (from comonad.com/reader/2010/brodal-okasaki-heaps-in-haskell/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/007733/007733 (from comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2010/finger-trees/007733/007733 (from comonad.com/reader/2010/finger-trees/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/iteratees-take-2/007733/007733 (from comonad.com/reader/2009/iteratees-take-2/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/remodeling-precision/007733/007733 (from comonad.com/reader/2009/remodeling-precision/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/curried-scheme/007733/007733 (from comonad.com/reader/2009/curried-scheme/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/iteratees-parsec-and-monoid/007733/007733 (from comonad.com/reader/2009/iteratees-parsec-and-monoid/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/clearer-reflection/007733/007733 (from comonad.com/reader/2009/clearer-reflection/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/hac-phi-slides/007733/007733 (from comonad.com/reader/2009/hac-phi-slides/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2009/recursion-schemes/007733/007733 (from comonad.com/reader/2009/recursion-schemes/007733/)
+17:17:40	Error: 	"Not Found" (404) at link comonad.com/reader/2008/still-alive/007733/007733 (from comonad.com/reader/2008/still-alive/007733/)
+17:18:01	Error: 	"Not Found" (404) at link comonad.com/reader/2008/elgot-coalgebras/007733/007733 (from comonad.com/reader/2008/elgot-coalgebras/007733/)
+17:18:09	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Foldable.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:09	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Bool.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:10	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Types.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:13	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Prelude.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:14	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Word.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:18	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Bits.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:22	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/containers/Data-Sequence.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Reducer.html)
+17:18:28	Error: 	"Not Found" (404) at link comonad.com/reader/2009/incremental-folds/007733/007733 (from comonad.com/reader/2009/incremental-folds/007733/)
+17:18:28	Error: 	"Not Found" (404) at link comonad.com/reader/2008/the-pointed-set-comonad/007733/007733 (from comonad.com/reader/2008/the-pointed-set-comonad/007733/)
+17:18:44	Error: 	"Not Found" (404) at link comonad.com/reader/2008/zapping-strong-adjunctions/007733/007733 (from comonad.com/reader/2008/zapping-strong-adjunctions/007733/)
+17:18:44	Error: 	"Not Found" (404) at link comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/007733/007733 (from comonad.com/reader/2008/the-cofree-comonad-and-the-expression-problem/007733/)
+17:18:45	Error: 	"Not Found" (404) at link comonad.com/reader/2008/zipping-and-unzipping-functors/007733/007733 (from comonad.com/reader/2008/zipping-and-unzipping-functors/007733/)
+17:18:46	Error: 	"Not Found" (404) at link comonad.com/reader/2008/representing-adjunctions/007733/007733 (from comonad.com/reader/2008/representing-adjunctions/007733/)
+17:18:55	Error: 	"Not Found" (404) at link comonad.com/reader/2008/kan-extensions-ii/007733/007733 (from comonad.com/reader/2008/kan-extensions-ii/007733/)
+17:19:03	Error: 	"Not Found" (404) at link comonad.com/reader/2008/linear-bloom-filters/007733/007733 (from comonad.com/reader/2008/linear-bloom-filters/007733/)
+17:19:04	Error: 	"Not Found" (404) at link comonad.com/reader/2008/kan-extension-iii/007733/007733 (from comonad.com/reader/2008/kan-extension-iii/007733/)
+17:19:04	Error: 	"Not Found" (404) at link comonad.com/reader/2008/kan-extensions/007733/007733 (from comonad.com/reader/2008/kan-extensions/007733/)
+17:19:05	Error: 	"Not Found" (404) at link comonad.com/reader/2008/forgetful-laziness/007733/007733 (from comonad.com/reader/2008/forgetful-laziness/007733/)
+17:19:06	Error: 	"Not Found" (404) at link comonad.com/reader/2008/generatingfunctorology/007733/007733 (from comonad.com/reader/2008/generatingfunctorology/007733/)
+17:19:06	Error: 	"Not Found" (404) at link comonad.com/reader/2008/towards-formal-power-series-for-functors/007733/007733 (from comonad.com/reader/2008/towards-formal-power-series-for-functors/007733/)
+17:19:07	Error: 	"Not Found" (404) at link comonad.com/reader/2008/just-fokkinga-abide/007733/007733 (from comonad.com/reader/2008/just-fokkinga-abide/007733/)
+17:19:07	Error: 	"Not Found" (404) at link comonad.com/reader/2008/cozipping/007733/007733 (from comonad.com/reader/2008/cozipping/007733/)
+17:19:08	Error: 	"Not Found" (404) at link comonad.com/reader/2008/deriving-strength-from-laziness/007733/007733 (from comonad.com/reader/2008/deriving-strength-from-laziness/007733/)
+17:19:08	Error: 	"Not Found" (404) at link comonad.com/reader/2008/dynamorphisms-as-chronomorphisms/007733/007733 (from comonad.com/reader/2008/dynamorphisms-as-chronomorphisms/007733/)
+17:19:09	Error: 	"Not Found" (404) at link comonad.com/reader/2008/time-for-chronomorphisms/007733/007733 (from comonad.com/reader/2008/time-for-chronomorphisms/007733/)
+17:19:09	Error: 	"Not Found" (404) at link comonad.com/reader/2008/unnatural-transformations/007733/007733 (from comonad.com/reader/2008/unnatural-transformations/007733/)
+17:19:10	Error: 	"Not Found" (404) at link comonad.com/reader/2008/generalized-hylomorphisms/007733/007733 (from comonad.com/reader/2008/generalized-hylomorphisms/007733/)
+17:19:10	Error: 	"Not Found" (404) at link comonad.com/reader/2008/monads-for-free/007733/007733 (from comonad.com/reader/2008/monads-for-free/007733/)
+17:19:11	Error: 	"Not Found" (404) at link comonad.com/reader/2008/higher-order-abstract-syntax-a-la-carte/007733/007733 (from comonad.com/reader/2008/higher-order-abstract-syntax-a-la-carte/007733/)
+17:19:11	Error: 	"Not Found" (404) at link comonad.com/reader/2008/rotten-bananas/007733/007733 (from comonad.com/reader/2008/rotten-bananas/007733/)
+17:19:12	Error: 	"Not Found" (404) at link comonad.com/reader/2008/elgot-algebras/007733/007733 (from comonad.com/reader/2008/elgot-algebras/007733/)
+17:19:12	Error: 	"Not Found" (404) at link comonad.com/reader/2007/updated-datatype/007733/007733 (from comonad.com/reader/2007/updated-datatype/007733/)
+17:30:20	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): comonad.com/haskell/type-int/_darcs/prefs/motd
+17:31:48	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:48	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:48	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:49	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:49	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Data-Char.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:50	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/stm/Control-Concurrent-STM.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:50	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:51	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont-Class.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:51	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:52	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:52	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-Fix.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:53	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:53	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:54	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:54	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Class.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:55	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:55	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:56	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:56	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:57	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:57	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:58	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:58	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:58	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html (from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html)
+17:31:59	Error: 	"Not Found" (404) at link comonad.com/reader/2007/parameterized-monads-in-haskell/007733/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/2007/parameterized-monads-in-haskell/007733/)
+17:31:59	Error: 	"Not Found" (404) at link comonad.com/reader/2007/parameterized-monads-in-haskell/007733/007733 (from comonad.com/reader/2007/parameterized-monads-in-haskell/007733/)
+17:32:00	Error: 	"Not Found" (404) at link comonad.com/reader/2007/javascript-interpreter-recompiler-atomizer-threading-library/007733/007733 (from comonad.com/reader/2007/javascript-interpreter-recompiler-atomizer-threading-library/007733/)
+17:32:00	Error: 	"Not Found" (404) at link comonad.com/reader/2006/generalizing-dot/007733/007733 (from comonad.com/reader/2006/generalizing-dot/007733/)
+17:32:01	Error: 	"Not Found" (404) at link comonad.com/reader/2006/logic/007733/007733 (from comonad.com/reader/2006/logic/007733/)
+17:32:01	Error: 	"Not Found" (404) at link comonad.com/reader/2006/overloaded-functions-with-subtyping/007733/007733 (from comonad.com/reader/2006/overloaded-functions-with-subtyping/007733/)
+17:32:02	Error: 	"Not Found" (404) at link comonad.com/reader/wiki/007733/007733 (from comonad.com/reader/wiki/007733/)
+17:32:02	Error: 	"Not Found" (404) at link comonad.com/reader/2006/wikipress/007733/007733 (from comonad.com/reader/2006/wikipress/007733/)
+17:32:03	Error: 	"Not Found" (404) at link comonad.com/reader/2006/hello-world/007733/007733 (from comonad.com/reader/2006/hello-world/007733/)
+17:32:03	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/page/3/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/category/haskell/page/3/)
+17:32:04	Error: 	"Not Found" (404) at link comonad.com/reader/category/haskell/page/3/007733 (from comonad.com/reader/category/haskell/page/3/)
+17:32:04	Error: 	"Not Found" (404) at link comonad.com/reader/page/4/type.http://citeseer.ist.psu.edu/273929.html (from comonad.com/reader/page/4/)
+17:32:05	Error: 	"Not Found" (404) at link comonad.com/reader/page/4/007733 (from comonad.com/reader/page/4/)
+17:32:30	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Char.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Lexical-SourcePosition.html)
+17:32:30	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-String.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Lexical-SourcePosition.html)
+17:32:30	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/GHC-Unicode.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Lexical-Words.html)
+17:32:32	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/containers/Data-IntSet.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Union.html)
+17:32:32	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/containers/Data-IntMap.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Union.html)
+17:32:32	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/containers/Data-Set.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Union.html)
+17:32:33	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/containers/Data-Map.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Union.html)
+17:32:33	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Reducer.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Self.html)
+17:32:34	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Semi-Ord-Order.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Boolean.html)
+17:32:35	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Data-BitSet.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Semi-BitSet.html)
+17:32:35	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Typeable.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Semi-BitSet.html)
+17:32:35	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Data.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Semi-BitSet.html)
+17:32:35	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Foldable.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Applicative.html)
+17:32:36	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Category.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Categorical.html)
+17:32:36	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/ghc-prim/GHC-Ordering.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Ring-Module.html)
+17:32:36	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Ratio.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Multiplicative.html)
+17:32:36	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Monad-ST-Lazy.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Multiplicative.html)
+17:33:14	Error: 	"Not Found" (404) at link comonad.com/haskell/thash/dist/doc/html/STM.html (from comonad.com/haskell/thash/dist/doc/html/Data-THash.html)
+17:33:15	Error: 	"Not Found" (404) at link comonad.com/haskell/thash/dist/doc/html/THT.html (from comonad.com/haskell/thash/dist/doc/html/Data-THash.html)
+17:36:00	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Foldable-Foldable.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator.html)
+17:36:00	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Lazy-Internal.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator.html)
+17:36:00	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/bytestring/Data-ByteString-Internal.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator.html)
+17:36:00	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Prelude.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html)
+17:36:00	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/Control-Monad.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html)
+17:36:01	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-List.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html)
+17:36:01	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/foldMap.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Generator-Combinators.html)
+17:36:01	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/mappend.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Additive.html)
+17:36:01	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/doc/html/monoids/mempty.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Additive.html)
+17:36:02	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Bool.html (from comonad.com/haskell/monoids/dist/doc/html/monoids/Data-Monoid-Instances.html)
+17:37:08	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): comonad.com/haskell/categories/_darcs/prefs/motd
+17:41:14	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): comonad.com/haskell/monoids/_darcs/prefs/motd
+17:54:44	Error: 	"Forbidden" (403) at link comonad.com/haskell/rope/dist/rope-0.3.tar.gz (from comonad.com/haskell/rope/dist/)
+17:54:45	Error: 	"Forbidden" (403) at link comonad.com/haskell/rope/dist/rope-0.4.tar.gz (from comonad.com/haskell/rope/dist/)
+17:54:46	Error: 	"Forbidden" (403) at link comonad.com/haskell/rope/dist/rope-0.5.tar.gz (from comonad.com/haskell/rope/dist/)
+17:57:49	Error: 	"Forbidden" (403) at link comonad.com/haskell/category-extras/dist/build/autogen/Paths_category_extras.hs (from comonad.com/haskell/category-extras/dist/build/autogen/)
+18:05:02	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Text-Show.html (from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary-Internals.html)
+18:05:02	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Lib.html (from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Binary-TH.html)
+18:05:02	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/base/Data-List.html (from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Boolean.html)
+18:05:02	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/ghc-6.6.1/html/libraries/template-haskell/Language-Haskell-TH-Syntax.html (from comonad.com/haskell/type-int/dist/doc/html/Data-Type-Hex-Stage1.html)
+18:07:21	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 1251): comonad.com/haskell/categories/src/Control/Category/Functor/Adjunction.hs
+18:07:22	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 1850): comonad.com/haskell/categories/src/Control/Category/Functor/Composition.hs
+18:08:19	Error: 	"Forbidden" (403) at link comonad.com/haskell/category-extras-backup/dist/build/autogen/Paths_category_extras.hs (from comonad.com/haskell/category-extras-backup/dist/build/autogen/)
+18:08:43	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 2848): comonad.com/haskell/monad-cps/dist/doc/html/monad-cps/Control-Monad-CPS-Ran.html
+18:09:22	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 1421): comonad.com/haskell/monoids/_darcs/pristine/Data/Monoid/Self.hs
+18:11:25	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 3304): comonad.com/haskell/category-extras/_darcs/pristine/src/Control/Functor/Internal/Ideal.hs
+18:12:50	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 2118): comonad.com/haskell/category-extras-backup/_darcs/pristine/src/Control/Category/Associative.hs
+18:16:24	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 3277): comonad.com/haskell/category-extras-backup/_darcs/pristine/src/Control/Functor/Combinators/Biff.hs
+18:17:30	Error: 	"Not Found" (404) at link comonad.com/haskell/parsimony/dist/doc/html/parsimony/Text-Parsec-Errors.html (from comonad.com/haskell/parsimony/dist/doc/html/parsimony/Text-Parsimony-Error.html)
+18:17:30	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Control-Arrow.html (from comonad.com/haskell/parsimony/dist/doc/html/parsimony/Text-Parsimony-Prim.html)
+18:17:30	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/System-Mem-StableName.html (from comonad.com/haskell/parsimony/dist/doc/html/parsimony/Text-Parsimony-StableMap.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Types.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Bool.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Monoid.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Word.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Char.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Maybe.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Eq.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Data.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Ord.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Text-Show.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Typeable.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Unit.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Prelude.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Tuple.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Control-Monad.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotated.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Traversable.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotated.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Foldable.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotated.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Control-Applicative.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotated.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-List.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Annotation.html)
+18:17:32	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Text-Read.html (from comonad.com/haskell/rope/dist/doc/html/rope/Data-Rope-Body.html)
+18:17:36	Error: 	"Not Found" (404) at link comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Prelude.html (from comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set-Unboxed.html)
+18:17:36	Error: 	"Not Found" (404) at link comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set.html (from comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set-Unboxed.html)
+18:17:36	Error: 	"Not Found" (404) at link comonad.com/usr/local/share/doc/ghc/libraries/base/Data-Int.html (from comonad.com/haskell/unboxed-containers/dist/doc/html/unboxed-containers/Data-Set-Unboxed.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Prelude.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Int.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/System-IO.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Data-Bool.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Lazy-Word8.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Foreign-C-String.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/ghc-prim/GHC-Prim.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Foreign-Ptr.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/haskell/buffer/dist/dist/doc/html/buffer/string.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Unsafe.html)
+18:17:37	Error: 	"Not Found" (404) at link comonad.com/usr/share/doc/ghc6-doc/libraries/base/Foreign-ForeignPtr.html (from comonad.com/haskell/buffer/dist/dist/doc/html/buffer/Data-Buffer-Word8.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monad-ran/dist/_darcs/pristine/doc/html/monad-ran/Monad Transformer.html (from comonad.com/haskell/monad-ran/dist/_darcs/pristine/doc/html/monad-ran/Control-Monad-Ran.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Foldable-Foldable.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Prelude.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator-Combinators.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Foldable.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator-Combinators.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Control-Monad.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator-Combinators.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/foldMap.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Generator-Combinators.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/mappend.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Additive.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/mempty.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Additive.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Reducer.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Monoid-Reducer-With.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Ring-Semi-Ord-Order.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Ring-Boolean.html)
+18:18:20	Error: 	"Not Found" (404) at link comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-BitSet.html (from comonad.com/haskell/monoids/dist/_darcs/pristine/doc/html/monoids/Data-Ring-Semi-BitSet.html)
+18:18:21	Error: 	"Not Found" (404) at link comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsec-Errors.html (from comonad.com/haskell/parsimony/dist/_darcs/pristine/doc/html/parsimony/Text-Parsimony-Error.html)
+18:18:21	Error: 	"Not Found" (404) at link comonad.com/haskell/unboxed-containers/dist/_darcs/pristine/doc/html/unboxed-containers/Prelude.html (from comonad.com/haskell/unboxed-containers/dist/_darcs/pristine/doc/html/unboxed-containers/Data-Set-Unboxed.html)
+18:18:21	Error: 	"Not Found" (404) at link comonad.com/haskell/unboxed-containers/dist/_darcs/pristine/doc/html/unboxed-containers/Data-Set.html (from comonad.com/haskell/unboxed-containers/dist/_darcs/pristine/doc/html/unboxed-containers/Data-Set-Unboxed.html)
+
+HTTrack Website Copier/3.47-22 mirror complete in 1 hours 15 minutes 6 seconds : 8840 links scanned, 8449 files written (121658178 bytes overall) [100266371 bytes received at 22251 bytes/sec], 33796665 bytes transferred using HTTP compression in 6167 files, ratio 20%, 2.6 requests per connection
+(318 errors, 157 warnings, 0 messages)

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-Hashable.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Data.Hashable</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>thash-0.1</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Data.Hashable</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (requires STM)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A simple class for hashable objects to facilitate the use of <A HREF="Data-THash.html"
+>Data.THash</A
+>.
+ We try to use a number of non-prime mix functions to better support the
+ power of 2 hashing function under the hood.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AHashable"
+></A
+><B
+>Hashable</B
+> a  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ahash"
+></A
+><B
+>hash</B
+> :: a -&gt; Int</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Hashable')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Hashable" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> Char</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> Int</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> b) =&gt; <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> (a, b)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> b, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> c) =&gt; <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> (a, b, c)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> b, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> c, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> d) =&gt; <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> (a, b, c, d)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> b, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> c, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> d, <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> e) =&gt; <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> (a, b, c, d, e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a =&gt; <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> [a]</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ahash"
+></A
+><B
+>hash</B
+> :: <A HREF="Data-Hashable.html#t%3AHashable"
+>Hashable</A
+> a =&gt; a -&gt; Int</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.7</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/thash/dist/doc/html/Data-Hashable.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:18:55 GMT -->
+</HTML
+>

@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader</title>
+	<atom:link href="http://comonad.com/reader/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>Representing Applicatives</title>
+		<link>http://comonad.com/reader/2013/representing-applicatives/</link>
+		<comments>http://comonad.com/reader/2013/representing-applicatives/#comments</comments>
+		<pubDate>Thu, 02 May 2013 14:19:12 +0000</pubDate>
+		<dc:creator>Gershom Bazerman</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=907</guid>
+		<description><![CDATA[In the previous two posts, we've built up a whole range of applicatives, out of Const, Identity, Reader, Compose, Product, Sum, and Fix (and some higher-order analogues). Sum has given us the most trouble, but in some sense has been the most powerful, letting us write things like possibly eventually terminating lists, or trees, or [...]]]></description>
+			<content:encoded><![CDATA[<p>In the <a href="http://comonad.com/reader/2012/abstracting-with-applicatives/">previous</a> <a href="http://comonad.com/reader/2013/algebras-of-applicatives/">two</a> posts, we've built up a whole range of applicatives, out of Const, Identity, Reader, Compose, Product, Sum, and Fix (and some higher-order analogues). Sum has given us the most trouble, but in some sense has been the most powerful, letting us write things like possibly eventually terminating lists, or trees, or in fact any sort of structure with branching alternatives. In this post, I want to think a bit more about why it is that Sum is the trickiest of the bunch, and more generally, what we can say about when two applicative structures are the "same". In the process of doing so, we'll invent something a lot like Traversable en passant.</p>
+<p>Let's do some counting exercises. <code>Product Identity Identity</code> holds exactly two things. It is therefore isomorphic to <code>((->) Bool)</code>, or if we prefer, <code>((->) Either () ())</code>. That is to say that a pair that <i>holds</i> two values of type <code>a</code> is the same as a function that <i>takes a two-valued type</i> and <i>yields</i> a value of type <code>a</code>. A product of more functors in turn is isomorphic to the reader of the sum of each of the datatypes that "represent" them. E.g. <code>Product (Product Identity Identity) (Product (Const ()) Identity)</code> is iso to <code>((->) (Either (Either () ()) ())</code>, i.e. a data type with three possible inhabitants. In making this move we took Product to Either -- multiplication to sum. We can pull a similar trick with Compose. <code>Compose (Product Identity Identity) (Product Identity Identity)</code> goes to ((->) (Either () (),Either () ())). So again we took Product to a sum type, but now we took Compose to a pair -- a product type! The intuition is that composition <i>multiplies</i> the possibilities of spaces in each nested functor.</p>
+<p>Hmm.. products go to sums, composition goes to multiplication, etc. This should remind us of something -- these rules are exactly the rules for working with exponentials. x^n * x^m = x^(n + m). (x^n)^m = x^(n*m). x^0 = 1, x^1 = x.</p>
+<p>Seen from the right standpoint, this isn't surprising at all, but almost inevitable. The functors we're describing are known as "representable," a term which derives from category theory. (See appendix on representable functors below).</p>
+<p>In Haskell-land, a "representable functor" is just any functor isomorphic to the reader functor <code>((->) a)</code> for some appropriate a. Now if we think back to our algebraic representations of data types, we call the arrow type constructor an exponential. We can "count" <code>a -> x</code> as x^a, since e.g. there are 3^2 distinct functions that inhabit the type 2 -> 3. The intuition for this is that for each input we pick one of the possible results, so as the number of inputs goes up by one, the number of functions goes up by multiplying through by the set of possible results. 1 -> 3 = 3, 2 -> 3 = 3 * 3, (n + 1) -> 3 = 3 * (n -> 3).</p>
+<p>Hence, if we "represent" our functors by exponentials, then we can work with them directly as exponentials as well, with all the usual rules. Edward Kmett has a <a href="http://hackage.haskell.org/packages/archive/representable-functors/3.0.0.1/doc/html/Data-Functor-Representable.html">library encoding representable functors in Haskell</a>.</p>
+<p>Meanwhile, Peter Hancock prefers to call such functors <a href="http://sneezy.cs.nott.ac.uk/containers/blog/?p=14">"Naperian"</a> after John Napier, inventor of the logarithm (See also <a href="http://stackoverflow.com/a/13100857/371753">here</a>). Why Naperian? Because if our functors are isomorphic to exponentials, then we can take their logs! And that brings us back to the initial discussion of type mathematics. We have some functor F, and claim that it is isomorphic to -^R for some concrete data type R. Well, this means that R is the logarithm of F. E.g. <code>(R -> a, S -> a) =~ Either R S -> a</code>, which is to say that if log F = R and log G =~ S, then log (F * G) = log F + log G. Similarly, for any other data type n, again with log F = R, we have  <code>n -> F a =~ n -> R -> a =~ (n * R) -> a</code>, which is to say that log (F^n) =~ n * log F.</p>
+<p>This gives us one intuition for why the sum functor is not generally representable -- it is very difficult to decompose log (F + G) into some simpler compound expression of logs.</p>
+<p>So what functors are Representable? Anything that can be seen as a fixed shape with some index. Pairs, fixed-size vectors, fixed-size matrices, any nesting of fixed vectors and matricies. But also infinite structures of regular shape! However, not things whose shape can vary -- not lists, not sums. Trees of fixed depth or infinite binary trees therefore, but not trees of arbitrary depth or with ragged structure, etc.</p>
+<p>Representable functors turn out to be extremely powerful tools. Once we know a functor is representable, we know exactly what its applicative instance must be, and that its applicative instance will be "zippy" -- i.e. acting pointwise across the structure. We also know that it has a monad instance! And, unfortunately, that this monad instance is typically fairly useless (in that it is also "zippy" -- i.e. the monad instance on a pair just acts on the two elements pointwise, without ever allowing anything in the first slot to affect anything in the second slot, etc.). But we know more than that. We know that a representable functor, by virtue of being a reader in disguise, cannot have effects that migrate outwards. So any two actions in a representable functor are commutative. And more than that, they are entirely independent.</p>
+<p>This means that all representable functors are "<a href="http://hackage.haskell.org/packages/archive/distributive/0.3.1/doc/html/Data-Distributive.html">distributive</a>"! Given any functor f, and any data type r, then we have </p>
+<pre class="haskell">&nbsp;
+distributeReader :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; f <span style="color: green;">&#40;</span>r -&gt; a<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>r -&gt; f a<span style="color: green;">&#41;</span>
+distributeReader fra = \r -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>$r<span style="color: green;">&#41;</span> fra
+&nbsp;</pre>
+<p>That is to say, given an arrow "inside" a functor, we can always pull the arrow out, and "distribute" application across the contents of the functor. A list of functions from <code>Int -> Int</code> becomes a single function from <code>Int</code> to a list of <code>Int</code>, etc. More generally, since all representable functors are isomorphic to reader, given g representable, and f any functor, then we have: <code>distribute :: (Functor f, Representable g) => f (g a) -> g (f a).</code></p>
+<p>This is pretty powerful sauce! And if f and g are <i>both</i> representable, then we get the transposition isomorphism, witnessed by <code>flip</code>! That's just the beginning of the good stuff. If we take functions and "unrepresent" them back to functors (i.e. take their logs), then we can do things like move from <code>((->) Bool)</code> to pairs, etc. Since we're in a pervasively lazy language, we've just created a library for <a href="http://hackage.haskell.org/packages/archive/representable-tries/3.0.2/doc/html/Data-Functor-Representable-Trie.html">memoization</a>! This is because we've gone from a function to a data structure we can index into, representing each possible argument to this function as a "slot" in the structure. And the laziness pays off because we only need to evaluate the contents of each slot on demand (otherwise we'd have a precomputed lookup table rather than a dynamically-evaluated memo table). </p>
+<p>And now suppose we take our representable functor in the form <code>s -> a</code> and paired it with an "index" into that function, in the form of a concrete <code>s</code>. Then we'd be able to step that <code>s</code> forward or backwards and navigate around our structure of <code>a</code>s. And this is precisely the <a href="http://hackage.haskell.org/packages/archive/comonads-fd/3.0.1/doc/html/Control-Comonad-Store.html">Store Comonad</a>! And this in turn gives a <a href="http://patternsinfp.wordpress.com/2011/01/31/lenses-are-the-coalgebras-for-the-costate-comonad/">characterization of the lens laws</a>.</p>
+<p>What this all gives us a tiny taste of, in fact, is the tremendous power of the <a href="http://blog.sigfpe.com/2006/11/yoneda-lemma.html">Yoneda lemma</a>, which, in Haskell, is all about going between values and functions, and in fact captures the important universality and uniqueness properties that make working with representable functors tractable. A further tiny taste of Yoneda comes from a nice <a href="http://conal.net/blog/posts/memoizing-polymorphic-functions-via-unmemoization">blog post</a> by Conal Elliott on memoization.</p>
+<p><strong>Extra Credit on Sum Functors</strong></p>
+<p>There in fact is a log identity on sums. It goes like this:</p>
+<pre>
+log(a + c) = log a + log (1 + c/a)
+</pre>
+<p>Do you have a useful computational interpretation of this? I've got the inklings of one, but not much else.</p>
+<p><strong>Appendix: Notes on Representable Functors in Hask.</strong></p>
+<p>The way to think about this is to take some arbitrary category C, and some category that's basically Set (in our case, Hask. In fact, in our case, C is Hask too, and we're just talking about endofunctors on Hask). Now, we take some functor F : C -> Set, and some A which is an element of C. The set of morphisms originating at A (denoted by Hom(A,-)) constitutes a functor called the "hom functor." For any object X in C, we can "plug it in" to Hom(A,-), to then get the set of all arrows from A to X. And for any morphism X -> Y in C, we can derive a morphism from Hom(A,X) to Hom(A,Y), by composition. This is equivalent to, in Haskell-land, using a function <code>f :: x -> y</code> to send <code>g :: a -> x</code> to <code>a -> y</code> by writing "functionAToY = f . g".</p>
+<p>So, for any A in C, we have a hom functor on C, which is C -> Set, where the elements of the resultant Set are homomorphisms in C. Now, we have this other arbitrary functor F, which is also C -> Set. Now, if there is an isomorphism of functors between F, and Hom(A,_), then we say F is "representable". A representable functor is thus one that can be worked with entirely as an appropriate hom-functor.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2013/representing-applicatives/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Japanese &#8220;ekmett&#8221; Workshop (Part 1 of 2)</title>
+		<link>http://comonad.com/reader/2013/japanese-workshop-1/</link>
+		<comments>http://comonad.com/reader/2013/japanese-workshop-1/#comments</comments>
+		<pubDate>Mon, 01 Apr 2013 05:59:05 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Japan]]></category>
+		<category><![CDATA[Lenses]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[workshop]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=831</guid>
+		<description><![CDATA[A couple of weeks back one of my coworkers brought to my attention a several hour long workshop in Japan to go over and describe a number of my libraries, hosted by TANAKA Hideyuki — not the voice actor, I checked!
+I was incredibly honored and I figured that if that many people (they had 30 [...]]]></description>
+			<content:encoded><![CDATA[<p>A couple of weeks back one of my coworkers brought to my attention <a href="http://partake.in/events/1698f7f8-4151-4048-b317-03a8c3f1a7ab">a several hour long workshop in Japan</a> to go over and describe a number of my libraries, hosted by <a href="https://github.com/tanakh">TANAKA Hideyuki</a> — not the <a href="http://en.wikipedia.org/wiki/Hideyuki_Tanaka">voice actor</a>, I checked!</p>
+<p>I was incredibly honored and I figured that if that many people (they had 30 or so registered attendees and 10 presentations) were going to spend that much time going over software that I had written, I should at least offer to show up!</p>
+<p>I'd like to apologize for any errors in the romanization of people's names or misunderstandings I may have in the following text. My grasp of Japanese is very poor! Please feel free to send me corrections or additions!</p>
+<h2>Surprise!</h2>
+<p>Sadly, my <a href="https://twitter.com/mcscottmc">boss</a>'s immediate reaction to hearing that there was a workshop in Japan about my work was to quip that "You're saying you're <a href="http://en.wikipedia.org/wiki/Big_in_Japan_(phrase)">huge in Japan</a>?" With him conspicuously not offering to fly me out here, I had to settle for surprising the organizers and attending via Google Hangout.</p>
+<h2>Commentary and Logs</h2>
+<p><a href="http://twitter.com/nushio">@nushio</a> was very helpful in getting me connected, and while the speakers gave their talks I sat on the irc.freenode.net #haskell-lens channel and Google Hangout and answered questions and provided a running commentary with more details and references. Per <a href="http://freenode.net/channel_guidelines.shtml">freenode policy</a> the fact that we were logging the channel was announced -- well, at least before things got too far underway.</p>
+<p><a href="https://gist.github.com/ekmett/5283253">Here is the IRC session log as a gist</a>. IKEGAMI Daisuke <a href="https://twitter.com/ikegami__">@ikegami__</a> (<code>ikeg</code> in the IRC log) tried to keep up a high-level running commentary about what was happening in the video to the log, which may be helpful if you are trying to follow along through each retroactively.</p>
+<p>Other background chatter and material is strewn across twitter under the <a href="https://twitter.com/search?q=%23ekmett_conf&src=typd">#ekmett_conf</a> hash tag and on a japanese twitter aggregator named <a href="http://togetter.com/li/480399">togetter</a></p>
+<p><span id="more-831"></span></p>
+<h2>Getting Started</h2>
+<p>The 1PM start time in Shibuya, Tokyo, Japan translates to midnight at the start of Easter here in Boston, which meant ~6 hours later when we reached the Q&A session, I was a bit loopy from lack of sleep, but they were incredibly polite and didn't seem to mind my long rambling responses.</p>
+<p>Thanks to the organizers, we have video of the vast majority of the event! There was no audio for the first couple of minutes, and the recording machine lost power for the last talk and the Q&A session at the end as we ran somewhat longer than they had originally scheduled! -- And since I was attending remotely and a number of others flitted in and out over the course of the night, they were nice enough to put most of the slides and background material online.</p>
+<h2>profunctors by Liyang HU and HIBINO Kei</h2>
+<p><a href="http://liyang.hu/">Liyang Hu</a> (<a href="http://twitter.com/liyanghu">@liyanghu</a>) started the session off with a nicely self-contained crash course on my <a href="http://github.com/ekmett/profunctors">profunctors</a> package, since profunctors are used fairly heavily inside the implementation of <a href="http://github.com/ekmett/lens">lens</a> and <a href="http://github.com/ekmett/machines">machines</a>, with a couple of detours into <a href="http://github.com/ekmett/contravariant">contravariant</a> and <a href="http://github.com/ekmett/bifunctors">bifunctors</a>.</p>
+<p><a href="https://www.fpcomplete.com/user/liyang/profunctors">His presentation materials</a> are available interactively from the new <a href="https://www.fpcomplete.com/">FP Complete</a> School of Haskell. You can also watch the <a href="http://www.ustream.tv/recorded/30668431/highlight/337429">video recording of his talk</a> on <a href="http://www.ustream.tv/">ustream</a>.</p>
+<p>This talk was followed by a much more condensed version of very similar content <a href="http://www.ustream.tv/recorded/30668431/highlight/337431">in Japanese by Hibino Kei</a> (<a href="https://github.com/khibino">@khibino</a>) His talk was more focused on the relationship between arrows and profunctors, and the <a href="http://www.slideshare.net/khibino/profunctor-and-arrow-17939130"> slides are available through slideshare</a>.</p>
+<h2>lens by @its_out_of_tune</h2>
+<p>Once the necessary background material was out of the way, the talk on <a href="http://hackage.haskell.org/package/lens">lens</a> -- arguably the presentation that most of the people were there for -- came early. </p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-its_out_of_tune-1.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-its_out_of_tune-1.jpg" alt="ekmett_conf-its_out_of_tune-1" title="ekmett_conf-its_out_of_tune-1" width="1076" height="736" class="aligncenter size-full wp-image-835" /></a></p>
+<p><a href="https://twitter.com/its_out_of_tune">@its_out_of_tune</a> gave an incredibly dense overview of how to use the main parts of the lens package in Japanese. <a href="http://www.slideshare.net/itsoutoftunethismymusic/ekmett-17955009">His slides are available online</a> and <a href="http://www.ustream.tv/recorded/30668431/highlight/337435">here is a recording of his talk</a>. </p>
+<p>Over the course of a half hour, he was able to cram in a great cross-section of the library including material that I hadn't even been able to get to even with 4x the amount of time available during <a href="https://www.youtube.com/watch?v=cefnmjtAolY&hd=1">my New York talk</a> on how to use the lens template-haskell code to automatically generate lenses for user data types and how to use the lens <a href=http://hackage.haskell.org/packages/archive/lens/3.9.0.2/doc/html/Control-Lens-Action.html">Action</a> machinery.</p>
+<h2>free and free-game by KINOSHITA Fumiaki</h2>
+<p>Next up, was my <a href="http://hackage.haskell.org/package/free">free</a> package and the neat <a href="http://hackage.haskell.org/package/free-game">free-game</a> engine that Kinoshita Fumiaki (<a href="https://twitter.com/fumieval">@fumieval</a>) built on top.</p>
+<p>The slides were in English, though the talk and humor were very Japanese. ^_^</p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-free.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/03/ekmett_conf-free.jpg" alt="ekmett_conf-free" title="ekmett_conf-free" width="1076" height="734" class="aligncenter size-full wp-image-852" /></a></p>
+<p>That said, he had some amazingly nice demos, including a live demo of his tetris clone, <a href="https://github.com/fumieval/Monaris">Monaris</a>, which is visible about 10 minutes into <a href="http://www.ustream.tv/recorded/30668431/highlight/337437">the video</a>!</p>
+<h2>ad by @nebutalab</h2>
+<p><a href="http://twitter.com/nebutalab">@nebutalab</a>, like me, joined the session remotely through Google Hangout, and proceeded to give a tutorial on how <a href="http://en.wikipedia.org/wiki/Automatic_differentiation#Forward_accumulation">forward mode</a> automatic differentiation works through my <a href="http://github.com/ekmett/ad">AD</a> package.</p>
+<p><a href="http://www.slideshare.net/nebuta/haskell-ad34">His slides were made available before the talk</a> and the video is available in <a href="http://www.ustream.tv/recorded/30671273/highlight/337441">two</a> <a href="http://www.ustream.tv/recorded/30671623/highlight/337439">parts</a> due a technical hiccup in the middle of the recording.</p>
+<p><a href="http://comonad.com/reader/wp-content/uploads/2013/04/ekmett_conf-ad.jpg"><img src="http://comonad.com/reader/wp-content/uploads/2013/04/ekmett_conf-ad-300x204.jpg" alt="ekmett_conf-ad" title="ekmett_conf-ad" width="300" height="204" class="aligncenter size-medium wp-image-862" /></a></p>
+<p>I'm currently working to drastically simplify the API for ad with <a href="https://github.com/alang9">Alex Lang</a>. Fortunately almost all of the material in this presentation will still be relevant to the new design.</p>
+<h2>tables by MURAYAMA Shohei</h2>
+<p>Next up, Murayama Shohei (<a href="https://twitter.com/yuga">@yuga</a>) gave an introduction to <a href="http://hackage.haskell.org/package/tables">tables</a>, which is a small in memory data-store that I wrote a few months back to sit on top of lens.</p>
+<p><a href="http://www.ustream.tv/recorded/30672629/highlight/337395">Video of @yuga's talk</a> and <a href="https://gist.github.com/yuga/5279313">his slides</a> are available, which I think makes this the first public talk about this project. -_^</p>
+<h2>machines by YOSHIDA Sanshiro</h2>
+<p>Yoshida Sanshiro (<a href="http://twitter.com/halcat0x15a">@halcat0x15a</a>) gave a nice overview of the currently released version of <a href="http://hackage.haskell.org/package/machines">machines</a> including a lot of examples! I think he may have actually written more code using machines just for demonstrations than I have written using it myself.</p>
+<p><a href="http://www.ustream.tv/recorded/30672629/highlight/337397">Video of his talk is available</a> along with <a href="http://halcat0x15a.github.com/slide/machines/out/#0">his slide deck</a> -- just tap left or right to move through the slides. He has also written <a href="http://krdlab.hatenablog.com/entry/2013/03/16/204039">a blog post</a> documenting his early explorations of the library, and some thoughts about using it with attoparsec.</p>
+<p>I've recently been trying to redesign machines with coworker Paul CHIUSANO <a href="https://twitter.com/pchiusano">@pchiusano</a> and we've begun greatly simplifying the design of machines based on some work <a href="http://www.youtube.com/watch?v=8fC2V9HX_m8">he has been doing in Scala</a>, so unfortunately many of the particulars of this talk will be soon outdated, but the overall 'feel' of working with machines should be preserved across the change-over. Some of these changes can be seen in the <a href="http://github.com/ekmett/machines">master branch on github</a> now.</p>
+<h2>More to come</h2>
+<p>There were 4 more sessions, but alas, I'm out of time for the moment! I'll continue this write-up with more links to the source material and my thoughts as soon as I can tomorrow!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2013/japanese-workshop-1/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Algebras of Applicatives</title>
+		<link>http://comonad.com/reader/2013/algebras-of-applicatives/</link>
+		<comments>http://comonad.com/reader/2013/algebras-of-applicatives/#comments</comments>
+		<pubDate>Fri, 11 Jan 2013 17:03:58 +0000</pubDate>
+		<dc:creator>Gershom Bazerman</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=811</guid>
+		<description><![CDATA[While the previous post in this series was relatively immediately applicable, this one has constructions I definitely wouldn't recommend in production code. However, they do take us further in exploring the universe of applicative functors, and, more broadly, exploring which data types provide which properties by construcion.
+It's well known that if you have any Functor [...]]]></description>
+			<content:encoded><![CDATA[<p>While the <a href="http://comonad.com/reader/2012/abstracting-with-applicatives">previous post</a> in this series was relatively immediately applicable, this one has constructions I definitely wouldn't recommend in production code. However, they do take us further in exploring the universe of applicative functors, and, more broadly, exploring which data types provide which properties by construcion.</p>
+<p>It's well known that if you have any Functor <code>F a</code>, you can take its "fixpoint", creating a structure of infinitely nested Fs, like so. <code>F (F (F (...) ) )</code> Since we can't have infinite types directly in Haskell, we introduce the Fix newtype:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Fix f = Fix <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>Fix f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span></pre>
+<p>This "wraps up" the recursion so that GHC accepts the type. <code>Fix f</code> is a <code>Fix</code> constructor, containing an "f" of <code>Fix f</code> inside. Each in turn expands out, and soforth. Fixpoints of functors have fixedpoints of functors inside 'em. And so on, and so on, ad infinitum.</p>
+<p>(Digression: We speak of "algebraic data types" in Haskell. The "algebra" in question is an "F-algebra", and we can build up structures with fixpoints of functors, taking those functors as initial or terminal objects and generating either initial algebras or terminal coalgebras. These latter two concepts coincide in Haskell in the Fix description given above, as greatest and least fixpoints of data types in Haskell turn out to be the same thing. For more background, one can go to Wadler's "<a href="http://homepages.inf.ed.ac.uk/wadler/papers/free-rectypes/free-rectypes.txt">Recursive Types for Free</a>,"  or Jacobs and Rutten's "<a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.1418">Tutorial on (Co)Algebras and (Co)Induction</a>" for starters.)</p>
+<p>The family of functors built from our friends Const, Sum, Product, and Reader (exponentiation) are known as Polynomial Functors. If we take closure of these with a proper fixpoint construct (that lets us build infinite structures), we get things that are variously known as Containers, Shapely Types, and Strictly Positive types.</p>
+<p>One irritating thing is that the fixpoint of a functor as we've written it is no longer itself a functor. The type constructor Fix is of kind <code>(* -> *) -> *</code>, which says it takes an "f" which takes one argument (e.g. "Maybe" or "Identity" or etc.) and returns a proper type (i.e. a value at the type level of kind *).</p>
+<p>We want a fixpoint construction that gives back something of kind <code>* -> *</code> — i.e. something that is a type constructor representing a functor, and not just a plain old type. The following does the trick.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> FixF f a = FixF <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>FixF f a<span style="color: green;">&#41;</span></pre>
+<p>(I learned about FixF from <a href="http://www.cs.ox.ac.uk/ralf.hinze/SSGIP10/AdjointFolds.pdf">a paper by Ralf Hinze</a>, but I'm sure the origins go back much further).</p>
+<p>FixF is of kind <code>((* -> *) -> * -> *) -> * -> *</code>. It takes the fixpoint of a "second-order Functor" (a Functor that sends a Functor to another Functor, i.e. an endofunctor on the functor category of hask), to recover a standard "first order Functor" back out. This sounds scary, but it isn't once you load it up in ghci and start playing with it. In fact, we've encountered second order functors just recently. Product, Sum, and Compose are all of kind <code>(* -> *) -> (* -> *) -> * -> *</code>. So they all send two functors to a third functor. That means that <code>Product Const</code>, <code>Sum Identity</code> and <code>Compose Maybe</code> are all second-order functors, and things appropriate to take our "second-order fixpoint" of.</p>
+<p>Conceptually, "Fix f" took a value with one hole, and we filled that hole with "Fix f" so there was no room for a type parameter. Now we've got an "f" with two holes, the first of which takes a functor, and the second of which is the hole of the resulting functor.</p>
+<p>Unlike boring old "Fix", we can write Functor and Applicative instances for "FixF", and they're about as simple and compositional as we could possibly hope.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>FixF x<span style="color: green;">&#41;</span> = FixF $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = FixF $ pure x
+    <span style="color: green;">&#40;</span>FixF f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>FixF x<span style="color: green;">&#41;</span> = FixF <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span></pre>
+<p>But now we run into a new problem! It seems like this "a" parameter is just hanging out there, doing basically nothing. We take our classic functors and embed them in there, and they still only have "one hole" at the value level, so don't actually have any place to put the "a" type we now introduced. For example, we can write the following:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- FixF . Compose . Just . FixF . Compose $ Nothing</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Compose (Just (FixF (Compose Nothing))))</span>
+<span style="color: #5d478b; font-style: italic;">-- :t FixF (Compose (Just (FixF (Compose Nothing))))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Compose Maybe) a</span></pre>
+<p>We now introduce one new member of our basic constructions — a second order functor that acts like "const" on the type level, taking any functor and returning Identity.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Embed <span style="color: green;">&#40;</span>f :: * -&gt; *<span style="color: green;">&#41;</span> a = Embed a <span style="color: #06c; font-weight: bold;">deriving</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a><span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Embed x<span style="color: green;">&#41;</span> = Embed $ f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Embed x
+    <span style="color: green;">&#40;</span>Embed f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Embed x<span style="color: green;">&#41;</span> = Embed <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span></pre>
+<p>Now we can actually stick functorial values into our fixpoints:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- FixF $ Embed &quot;hi&quot;</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Embed &quot;hi&quot;)</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- fmap (++ &quot; world&quot;) $ FixF (Embed &quot;hi&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Embed &quot;hi world&quot;)</span>
+&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- FixF . Product (Embed &quot;hi&quot;) .</span>
+<span style="color: #5d478b; font-style: italic;">--        FixF . Product (Embed &quot;there&quot;) . FixF $ undefined</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Product (Embed &quot;hi&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">--   (FixF (Product (Embed &quot;there&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">--   (FixF *** Exception: Prelude.undefined</span></pre>
+<p>You may have noticed that we seem to be able to use "product" to begin a chain of nested fixpoints, but we don't seem able to stick a "Maybe" in there to <strong>stop</strong> the chain. And it seems like we're not even "fixing" where we intend to be:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- :t FixF . Product (Embed &quot;hi&quot;) . FixF . Product (Embed &quot;there&quot;) . FixF $ undefined</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (Product (Embed f)) [Char]</span></pre>
+<p>That's because we're applying Product, takes and yields arguments of kind <code>* -> *</code> in a context where we really want to take and yield second-order functors as arguments — things of kind <code>(* -> *) -> * -> *</code>. If we had proper kind polymorphism, "Product" and "ProductF" would be able to collapse (and maybe, soon, they will). But at least in the ghc 7.4.1 that I'm working with, we have to write the same darn thing, but "up a kind".</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> ProductF f g <span style="color: green;">&#40;</span>b :: * -&gt; *<span style="color: green;">&#41;</span> a =
+      ProductF <span style="color: green;">&#40;</span>f b a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g b a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt;
+         <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>ProductF f g b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+                <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>ProductF x y<span style="color: green;">&#41;</span> = ProductF <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>, Applicative <span style="color: green;">&#40;</span>g b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> =&gt;
+         Applicative <span style="color: green;">&#40;</span>ProductF f g b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+               pure x = ProductF <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span>
+              <span style="color: green;">&#40;</span>ProductF f g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>ProductF x y<span style="color: green;">&#41;</span> = ProductF <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span></pre>
+<p>We can now do the following properly.</p>
+<pre class="haskell">yy = FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;foo&quot;</span><span style="color: green;">&#41;</span> $ InL $ Const <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+xx = FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;bar&quot;</span><span style="color: green;">&#41;</span> . InR .
+        FixF . ProductF <span style="color: green;">&#40;</span>Embed <span style="color: #3c7331;">&quot;baz&quot;</span><span style="color: green;">&#41;</span> . InL $ Const <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span></pre>
+<p>So we've recovered proper lists in Haskell, as the "second-order fixpoint" of polynomial functors. And the types look right too:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- :t yy</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (ProductF Embed (Sum (Const ()))) [Char]</span></pre>
+<p>Because we've built our Applicative instances compositionally, we have an applicative for our list list construction automatically:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- (++) &lt; $&gt; yy &lt; *&gt; xx</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; FixF (ProductF (Embed &quot;foobar&quot;) (InL (Const ())))</span></pre>
+<p>This is precisely the "ZipList" applicative instance. In fact, our applicative instances from this "functor toolkit" are all "zippy" — matching up structure where possible, and "smashing it down" where not. This is because Sum, with its associated natural transformation logic, is the only way to introduce a disjoint choice of shape. Here are some simple examples with Sum to demonstrate:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- liftA2 (++) (InL (Identity &quot;hi&quot;)) $</span>
+<span style="color: #5d478b; font-style: italic;">--      InR (Product (Identity &quot; there&quot;) (Const ([12::Int])))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; InL (Identity &quot;hi there&quot;)</span>
+<span style="color: #5d478b; font-style: italic;">-- liftA2 (++) (InR (Identity &quot;hi&quot;)) $ InL (Product (Identity &quot; there&quot;) (Const ([12::Int])))</span>
+<span style="color: #5d478b; font-style: italic;">-- &gt; InL (Product (Identity &quot;hi there&quot;) (Const [12]))</span></pre>
+<p>We're always "smashing" towards the left. So in the first case, that means throwing away half of the pair. In the second case, it means injecting Const mempty into a pair, and then operating with that.</p>
+<p>In any case, we now have infinite and possibly infinite branching structures. And not only are they Functors, but they're also Applicatives, and in a way that's uniform and straightforward to reason about.</p>
+<p>In the next post, we'll stop building out our vocabulary of "base" Functors (though it's not quite complete) and instead push forward on what else these functors can provide "beyond" Applicative.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2013/algebras-of-applicatives/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Abstracting with Applicatives</title>
+		<link>http://comonad.com/reader/2012/abstracting-with-applicatives/</link>
+		<comments>http://comonad.com/reader/2012/abstracting-with-applicatives/#comments</comments>
+		<pubDate>Thu, 27 Dec 2012 01:25:13 +0000</pubDate>
+		<dc:creator>Gershom Bazerman</dc:creator>
+				<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Monoids]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=756</guid>
+		<description><![CDATA[Consider the humble Applicative. More than a functor, less than a monad. It gives us such lovely syntax. Who among us still prefers to write liftM2 foo a b when we could instead write foo &#60;$> a &#60;*> b? But we seldom use the Applicative as such — when Functor is too little, Monad is [...]]]></description>
+			<content:encoded><![CDATA[<p>Consider the humble Applicative. More than a functor, less than a monad. It gives us such lovely syntax. Who among us still prefers to write <code>liftM2 foo a b</code> when we could instead write <code>foo &lt;$> a &lt;*> b</code>? But we seldom use the Applicative as such — when Functor is too little, Monad is too much, but a lax monoidal functor is just right. I noticed lately a spate of proper uses of Applicative —<a href="http://groups.inf.ed.ac.uk/links/formlets/">Formlets</a> (and their later incarnation in the <a href="http://hackage.haskell.org/package/reform">reform</a> library), <a href="http://hackage.haskell.org/package/optparse-applicative">OptParse-Applicative</a> (and its competitor library <a href=""http://hackage.haskell.org/package/cmdtheline>CmdTheLine</a>), and a <a href="http://gergo.erdi.hu/blog/2012-12-01-static_analysis_with_applicatives/">post by Gergo Erdi</a> on applicatives for declaring dependencies of computations. I also ran into a very similar genuine use for applicatives in working on the Panels library (part of <a href="http://hackage.haskell.org/package/jmacro-rpc">jmacro-rpc</a>), where I wanted to determine dependencies of a dynamically generated dataflow computation. And then, again, I stumbled into an applicative while cooking up a form validation library, which turned out to be a reinvention of the same ideas as formlets.</p>
+<p>Given all this, It seems post on thinking with applicatives is in order, showing how to build them up and reason about them. One nice thing about the approach we'll be taking is that it uses a "final" encoding of applicatives, rather than building up and then later interpreting a structure. This is in fact how we typically write monads (pace operational, free, etc.), but since we more often only determine our data structures are applicative after the fact, we often get some extra junk lying around (OptParse-Applicative, for example, has a GADT that I think is entirely extraneous).</p>
+<p>So the usual throat clearing:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">{-# LANGUAGE TypeOperators, MultiParamTypeClasses, FlexibleInstances,
+StandaloneDeriving, FlexibleContexts, UndecidableInstances,
+GADTs, KindSignatures, RankNTypes #-}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">module</span> Main <span style="color: #06c; font-weight: bold;">where</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Const<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.Monoid <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span>Sum, Product<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Identity
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a> <span style="color: green;">&#40;</span>Identity a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = <span style="color: #3c7331;">&quot;(Identity &quot;</span> ++ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a> x ++ <span style="color: #3c7331;">&quot;)&quot;</span></pre>
+<p>And now, let's start with a classic applicative, going back to the <a href="http://www.soi.city.ac.uk/~ross/papers/Applicative.pdf">Applicative Programming With Effects</a> paper:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Const mo a = Const mo <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> = Const mo
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Monoid mo =&gt; Applicative <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure _ = Const mempty
+    <span style="color: green;">&#40;</span>Const f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> = Const <span style="color: green;">&#40;</span>f &lt;&gt; x<span style="color: green;">&#41;</span></pre>
+<p>(<code>Const</code> lives in <a href="http://hackage.haskell.org/package/transformers">transformers</a> as the <code>Constant</code> functor, or in base as <code>Const</code>)</p>
+<p>Note that <code>Const</code> is not a monad. We've defined it so that its structure is independent of the `a` type. Hence if we try to write <code>(>>=) </code>of type <code>Const mo a -> (a -> Const mo b) -> Const mo b</code>, we'll have no way to "get out" the first `a` and feed it to our second argument.</p>
+<p>One great thing about Applicatives is that there is no distinction between applicative transformers and applicatives themselves. This is to say that the composition of two applicatives is cleanly and naturally always also an applicative. We can capture this like so:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Compose f g a = Compose <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a><span style="color: green;">&#41;</span> f x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure = Compose . pure . pure
+    <span style="color: green;">&#40;</span>Compose f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Compose x<span style="color: green;">&#41;</span> = Compose $ <span style="color: green;">&#40;</span>&lt; *&gt;<span style="color: green;">&#41;</span> &lt; $&gt; f &lt; *&gt; x</pre>
+<p>(<code>Compose</code> also lives in transformers)</p>
+<p>Note that Applicatives compose <b>two</b> ways. We can also write:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Product f g a = Product <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g<span style="color: green;">&#41;</span> =&gt; Applicative <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Product <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Product  x y<span style="color: green;">&#41;</span> = Product <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span></pre>
+<p>(<code>Product</code> lives in transformers as well)</p>
+<p>This lets us now construct an extremely rich set of applicative structures from humble beginnings. For example, we can reconstruct the Writer Applicative.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Writer mo = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+tell :: mo -&gt; Writer mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tell x = Product <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>pure <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span></pre>
+<pre>-- tell [1] *> tell [2]
+-- > Product (Const [1,2]) (Identity ())</pre>
+<p>Note that if we strip away the newtype noise, Writer turns into <code>(mo,a)</code> which is isomorphic to the Writer monad. However, we've learned something along the way, which is that the monoidal component of Writer (as long as we stay within the rules of applicative) is entirely independent from the "identity" component. However, if we went on to write the Monad instance for our writer (by defining <code>>>=</code>), we'd have to "reach in" to the identity component to grab a value to hand back to the function yielding our monoidal component. Which is to say we would destroy this nice seperation of "trace" and "computational content" afforded by simply taking the product of two Applicatives.</p>
+<p>Now let's make things more interesting. It turns out that just as the composition of two applicatives may be a monad, so too the composition of two monads may be no stronger than an applicative!</p>
+<p>We'll see this by introducing Maybe into the picture, for possibly failing computations.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FailingWriter mo = Compose <span style="color: green;">&#40;</span>Writer mo<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a>
+&nbsp;
+tellFW :: Monoid mo =&gt; mo -&gt; FailingWriter mo <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+tellFW x = Compose <span style="color: green;">&#40;</span>tell x *&gt; pure <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+failFW :: Monoid mo =&gt; FailingWriter mo a
+failFW = Compose <span style="color: green;">&#40;</span>pure <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Nothing"><span style="font-weight: bold;">Nothing</span></a><span style="color: green;">&#41;</span></pre>
+<pre>-- tellFW [1] *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Just ()))
+
+-- tellFW [1] *> failFW *> tellFW [2]
+-- > Compose (Product (Const [1,2]) (Identity Nothing))</pre>
+<p>Maybe over Writer gives us the same effects we'd get in a Monad — either the entire computation fails, or we get the result and the trace. But Writer over Maybe gives us new behavior. We get the entire trace, even if some computations have failed! This structure, just like Const, cannot be given a proper Monad instance. (In fact if we take Writer over Maybe as a Monad, we get only the trace until the first point of failure).</p>
+<p>This seperation of a monoidal trace from computational effects (either entirely independent of a computation [via a product] or independent between parts of a computation [via Compose]) is the key to lots of neat tricks with applicative functors.</p>
+<p>Next, let's look at Gergo Erdi's "Static Analysis with Applicatives" that is built using free applicatives. We can get essentially the same behavior directly from the product of a constant monad with an arbitrary effectful monad representing our ambient environment of information. As long as we constrain ourselves to only querying it with the takeEnv function, then we can either read the left side of our product to statically read dependencies, or the right side to actually utilize them.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> HasEnv k m = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>k<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> m
+takeEnv :: <span style="color: green;">&#40;</span>k -&gt; m a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k m a
+takeEnv f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f x<span style="color: green;">&#41;</span></pre>
+<p>If we prefer, we can capture queries of a static environment directly with the standard Reader applicative, which is just a newtype over the function arrow. There are other varients of this that perhaps come closer to exactly how Erdi's post does things, but I think this is enough to demonstrate the general idea.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Reader r a = Reader <span style="color: green;">&#40;</span>r -&gt; a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f . x<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = Reader $ pure x
+    <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>Reader x<span style="color: green;">&#41;</span> = Reader <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+&nbsp;
+runReader :: <span style="color: green;">&#40;</span>Reader r a<span style="color: green;">&#41;</span> -&gt; r -&gt; a
+runReader <span style="color: green;">&#40;</span>Reader f<span style="color: green;">&#41;</span> = f
+&nbsp;
+takeEnvNew :: <span style="color: green;">&#40;</span>env -&gt; k -&gt; a<span style="color: green;">&#41;</span> -&gt; k -&gt; HasEnv k <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> a
+takeEnvNew f x = Product <span style="color: green;">&#40;</span>Const <span style="color: green;">&#91;</span>x<span style="color: green;">&#93;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Reader $ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:flip"><span style="font-weight: bold;">flip</span></a> f x<span style="color: green;">&#41;</span></pre>
+<p>So, what then is a full formlet? It's something that can be executed in one context as a monoid that builds a form, and in another as a parser. so the top level must be a product.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletOne mo a = Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity a</pre>
+<p>Below the product, we read from an environment and perhaps get an answer. So that's reader with a maybe.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletTwo mo env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span> a</pre>
+<p>Now if we fail, we want to have a trace of errors. So we expand out the Maybe into a product as well to get the following, which adds monoidal errors:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletThree mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Product <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> a</pre>
+<p>But now we get errors whether or not the parse succeeds. We want to say either the parse succeeds or we get errors. For this, we can turn to the typical Sum functor, which currently lives as Coproduct in comonad-transformers, but will hopefully be moving as Sum to the transformers library in short order.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">data</span> Sum f g a = InL <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span> | InR <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Show"><span style="background-color: #efefbf; font-weight: bold;">Show</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f x<span style="color: green;">&#41;</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f y<span style="color: green;">&#41;</span></pre>
+<p>The Functor instance is straightforward for Sum, but the applicative instance is puzzling. What should "pure" do? It needs to inject into either the left or the right, so clearly we need some form of "bias" in the instance. What we really need is the capacity to "work in" one side of the sum until compelled to switch over to the other, at which point we're stuck there. If two functors, F and G are in a relationship such that we can always send <code>f x -> g x</code> in a way that "respects" fmap (that is to say, such that (<code>fmap f . fToG == ftoG . fmap f</code>) then we call this a natural transformation. The action that sends f to g is typically called "eta". (We actually want something slightly stronger called a "monoidal natural transformation" that respects not only the functorial action <code>fmap</code> but the applicative action <code>&lt;*></code>, but we can ignore that for now).</p>
+<p>Now we can assert that as long as there is a natural transformation between g and f, then Sum f g can be made an Applicative, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">class</span> Natural f g <span style="color: #06c; font-weight: bold;">where</span>
+    eta :: f a -&gt; g a
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative f, Applicative g, Natural g f<span style="color: green;">&#41;</span> =&gt;
+  Applicative <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    pure x = InR $ pure x
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = InR <span style="color: green;">&#40;</span>g &lt; *&gt; y<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InL f<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InR x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>f &lt; *&gt; eta x<span style="color: green;">&#41;</span>
+    <span style="color: green;">&#40;</span>InR g<span style="color: green;">&#41;</span> &lt; *&gt; <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = InL <span style="color: green;">&#40;</span>eta g &lt; *&gt; x<span style="color: green;">&#41;</span></pre>
+<p>The natural transformation we'll tend to use simply sends any functor to Const.</p>
+<pre>instance Monoid mo => Natural f (Const mo) where
+    eta = const (Const mempty)</pre>
+<p>However, there are plenty of other natural transformations that we could potentially make use of, like so:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">instance</span> Applicative f =&gt;
+  Natural g <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Applicative g, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Compose f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+     eta = Compose . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> pure
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural f g<span style="color: green;">&#41;</span> =&gt; Natural f <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product x <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span>Natural g f<span style="color: green;">&#41;</span> =&gt; Natural g <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta x = Product <span style="color: green;">&#40;</span>eta x<span style="color: green;">&#41;</span> x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product x _ <span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural <span style="color: green;">&#40;</span>Product f g<span style="color: green;">&#41;</span> g <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Product _ x<span style="color: green;">&#41;</span> = x
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural g f =&gt; Natural <span style="color: green;">&#40;</span>Sum f g<span style="color: green;">&#41;</span> f <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>InL x<span style="color: green;">&#41;</span> = x
+    eta <span style="color: green;">&#40;</span>InR y<span style="color: green;">&#41;</span> = eta y
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Natural Identity <span style="color: green;">&#40;</span>Reader r<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    eta <span style="color: green;">&#40;</span>Identity x<span style="color: green;">&#41;</span> = pure x</pre>
+<p>In theory, there should also be a natural transformation that can be built magically from the product of any other two natural transformations, but that will just confuse the Haskell typechecker hopelessly. This is because we know that often different "paths" of typeclass choices will often be isomorphic, but the compiler has to actually pick one "canonical" composition of natural transformations to compute with, although multiple paths will typically be possible.</p>
+<p>For similar reasons of avoiding overlap, we can't both have the terminal homomorphism that sends everything to "Const" <b>and</b> the initial homomorphism that sends "Identity" to anything like so:</p>
+<pre class="haskell"><span style="color: #5d478b; font-style: italic;">-- instance Applicative g =&gt; Natural Identity g where</span>
+<span style="color: #5d478b; font-style: italic;">--     eta (Identity x) = pure x</span>
+&nbsp;</pre>
+<p>We choose to keep the terminal transformation around because it is more generally useful for our purposes. As the comments below point out, it turns out that a version of "Sum" with the initial transformation baked in now lives in transformers as <code>Lift</code>.</p>
+<p>In any case we can now write a proper Validation applicative:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Validation mo = Sum <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span> Identity
+&nbsp;
+validationError :: Monoid mo =&gt; mo -&gt; Validation mo a
+validationError x = InL <span style="color: green;">&#40;</span>Const x<span style="color: green;">&#41;</span></pre>
+<p>This applicative will yield either a single result, or an accumulation of monoidal errors. It exists on hackage in the <a href="http://hackage.haskell.org/package/Validation">Validation</a> package.</p>
+<p>Now, based on the same principles, we can produce a full Formlet.</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> Formlet mo err env a =
+    Product <span style="color: green;">&#40;</span>Const mo<span style="color: green;">&#41;</span>
+            <span style="color: green;">&#40;</span>Compose <span style="color: green;">&#40;</span>Reader env<span style="color: green;">&#41;</span>
+                     <span style="color: green;">&#40;</span>Sum <span style="color: green;">&#40;</span>Const err<span style="color: green;">&#41;</span> Identity<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+    a</pre>
+<p>All the type and newtype noise looks a bit ugly, I'll grant. But the idea is to <strong>think</strong> with structures built with applicatives, which gives guarantees that we're building applicative structures, and furthermore, structures with certain guarantees in terms of which components can be interpreted independently of which others. So, for example, we can strip away the newtype noise and find the following:</p>
+<pre class="haskell"><span style="color: #06c; font-weight: bold;">type</span> FormletClean mo err env a = <span style="color: green;">&#40;</span>mo, env -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> err a<span style="color: green;">&#41;</span></pre>
+<p>Because we built this up from our basic library of applicatives, we also know how to write its applicative instance directly.</p>
+<p>Now that we've gotten a basic algebraic vocabulary of applicatives, and especially now that we've produced this nifty Sum applicative (which I haven't seen presented before), we've gotten to where I intended to stop.</p>
+<p>But lots of other questions arise, on two axes. First, what other typeclasses beyond applicative do our constructions satisfy? Second, what basic pieces of vocabulary are missing from our constructions — what do we need to add to flesh out our universe of discourse? (Fixpoints come to mind).</p>
+<p>Also, what statements can we make about "completeness" — what portion of the space of all applicatives can we enumerate and construct in this way? Finally, why is it that monoids seem to crop up so much in the course of working with Applicatives? I plan to tackle at least some of these questions in future blog posts.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/abstracting-with-applicatives/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Natural Deduction, Sequent Calculus and Type Classes</title>
+		<link>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/</link>
+		<comments>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/#comments</comments>
+		<pubDate>Fri, 07 Dec 2012 19:09:09 +0000</pubDate>
+		<dc:creator>Dan Doel</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=720</guid>
+		<description><![CDATA[By and large, there are two sorts of proof systems that people use (these days) when studying logic: natural deduction, and sequent calculus. I know of at least one other---Hilbert style---but it is older, and the above systems were invented due to dissatisfaction with Hilbert systems (for a programming analogy, Hilbert systems are like programming [...]]]></description>
+			<content:encoded><![CDATA[<p>By and large, there are two sorts of proof systems that people use (these days) when studying logic: natural deduction, and sequent calculus. I know of at least one other---Hilbert style---but it is older, and the above systems were invented due to dissatisfaction with Hilbert systems (for a programming analogy, Hilbert systems are like programming entirely with combinators (S, K, etc.), rather than a lambda calculus).</p>
+<h2>Natural Deduction</h2>
+<p>Probably the best way to categorize the difference, for the purpose of where we're eventually going, is that natural deduction focuses on the ways to build proof terms up from their constituent parts. This comes in the form of introduction and elimination rules for the various propositions. For instance, the rules for conjunction are:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/783ccc760a775c36798d4f43a6b1d7f0.png' title=' \inference{A \,\,\,\,\,\,\,\,\, B}{A \wedge B}[$\wedge$-I]' alt=' \inference{A \,\,\,\,\,\,\,\,\, B}{A \wedge B}[$\wedge$-I]' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/72830d280ca501adac8178a3be715d1f.png' title=' \inference{A \wedge B}{A}[$\wedge$-E1] \,\,\,\,\,\, \inference{A \wedge B}{B}[$\wedge$-E2]' alt=' \inference{A \wedge B}{A}[$\wedge$-E1] \,\,\,\,\,\, \inference{A \wedge B}{B}[$\wedge$-E2]' align=absmiddle> </p>
+</div>
+<p>This spartan style gets a bit annoying (in my opinion) for the hypothetical premises of the implication introduction, but this can be solved by adding contexts:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/9b10e662928fdfe29c4969fe8b301a33.png' title=' \inference{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}[$\rightarrow$-I] ' alt=' \inference{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}[$\rightarrow$-I] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/2ebd29c4b4b2726fdc20e9e4f6bb4fa3.png' title=' \inference{\Gamma \vdash A \rightarrow B \,\,\,\,\,\,\,\,\, \Gamma \vdash A}{\Gamma \vdash B}[$\rightarrow$-E] ' alt=' \inference{\Gamma \vdash A \rightarrow B \,\,\,\,\,\,\,\,\, \Gamma \vdash A}{\Gamma \vdash B}[$\rightarrow$-E] ' align=absmiddle> </p>
+</div>
+<p>This is the style most commonly adopted for presenting type theories, except we reason about terms with a type, rather than just propositions. The context we added for convenience above also becomes fairly essential for keeping track of variables:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/a443c308ea53f52ac8c79390c6dd8151.png' title=' \inference{\Gamma \vdash M : A \,\,\,\,\,\,\,\,\, \Gamma \vdash N : B}{\Gamma \vdash (M, N) : A \times B}[$\times$-I] ' alt=' \inference{\Gamma \vdash M : A \,\,\,\,\,\,\,\,\, \Gamma \vdash N : B}{\Gamma \vdash (M, N) : A \times B}[$\times$-I] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/ec4510483acc5255daecda473c747b43.png' title=' \inference{\Gamma \vdash M : A \times B}{\Gamma \vdash \mathsf{fst}\, M : A}[$\times$-E1] ' alt=' \inference{\Gamma \vdash M : A \times B}{\Gamma \vdash \mathsf{fst}\, M : A}[$\times$-E1] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/09fff955437d0808666db20270638ee7.png' title=' \inference{\Gamma \vdash M : A \times B}{\Gamma \vdash \mathsf{snd}\, M : B}[$\times$-E2] ' alt=' \inference{\Gamma \vdash M : A \times B}{\Gamma \vdash \mathsf{snd}\, M : B}[$\times$-E2] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/3e743e06355407c7d58e5933cbb0bb2f.png' title=' \inference{\Gamma, x : A \vdash M : B}{\Gamma \vdash (\lambda x:A. \,\, M) : A \rightarrow B}[$\rightarrow$-I] ' alt=' \inference{\Gamma, x : A \vdash M : B}{\Gamma \vdash (\lambda x:A. \,\, M) : A \rightarrow B}[$\rightarrow$-I] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/55b21349085679b21328e7f97bbb5aa4.png' title=' \inference{\Gamma \vdash M : A \rightarrow B \,\,\,\,\,\,\,\,\, \Gamma \vdash N : A}{\Gamma \vdash M \, N : B}[$\rightarrow$-E] ' alt=' \inference{\Gamma \vdash M : A \rightarrow B \,\,\,\,\,\,\,\,\, \Gamma \vdash N : A}{\Gamma \vdash M \, N : B}[$\rightarrow$-E] ' align=absmiddle> </p>
+</div>
+<p>As can be seen, all the rules involve taking terms from the premise and building on them in the conclusion.</p>
+<h2>Sequent Calculi</h2>
+<p>The other type of system in question, sequent calculus, looks very similar, but represents a subtle shift in focus for our purposes (sequent calculi are a lot more obviously different when presenting classical logics). First, the inference rules relate sequents, which look a lot like our contextual judgments above, and I'll write them the same way. The difference is that not all rules operate on the conclusion side; some operate just on the context. Generally, introduction rules stay similar to natural deduction (and are called right rules), while elimination rules are replaced by manipulations of the context, and are called left rules. For pairs, we can use the rules:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/026317e5c95937857e51a76c0cb1e430.png' title=' \inference{\Gamma \vdash A \,\,\,\,\,\,\,\,\, \Gamma \vdash B}{\Gamma \vdash A \wedge B}[$\wedge$-R] ' alt=' \inference{\Gamma \vdash A \,\,\,\,\,\,\,\,\, \Gamma \vdash B}{\Gamma \vdash A \wedge B}[$\wedge$-R] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/3494cc388869c925dbb52144fd97d30d.png' title=' \inference{\Gamma, A, B \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L] ' alt=' \inference{\Gamma, A, B \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L] ' align=absmiddle> </p>
+</div>
+<p>We could also have two separate left rules:</p>
+<div class="codeblock">
+<p align="center"><img src='http://comonad.com/latex/110c2bbcf5f66f7c6398c3f6ba990f07.png' title='\inference{\Gamma, A \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L1]' alt='\inference{\Gamma, A \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L1]' align=absmiddle></p>
+<p align="center"><img src='http://comonad.com/latex/84aa197282ba310d5b850f2cd0a60be3.png' title='\inference{\Gamma, B \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L2]' alt='\inference{\Gamma, B \vdash C}{\Gamma, A \wedge B \vdash C}[$\wedge$-L2]' align=absmiddle></p>
+</div>
+<p>But these two different sets are equivalent as long as we're not considering substructural logics. Do note, however, that we're moving from <img src='http://comonad.com/latex/7fc56270e7a70fa81a5935b72eacbe29.png' title='A' alt='A' align=absmiddle> on the top left to <img src='http://comonad.com/latex/b05f38111aa635f08d594f45b197586a.png' title='A \wedge B' alt='A \wedge B' align=absmiddle> on the bottom left, using the fact that <img src='http://comonad.com/latex/b05f38111aa635f08d594f45b197586a.png' title='A \wedge B' alt='A \wedge B' align=absmiddle> is sufficient to imply <img src='http://comonad.com/latex/7fc56270e7a70fa81a5935b72eacbe29.png' title='A' alt='A' align=absmiddle>. That is, projections apply contravariantly to the left.</p>
+<p>It turns out that almost no type theory is done in this style; natural deduction is far and away more popular. There are, I think, a few reasons for this. The first is: how do we even extend the left rules to type theory (eliminations are obvious, by contrast)? I know of two ways. The first is to introduce pattern matching into the contexts, so our left rule becomes:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/9013cfad42a40c2e76a7ecd7049e0e65.png' title=' \inference{\Gamma, x : A, y : B \vdash M : C}{\Gamma, (x, y) : A \times B \vdash M : C}[$\times$-L] ' alt=' \inference{\Gamma, x : A, y : B \vdash M : C}{\Gamma, (x, y) : A \times B \vdash M : C}[$\times$-L] ' align=absmiddle> </p>
+</div>
+<p>This is an acceptable choice (and may avoid some of the pitfalls in the next option), but it doesn't gel with your typical lambda calculus. It's probably more suited to a pattern calculus of some sort (although, even then, if you want to bend your brain, go look at the left rule for implication and try to figure out how it translates into such a theory; I think you probably need higher-order contexts of some sort). Anyhow, I'm not going to explore this further.</p>
+<p>The other option (and one that I've seen in the literature) is that left rules actually involve a variable substitution. So we come up with the following rule:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/8b9164f5b58ce45f73a1dd4e5d792d2c.png' title=' \inference{\Gamma, x : A, y : B \vdash M : C}{\Gamma, p : A \times B \vdash M[x := \mathsf{fst}\, p, y := \mathsf{snd}\, p] : C}[$\times$-L] ' alt=' \inference{\Gamma, x : A, y : B \vdash M : C}{\Gamma, p : A \times B \vdash M[x := \mathsf{fst}\, p, y := \mathsf{snd}\, p] : C}[$\times$-L] ' align=absmiddle> </p>
+</div>
+<p>And with this rule, it becomes (I think) more obvious why natural deduction is preferred over sequent calculus, as implementing this rule in a type checker seems significantly harder. Checking the rules of natural deduction involves examining some outer-most structure of the term, and then checking the constituents of the term, possibly in an augmented context, and which rule we're dealing with is always syntax directed. But this left rule has no syntactic correspondent, so it seems as though we must nondeterministically try all left rules at each step, which is unlikely to result in a good algorithm. This is the same kind of problem that plagues extensional type theory, and ultimately results in only <em>derivations</em> being checkable, not terms.</p>
+<h2>The Type Class Connection</h2>
+<p>However, there are certain problems that I believe are well modeled by such a sequent calculus, and one of them is type class checking and associated dictionary translations. This is due mainly to the fact that the process is mainly context-directed term building, rather than term-directed type checking. As far as the type class algorithm goes, there are two interesting cases, having to do with the following two varieties of declaration:</p>
+<pre class="haskell">&nbsp;
+  <span style="color: #06c; font-weight: bold;">class</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Ord"><span style="background-color: #efefbf; font-weight: bold;">Ord</span></a> a <span style="color: #06c; font-weight: bold;">where</span> ...
+  <span style="color: #06c; font-weight: bold;">instance</span> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> b<span style="color: green;">&#41;</span> =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Eq"><span style="background-color: #efefbf; font-weight: bold;">Eq</span></a> <span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span> ...
+&nbsp;</pre>
+<p>It turns out that each of these leads to a left rule in a kind of type class sequent calculus:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/f75290bbac8202c1d47fb62954e7606b.png' title=' \inference{\Gamma, \mathbf{Eq} \, a \vdash M : T}{\Gamma, \mathbf{Ord} \,  a \vdash M : T}[Eq-pre-Ord] ' alt=' \inference{\Gamma, \mathbf{Eq} \, a \vdash M : T}{\Gamma, \mathbf{Ord} \,  a \vdash M : T}[Eq-pre-Ord] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/4093e2180dce354d1d940438588e32a9.png' title=' \inference{\Gamma, \mathbf{Eq} \, (a, b) \vdash M : T}{\Gamma, \mathbf{Eq} \, a, \mathbf{Eq} \, b \vdash M : T}[Eq-pair] ' alt=' \inference{\Gamma, \mathbf{Eq} \, (a, b) \vdash M : T}{\Gamma, \mathbf{Eq} \, a, \mathbf{Eq} \, b \vdash M : T}[Eq-pair] ' align=absmiddle> </p>
+</div>
+<p>That is:</p>
+<ol>
+<li> if <code>Eq a</code> is a sufficient constraint for <code>M : T</code>, then the stronger constraint <code>Ord a</code> is also sufficient, so we can discharge the <code>Eq a</code> constraint and use <code>Ord a</code> instead.</li>
+<li> We can discharge an <code>Eq (a, b)</code> constraint using two constraints, <code>Eq a, Eq b</code> together with an instance telling us how to do so. This also works for instances without contexts, giving us rules like:
+<div class="codeblock">
+<p align="center"><img src='http://comonad.com/latex/81d80ab8d9bd02d1b409ec1e59b4cdb4.png' title='\inference{\Gamma, \mathbf{Show\, Int} \vdash M : T}{\Gamma \vdash M : T}[Show-Int] ' alt='\inference{\Gamma, \mathbf{Show\, Int} \vdash M : T}{\Gamma \vdash M : T}[Show-Int] ' align=absmiddle></p>
+</div>
+</li>
+</ol>
+<p>Importantly, the type inference algorithm for type classes specifies when we should use these rules based only on the contexts we're dealing with. Now, these look more like the logical sequent rules, but it turns out that they have corresponding type theory-like versions when we consider dictionary passing:</p>
+<div class="codeblock">
+<p align="center"> <img src='http://comonad.com/latex/46926ac44142bdb8f4b1e07f8f6fd2b8.png' title=' \inference{\Gamma, eqd : \mathbf{Eq} \, a \vdash M : T}{\Gamma, ordd : \mathbf{Ord} \,  a \vdash M[eqd := \mathsf{eqOrdPrj}\, ordd] : T}[Eq-pre-Ord] ' alt=' \inference{\Gamma, eqd : \mathbf{Eq} \, a \vdash M : T}{\Gamma, ordd : \mathbf{Ord} \,  a \vdash M[eqd := \mathsf{eqOrdPrj}\, ordd] : T}[Eq-pre-Ord] ' align=absmiddle> </p>
+<p align="center"> <img src='http://comonad.com/latex/89345750380d8f1f636ab4a29d31ef11.png' title='\inference{\Gamma, peq : \mathbf{Eq} \, (a, b) \vdash M : T}{\Gamma, aeq : \mathbf{Eq} \, a, beq : \mathbf{Eq} \, b \vdash M[peq := \mathsf{eqPair} \, aeq \, beq] : T}[Eq-pair]' alt='\inference{\Gamma, peq : \mathbf{Eq} \, (a, b) \vdash M : T}{\Gamma, aeq : \mathbf{Eq} \, a, beq : \mathbf{Eq} \, b \vdash M[peq := \mathsf{eqPair} \, aeq \, beq] : T}[Eq-pair]' align=absmiddle> </p>
+</div>
+<p>And this kind of substituting into dictionary variables produces exactly the evidence passing translation we want.</p>
+<p>Another way to look at the difference in feasibility is that type checking involves moving bottom-to-top across the rules; in natural deduction, this is always easy, and we need look only at the terms to figure out which we should do. Type class checking and dictionary translation moves from top-to-bottom, directed by the left hand context, and produces terms on the right via complex operations, and that is a perfect fit for the sequent calculus rules.</p>
+<p>I believe this corresponds to the general opinion on those who have studied sequent calculi with regard to type theory. A quick search revealed mostly papers on proof search, rather than type checking, and type classes rather fall into that realm (they're a very limited form of proof search).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/natural-deduction-sequent-calculus-and-type-classes/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Unnatural Transformations and Quantifiers</title>
+		<link>http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/</link>
+		<comments>http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/#comments</comments>
+		<pubDate>Sun, 23 Sep 2012 03:43:13 +0000</pubDate>
+		<dc:creator>Dan Doel</dc:creator>
+				<category><![CDATA[Category Theory]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Kan Extensions]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Monads]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=660</guid>
+		<description><![CDATA[Recently, a fellow in category land discovered a fact that we in Haskell land have actually known for a while (in addition to things most of us probably don't). Specifically, given two categories  and , a functor , and provided some conditions in  hold, there exists a monad , the codensity monad of [...]]]></description>
+			<content:encoded><![CDATA[<p>Recently, a fellow in category land <a href="http://golem.ph.utexas.edu/category/2012/09/where_do_monads_come_from.html">discovered</a> a fact that we in Haskell land have actually known for a while (in addition to things most of us probably don't). Specifically, given two categories <img src='http://comonad.com/latex/db5f7b3e9934fbc5a2859d88c4ba84a3.png' title='$\mathcal{C}$' alt='$\mathcal{C}$' align=absmiddle> and <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle>, a functor <img src='http://comonad.com/latex/28408c9aaded61e50623807633e3ce37.png' title='$G : \mathcal{C} \rightarrow \mathcal{D}$' alt='$G : \mathcal{C} \rightarrow \mathcal{D}$' align=absmiddle>, and provided some conditions in <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> hold, there exists a monad <img src='http://comonad.com/latex/e049fb90e6d941ff5046ca1c48041c8b.png' title='$T^G$' alt='$T^G$' align=absmiddle>, the codensity monad of <img src='http://comonad.com/latex/5201385589993766eea584cd3aa6fa13.png' title='$G$' alt='$G$' align=absmiddle>.</p>
+<p>In category theory, the codensity monad is given by the rather frightening expression:</p>
+<p><img src='http://comonad.com/latex/050bb5034bed82159df4c52c89c07f3c.png' title='$ T^G(a) = \int_r \left[\mathcal{D}(a, Gr), Gr\right] $' alt='$ T^G(a) = \int_r \left[\mathcal{D}(a, Gr), Gr\right] $' align=absmiddle></p>
+<p><span id="more-660"></span></p>
+<p>Where the integral notation denotes an <a href="http://comonad.com/reader/2008/kan-extension-iii/">end</a>, and the square brackets denote a <a href="http://nlab.mathforge.org/nlab/show/power">power</a>, which allows us to take what is essentially an exponential of the objects of <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> by objects of <img src='http://comonad.com/latex/76105ebc974ce8a02de91bcaf0d6d25f.png' title='$\mathcal{V}$' alt='$\mathcal{V}$' align=absmiddle>, where <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> is <a href="http://nlab.mathforge.org/nlab/show/enriched+category">enriched</a> in <img src='http://comonad.com/latex/76105ebc974ce8a02de91bcaf0d6d25f.png' title='$\mathcal{V}$' alt='$\mathcal{V}$' align=absmiddle>. Provided the above end exists, <img src='http://comonad.com/latex/e049fb90e6d941ff5046ca1c48041c8b.png' title='$T^G$' alt='$T^G$' align=absmiddle> is a monad regardless of whether <img src='http://comonad.com/latex/5201385589993766eea584cd3aa6fa13.png' title='$G$' alt='$G$' align=absmiddle> has an <a href="http://comonad.com/reader/2008/kan-extensions-ii/">adjoint</a>, which is the usual way one thinks of functors (in general) giving rise to monads.</p>
+<p>It also turns out that this construction is a sort of generalization of the adjunction case. If we do have <img src='http://comonad.com/latex/754907e967821ca061438630f9c72a7d.png' title='$F \dashv G$' alt='$F \dashv G$' align=absmiddle>, this gives rise to a monad <img src='http://comonad.com/latex/a095e64d5e4cfbbc3f2bdfd533130212.png' title='$GF$' alt='$GF$' align=absmiddle>. But, in such a case, <img src='http://comonad.com/latex/1e0adde1d1e9eba3705ea3cd2880c6f8.png' title='$T^G \cong GF$' alt='$T^G \cong GF$' align=absmiddle>, so the codensity monad is the same as the monad given by the adjunction when it exists, but codensity may exist when there is no adjunction.</p>
+<p>In Haskell, this all becomes a bit simpler (to my eyes, at least). Our category <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle> is always <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle>, which is enriched in itself, so powers are just function spaces. And all the functors we write will be rather like <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> (objects will come from kinds we can quantify over), so ends of functors will look like <code>forall r. F r r</code> where <img src='http://comonad.com/latex/b075975319f2e91538b5f7f577347d83.png' title='$F : \mathcal{C}^{op} \times \mathcal{C} \rightarrow \mathbf{Hask}$' alt='$F : \mathcal{C}^{op} \times \mathcal{C} \rightarrow \mathbf{Hask}$' align=absmiddle>. Then:<br />
+<code><br />
+newtype Codensity f a = Codensity (forall r. (a -> f r) -> f r)<br />
+</code></p>
+<p>As mentioned, we've known for a while that we can write a Monad instance for <code>Codensity f</code> without caring at all about <code>f</code>.</p>
+<p>As for the adjunction correspondence, consider the adjunction between products and exponentials: <img src='http://comonad.com/latex/179c9a295a34edbdbd4b2f184a62cdc9.png' title='$ - \times S \dashv S \rightarrow - $' alt='$ - \times S \dashv S \rightarrow - $' align=absmiddle></p>
+<p>This gives rise to the monad <img src='http://comonad.com/latex/4da4a1547d8498791e0069e7616d7040.png' title='$S \rightarrow (- \times S)$' alt='$S \rightarrow (- \times S)$' align=absmiddle>, the state monad. According to the facts above, we should have that <code>Codensity (s ->)</code> (excuse the sectioning) is the same as state, and if we look, we see:<br />
+<code><br />
+forall r. (a -> s -> r) -> s -> r<br />
+</code></p>
+<p>which is the continuation passing, or Church (or <a href="http://comments.gmane.org/gmane.comp.lang.haskell.cafe/100508">Boehm-Berarducci</a>) encoding of the monad.</p>
+<p>Now, it's also well known that for any monad, we can construct an adjunction that gives rise to it. There are multiple ways to do this, but the most accessible in Haskell is probably via the Kleisli category. So, given a monad <img src='http://comonad.com/latex/fb97d38bcc19230b0acd442e17db879c.png' title='$M$' alt='$M$' align=absmiddle> on <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle>, there is a category <img src='http://comonad.com/latex/a4b150035aa58ceef406ef607d2c3c70.png' title='$\mathbf{Hask}_M$' alt='$\mathbf{Hask}_M$' align=absmiddle> with the same objects, but where <img src='http://comonad.com/latex/bc31ad3fd58dd9ca8691a1719354e0fb.png' title='$\mathbf{Hask}_M(a, b) = \mathbf{Hask}(a, Mb)$' alt='$\mathbf{Hask}_M(a, b) = \mathbf{Hask}(a, Mb)$' align=absmiddle>. The identity for each object is <code>return</code> and composition of arrows is:<br />
+<code><br />
+(f >=> g) x = f x >>= g<br />
+</code></p>
+<p>Our two functors are:<br />
+<code><br />
+F a = a<br />
+F f = return . f</p>
+<p>U a = M a<br />
+U f = (>>= f)<br />
+</code></p>
+<p>Verifying that <img src='http://comonad.com/latex/388ff8dfabfc1466d587e51adb83212a.png' title='$F \dashv U$' alt='$F \dashv U$' align=absmiddle> requires only that <img src='http://comonad.com/latex/1f96b28abbe86107fdb6e1a8ffe2ea35.png' title='$\mathbf{Hask}_M(F-, =) \cong \mathbf{Hask}(-, U\!\!=)$' alt='$\mathbf{Hask}_M(F-, =) \cong \mathbf{Hask}(-, U\!\!=)$' align=absmiddle>, but this is just <img src='http://comonad.com/latex/d29fe5c1dc21ef08d41e2b5f780f1521.png' title='$\mathbf{Hask}(-, M\!\!=) \cong \mathbf{Hask}(-, M\!\!=)$' alt='$\mathbf{Hask}(-, M\!\!=) \cong \mathbf{Hask}(-, M\!\!=)$' align=absmiddle>, which is a triviality. Now we should have that <img src='http://comonad.com/latex/bf2765813f7499243599cc3bf3e7f73b.png' title='$T^U = M$' alt='$T^U = M$' align=absmiddle>.</p>
+<p>So, one of the simplest monads is reader, <img src='http://comonad.com/latex/0b94f1fc58a44d88f75b94e136f017db.png' title='$(e \rightarrow)$' alt='$(e \rightarrow)$' align=absmiddle>. Now, <img src='http://comonad.com/latex/6bac6ec50c01592407695ef84f457232.png' title='$U$' alt='$U$' align=absmiddle> just takes objects in the Kleisli category (which are objects in <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle>) and applies <img src='http://comonad.com/latex/fb97d38bcc19230b0acd442e17db879c.png' title='$M$' alt='$M$' align=absmiddle> to them, so we should have <code>Codensity (e ->)</code> is reader. But earlier we had <code>Codensity (e ->)</code> was state. So reader is state, right?</p>
+<p>We can actually arrive at this result another way. One of the most famous pieces of category theory is the <a href="http://blog.sigfpe.com/2006/11/yoneda-lemma.html">Yoneda lemma</a>, which states that the following correspondence holds for any functor <img src='http://comonad.com/latex/d15d65be74350891964d514d80d23f4e.png' title='$F : \mathcal{C} \rightarrow \mathbf{Set}$' alt='$F : \mathcal{C} \rightarrow \mathbf{Set}$' align=absmiddle>:</p>
+<p><img src='http://comonad.com/latex/291bd125d994fd0c7d00a147403dc44e.png' title='$ Fa \,\, \cong \, \mathbf{Set}^\mathcal{C}\left(C(a,-), F\right) $' alt='$ Fa \,\, \cong \, \mathbf{Set}^\mathcal{C}\left(C(a,-), F\right) $' align=absmiddle></p>
+<p>This also works for any functor into <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> and looks like:<br />
+<code><br />
+F a ~= forall r. (a -> r) -> F r<br />
+</code></p>
+<p>for <img src='http://comonad.com/latex/e426801111acba9fcbd11a4bde602af4.png' title='$F : \mathbf{Hask} \rightarrow \mathbf{Hask}$' alt='$F : \mathbf{Hask} \rightarrow \mathbf{Hask}$' align=absmiddle>. But we also have our functor <img src='http://comonad.com/latex/d721b9a42081d5f73eec6b96d40c8f87.png' title='$U : \mathbf{Hask}_M \rightarrow \mathbf{Hask}$' alt='$U : \mathbf{Hask}_M \rightarrow \mathbf{Hask}$' align=absmiddle>, which should look more like:</p>
+<p><code> U a ~= forall r. (a -> M r) -> U r<br />
+M a ~= forall r. (a -> M r) -> M r</code></p>
+<p>So, we fill in <code>M = (e ->)</code> and get that reader is isomorphic to state, right? What's going on?</p>
+<p>To see, we have to take a closer look at natural transformations. Given two categories <img src='http://comonad.com/latex/db5f7b3e9934fbc5a2859d88c4ba84a3.png' title='$\mathcal{C}$' alt='$\mathcal{C}$' align=absmiddle> and <img src='http://comonad.com/latex/eaf85f2b753a4c7585def4cc7ecade43.png' title='$\mathcal{D}$' alt='$\mathcal{D}$' align=absmiddle>, and functors <img src='http://comonad.com/latex/f9715681e693462be2b2901abbdce20e.png' title='$F, G : \mathcal{C} \rightarrow \mathcal{D}$' alt='$F, G : \mathcal{C} \rightarrow \mathcal{D}$' align=absmiddle>, a natural transformation <img src='http://comonad.com/latex/08bda09160c0fde7f63da195d07031c3.png' title='$\phi : F \Rightarrow G$' alt='$\phi : F \Rightarrow G$' align=absmiddle> is a family of maps <img src='http://comonad.com/latex/86b3a786efd28fc240d095754564a874.png' title='$\phi_a : Fa \rightarrow Ga$' alt='$\phi_a : Fa \rightarrow Ga$' align=absmiddle> such that for every <img src='http://comonad.com/latex/78c2fecc46b4ab88b04b97e64cc513f7.png' title='$f : a \rightarrow b$' alt='$f : a \rightarrow b$' align=absmiddle> the following diagram commutes:</p>
+<div style="text-align: center"><img src='http://comonad.com/latex/f3b765d571311e2ac37cb7a4d5c849d6.png' title='$ \bfig \square&amp;lt;1000,1000&gt;[Fa`Ga`Fb`Gb;\phi_a`Ff`Gf`\phi_b]\efig $' alt='$ \bfig \square&amp;lt;1000,1000&gt;[Fa`Ga`Fb`Gb;\phi_a`Ff`Gf`\phi_b]\efig $' align=absmiddle></div>
+<p>The key piece is what the morphisms look like. It's well known that parametricity ensures the naturality of <code>t :: forall a. F a -> G a</code> for <img src='http://comonad.com/latex/764d49adf41244778f7b1f65677bd4ec.png' title='$F, G : \mathbf{Hask} \rightarrow \mathbf{Hask}$' alt='$F, G : \mathbf{Hask} \rightarrow \mathbf{Hask}$' align=absmiddle>, and it also works when the source is <img src='http://comonad.com/latex/142c3f0a398b3921283c65dba9b426f6.png' title='$\mathbf{Hask}^{op}$' alt='$\mathbf{Hask}^{op}$' align=absmiddle>. It should also work for a category, call it <img src='http://comonad.com/latex/b7581780b90f85bba660172715c3991e.png' title='$\mathbf{Hask}^{\sim}$' alt='$\mathbf{Hask}^{\sim}$' align=absmiddle>, which has Haskell types as objects, but where <img src='http://comonad.com/latex/90c1cbbbf7ae5d1def60bc7bd8600cc1.png' title='$\mathbf{Hask}^{\sim}(a, b) = \mathbf{Hask}(a, b) \times \mathbf{Hask}(b, a)$' alt='$\mathbf{Hask}^{\sim}(a, b) = \mathbf{Hask}(a, b) \times \mathbf{Hask}(b, a)$' align=absmiddle>, which is the sort of category that <code>newtype Endo a = Endo (a -> a)</code> is a functor from. So we should be at liberty to say:<br />
+<code><br />
+Codensity Endo a = forall r. (a -> r -> r) -> r -> r ~= [a]<br />
+</code></p>
+<p>However, hom types for <img src='http://comonad.com/latex/a4b150035aa58ceef406ef607d2c3c70.png' title='$\mathbf{Hask}_M$' alt='$\mathbf{Hask}_M$' align=absmiddle> are not merely made up of <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle> hom types on the same arguments, so naturality turns out not to be guaranteed. A functor <img src='http://comonad.com/latex/46cde8a293393bfb788e2146a377dfd6.png' title='$F : \mathbf{Hask}_M \rightarrow \mathbf{Hask}$' alt='$F : \mathbf{Hask}_M \rightarrow \mathbf{Hask}$' align=absmiddle> must take a Kleisli arrow <img src='http://comonad.com/latex/4f2fe22635b432c01d95ba33d4fc994e.png' title='$f : b \rightarrow Mc$' alt='$f : b \rightarrow Mc$' align=absmiddle> to an arrow <img src='http://comonad.com/latex/ec40c947207bed2928a683a7a8014fb7.png' title='$Ff : Fb \rightarrow Fc$' alt='$Ff : Fb \rightarrow Fc$' align=absmiddle>, and transformations must commute with that mapping. So, if we look at our use of Yoneda, we are considering transformations <img src='http://comonad.com/latex/47051979f30f700aee1fda6eab3554f3.png' title='$\phi : \mathbf{Hask}_M(a, -) \Rightarrow U$' alt='$\phi : \mathbf{Hask}_M(a, -) \Rightarrow U$' align=absmiddle>:</p>
+<div style="text-align: center"><img src='http://comonad.com/latex/b2ed6d7df91f89030039a41b41533753.png' title='$ \bfig\square&amp;lt;1000,1000&gt;[\mathbf{Hask}_M(a,b)`Ub`\mathbf{Hask}_M(a,c)`Uc;\phi_a`\mathbf{Hask}_M(a,f)`Uf`\phi_h]\efig $' alt='$ \bfig\square&amp;lt;1000,1000&gt;[\mathbf{Hask}_M(a,b)`Ub`\mathbf{Hask}_M(a,c)`Uc;\phi_a`\mathbf{Hask}_M(a,f)`Uf`\phi_h]\efig $' align=absmiddle></div>
+<p>Now, <img src='http://comonad.com/latex/7bb5b195ef8bd7e285fdf865d6e658a0.png' title='$\mathbf{Hask}_M(a,b) = \mathbf{Hask}(a, Mb)$' alt='$\mathbf{Hask}_M(a,b) = \mathbf{Hask}(a, Mb)$' align=absmiddle> and <img src='http://comonad.com/latex/9c2c2564bc88a3ea51f03f36675984c1.png' title='$Ub = Mb$' alt='$Ub = Mb$' align=absmiddle>. So</p>
+<p><code>t :: forall r. (a -> M r) -> M r</code></p>
+<p>will get us the right type of maps. But, the above commutative square corresponds to the condition that for all <code>f :: b -> M c</code>:<br />
+<code><br />
+t . (>=> f) = (>>= f) . t<br />
+</code></p>
+<p>So, if we have <code>h :: a -> M b</code>, Kleisli composing it with <code>f</code> and then feeding to <code>t</code> is the same as feeding <code>h</code> to <code>t</code> and then binding the result with <code>f</code>.</p>
+<p>Now, if we go back to reader, we can consider the reader morphism:<br />
+<code><br />
+f = const id :: a -> e -> e<br />
+</code></p>
+<p>For all relevant <code>m</code> and <code>g</code>, <code> m >>= f = id</code> and <code>g >=> f = f</code>. So the<br />
+naturality condition here states that <code>t f = id</code>.</p>
+<p>Now, <code>t :: forall r. (a -> e -> r) -> e -> r</code>. The general form of these is state actions (I've split <code>e -> (a, e)</code> into two pieces):</p>
+<pre language="haskell">
+t f e = f (v e) (st e)
+  where
+  rd :: e -> a
+  st :: e -> e
+</pre>
+<p>If <code>f = const id</code>, then:</p>
+<pre language="haskell">
+t (const id) e = st e
+ where
+ st :: e -> e
+</pre>
+<p>But our naturality condition states that this must be the identity, so we must have <code>st = id</code>. That is, the naturality condition selects <code>t</code> for which the corresponding state action does not change the state, meaning it is equivalent to a reader action! Presumably the definition of an end (which involves dinaturality) enforces a similar condition, although I won't work through it, as it'd be rather more complicated.</p>
+<p>However, we have learned a lesson. Quantifiers do not necessarily enforce (di)naturality for every category with objects of the relevant kind. It is important to look at the hom types, not just the objects .In this case, the point of failure seems to be the common, extra <code>s</code>. Even though the type contains nautral transformations for the similar functors over <img src='http://comonad.com/latex/129cf6e597bd76a4da1b575b1fa73b20.png' title='$\mathbf{Hask}$' alt='$\mathbf{Hask}$' align=absmiddle>, they can (in general) still manipulate the shared parameter in ways that are not natural for the domain in question.</p>
+<p>I am unsure of how exactly one could enforce the above condition in (Haskell's) types. For instance, if we consider:</p>
+<p><code>forall r m. Monad m => (a -> m r) -> m r</code></p>
+<p>This still contains transformations of the form:</p>
+<p><code> t k = k a >> k a </code></p>
+<p>And for this to be natural would require:</p>
+<p><code> (k >=> f) a >> (k >=> f) a = (k a >> k a) >>= f </code></p>
+<p>Which is not true for all possible instantiations of f. It seems as though leaving <code>m</code> unconstrained would be sufficient, as all that could happen is <code>t</code> feeding a value to <code>k</code> and yielding the result, but it seems likely to be over-restrictive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Working around Hackage Outages</title>
+		<link>http://comonad.com/reader/2012/hackage-mirror/</link>
+		<comments>http://comonad.com/reader/2012/hackage-mirror/#comments</comments>
+		<pubDate>Wed, 29 Aug 2012 19:51:49 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Infrastructure]]></category>
+		<category><![CDATA[hackage]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=651</guid>
+		<description><![CDATA[Luite Stegeman has a mirror of the packages from Hackage.
+He uses it to power his incredibly useful hdiff website.
+During a Hackage outage, you can set up your local cabal configuration to point to it instead by (temporarily) replacing the remote-repo in your ~/.cabal/config file with:
+
+remote-repo:
+  hdiff.luite.com:http://hdiff.luite.com/packages/archive
+
+and then running cabal update.
+I have a ~/.cabal/config that [...]]]></description>
+			<content:encoded><![CDATA[<p>Luite Stegeman has a mirror of the packages from <a href="http://hackage.haskell.org/">Hackage</a>.</p>
+<p>He uses it to power his incredibly useful <a href="http://hdiff.luite.com">hdiff</a> website.</p>
+<p>During a Hackage outage, you can set up your local cabal configuration to point to it instead by (temporarily) replacing the remote-repo in your <code>~/.cabal/config</code> file with:</p>
+<p><code><br />
+remote-repo:<br />
+  hdiff.luite.com:http://hdiff.luite.com/packages/archive<br />
+</code></p>
+<p>and then running <code>cabal update</code>.</p>
+<p>I have a <a href="https://github.com/ekmett/lens/blob/master/config"><code>~/.cabal/config</code></a> that I use whenever hackage goes down in my <a href="https://github.com/ekmett/lens">lens</a> package.</p>
+<p>If you use <a href="http://travis-ci.org/">travis-ci</a>, you can avoid build failures during hackage outages by first copying that config to ~/.cabal/config <a href="https://github.com/ekmett/lens/blob/master/.travis.yml#L4">during before_install</a>. -- You'll still be stuck waiting while it first tries to refresh from the real hackage server, but it only adds a few minutes to buildbot times.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/hackage-mirror/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Mirrored Lenses</title>
+		<link>http://comonad.com/reader/2012/mirrored-lenses/</link>
+		<comments>http://comonad.com/reader/2012/mirrored-lenses/#comments</comments>
+		<pubDate>Mon, 25 Jun 2012 03:38:41 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Lenses]]></category>
+		<category><![CDATA[accessors]]></category>
+		<category><![CDATA[functional references]]></category>
+		<category><![CDATA[lens families]]></category>
+		<category><![CDATA[van Laarhoven]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=600</guid>
+		<description><![CDATA[Lenses are a great way to deal with functional references, but there are two common issues that arise from their use. 
+
+There is a long-standing folklore position that lenses do not support polymorphic updates. This has actually caused a fair bit of embarrassment for the folks who'd like to incorporate lenses in any Haskell record [...]]]></description>
+			<content:encoded><![CDATA[<p>Lenses are a great way to deal with functional references, but there are two common issues that arise from their use. </p>
+<ol>
+<li>There is a long-standing folklore position that lenses do not support polymorphic updates. This has actually caused a fair bit of embarrassment for the folks who'd like to incorporate lenses in any Haskell record system improvement.</li>
+<li>Access control. It'd be nice to have read-only or write-only properties -- "one-way" or "mirrored" lenses, as it were. Moreover, lenses are commonly viewed as an all or nothing proposition, in that it is hard to mix them with arbitrary user functions.</li>
+<li>Finally there is a bit of a cult around trying to generalize lenses by smashing a monad in the middle of them somewhere, it would be nice to be able to get into a list and work with each individual element in it without worrying about someone mucking up our lens laws, and perhaps avoid the whole generalized lens issue entirely.</li>
+</ol>
+<p>We'll take a whack at each of these concerns in turn today.<br />
+<span id="more-600"></span></p>
+<pre lang='haskell'>
+   {-# LANGUAGE Rank2Types #-}  -- we'll relax this later
+   import Data.Complex -- for complex examples
+</pre>
+<p>First, let us consider the type of van Laarhoven lenses:</p>
+<pre lang='haskell'>
+type Lens a b =
+  forall f. Functor f =>
+  (b -> f b) -> a -> f a
+</pre>
+<p>with a couple of examples:</p>
+<pre class="haskell">&nbsp;
+realLens :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Lens <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+realLens f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>:+ i<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f r<span style="color: green;">&#41;</span>
+&nbsp;
+imagLens :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Lens <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+imagLens f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>r :+<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f i<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>These lenses have some very nice properties that we're going to exploit. By far their nicest property is that you can compose them using just <code>(.)</code> and <code>id</code> from the <code>Prelude</code> rather than having to go off and write a <code>Category</code>.</p>
+<h2>Lens Families</h2>
+<p><a href="http://r6.ca/blog/20120623T104901Z.html">Russell O'Connor recently noted that these lenses permit polymorphic update</a> if you simply generalize their type signature to</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> LensFamily a b c d =
+  <span style="color: #06c; font-weight: bold;">forall</span> f. <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+  <span style="color: green;">&#40;</span>c -&gt; f d<span style="color: green;">&#41;</span> -&gt; a -&gt; f b
+&nbsp;</pre>
+<p>I'd like to note that you can't just let these 4 arguments vary with complete impunity, so I'll be referring to these as "lens families" rather than polymorphic lenses, a point that I'll address further below. In short, we want the original lens laws to still hold in spite of the generalized type signature, and this forces some of these types to be related. </p>
+<p>As an aside, each of the other lens types admit this same generalization! For instance the <code>Lens</code> type in <a href="http://hackage.haskell.org/package/data-lens">data-lens</a> can be generalized using an indexed store comonad:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Store c d b = Store <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> c
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Store c d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Store g c<span style="color: green;">&#41;</span> = Store <span style="color: green;">&#40;</span>f . g<span style="color: green;">&#41;</span> c
+&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> DataLensFamily a b c d = DataLensFamily <span style="color: green;">&#40;</span>a -&gt; Store c d b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and we can freely convert back and forth to van Laarhoven lens families:</p>
+<pre class="haskell">&nbsp;
+dlens :: LensFamily a b c d -&gt; DataLensFamily a b c d
+dlens l = DataLensFamily <span style="color: green;">&#40;</span>l <span style="color: green;">&#40;</span>Store <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+plens :: DataLensFamily a b c d -&gt; LensFamily a b c d
+plens <span style="color: green;">&#40;</span>DataLensFamily l<span style="color: green;">&#41;</span> f a = <span style="color: #06c; font-weight: bold;">case</span> l a <span style="color: #06c; font-weight: bold;">of</span>
+  Store g c -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>f c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I leave it as an exercise to the reader to generalize the other lens types, but we'll stick to van Laarhoven lens families almost exclusively below.</p>
+<p>As Russell noted, we can define functions to get, modify and set the target of a lens very easily. I'll create local names for <code>Identity</code> and <code>Const</code>, mostly to help give nicer error messages later.</p>
+<p>We can read from a lens family:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">8</span> ^.
+<span style="color: #06c; font-weight: bold;">newtype</span> Getting b a = Getting <span style="color: green;">&#123;</span> got :: b <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Getting b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ <span style="color: green;">&#40;</span>Getting b<span style="color: green;">&#41;</span> = Getting b
+<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span> :: a -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Getting c d<span style="color: green;">&#41;</span> -&gt; a -&gt; Getting c b<span style="color: green;">&#41;</span> -&gt; c
+x ^. l = got <span style="color: green;">&#40;</span>l Getting x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can modify the target of the lens:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Setting a = Setting <span style="color: green;">&#123;</span> unsetting :: a <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> Setting <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Setting a<span style="color: green;">&#41;</span> = Setting <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">4</span> %=
+<span style="color: green;">&#40;</span>%=<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>c -&gt; d<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+l %= f = unsetting . l <span style="color: green;">&#40;</span>Setting . f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can set the target of the lens with impunity:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">4</span> ^=
+<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b<span style="color: green;">&#41;</span> -&gt; d -&gt; a -&gt; b
+l ^= v = l %= <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> v
+&nbsp;</pre>
+<p>We can build a lens family from a getter/setter pair</p>
+<pre class="haskell">&nbsp;
+lens :: <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; d -&gt; b<span style="color: green;">&#41;</span> -&gt; LensFamily a b c d
+lens f g h a = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>h <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>or from a family of isomorphisms:</p>
+<pre class="haskell">&nbsp;
+iso :: <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> -&gt; LensFamily a b c d
+iso f g h a = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>h <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>With these combinators in hand, we need some actual lens families to play with. Fortunately they are just as easy to construct as simple lenses. The only thing that changes is the type signature.  </p>
+<pre class="haskell">&nbsp;
+fstLens :: LensFamily <span style="color: green;">&#40;</span>a,c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b,c<span style="color: green;">&#41;</span> a b
+fstLens f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>\x -&gt; <span style="color: green;">&#40;</span>x,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+&nbsp;
+sndLens :: LensFamily <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>a,c<span style="color: green;">&#41;</span> b c
+sndLens f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>
+&nbsp;
+swap :: <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span>
+swap <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span>
+&nbsp;
+swapped :: LensFamily <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>c,d<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>d,c<span style="color: green;">&#41;</span>
+swapped = iso swap swap
+&nbsp;</pre>
+<p>These can also build 'traditional' lenses:</p>
+<pre class="haskell">&nbsp;
+negated :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Lens a a
+negated = iso <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a>
+&nbsp;</pre>
+<p>And since <code>Lens</code> and <code>LensFamily</code> are both type aliases, we can freely mix and match lenses with lens families:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span> ^.fstLens.realLens
+<span style="color: red;">1.0</span>
+ghci&gt; fstLens . realLens ^= <span style="color: red;">4</span> $ <span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">4.0</span> :+ <span style="color: red;">2.0</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>But, we can now change types with our lens updates!</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span>fstLens . sndLens ^= <span style="color: #3c7331;">&quot;hello&quot;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,<span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,<span style="color: #3c7331;">&quot;hello&quot;</span><span style="color: green;">&#41;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can even do things like use the combinator</p>
+<pre class="haskell">&nbsp;
+traverseLens :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; c<span style="color: green;">&#41;</span> -&gt; a -&gt; b<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+traverseLens f = f <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>to project a <code>Functor</code> out through an appropriate lens family:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t traverseLens <span style="color: green;">&#40;</span>fstLens . sndLens<span style="color: green;">&#41;</span>
+traverseLens <span style="color: green;">&#40;</span>fstLens . sndLens<span style="color: green;">&#41;</span>
+  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a, f b<span style="color: green;">&#41;</span>, c<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>, c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>That takes care of polymorphic updates. </p>
+<h2>Why is it a Lens Family?</h2>
+<p>So, why do I use the term "lens family" rather than "polymorphic lens"?</p>
+<p>In order for the lens laws to hold, the 4 types parameterizing our lens family must be interrelated.</p>
+<p>In particular you need to be able to put back (with <code>^=</code>) what you get out of the lens (with <code>^.</code>) and put multiple times.</p>
+<p>This effectively constrains the space of possible legal lens families to those where there exists an index kind <code>i</code>, and two type families <code>outer :: i -> *</code>, and <code>inner :: i -> *</code>. If this were a viable type signature, then each lens family would actually have 2 parameters, yielding something like:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- pseudo-Haskell</span>
+<span style="color: #5d478b; font-style: italic;">-- type LensFamily outer inner =</span>
+<span style="color: #5d478b; font-style: italic;">--    forall a b. LensFamily (outer a) (outer b) (inner a) (inner b)</span>
+&nbsp;</pre>
+<p>but you can't pass in type families as arguments like that, and even if you could, their lack of injectivity doesn't give the type checker enough to work with to compose your lenses. By specifying all 4 type arguments independently, we give the compiler enough to work with. But since the arguments aren't just freely polymorphic and are instead related by these index types, I'm choosing to call them "lens families" rather than "polymorphic lenses".</p>
+<h2>Getters</h2>
+<p>Note, we didn't use the full polymorphism of the van Laarhoven lenses in the signatures of <code>(^.)</code>, <code>(%=)</code> and <code>(^=)</code> above.</p>
+<p>What happens when we restrict the type of <code>Functor</code> we're allowed to pass to our lens?</p>
+<p>If we generalize the type of our getter ever so slightly from the type we pass to <code>(^.)</code> to permit composition, we get:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Getter a c = <span style="color: #06c; font-weight: bold;">forall</span> r d b. <span style="color: green;">&#40;</span>c -&gt; Getting r d<span style="color: green;">&#41;</span> -&gt; a -&gt; Getting r b
+&nbsp;</pre>
+<p>and we can make getters out of arbitrary Haskell functions that we have lying around with</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | build a getting out of a function</span>
+getting :: <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; Getter a b
+getting g f = Getting . got . f . g
+&nbsp;</pre>
+<p>For example:</p>
+<pre class="haskell">&nbsp;
+getFst :: Getter <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> a
+getFst = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a>
+&nbsp;
+getSnd :: Getter <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> b
+getSnd = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a>
+&nbsp;</pre>
+<p>But this is particularly nice for things that <em>can't</em> be made into real lenses or lens families, because of loss of information:</p>
+<pre class="haskell">&nbsp;
+getPhase :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Getter <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+getPhase = getting phase
+&nbsp;
+getAbs, getSignum  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Getter a a
+getAbs = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:abs"><span style="font-weight: bold;">abs</span></a>
+getSignum = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:signum"><span style="font-weight: bold;">signum</span></a>
+&nbsp;</pre>
+<p>Notably, <code>getMagnitude</code> and <code>getPhase</code> can't be legal lenses because when the <code>magnitude</code> is 0, you lose <code>phase</code> information.</p>
+<p>These can be mixed and matched with other lenses when dereferencing with <code>(^.)</code></p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span><span style="color: red;">0</span>,<span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> ^. getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a> . fstLens . getting magnitude
+<span style="color: red;">2.23606797749979</span>
+&nbsp;</pre>
+<p>But we get a type error when we attempt to write to a <code>Getter</code>.</p>
+<pre class="haskell">&nbsp;
+ghci&gt; getting magnitude ^= <span style="color: red;">12</span>
+&lt;interactive&gt;:<span style="color: red;">2</span>:<span style="color: red;">1</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Setting d0'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Getting r0 d1'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; a1 -&gt; Setting b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Getting r0 d1<span style="color: green;">&#41;</span> -&gt; a0 -&gt; Getting r0 b0
+    In the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: #06c; font-weight: bold;">type</span> <span style="color: #06c; font-weight: bold;">of</span> a call <span style="color: #06c; font-weight: bold;">of</span> `getting'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span>', namely `getting magnitude'
+&lt;/interactive&gt;</pre>
+<h2>Setters</h2>
+<p>So what about write-only properties?</p>
+<p>These have a less satisfying solution. We have to break our lens family structure slightly to make something that can strictly <em>only</em> be written to, by disabling the ability to read our current value entirely. </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Setter a d b = <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b
+&nbsp;
+setting :: <span style="color: green;">&#40;</span>a -&gt; d -&gt; b<span style="color: green;">&#41;</span> -&gt; Setter a d b
+setting f g a = Setting <span style="color: green;">&#40;</span>f a <span style="color: green;">&#40;</span>unsetting <span style="color: green;">&#40;</span>g <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now we can make setters out of functions that take two arguments:</p>
+<pre class="haskell">&nbsp;
+plus, times :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Setter a a a
+plus = setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span>
+times = setting <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+ghci&gt; setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> ^= <span style="color: red;">12</span> $ <span style="color: red;">32</span>
+<span style="color: red;">44</span>
+ghci&gt; fstLens . setting <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> ^= <span style="color: red;">12</span> $ <span style="color: green;">&#40;</span><span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">24</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>However, these lenses have the unsatisfying property that they can only be placed last in the chain of lenses we're setting. </p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span>setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> . realLens ^= <span style="color: red;">12</span><span style="color: green;">&#41;</span> <span style="color: red;">1</span>
+&lt;interactive&gt;:<span style="color: red;">15</span>:<span style="color: red;">16</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `<span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>' with actual <span style="color: #06c; font-weight: bold;">type</span> `Complex d0'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> -&gt; Setting b0
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span>
+                   -&gt; Complex d0 -&gt; Setting <span style="color: green;">&#40;</span>Complex d0<span style="color: green;">&#41;</span>
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>.<span style="color: green;">&#41;</span>', namely `realLens'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span>', namely `setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> . realLens'
+&lt;/interactive&gt;</pre>
+<p>This isn't surprising, if you consider that to compose <code>data-lens</code> lenses you need to use <code>%=</code> to chain setters.</p>
+<h2>Modifiers</h2>
+<p>So what do we need to do to make a lens we can only modify but not read?</p>
+<p>Lets restore the lens family structure!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Modifier a b c d = <span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b
+&nbsp;
+modifying :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; d<span style="color: green;">&#41;</span> -&gt; a -&gt; b<span style="color: green;">&#41;</span> -&gt; Modifier a b c d
+modifying f g a = Setting <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>unsetting . g<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p><code>modifying</code> makes a modify-only lens family you can modify using local information, but can't tell anyone about the contents of.</p>
+<p>This lets us work with a lens over a variable number of elements in a structure, without worrying about a user accidentally "putting back" too many or too few entries.</p>
+<pre class="haskell">&nbsp;
+ghci&gt; modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a> %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#91;</span><span style="color: red;">1</span>,<span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#93;</span>
+<span style="color: green;">&#91;</span><span style="color: red;">2</span>,<span style="color: red;">3</span>,<span style="color: red;">4</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>They can be composed with other lenses:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a> . sndLens %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+<span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>and unlike with a <code>Setter</code>, you can compose a <code>Modifier</code> with a <code>Modifier</code>:</p>
+<pre class="haskell">&nbsp;
+modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>
+  :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt;
+     <span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>g c<span style="color: green;">&#41;</span> -&gt; Setting <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>g d<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>but they cannot be read from directly:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#91;</span><span style="color: red;">1</span>,<span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#93;</span> ^. modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>
+&lt;interactive&gt;:<span style="color: red;">18</span>:<span style="color: red;">12</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Getting c0 d0'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Setting d1'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Getting c0 d0<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#91;</span>t0<span style="color: green;">&#93;</span> -&gt; Getting c0 b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: Modifier a0 b0 c0 d1
+    In the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: #06c; font-weight: bold;">type</span> <span style="color: #06c; font-weight: bold;">of</span> a call <span style="color: #06c; font-weight: bold;">of</span> `modifying'
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span>', namely `modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a>'
+&lt;/interactive&gt;</pre>
+<p>We can map over restricted domains:</p>
+<pre class="haskell">&nbsp;
+reals :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> b<span style="color: green;">&#41;</span> =&gt; Modifier <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Complex b<span style="color: green;">&#41;</span> a b
+reals = modifying <span style="color: green;">&#40;</span>\f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> -&gt; f r :+ f i<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and everything still composes:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; reals %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $  <span style="color: red;">1</span> :+ <span style="color: red;">2</span>
+<span style="color: red;">2</span> :+ <span style="color: red;">3</span>
+ghci&gt; fstLens . reals %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#40;</span><span style="color: red;">1</span> :+ <span style="color: red;">2</span>, <span style="color: red;">4</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">2.0</span> :+ <span style="color: red;">3.0</span>,<span style="color: red;">4</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>These aren't limited to actions that map over the entire structure, however!</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :m + Data.Lens
+ghci&gt; modifying <span style="color: green;">&#40;</span>`adjust` <span style="color: #3c7331;">&quot;goodbye&quot;</span><span style="color: green;">&#41;</span> %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $
+      fromList <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+fromList <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>This lets us update potentially nested structures where something may or may not be present , which was fairly tedious to do with earlier lens representations.</p>
+<p>Both the former map-like example and the latter update-like behavior were commonly used examples in calls for partial lenses or 'multi-lenses', but here they are able to implemented using a restricted form of a more traditional lens type, and moreover they compose cleanly with other lenses and lens families.</p>
+<h2>Rank-1 Lens Families</h2>
+<p>At the very start I mentioned that you can dispense with the need for Rank-2 Types. Doing so requires much more tedious type signatures as the <code>LensFamily</code>, <code>Getter</code>, <code>Setter</code> and <code>Lens</code> aliases are no longer legal. Also, if you want to take a lens as an argument and use it in multiple contexts (e.g. as both a getter and a setter), you'll need to clone it to obtain a lens family. For example, this fails:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t \l y -&gt; l ^= y ^. l + <span style="color: red;">1</span> $ y
+&lt;interactive&gt;:<span style="color: red;">1</span>:<span style="color: red;">19</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Getting d0 d1'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Setting d0'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Getting d0 d1<span style="color: green;">&#41;</span> -&gt; a1 -&gt; Getting d0 b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; a0 -&gt; Setting b0
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span>', namely `l'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span>', namely `y ^. l'
+&lt;/interactive&gt;</pre>
+<p>But we can clone the supplied monomorphic lens using the composition of <code>dlens</code> and <code>plens</code> above, since the <code>DataLensFamily</code> completely characterizes the <code>LensFamily</code> with:</p>
+<pre class="haskell">&nbsp;
+clone ::
+  <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Store c d d<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; Store c d b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+  LensFamily a b c d
+clone l f a = <span style="color: #06c; font-weight: bold;">case</span> l <span style="color: green;">&#40;</span>Store <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span> a <span style="color: #06c; font-weight: bold;">of</span>
+  Store g c -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>f c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and then the following code type checks:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t \l y -&gt; clone l ^= y ^. clone l + <span style="color: red;">1</span> $ y
+\l y -&gt; clone l ^= y ^. clone l + <span style="color: red;">1</span> $ y
+  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> d =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Store c d1 d1<span style="color: green;">&#41;</span> -&gt; a -&gt; Store d d b<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+&nbsp;</pre>
+<p>This means you could implement an entire library to deal with lens families with restricted getters and setters and remain within the confines of Haskell 98. However, the type signatures are considerably less elegant than what becomes available when you simply add Rank2Types.</p>
+<h2>Conclusion</h2>
+<p>So, we've demonstrated that van Laarhoven lens families let you have lenses that permit polymorphic update, let you offer lenses that are restricted to only allowing the use of getters, setters or modifiers, while granting you easy composition with the existing <code>(.)</code> and <code>id</code> from the <code>Prelude</code>.</p>
+<p>I think the practical existence and power of these combinators make a strong case for their use in any serious record reform proposal.</p>
+<p>My thanks go to Russell O'Connor. He first noticed that you can generalize van Laarhoven lenses and proposed the <code>clone</code> combinator as a path to Haskell 98/2010 compatibility, while retaining the nicer composition model.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/mirrored-lenses/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Where&#8217;s Waldo?</title>
+		<link>http://comonad.com/reader/2012/wheres-waldo/</link>
+		<comments>http://comonad.com/reader/2012/wheres-waldo/#comments</comments>
+		<pubDate>Sun, 10 Jun 2012 23:54:02 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=592</guid>
+		<description><![CDATA[No, I don't mean like this, but rather, If you spent any time trying to figure out xkcd's Umwelt April Fool comic this year, you may be interested in the Haskell source code. They used all sorts of information about you, the browser you were using, the resolution of your screen, to the geocoding of [...]]]></description>
+			<content:encoded><![CDATA[<p>No, I don't mean like <a href="http://www.optipess.com/2012/05/28/lost-and-found/">this</a>, but rather, If you spent any time trying to figure out xkcd's <a href="http://xkcd.com/1037/">Umwelt</a> April Fool comic this year, you may be interested in the Haskell source code. They used all sorts of information about you, the browser you were using, the resolution of your screen, to the geocoding of the network address you came from, etc. to serve up a custom web comic.</p>
+<p>Today, davean posted to github the code for <a href="https://github.com/davean/waldo">waldo</a>, the engine he wrote to drive that comic.</p>
+<p>Alas, he was not kind enough to actually supply the code for the umwelt comic strip itself, so you'll still be left wondering if the internet managed to find all of the Easter eggs. (Are they still Easter eggs when you release something a week before Easter?) You may find the list of links below useful if you want to get a feel for the different responses it gave people.</p>
+<p>[ <a href="http://www.webpronews.com/xkcd-wins-april-fools-day-with-amazing-changing-comic-gag-2012-04">Article</a> | <a href="http://forums.xkcd.com/viewtopic.php?t=82442">xkcd's Forum</a> | <a href="http://news.ycombinator.com/item?id=3784216">Hacker News</a> | <a href="http://www.reddit.com/r/haskell/comments/roa2k/xkcds_april_1st_joke_this_year_was_written_in/">/r/haskell</a> ]</p>
+<p><strong>[Update: Jun 10, 9:09pm]</strong> davean just posted a <a href="http://www.reddit.com/r/haskell/comments/uved7/waldo_the_haskell_powered_codebase_behind_xkcds/">rather insightful post mortem</a> of the development of waldo that talks a bit about why xkcd uses Haskell internally.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/wheres-waldo/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Catamorphism Knol</title>
+		<link>http://comonad.com/reader/2012/catamorphism-knol/</link>
+		<comments>http://comonad.com/reader/2012/catamorphism-knol/#comments</comments>
+		<pubDate>Sun, 27 May 2012 18:17:24 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Category Theory]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=579</guid>
+		<description><![CDATA[I was contacted by someone who wanted to read my old catamorphism knol, despite the fact that Google Knol is no more. 
+Fortunately, while it was rather inconvenient that they shut down Google Knol completely, and I'll forever remember a knol as a "unit of abandonment", Google did provide a nice way to download at [...]]]></description>
+			<content:encoded><![CDATA[<p>I was contacted by someone who wanted to read my old catamorphism knol, despite the fact that Google Knol is no more. </p>
+<p>Fortunately, while it was rather inconvenient that they shut down Google Knol completely, and I'll forever remember a knol as a "unit of abandonment", Google did provide a nice way to download at least your own user content and for that I am grateful.</p>
+<p>I have fixed up the internal linkage as much as possible and have placed a copy of the original article below.</p>
+<p><a href="http://comonad.com/haskell/catamorphisms.html">Catamorphisms: A Knol</a></p>
+<p>Sadly, as I am not "Dark Magus", I am unable to download the Russian translation. If anyone knows how to contact him, I would love to obtain and preserve a copy of the translation as well.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2012/catamorphism-knol/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+	</channel>
+</rss>

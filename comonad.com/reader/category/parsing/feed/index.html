@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Comonad.Reader &#187; Parsing</title>
+	<atom:link href="http://comonad.com/reader/category/parsing/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Thu, 02 May 2013 14:19:12 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<item>
+		<title>A Parsec Full of Rats, Part 2</title>
+		<link>http://comonad.com/reader/2011/a-parsec-full-of-rats-part-2/</link>
+		<comments>http://comonad.com/reader/2011/a-parsec-full-of-rats-part-2/#comments</comments>
+		<pubDate>Sat, 24 Sep 2011 03:07:32 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Monads]]></category>
+		<category><![CDATA[Parsing]]></category>
+		<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[packrat]]></category>
+		<category><![CDATA[parsec]]></category>
+		<category><![CDATA[trifecta]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=397</guid>
+		<description><![CDATA[Last time, I showed that we can build a small parsec clone with packrat support.
+This time I intend to implement packrat directly on top of Parsec 3.
+One of the main topics of discussion when it comes to packrat parsing since Bryan Ford's initial release of Pappy has been the fact that in general you shouldn't [...]]]></description>
+			<content:encoded><![CDATA[<p>Last time, I showed that we can build a small parsec clone with packrat support.</p>
+<p>This time I intend to implement packrat directly on top of Parsec 3.</p>
+<p>One of the main topics of discussion when it comes to packrat parsing since Bryan Ford's initial release of Pappy has been the fact that in general you shouldn't use packrat to memoize every rule, and that instead you should apply Amdahl's law to look for the cases where the lookup time is paid back in terms of repetitive evaluation, computation time and the hit rate. This is great news for us, since, we only want to memoize a handful of expensive combinators.</p>
+<p><span id="more-397"></span></p>
+<p>First, we'll need to import enough of Parsec to do something interesting.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# LANGUAGE RecordWildCards, ViewPatterns, FlexibleInstances, MultiParamTypeClasses #-}</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">import</span> Text.Parsec
+<span style="color: #06c; font-weight: bold;">import</span> <span style="color: #06c; font-weight: bold;">qualified</span> Text.Parsec.Token <span style="color: #06c; font-weight: bold;">as</span> T
+<span style="color: #06c; font-weight: bold;">import</span> Text.Parsec.Token
+    <span style="color: green;">&#40;</span>GenLanguageDef<span style="color: green;">&#40;</span>..<span style="color: green;">&#41;</span>, GenTokenParser<span style="color: green;">&#40;</span>TokenParser<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Text.Parsec.Pos <span style="color: green;">&#40;</span>initialPos, updatePosChar<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>.Identity <span style="color: green;">&#40;</span>Identity<span style="color: green;">&#40;</span>..<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative <span style="color: #06c; font-weight: bold;">hiding</span> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>&lt; |&gt;<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Fix <span style="color: green;">&#40;</span>fix<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Then as before, we'll define PEG-style backtracking:</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>&lt; /&gt;<span style="color: green;">&#41;</span> :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; ParsecT s u m a -&gt; ParsecT s u m a -&gt;
+    ParsecT s u m a
+p &lt; /&gt; q = try p &lt; |&gt; q
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">3</span> &lt; /&gt;
+&nbsp;</pre>
+<p>Now we need an analogue to our Result type from last time, which recalled whether or not we had consumed input, and what the current cursor location is. Fortunately, we can recycle the definitions from Parsec to this end.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Result d a = Consumed <span style="color: green;">&#40;</span>Reply d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We'll define a combinator to build a parser directly from a field accessor. Last time, this was just the use of the "Rat" constructor. Now it is a bit trickier, because we need to turn <code>Consumed (Reply d () a)</code> into <code>m (Consumed (m (Reply d u a)))</code> by wrapping it in the appropriate monad, and giving the user back his state unmolested. </p>
+<pre class="haskell">&nbsp;
+rat :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; <span style="color: green;">&#40;</span>d -&gt; Result d a<span style="color: green;">&#41;</span> -&gt; ParsecT d u m a
+rat f   = mkPT $ \s0 -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> $
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> . patch s0 &lt; $&gt; f <span style="color: green;">&#40;</span>stateInput s0<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  patch <span style="color: green;">&#40;</span>State _ _ u<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Ok a <span style="color: green;">&#40;</span>State s p _<span style="color: green;">&#41;</span> err<span style="color: green;">&#41;</span> = Ok a <span style="color: green;">&#40;</span>State s p u<span style="color: green;">&#41;</span> err
+  patch _             <span style="color: green;">&#40;</span>Error e<span style="color: green;">&#41;</span>                = Error e
+&nbsp;</pre>
+<p>Last time we could go from a parser to a result just by applying the user stream type, but with parsec we also have to supply their notion of a position. This leads to the following combinator. By running in the Identity monad with no user state it should be obvious that we've duplicated the functionality of the previous 'Rat' parser (with the addition of a source position).</p>
+<pre class="haskell">&nbsp;
+womp :: d -&gt; SourcePos -&gt; ParsecT d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> Identity a -&gt; Result d a
+womp d pos p = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> runIdentity . runIdentity $
+    runParsecT p <span style="color: green;">&#40;</span>State d pos <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>The combinator is so named because we needed a big space-rat rather than a little pack-rat to keep with the theme.</p>
+<blockquote><p>It's not impossible. I used to bullseye womp rats in my T-16 back home, they're not much bigger than two meters.</p></blockquote>
+<p>Now we'll write a bit of annoyingly verbose boilerplate to convince <code>Parsec</code> that we really want a <code>LanguageDef</code> for some monad other than Identity. (As an aside, why <code>Text.Parsec.Language</code> doesn't contain GenLanguageDefs that are parametric in their choice of Monad is beyond me.) </p>
+<pre class="haskell">&nbsp;
+myLanguageDef :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; T.GenLanguageDef D u m
+myLanguageDef = T.LanguageDef
+  <span style="color: green;">&#123;</span> commentStart    = <span style="color: #3c7331;">&quot;{-&quot;</span>
+  , commentEnd      = <span style="color: #3c7331;">&quot;-}&quot;</span>
+  , commentLine     = <span style="color: #3c7331;">&quot;--&quot;</span>
+  , nestedComments  = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+  , identStart      = letter &lt; |&gt; char '_'
+  , identLetter     = alphaNum &lt; |&gt; oneOf <span style="color: #3c7331;">&quot;_'&quot;</span>
+  , opStart         = opLetter myLanguageDef
+  , opLetter        = oneOf <span style="color: #3c7331;">&quot;:!#$%&amp;*+./&lt; =&gt;?@<span style="">\\</span>^|-~&quot;</span>
+  , reservedOpNames = <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span>
+  , reservedNames   = <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span>
+  , caseSensitive   = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+  <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>As a shameless plug, trifecta offers a particularly nice solution to this problem, breaking up the monolithic Token type into separate concerns and letting you layer parser transformers that enrich the parser to deal with things like Haskell-style layout, literate comments, parsing comments in whitespace, etc. </p>
+<p>And as one last bit of boilerplate, we'll abuse RecordWildcards once again to avoid the usual 20 lines of boilerplate that are expected of us, so we can get access to parsec's token parsers.</p>
+<pre class="haskell">&nbsp;
+TokenParser <span style="color: green;">&#123;</span>..<span style="color: green;">&#125;</span> = T.makeTokenParser myLanguageDef
+&nbsp;</pre>
+<p>Now we're ready to define our incredibly straightforward stream type:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> D = D
+  <span style="color: green;">&#123;</span> _add        :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+  , _mult       :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+  , _primary    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+  , _dec        :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+  , _uncons     :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Maybe"><span style="background-color: #efefbf; font-weight: bold;">Maybe</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>, D<span style="color: green;">&#41;</span>
+  <span style="color: green;">&#125;</span>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> m =&gt; Stream D m <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: #06c; font-weight: bold;">where</span>
+  uncons = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> . _uncons
+&nbsp;</pre>
+<p>And using the general purpose <code>rat</code> combinator from earlier, we can write some memoized parsers:</p>
+<pre class="haskell">&nbsp;
+add, mult, primary, dec :: Parsec D u <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+add     = rat _add
+mult    = rat _mult
+primary = rat _primary
+dec     = rat _dec
+&nbsp;</pre>
+<p>And finally, we write the code to tie the knot and build the stream:</p>
+<pre class="haskell">&nbsp;
+parse :: SourceName -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; D
+parse n = go <span style="color: green;">&#40;</span>initialPos n<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  go p s = fix $ \d -&gt; <span style="color: #06c; font-weight: bold;">let</span>
+    <span style="color: green;">&#40;</span>womp d p -&gt; _add<span style="color: green;">&#41;</span> =
+            <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> &lt; $&gt; mult &lt; * reservedOp <span style="color: #3c7331;">&quot;+&quot;</span> &lt;*&gt; add
+        &lt; /&gt; mult &lt; ?&gt; <span style="color: #3c7331;">&quot;summand&quot;</span>
+    <span style="color: green;">&#40;</span>womp d p -&gt; _mult<span style="color: green;">&#41;</span> =
+            <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> &lt; $&gt; primary &lt; * reservedOp <span style="color: #3c7331;">&quot;*&quot;</span> &lt;*&gt; mult
+        &lt; /&gt; primary &lt; ?&gt; <span style="color: #3c7331;">&quot;factor&quot;</span>
+    <span style="color: green;">&#40;</span>womp d p -&gt; _primary<span style="color: green;">&#41;</span> =
+            parens add
+        &lt; /&gt; dec &lt; ?&gt; <span style="color: #3c7331;">&quot;number&quot;</span>
+    <span style="color: green;">&#40;</span>womp d p -&gt; _dec<span style="color: green;">&#41;</span> = natural
+    _uncons = <span style="color: #06c; font-weight: bold;">case</span> s <span style="color: #06c; font-weight: bold;">of</span>
+      <span style="color: green;">&#40;</span>x:xs<span style="color: green;">&#41;</span> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Just"><span style="font-weight: bold;">Just</span></a> <span style="color: green;">&#40;</span>x, go <span style="color: green;">&#40;</span>updatePosChar p x<span style="color: green;">&#41;</span> xs<span style="color: green;">&#41;</span>
+      <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span>     -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:Nothing"><span style="font-weight: bold;">Nothing</span></a>
+    <span style="color: #06c; font-weight: bold;">in</span> D <span style="color: green;">&#123;</span> .. <span style="color: green;">&#125;</span>
+&nbsp;
+runD :: Parsec D u a -&gt; u -&gt; SourceName -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Either"><span style="background-color: #efefbf; font-weight: bold;">Either</span></a> ParseError a
+runD p u fn s = runParser p u fn <span style="color: green;">&#40;</span>prep fn s<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and finally, let it rip:</p>
+<pre class="haskell">&nbsp;
+eval :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Integer"><span style="background-color: #efefbf; font-weight: bold;">Integer</span></a>
+eval s = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:either"><span style="font-weight: bold;">either</span></a> <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:error"><span style="font-weight: bold;">error</span></a> . <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:show"><span style="font-weight: bold;">show</span></a><span style="color: green;">&#41;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a> $
+    runD <span style="color: green;">&#40;</span>whiteSpace *&gt; add &lt; * eof<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> <span style="color: #3c7331;">&quot;-&quot;</span> s
+&nbsp;</pre>
+<p>While this approach tends to encourage memoizing fewer combinators than libraries such as frisby, this is exactly what <a href="http://www.mercury.csse.unimelb.edu.au/information/papers/packrat.pdf">current research suggests you probably should do</a> with packrat parsing!</p>
+<p>The other purported advantage of packrat parsers is that they <a href="http://www.vpri.org/pdf/tr2007002_packrat.pdf">can deal with left recursion in the grammar</a>. However, that is not the case, hidden left recursion in the presence of the algorithm used in the scala parsing combinator libraries leads to incorrect non-left-most parses <a href="http://tratt.net/laurie/research/publications/papers/tratt__direct_left_recursive_parsing_expression_grammars.pdf">as shown by Tratt</a>.</p>
+<p>I leave it as an exercise for the reader to extend this material with the parsec+iteratees approach from my original talk on trifecta to get packrat parsing of streaming input. Either that or you can wait until it is integrated into trifecta.</p>
+<p>You can download the source to this (without the spurious spaces inserted by wordpress) <a href="https://github.com/ekmett/trifecta/blob/master/wip/Womprat.hs">here</a>.</p>
+<p>If I can find the time, I hope to spend some time addressing Scott and Johnstone's GLL parsers, which actually achieve the O(n^3) worst case bounds touted for Tomita's GLR algorithm (which is actually O(n^4) as it was originally defined despite the author's claims), and how to encode them in Haskell with an eye towards building a memoizing parser combinator library that can parse LL(1) fragments in O(1), deal with arbitrary context-free grammars in O(n^3), and degrade reasonably gracefully in the presence of context-sensitivity, while supporting hidden left recursion as long as such recursion passes through at least one memoized rule. This is important because CFGs are closed under extensions to the grammar, which is a nice property to have if you want to have a language where you can add new statement types easily without concerning yourself overmuch with the order in which you insert the rules or load the different extensions.</p>
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2011/a-parsec-full-of-rats-part-2/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>A Parsec Full of Rats, Part 1</title>
+		<link>http://comonad.com/reader/2011/a-parsec-full-of-rats/</link>
+		<comments>http://comonad.com/reader/2011/a-parsec-full-of-rats/#comments</comments>
+		<pubDate>Sat, 24 Sep 2011 02:10:06 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Monads]]></category>
+		<category><![CDATA[Parsing]]></category>
+		<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[packrat]]></category>
+		<category><![CDATA[trifecta]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=380</guid>
+		<description><![CDATA[You never heard of the Millenium Falcon? It's the ship that made the Kessel Run in 12 parsecs.
+I've been working on a parser combinator library called trifecta, and so I decided I'd share some thoughts on parsing. 
+Packrat parsing (as provided by frisby, pappy, rats! and the Scala parsing combinators) and more traditional recursive descent [...]]]></description>
+			<content:encoded><![CDATA[<blockquote><p>You never heard of the Millenium Falcon? It's the ship that made the Kessel Run in 12 parsecs.</p></blockquote>
+<p>I've been working on a parser combinator library called <a href="http://hackage.haskell.org/package/trifecta">trifecta</a>, and so I decided I'd share some thoughts on parsing. </p>
+<p><a href="http://pdos.csail.mit.edu/~baford/packrat/">Packrat parsing</a> (as provided by <a href="http://hackage.haskell.org/package/frisby">frisby</a>, <a href="http://hackage.haskell.org/package/pappy">pappy</a>, <a href="http://cs.nyu.edu/rgrimm/xtc/">rats!</a> and the Scala parsing combinators) and more traditional recursive descent parsers (like Parsec) are often held up as somehow different. </p>
+<p>Today I'll show that you can add monadic parsing to a packrat parser, sacrificing asymptotic guarantees in exchange for the convenient context sensitivity, and conversely how you can easily add packrat parsing to a traditional monadic parser combinator library.</p>
+<p><span id="more-380"></span></p>
+<p>To keep this post self-contained, I'm going to start by defining a small packrat parsing library by hand, which acts rather like parsec in its backtracking behavior. First, some imports:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">{-# LANGUAGE RecordWildCards, ViewPatterns, DeriveFunctor #-}</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.Applicative
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>MonadPlus<span style="color: green;">&#40;</span>..<span style="color: green;">&#41;</span>, guard<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Control.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a>.Fix <span style="color: green;">&#40;</span>fix<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">import</span> Data.<a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> <span style="color: green;">&#40;</span>isDigit, digitToInt, isSpace<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Second, we'll define a bog simple parser, which consumes an input stream of type d, yielding a possible answer and telling us whether or not it has actually consumed any input as it went.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Rat d a = Rat <span style="color: green;">&#123;</span> runRat :: d -&gt; Result d a <span style="color: green;">&#125;</span>
+  <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Result d a
+  = Pure a             <span style="color: #5d478b; font-style: italic;">-- didn't consume anything, can backtrack</span>
+  | Commit d a      <span style="color: #5d478b; font-style: italic;">-- consumed input</span>
+  | Fail <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a> <span style="color: #5d478b; font-style: italic;">-- failed, flagged if consumed</span>
+  <span style="color: #06c; font-weight: bold;">deriving</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a>
+&nbsp;</pre>
+<p>Now, we can finally implement some type classes:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Applicative <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  pure a = Rat $ \ _ -&gt; Pure a
+  Rat mf &lt; *&gt; Rat ma = Rat $ \ d -&gt; <span style="color: #06c; font-weight: bold;">case</span> mf d <span style="color: #06c; font-weight: bold;">of</span>
+    Pure f      -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>ma d<span style="color: green;">&#41;</span>
+    Fail s c    -&gt; Fail s c
+    Commit d' f -&gt; <span style="color: #06c; font-weight: bold;">case</span> ma d' <span style="color: #06c; font-weight: bold;">of</span>
+      Pure a       -&gt; Commit d' <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+      Fail s _     -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+      Commit d'' a -&gt; Commit d'' <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>including an instance of Alternative that behaves like parsec, only backtracking on failure if no input was unconsumed.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Alternative <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  Rat ma &lt; |&gt; Rat mb = Rat $ \ d -&gt; <span style="color: #06c; font-weight: bold;">case</span> ma d <span style="color: #06c; font-weight: bold;">of</span>
+    Fail _ <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a> -&gt; mb d
+    x            -&gt; x
+  empty = Rat $ \ _ -&gt; Fail <span style="color: #3c7331;">&quot;empty&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;</pre>
+<p>For those willing to forego the asymptotic guarantees of packrat, we'll offer a monad.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Monad"><span style="background-color: #efefbf; font-weight: bold;">Monad</span></a> <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> a = Rat $ \_ -&gt; Pure a
+  Rat m &gt;&gt;= k = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+    Pure a -&gt; runRat <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> d
+    Commit d' a -&gt; <span style="color: #06c; font-weight: bold;">case</span> runRat <span style="color: green;">&#40;</span>k a<span style="color: green;">&#41;</span> d' <span style="color: #06c; font-weight: bold;">of</span>
+      Pure b -&gt; Commit d' b
+      Fail s _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:True"><span style="font-weight: bold;">True</span></a>
+      commit -&gt; commit
+    Fail s c -&gt; Fail s c
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fail"><span style="font-weight: bold;">fail</span></a> s = Rat $ \ _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> MonadPlus <span style="color: green;">&#40;</span>Rat d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  mplus = <span style="color: green;">&#40;</span>&lt; |&gt;<span style="color: green;">&#41;</span>
+  mzero = empty
+&nbsp;</pre>
+<p>and a Parsec-style "try", which rewinds on failure, so that < |> can try again.</p>
+<pre class="haskell">&nbsp;
+try :: Rat d a -&gt; Rat d a
+try <span style="color: green;">&#40;</span>Rat m<span style="color: green;">&#41;</span> = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+  Fail s _ -&gt; Fail s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+  x        -&gt; x
+&nbsp;</pre>
+<p>Since we've consumed < |> with parsec semantics. Let's give a PEG-style backtracking (< />).</p>
+<pre class="haskell">&nbsp;
+<span style="color: green;">&#40;</span>&lt; /&gt;<span style="color: green;">&#41;</span> :: Rat d a -&gt; Rat d a -&gt; Rat d a
+p &lt; /&gt; q = try p &lt; |&gt; q
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">3</span> &lt; /&gt;
+&nbsp;</pre>
+<p>So far nothing we have done involves packrat at all. These are all general purpose recursive descent combinators.</p>
+<p>We can define an input stream and a number of combinators to read input.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">class</span> Stream d <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar :: Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+&nbsp;
+whiteSpace :: Stream d =&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+whiteSpace = <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> &lt; $ many <span style="color: green;">&#40;</span>satisfy isSpace<span style="color: green;">&#41;</span>
+phrase :: Stream d =&gt; Rat d a -&gt; Rat d a
+phrase m = whiteSpace *&gt; m &lt; * eof
+&nbsp;
+notFollowedBy :: Rat d a -&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+notFollowedBy <span style="color: green;">&#40;</span>Rat m<span style="color: green;">&#41;</span> = Rat $ \d -&gt; <span style="color: #06c; font-weight: bold;">case</span> m d <span style="color: #06c; font-weight: bold;">of</span>
+  Fail<span style="color: green;">&#123;</span><span style="color: green;">&#125;</span> -&gt; Pure <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+  _      -&gt; Fail <span style="color: #3c7331;">&quot;unexpected&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;
+eof :: Stream d =&gt; Rat d <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>
+eof = notFollowedBy anyChar
+&nbsp;
+satisfy :: Stream d =&gt; <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Bool"><span style="background-color: #efefbf; font-weight: bold;">Bool</span></a><span style="color: green;">&#41;</span> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+satisfy p = try $ <span style="color: #06c; font-weight: bold;">do</span>
+  x &lt; - anyChar
+  x &lt;$ guard <span style="color: green;">&#40;</span>p x<span style="color: green;">&#41;</span>
+&nbsp;
+char :: Stream d =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+char c = satisfy <span style="color: green;">&#40;</span>c ==<span style="color: green;">&#41;</span>
+&nbsp;
+lexeme :: Stream d =&gt; Rat d a -&gt; Rat d a
+lexeme m = m &lt; * whiteSpace
+&nbsp;
+symbol :: Stream d =&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a> -&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+symbol c = lexeme <span style="color: green;">&#40;</span>char c<span style="color: green;">&#41;</span>
+&nbsp;
+digit :: Stream d =&gt; Rat d <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+digit = digitToInt &lt; $&gt; satisfy isDigit
+&nbsp;</pre>
+<p>And we can of course use a string as our input stream:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Stream <span style="color: green;">&#91;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a><span style="color: green;">&#93;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar = Rat $ \s -&gt; <span style="color: #06c; font-weight: bold;">case</span> s <span style="color: #06c; font-weight: bold;">of</span>
+    <span style="color: green;">&#40;</span>x:xs<span style="color: green;">&#41;</span> -&gt; Commit xs x
+    <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span> -&gt; Fail <span style="color: #3c7331;">&quot;EOF&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+&nbsp;</pre>
+<p>Now that we've built a poor man's Parsec, let's do something more interesting. Instead of just using String as out input stream, let's include slots for use in memoizing the results from our various parsers at each location. To keep things concrete, we'll memoize the ArithPackrat.hs example that Bryan Ford used in his initial packrat presentation enriched with some whitespace handling.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> D = D
+  <span style="color: green;">&#123;</span> _add        :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _mult       :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _primary    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , _decimal    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+  , anyCharD    :: Result D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Char"><span style="background-color: #efefbf; font-weight: bold;">Char</span></a>
+  <span style="color: green;">&#125;</span>
+&nbsp;</pre>
+<p>If you look at the type of each of those functions you'll see that <code>_add :: D -> Result D Int</code>, which is exactly our Rat newtype expects as its argument, we we can bundle them directly:</p>
+<pre class="haskell">&nbsp;
+&nbsp;
+add, mult, primary, decimal :: Rat D <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+add     = Rat _add
+mult    = Rat _mult
+primary = Rat _primary
+decimal = Rat _decimal
+&nbsp;</pre>
+<p>We can similarly juse use the character parse result.</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> Stream D <span style="color: #06c; font-weight: bold;">where</span>
+  anyChar = Rat anyCharD
+&nbsp;</pre>
+<p>Now we just need to build a D from a String. I'm using view patterns and record wildcards to shrink the amount of repetitive naming.</p>
+<pre class="haskell">&nbsp;
+parse :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; D
+parse s = fix $ \d -&gt; <span style="color: #06c; font-weight: bold;">let</span>
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _add<span style="color: green;">&#41;</span> =
+        <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> &lt; $&gt; mult &lt; * symbol '+' &lt;*&gt; add
+     &lt; /&gt; mult
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _mult<span style="color: green;">&#41;</span> =
+        <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> &lt; $&gt; primary &lt; * symbol '*' &lt;*&gt; mult
+    &lt; /&gt; primary
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _primary<span style="color: green;">&#41;</span> =
+        symbol '<span style="color: green;">&#40;</span>' *&gt; add &lt; * symbol '<span style="color: green;">&#41;</span>'
+    &lt;/&gt; decimal
+  Rat <span style="color: green;">&#40;</span>dv d -&gt; _decimal<span style="color: green;">&#41;</span> =
+     <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:foldl"><span style="font-weight: bold;">foldl</span></a>' <span style="color: green;">&#40;</span>\b a -&gt; b * <span style="color: red;">10</span> + a<span style="color: green;">&#41;</span> <span style="color: red;">0</span> &lt; $&gt; lexeme <span style="color: green;">&#40;</span>some digit<span style="color: green;">&#41;</span>
+  anyCharD = <span style="color: #06c; font-weight: bold;">case</span> s <span style="color: #06c; font-weight: bold;">of</span>
+    <span style="color: green;">&#40;</span>x:xs<span style="color: green;">&#41;</span> -&gt; Commit <span style="color: green;">&#40;</span>parse xs<span style="color: green;">&#41;</span> x
+    <span style="color: green;">&#91;</span><span style="color: green;">&#93;</span>     -&gt; Fail <span style="color: #3c7331;">&quot;EOF&quot;</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:False"><span style="font-weight: bold;">False</span></a>
+  <span style="color: #06c; font-weight: bold;">in</span> D <span style="color: green;">&#123;</span> .. <span style="color: green;">&#125;</span>
+&nbsp;
+dv :: d -&gt; <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> -&gt; b
+dv d f = f d
+&nbsp;</pre>
+<p>Note that we didn't really bother factoring the grammar, since packrat will take care of memoizing the redundant calls!</p>
+<p>And with that, we can define an evaluator.</p>
+<pre class="haskell">&nbsp;
+eval :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:String"><span style="background-color: #efefbf; font-weight: bold;">String</span></a> -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Int"><span style="background-color: #efefbf; font-weight: bold;">Int</span></a>
+eval s = <span style="color: #06c; font-weight: bold;">case</span> runRat <span style="color: green;">&#40;</span>whiteSpace *&gt; add &lt; * eof<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>parse s<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">of</span>
+  Pure a -&gt; a
+  Commit _ a -&gt; a
+  Fail s _ -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:error"><span style="font-weight: bold;">error</span></a> s
+&nbsp;</pre>
+<p>Note that because the input stream D contains the result directly and parse is the only thing that ever generates a D, and it does so when we start up, it should be obvious that the parse results for each location can't depend on any additional information smuggled in via our monad.</p>
+<p>Next time, we'll add a packratted Stream type directly to Parsec, which will necessitate some delicate handling of user state.</p>
+<p>The small parser implemented here can be <a href="https://github.com/ekmett/trifecta/blob/master/wip/Rat.hs">found on my github account</a>, where it hasn't been adulterated with unnecessary spaces by my blog software.</p>
+<p>P.S. To explain the quote, had I thought of it earlier, I could have named my parsing combinator library "Kessel Run" as by the time I'm done with it "it will contain at least 12 parsecs" between its different parser implementations.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2011/a-parsec-full-of-rats/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Iteratees, Parsec, and Monoids, Oh My!</title>
+		<link>http://comonad.com/reader/2009/iteratees-take-2/</link>
+		<comments>http://comonad.com/reader/2009/iteratees-take-2/#comments</comments>
+		<pubDate>Wed, 16 Sep 2009 02:51:08 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Boston Haskell]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=165</guid>
+		<description><![CDATA[I'll be giving a talk tomorrow, Wednesday, September 16th, 2009 at the Boston Haskell User Group in the MIT CSAIL  Reading Room (on the 8th floor of the William H. Gates tower of the Stata center) about mixing Oleg's iteratees with parsec and monoids to build practical parallel parsers and to cheaply reparse after [...]]]></description>
+			<content:encoded><![CDATA[<p>I'll be giving a talk tomorrow, Wednesday, September 16th, 2009 at the <a href="http://www.haskell.org/haskellwiki/Boston_Area_Haskell_Users'_Group">Boston Haskell User Group</a> in the MIT CSAIL  Reading Room (on the 8th floor of the William H. Gates tower of the Stata center) about mixing Oleg's iteratees with parsec and monoids to build practical parallel parsers and to cheaply reparse after local modifications are made to source code.</p>
+<p>Ravi is trying to organize some time before hand during which people can get together and work on Haskell projects, or spend some time learning Haskell, so its not all scary academic stuff. </p>
+<p>The meeting is scheduled from 7-9pm, and an ever growing number of us have been wandering down to the Cambridge Brewing Company afterwards to hang out and talk.</p>
+<p>If you are curious about Haskell, or even an expert, or just happen to be interested in parallel programming and find yourself in the area, come on by.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/iteratees-take-2/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Iteratees, Parsec and Monoids (Slides)</title>
+		<link>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/</link>
+		<comments>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/#comments</comments>
+		<pubDate>Thu, 20 Aug 2009 16:55:03 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Algorithms]]></category>
+		<category><![CDATA[Data Structures]]></category>
+		<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=122</guid>
+		<description><![CDATA[Two talks from the Boston Area Haskell User Group:
+<ol>	
+       <li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/IntroductionToMonoids.pdf'>Introduction To Monoids (PDF)</a></li>
+	<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/A-Parsing-Trifecta.pdf'>Iteratees, Parsec and Monoids: A Parsing Trifecta (PDF)</a></li>
+</ol>]]></description>
+			<content:encoded><![CDATA[<p>I was asked to give two talks at the <a href="http://groups.google.com/group/bostonhaskell">Boston Area Haskell User Group</a> for this past Tuesday. The first was pitched at a more introductory level and the second was to go deeper into what I have been using monoids for lately.</p>
+<p>The first talk covers an introduction to the mathematical notion of a monoid, introduces some of the features of my Haskell monoids library on hackage, and starts to motivate the use of monoidal parallel/incremental parsing, and the modification use of compression algorithms to recycle monoidal results.</p>
+<p>The second talk covers a way to generate a locally-context sensitive parallel/incremental parser by modifying <a href="http://okmij.org/ftp/Haskell/Iteratee/Iteratee.hs">Iteratees</a> to enable them to drive a <a href="http://hackage.haskell.org/package/parsec-3.0.0">Parsec 3</a> lexer, and then wrapping that in a monoid based on <a href="http://dragonbook.stanford.edu/lecture-notes/Columbia-COMS-W4115/08-03-05.html">error productions</a> in the grammar before recycling these techniques at a higher level to deal with parsing seemingly stateful structures, such as Haskell layout.</p>
+<ol>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/IntroductionToMonoids.pdf'>Introduction To Monoids (PDF)</a></li>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/08/A-Parsing-Trifecta.pdf'>Iteratees, Parsec and Monoids: A Parsing Trifecta (PDF)</a></li>
+</ol>
+<p>Due to a late start, I was unable to give the second talk. However, I did give a quick run through to a few die-hards who stayed late and came to the <a href="http://www.cambrew.com/">Cambridge Brewing Company</a> afterwards. As I promised some people that I would post the slides after the talk, here they are. </p>
+<p>The current plan is to possibly give the second talk in full at either the September or October Boston Haskell User Group sessions, depending on scheduling and availability.</p>
+<p>[ <a href='http://comonad.com/reader/wp-content/uploads/2009/08/Iteratee.hs'>Iteratee.hs</a> ]</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/iteratees-parsec-and-monoid/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Slides from Hac Phi: &#8220;All About Monoids&#8221;</title>
+		<link>http://comonad.com/reader/2009/hac-phi-slides/</link>
+		<comments>http://comonad.com/reader/2009/hac-phi-slides/#comments</comments>
+		<pubDate>Fri, 31 Jul 2009 15:41:16 +0000</pubDate>
+		<dc:creator>Edward Kmett</dc:creator>
+				<category><![CDATA[Haskell]]></category>
+		<category><![CDATA[Mathematics]]></category>
+		<category><![CDATA[Monoids]]></category>
+		<category><![CDATA[Parsing]]></category>
+
+		<guid isPermaLink="false">http://comonad.com/reader/?p=85</guid>
+		<description><![CDATA[Some people have requested my slides from the short talk I gave about monoids and monoidal parsing at Hac Phi. So, here they are.
+
+Hac Phi Slides (Powerpoint 2007)
+Hac Phi Slides (PDF)
+
+There will be more to come at the next Boston Haskell User Group in August, where it looks like I'll be giving two short talks [...]]]></description>
+			<content:encoded><![CDATA[<p>Some people have requested my slides from the short talk I gave about monoids and monoidal parsing at Hac Phi. So, here they are.</p>
+<ul>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/07/AllAboutMonoids.pptx'>Hac Phi Slides (Powerpoint 2007)</a></li>
+<li><a href='http://comonad.com/reader/wp-content/uploads/2009/07/AllAboutMonoids.pdf'>Hac Phi Slides (PDF)</a></li>
+</ul>
+<p>There will be more to come at the next Boston Haskell User Group in August, where it looks like I'll be giving two short talks covering monoids. I may use the monoidal parsing engine from Kata as an example for the advanced talk if I have time and will start to cover parsing larger classes of grammars in general (regular languages, CFGs/TIGs, TAGs, PEGs, LALR, attribute-grammars, etc.)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://comonad.com/reader/2009/hac-phi-slides/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+	</channel>
+</rss>

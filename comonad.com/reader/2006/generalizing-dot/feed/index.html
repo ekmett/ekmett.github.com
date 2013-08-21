@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Generalizing (.)</title>
+	<atom:link href="http://comonad.com/reader/2006/generalizing-dot/feed/" rel="self" type="application/rss+xml" />
+	<link>http://comonad.com/reader/2006/generalizing-dot/</link>
+	<description>types, (co)monads, substructural logic</description>
+	<lastBuildDate>Sat, 29 Dec 2012 15:18:06 -0800</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.8.4</generator>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+		<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-42597</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Fri, 11 Mar 2011 20:02:18 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-42597</guid>
+		<description>Paul: 
+
+Back when I wrote this post I gave the updated (.) the wrong precedence, it should be
+
+infixr 9 .</description>
+		<content:encoded><![CDATA[<p>Paul: </p>
+<p>Back when I wrote this post I gave the updated (.) the wrong precedence, it should be</p>
+<p>infixr 9 .</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Paul Keir</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-42556</link>
+		<dc:creator>Paul Keir</dc:creator>
+		<pubDate>Fri, 11 Mar 2011 12:44:52 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-42556</guid>
+		<description>Another great post and really neat idea. I tried
+((+2) . (*3)) 5
+and also
+((+2) . (*3)) $ 5
+but this
+(+2) . (*3) $ 5
+complains about a missing Num instance for the literal &#039;5&#039;. It makes me wonder why the 5 is accepted in any case, as it&#039;s not (here at least) an instance of Functor?</description>
+		<content:encoded><![CDATA[<p>Another great post and really neat idea. I tried<br />
+((+2) . (*3)) 5<br />
+and also<br />
+((+2) . (*3)) $ 5<br />
+but this<br />
+(+2) . (*3) $ 5<br />
+complains about a missing Num instance for the literal &#8216;5&#8242;. It makes me wonder why the 5 is accepted in any case, as it&#8217;s not (here at least) an instance of Functor?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-251</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Tue, 24 Jul 2007 15:05:25 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-251</guid>
+		<description>Thanks. Fixed. 
+
+I honestly, just typed that off the cuff. 
+
+Thats what I get for not actually compiling it before posting ;)</description>
+		<content:encoded><![CDATA[<p>Thanks. Fixed. </p>
+<p>I honestly, just typed that off the cuff. </p>
+<p>Thats what I get for not actually compiling it before posting ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fritz</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-250</link>
+		<dc:creator>Fritz</dc:creator>
+		<pubDate>Tue, 24 Jul 2007 07:58:47 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-250</guid>
+		<description>I think you need doubled parens when hiding (.) in the import (the outer ones are part of the hiding syntax, the inner ones refer to the infix composition symbol in parens for lexical reasons). Both hugs and ghci seem to like it this way. (Perhaps something in your text chain snarfed the &quot;redundant&quot; parens?)</description>
+		<content:encoded><![CDATA[<p>I think you need doubled parens when hiding (.) in the import (the outer ones are part of the hiding syntax, the inner ones refer to the infix composition symbol in parens for lexical reasons). Both hugs and ghci seem to like it this way. (Perhaps something in your text chain snarfed the &#8220;redundant&#8221; parens?)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mgsloan</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-44</link>
+		<dc:creator>mgsloan</dc:creator>
+		<pubDate>Thu, 01 Feb 2007 07:15:09 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-44</guid>
+		<description>PS, I don&#039;t think it&#039;d be too hard for noobs to learn it.  When I was a noob I wondered why this didn&#039;t work!</description>
+		<content:encoded><![CDATA[<p>PS, I don&#8217;t think it&#8217;d be too hard for noobs to learn it.  When I was a noob I wondered why this didn&#8217;t work!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mgsloan</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-43</link>
+		<dc:creator>mgsloan</dc:creator>
+		<pubDate>Thu, 01 Feb 2007 07:14:16 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-43</guid>
+		<description>This was added to The Other Prelude (perhaps one of the reasons it was created).
+
+http://www.haskell.org/haskellwiki/The_Other_Prelude
+
+Probably inspired by your irc golfings.</description>
+		<content:encoded><![CDATA[<p>This was added to The Other Prelude (perhaps one of the reasons it was created).</p>
+<p><a href="http://www.haskell.org/haskellwiki/The_Other_Prelude" rel="nofollow">http://www.haskell.org/haskellwiki/The_Other_Prelude</a></p>
+<p>Probably inspired by your irc golfings.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Edward Kmett</title>
+		<link>http://comonad.com/reader/2006/generalizing-dot/comment-page-1/#comment-3</link>
+		<dc:creator>Edward Kmett</dc:creator>
+		<pubDate>Thu, 09 Nov 2006 06:22:54 +0000</pubDate>
+		<guid isPermaLink="false">http://comonad.com/reader/2006/generalizing-haskell-function-composition/#comment-3</guid>
+		<description>As an aside, the idea came from observing the fact that &lt;a href=&quot;http://www.cse.unsw.edu.au/~dons/lambdabot.html&quot; rel=&quot;nofollow&quot;&gt;lambdabot&lt;/a&gt;&#039;s pointfree conversion command @pl had taken to using `fmap` instead of (.) in a lot of places.</description>
+		<content:encoded><![CDATA[<p>As an aside, the idea came from observing the fact that <a href="http://www.cse.unsw.edu.au/~dons/lambdabot.html" rel="nofollow">lambdabot</a>&#8217;s pointfree conversion command @pl had taken to using `fmap` instead of (.) in a lot of places.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

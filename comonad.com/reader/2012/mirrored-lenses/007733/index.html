@@ -1,0 +1,653 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from comonad.com/reader/2012/mirrored-lenses/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head profile="http://gmpg.org/xfn/11">
+        <link rel="shortcut icon" href="../../../wp-content/themes/connections/favicon.ico" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The Comonad.Reader &raquo; Mirrored Lenses</title>
+	<meta name="generator" content="WordPress 2.8.4" />
+	<style type="text/css" media="screen">@import url( ../../../wp-content/themes/connections/style.css);</style>
+	<!--[if IE]><style type="text/css"> img { behavior: url(/reader/pngbehavior/pngbehavior.htc); } </style><![endif]-->
+        <link rel="openid.server" href="https://api.screenname.aol.com/auth/openidServer"/>
+        <link rel="openid.delegate" href="http://openid.aol.com/edwardallankmett"/>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="../../../feed/index.html" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="../../../feed/atom/index.html" />
+	<link rel="pingback" href="../../../xmlrpc.php" />
+    	<link rel='archives' title='May 2013' href='../../../2013/05/index.html' />
+	<link rel='archives' title='April 2013' href='../../../2013/04/index.html' />
+	<link rel='archives' title='January 2013' href='../../../2013/01/index.html' />
+	<link rel='archives' title='December 2012' href='../../12/index.html' />
+	<link rel='archives' title='September 2012' href='../../09/index.html' />
+	<link rel='archives' title='August 2012' href='../../08/index.html' />
+	<link rel='archives' title='June 2012' href='../../06/index.html' />
+	<link rel='archives' title='May 2012' href='../../05/index.html' />
+	<link rel='archives' title='April 2012' href='../../04/index.html' />
+	<link rel='archives' title='December 2011' href='../../../2011/12/index.html' />
+	<link rel='archives' title='November 2011' href='../../../2011/11/index.html' />
+	<link rel='archives' title='October 2011' href='../../../2011/10/index.html' />
+	<link rel='archives' title='September 2011' href='../../../2011/09/index.html' />
+	<link rel='archives' title='July 2011' href='../../../2011/07/index.html' />
+	<link rel='archives' title='June 2011' href='../../../2011/06/index.html' />
+	<link rel='archives' title='July 2010' href='../../../2010/07/index.html' />
+	<link rel='archives' title='May 2010' href='../../../2010/05/index.html' />
+	<link rel='archives' title='April 2010' href='../../../2010/04/index.html' />
+	<link rel='archives' title='September 2009' href='../../../2009/09/index.html' />
+	<link rel='archives' title='August 2009' href='../../../2009/08/index.html' />
+	<link rel='archives' title='July 2009' href='../../../2009/07/index.html' />
+	<link rel='archives' title='June 2009' href='../../../2009/06/index.html' />
+	<link rel='archives' title='March 2009' href='../../../2009/03/index.html' />
+	<link rel='archives' title='December 2008' href='../../../2008/12/index.html' />
+	<link rel='archives' title='November 2008' href='../../../2008/11/index.html' />
+	<link rel='archives' title='June 2008' href='../../../2008/06/index.html' />
+	<link rel='archives' title='May 2008' href='../../../2008/05/index.html' />
+	<link rel='archives' title='April 2008' href='../../../2008/04/index.html' />
+	<link rel='archives' title='March 2008' href='../../../2008/03/index.html' />
+	<link rel='archives' title='January 2008' href='../../../2008/01/index.html' />
+	<link rel='archives' title='July 2007' href='../../../2007/07/index.html' />
+	<link rel='archives' title='May 2007' href='../../../2007/05/index.html' />
+	<link rel='archives' title='November 2006' href='../../../2006/11/index.html' />
+	<link rel='archives' title='October 2006' href='../../../2006/10/index.html' />
+	<link rel="alternate" type="application/rss+xml" title="The Comonad.Reader &raquo; Mirrored Lenses Comments Feed" href="../feed/index.html" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../../../xmlrpc0db0.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../../../wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='The Comonad.Reader' href='../../../index.html' />
+<link rel='start' title='Hello, World!' href='../../../2006/hello-world/index.html' />
+<link rel='prev' title='Where&#8217;s Waldo?' href='../../wheres-waldo/index.html' />
+<link rel='next' title='Working around Hackage Outages' href='../../hackage-mirror/index.html' />
+<meta name="generator" content="WordPress 2.8.4" />
+</head>
+<body>
+<div id="rap">
+	<div id="header">
+	<ul id="topnav">
+		<li><a href="../../../index.html" id="navHome" title="Posted Recently" accesskey="h">Home |</a></li>
+		<li><a href="../../../about/index.html" id="navAbout" title="About the Author" accesskey="a">About |</a></li>
+		<li><a href="../../../source%3bitem%3dlibraries.html" id="navSource" title="Source Code" accesskey="s">Source |</a></li>
+		<li><a href="mailto:ekmett@gmail.com" id="navContact" title="Contact the Author" accesskey="c">Contact </a></li>
+	</ul>
+	<a href="../../../index.html" id="logoHome" title="Posted Recently"><img id="logo" src="../../../pngbehavior/blank.gif" ></a>
+	<h1><a href="../../../index.html" title="The Comonad.Reader">The Comonad.Reader</a></h1>		
+	<div id="desc">types, (co)monads, substructural logic</div>
+</div>
+	
+	<div id="main">
+	<div id="content">
+<div id="fpjobs">
+<!-- Begin Functional Jobs Affiliate Code -->
+<script type="text/javascript" class="fja" src="https://d1ih2qjlwy0iio.cloudfront.net/static/js/affiliates.min.js">
+{
+        "api_key":"86dec4630f050b0e692605e1e2f90eef",
+        "size":"480x60"
+}
+</script>
+<noscript>
+        <strong><a href="http://functionaljobs.com/">Functional Jobs</a></strong>&mdash;Dream Jobs for Functional Programmers
+</noscript>
+<!-- End Functional Jobs Affiliate Code -->
+</div>
+
+						<div class="post">
+				<p class="post-date">Sun 24 Jun 2012</p>
+<div class="post-info"><h2 class="post-title"><a href="../index.html" rel="bookmark" title="Permanent Link: Mirrored Lenses">Mirrored Lenses</a></h2>
+Posted by Edward Kmett under <a href="../../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> ,  <a href="../../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> ,  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> ,  <a href="../../../category/lenses/index.html" title="View all posts in Lenses" rel="category tag">Lenses</a> <br/><a href="../index.html#comments" title="Comment on Mirrored Lenses">[2] Comments</a>&nbsp;</div>
+<div class="post-content">
+	<p>Lenses are a great way to deal with functional references, but there are two common issues that arise from their use. </p>
+<ol>
+<li>There is a long-standing folklore position that lenses do not support polymorphic updates. This has actually caused a fair bit of embarrassment for the folks who'd like to incorporate lenses in any Haskell record system improvement.</li>
+<li>Access control. It'd be nice to have read-only or write-only properties -- "one-way" or "mirrored" lenses, as it were. Moreover, lenses are commonly viewed as an all or nothing proposition, in that it is hard to mix them with arbitrary user functions.</li>
+<li>Finally there is a bit of a cult around trying to generalize lenses by smashing a monad in the middle of them somewhere, it would be nice to be able to get into a list and work with each individual element in it without worrying about someone mucking up our lens laws, and perhaps avoid the whole generalized lens issue entirely.</li>
+</ol>
+<p>We'll take a whack at each of these concerns in turn today.<br />
+<span id="more-600"></span></p>
+<pre lang='haskell'>
+   {-# LANGUAGE Rank2Types #-}  -- we'll relax this later
+   import Data.Complex -- for complex examples
+</pre>
+<p>First, let us consider the type of van Laarhoven lenses:</p>
+<pre lang='haskell'>
+type Lens a b =
+  forall f. Functor f =>
+  (b -> f b) -> a -> f a
+</pre>
+<p>with a couple of examples:</p>
+<pre class="haskell">&nbsp;
+realLens :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Lens <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+realLens f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>:+ i<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f r<span style="color: green;">&#41;</span>
+&nbsp;
+imagLens :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Lens <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+imagLens f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>r :+<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f i<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>These lenses have some very nice properties that we're going to exploit. By far their nicest property is that you can compose them using just <code>(.)</code> and <code>id</code> from the <code>Prelude</code> rather than having to go off and write a <code>Category</code>.</p>
+<h2>Lens Families</h2>
+<p><a href="http://r6.ca/blog/20120623T104901Z.html">Russell O'Connor recently noted that these lenses permit polymorphic update</a> if you simply generalize their type signature to</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> LensFamily a b c d =
+  <span style="color: #06c; font-weight: bold;">forall</span> f. <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt;
+  <span style="color: green;">&#40;</span>c -&gt; f d<span style="color: green;">&#41;</span> -&gt; a -&gt; f b
+&nbsp;</pre>
+<p>I'd like to note that you can't just let these 4 arguments vary with complete impunity, so I'll be referring to these as "lens families" rather than polymorphic lenses, a point that I'll address further below. In short, we want the original lens laws to still hold in spite of the generalized type signature, and this forces some of these types to be related. </p>
+<p>As an aside, each of the other lens types admit this same generalization! For instance the <code>Lens</code> type in <a href="http://hackage.haskell.org/package/data-lens">data-lens</a> can be generalized using an indexed store comonad:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">data</span> Store c d b = Store <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> c
+&nbsp;
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Store c d<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+  <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Store g c<span style="color: green;">&#41;</span> = Store <span style="color: green;">&#40;</span>f . g<span style="color: green;">&#41;</span> c
+&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> DataLensFamily a b c d = DataLensFamily <span style="color: green;">&#40;</span>a -&gt; Store c d b<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and we can freely convert back and forth to van Laarhoven lens families:</p>
+<pre class="haskell">&nbsp;
+dlens :: LensFamily a b c d -&gt; DataLensFamily a b c d
+dlens l = DataLensFamily <span style="color: green;">&#40;</span>l <span style="color: green;">&#40;</span>Store <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;
+plens :: DataLensFamily a b c d -&gt; LensFamily a b c d
+plens <span style="color: green;">&#40;</span>DataLensFamily l<span style="color: green;">&#41;</span> f a = <span style="color: #06c; font-weight: bold;">case</span> l a <span style="color: #06c; font-weight: bold;">of</span>
+  Store g c -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>f c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>I leave it as an exercise to the reader to generalize the other lens types, but we'll stick to van Laarhoven lens families almost exclusively below.</p>
+<p>As Russell noted, we can define functions to get, modify and set the target of a lens very easily. I'll create local names for <code>Identity</code> and <code>Const</code>, mostly to help give nicer error messages later.</p>
+<p>We can read from a lens family:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixl</span> <span style="color: red;">8</span> ^.
+<span style="color: #06c; font-weight: bold;">newtype</span> Getting b a = Getting <span style="color: green;">&#123;</span> got :: b <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> <span style="color: green;">&#40;</span>Getting b<span style="color: green;">&#41;</span> <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> _ <span style="color: green;">&#40;</span>Getting b<span style="color: green;">&#41;</span> = Getting b
+<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span> :: a -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Getting c d<span style="color: green;">&#41;</span> -&gt; a -&gt; Getting c b<span style="color: green;">&#41;</span> -&gt; c
+x ^. l = got <span style="color: green;">&#40;</span>l Getting x<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can modify the target of the lens:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">newtype</span> Setting a = Setting <span style="color: green;">&#123;</span> unsetting :: a <span style="color: green;">&#125;</span>
+<span style="color: #06c; font-weight: bold;">instance</span> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> Setting <span style="color: #06c; font-weight: bold;">where</span>
+    <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> f <span style="color: green;">&#40;</span>Setting a<span style="color: green;">&#41;</span> = Setting <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">4</span> %=
+<span style="color: green;">&#40;</span>%=<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>c -&gt; d<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+l %= f = unsetting . l <span style="color: green;">&#40;</span>Setting . f<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can set the target of the lens with impunity:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">infixr</span> <span style="color: red;">4</span> ^=
+<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span> :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b<span style="color: green;">&#41;</span> -&gt; d -&gt; a -&gt; b
+l ^= v = l %= <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:const"><span style="font-weight: bold;">const</span></a> v
+&nbsp;</pre>
+<p>We can build a lens family from a getter/setter pair</p>
+<pre class="haskell">&nbsp;
+lens :: <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; d -&gt; b<span style="color: green;">&#41;</span> -&gt; LensFamily a b c d
+lens f g h a = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>g a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>h <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>or from a family of isomorphisms:</p>
+<pre class="haskell">&nbsp;
+iso :: <span style="color: green;">&#40;</span>a -&gt; c<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>d -&gt; b<span style="color: green;">&#41;</span> -&gt; LensFamily a b c d
+iso f g h a = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>h <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>With these combinators in hand, we need some actual lens families to play with. Fortunately they are just as easy to construct as simple lenses. The only thing that changes is the type signature.  </p>
+<pre class="haskell">&nbsp;
+fstLens :: LensFamily <span style="color: green;">&#40;</span>a,c<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b,c<span style="color: green;">&#41;</span> a b
+fstLens f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span>\x -&gt; <span style="color: green;">&#40;</span>x,b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f a<span style="color: green;">&#41;</span>
+&nbsp;
+sndLens :: LensFamily <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>a,c<span style="color: green;">&#41;</span> b c
+sndLens f <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>,<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>f b<span style="color: green;">&#41;</span>
+&nbsp;
+swap :: <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span>
+swap <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> = <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span>
+&nbsp;
+swapped :: LensFamily <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>c,d<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>b,a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>d,c<span style="color: green;">&#41;</span>
+swapped = iso swap swap
+&nbsp;</pre>
+<p>These can also build 'traditional' lenses:</p>
+<pre class="haskell">&nbsp;
+negated :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Lens a a
+negated = iso <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a> <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:negate"><span style="font-weight: bold;">negate</span></a>
+&nbsp;</pre>
+<p>And since <code>Lens</code> and <code>LensFamily</code> are both type aliases, we can freely mix and match lenses with lens families:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span> ^.fstLens.realLens
+<span style="color: red;">1.0</span>
+ghci&gt; fstLens . realLens ^= <span style="color: red;">4</span> $ <span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">4.0</span> :+ <span style="color: red;">2.0</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>But, we can now change types with our lens updates!</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span>fstLens . sndLens ^= <span style="color: #3c7331;">&quot;hello&quot;</span><span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,<span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: red;">1</span>,<span style="color: #3c7331;">&quot;hello&quot;</span><span style="color: green;">&#41;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>We can even do things like use the combinator</p>
+<pre class="haskell">&nbsp;
+traverseLens :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; c<span style="color: green;">&#41;</span> -&gt; a -&gt; b<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+traverseLens f = f <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a>
+&nbsp;</pre>
+<p>to project a <code>Functor</code> out through an appropriate lens family:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t traverseLens <span style="color: green;">&#40;</span>fstLens . sndLens<span style="color: green;">&#41;</span>
+traverseLens <span style="color: green;">&#40;</span>fstLens . sndLens<span style="color: green;">&#41;</span>
+  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a, f b<span style="color: green;">&#41;</span>, c<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>a, b<span style="color: green;">&#41;</span>, c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>That takes care of polymorphic updates. </p>
+<h2>Why is it a Lens Family?</h2>
+<p>So, why do I use the term "lens family" rather than "polymorphic lens"?</p>
+<p>In order for the lens laws to hold, the 4 types parameterizing our lens family must be interrelated.</p>
+<p>In particular you need to be able to put back (with <code>^=</code>) what you get out of the lens (with <code>^.</code>) and put multiple times.</p>
+<p>This effectively constrains the space of possible legal lens families to those where there exists an index kind <code>i</code>, and two type families <code>outer :: i -> *</code>, and <code>inner :: i -> *</code>. If this were a viable type signature, then each lens family would actually have 2 parameters, yielding something like:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- pseudo-Haskell</span>
+<span style="color: #5d478b; font-style: italic;">-- type LensFamily outer inner =</span>
+<span style="color: #5d478b; font-style: italic;">--    forall a b. LensFamily (outer a) (outer b) (inner a) (inner b)</span>
+&nbsp;</pre>
+<p>but you can't pass in type families as arguments like that, and even if you could, their lack of injectivity doesn't give the type checker enough to work with to compose your lenses. By specifying all 4 type arguments independently, we give the compiler enough to work with. But since the arguments aren't just freely polymorphic and are instead related by these index types, I'm choosing to call them "lens families" rather than "polymorphic lenses".</p>
+<h2>Getters</h2>
+<p>Note, we didn't use the full polymorphism of the van Laarhoven lenses in the signatures of <code>(^.)</code>, <code>(%=)</code> and <code>(^=)</code> above.</p>
+<p>What happens when we restrict the type of <code>Functor</code> we're allowed to pass to our lens?</p>
+<p>If we generalize the type of our getter ever so slightly from the type we pass to <code>(^.)</code> to permit composition, we get:</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Getter a c = <span style="color: #06c; font-weight: bold;">forall</span> r d b. <span style="color: green;">&#40;</span>c -&gt; Getting r d<span style="color: green;">&#41;</span> -&gt; a -&gt; Getting r b
+&nbsp;</pre>
+<p>and we can make getters out of arbitrary Haskell functions that we have lying around with</p>
+<pre class="haskell">&nbsp;
+<span style="color: #5d478b; font-style: italic;">-- | build a getting out of a function</span>
+getting :: <span style="color: green;">&#40;</span>a -&gt; b<span style="color: green;">&#41;</span> -&gt; Getter a b
+getting g f = Getting . got . f . g
+&nbsp;</pre>
+<p>For example:</p>
+<pre class="haskell">&nbsp;
+getFst :: Getter <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> a
+getFst = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fst"><span style="font-weight: bold;">fst</span></a>
+&nbsp;
+getSnd :: Getter <span style="color: green;">&#40;</span>a,b<span style="color: green;">&#41;</span> b
+getSnd = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a>
+&nbsp;</pre>
+<p>But this is particularly nice for things that <em>can't</em> be made into real lenses or lens families, because of loss of information:</p>
+<pre class="haskell">&nbsp;
+getPhase :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a =&gt; Getter <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> a
+getPhase = getting phase
+&nbsp;
+getAbs, getSignum  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Getter a a
+getAbs = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:abs"><span style="font-weight: bold;">abs</span></a>
+getSignum = getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:signum"><span style="font-weight: bold;">signum</span></a>
+&nbsp;</pre>
+<p>Notably, <code>getMagnitude</code> and <code>getPhase</code> can't be legal lenses because when the <code>magnitude</code> is 0, you lose <code>phase</code> information.</p>
+<p>These can be mixed and matched with other lenses when dereferencing with <code>(^.)</code></p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span><span style="color: red;">0</span>,<span style="color: green;">&#40;</span><span style="color: red;">1</span>:<span style="color: red;">+2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> ^. getting <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:snd"><span style="font-weight: bold;">snd</span></a> . fstLens . getting magnitude
+<span style="color: red;">2.23606797749979</span>
+&nbsp;</pre>
+<p>But we get a type error when we attempt to write to a <code>Getter</code>.</p>
+<pre class="haskell">&nbsp;
+ghci&gt; getting magnitude ^= <span style="color: red;">12</span>
+&lt;interactive&gt;:<span style="color: red;">2</span>:<span style="color: red;">1</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Setting d0'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Getting r0 d1'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; a1 -&gt; Setting b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Getting r0 d1<span style="color: green;">&#41;</span> -&gt; a0 -&gt; Getting r0 b0
+    In the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: #06c; font-weight: bold;">type</span> <span style="color: #06c; font-weight: bold;">of</span> a call <span style="color: #06c; font-weight: bold;">of</span> `getting'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span>', namely `getting magnitude'
+&lt;/interactive&gt;</pre>
+<h2>Setters</h2>
+<p>So what about write-only properties?</p>
+<p>These have a less satisfying solution. We have to break our lens family structure slightly to make something that can strictly <em>only</em> be written to, by disabling the ability to read our current value entirely. </p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Setter a d b = <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b
+&nbsp;
+setting :: <span style="color: green;">&#40;</span>a -&gt; d -&gt; b<span style="color: green;">&#41;</span> -&gt; Setter a d b
+setting f g a = Setting <span style="color: green;">&#40;</span>f a <span style="color: green;">&#40;</span>unsetting <span style="color: green;">&#40;</span>g <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>Now we can make setters out of functions that take two arguments:</p>
+<pre class="haskell">&nbsp;
+plus, times :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> a =&gt; Setter a a a
+plus = setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span>
+times = setting <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<pre class="haskell">&nbsp;
+ghci&gt; setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> ^= <span style="color: red;">12</span> $ <span style="color: red;">32</span>
+<span style="color: red;">44</span>
+ghci&gt; fstLens . setting <span style="color: green;">&#40;</span>*<span style="color: green;">&#41;</span> ^= <span style="color: red;">12</span> $ <span style="color: green;">&#40;</span><span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">24</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>However, these lenses have the unsatisfying property that they can only be placed last in the chain of lenses we're setting. </p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#40;</span>setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> . realLens ^= <span style="color: red;">12</span><span style="color: green;">&#41;</span> <span style="color: red;">1</span>
+&lt;interactive&gt;:<span style="color: red;">15</span>:<span style="color: red;">16</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `<span style="color: green;">&#40;</span><span style="color: green;">&#41;</span>' with actual <span style="color: #06c; font-weight: bold;">type</span> `Complex d0'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#41;</span> -&gt; Setting b0
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span>
+                   -&gt; Complex d0 -&gt; Setting <span style="color: green;">&#40;</span>Complex d0<span style="color: green;">&#41;</span>
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>.<span style="color: green;">&#41;</span>', namely `realLens'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^=<span style="color: green;">&#41;</span>', namely `setting <span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span> . realLens'
+&lt;/interactive&gt;</pre>
+<p>This isn't surprising, if you consider that to compose <code>data-lens</code> lenses you need to use <code>%=</code> to chain setters.</p>
+<h2>Modifiers</h2>
+<p>So what do we need to do to make a lens we can only modify but not read?</p>
+<p>Lets restore the lens family structure!</p>
+<pre class="haskell">&nbsp;
+<span style="color: #06c; font-weight: bold;">type</span> Modifier a b c d = <span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; a -&gt; Setting b
+&nbsp;
+modifying :: <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; d<span style="color: green;">&#41;</span> -&gt; a -&gt; b<span style="color: green;">&#41;</span> -&gt; Modifier a b c d
+modifying f g a = Setting <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>unsetting . g<span style="color: green;">&#41;</span> a<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p><code>modifying</code> makes a modify-only lens family you can modify using local information, but can't tell anyone about the contents of.</p>
+<p>This lets us work with a lens over a variable number of elements in a structure, without worrying about a user accidentally "putting back" too many or too few entries.</p>
+<pre class="haskell">&nbsp;
+ghci&gt; modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a> %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#91;</span><span style="color: red;">1</span>,<span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#93;</span>
+<span style="color: green;">&#91;</span><span style="color: red;">2</span>,<span style="color: red;">3</span>,<span style="color: red;">4</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>They can be composed with other lenses:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a> . sndLens %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+<span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>and unlike with a <code>Setter</code>, you can compose a <code>Modifier</code> with a <code>Modifier</code>:</p>
+<pre class="haskell">&nbsp;
+modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> . modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>
+  :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> g, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Functor"><span style="background-color: #efefbf; font-weight: bold;">Functor</span></a> f<span style="color: green;">&#41;</span> =&gt;
+     <span style="color: green;">&#40;</span>c -&gt; Setting d<span style="color: green;">&#41;</span> -&gt; f <span style="color: green;">&#40;</span>g c<span style="color: green;">&#41;</span> -&gt; Setting <span style="color: green;">&#40;</span>f <span style="color: green;">&#40;</span>g d<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>but they cannot be read from directly:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; <span style="color: green;">&#91;</span><span style="color: red;">1</span>,<span style="color: red;">2</span>,<span style="color: red;">3</span><span style="color: green;">&#93;</span> ^. modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a>
+&lt;interactive&gt;:<span style="color: red;">18</span>:<span style="color: red;">12</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Getting c0 d0'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Setting d1'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>c0 -&gt; Getting c0 d0<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#91;</span>t0<span style="color: green;">&#93;</span> -&gt; Getting c0 b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: Modifier a0 b0 c0 d1
+    In the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:return"><span style="font-weight: bold;">return</span></a> <span style="color: #06c; font-weight: bold;">type</span> <span style="color: #06c; font-weight: bold;">of</span> a call <span style="color: #06c; font-weight: bold;">of</span> `modifying'
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span>', namely `modifying <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:map"><span style="font-weight: bold;">map</span></a>'
+&lt;/interactive&gt;</pre>
+<p>We can map over restricted domains:</p>
+<pre class="haskell">&nbsp;
+reals :: <span style="color: green;">&#40;</span><a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> a, <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:RealFloat"><span style="background-color: #efefbf; font-weight: bold;">RealFloat</span></a> b<span style="color: green;">&#41;</span> =&gt; Modifier <span style="color: green;">&#40;</span>Complex a<span style="color: green;">&#41;</span> <span style="color: green;">&#40;</span>Complex b<span style="color: green;">&#41;</span> a b
+reals = modifying <span style="color: green;">&#40;</span>\f <span style="color: green;">&#40;</span>r :+ i<span style="color: green;">&#41;</span> -&gt; f r :+ f i<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and everything still composes:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; reals %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $  <span style="color: red;">1</span> :+ <span style="color: red;">2</span>
+<span style="color: red;">2</span> :+ <span style="color: red;">3</span>
+ghci&gt; fstLens . reals %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $ <span style="color: green;">&#40;</span><span style="color: red;">1</span> :+ <span style="color: red;">2</span>, <span style="color: red;">4</span><span style="color: green;">&#41;</span>
+<span style="color: green;">&#40;</span><span style="color: red;">2.0</span> :+ <span style="color: red;">3.0</span>,<span style="color: red;">4</span><span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>These aren't limited to actions that map over the entire structure, however!</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :m + Data.Lens
+ghci&gt; modifying <span style="color: green;">&#40;</span>`adjust` <span style="color: #3c7331;">&quot;goodbye&quot;</span><span style="color: green;">&#41;</span> %= <span style="color: green;">&#40;</span><span style="color: red;">+1</span><span style="color: green;">&#41;</span> $
+      fromList <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">2</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+fromList <span style="color: green;">&#91;</span><span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;goodbye&quot;</span>,<span style="color: red;">3</span><span style="color: green;">&#41;</span>,<span style="color: green;">&#40;</span><span style="color: #3c7331;">&quot;hello&quot;</span>,<span style="color: red;">1</span><span style="color: green;">&#41;</span><span style="color: green;">&#93;</span>
+&nbsp;</pre>
+<p>This lets us update potentially nested structures where something may or may not be present , which was fairly tedious to do with earlier lens representations.</p>
+<p>Both the former map-like example and the latter update-like behavior were commonly used examples in calls for partial lenses or 'multi-lenses', but here they are able to implemented using a restricted form of a more traditional lens type, and moreover they compose cleanly with other lenses and lens families.</p>
+<h2>Rank-1 Lens Families</h2>
+<p>At the very start I mentioned that you can dispense with the need for Rank-2 Types. Doing so requires much more tedious type signatures as the <code>LensFamily</code>, <code>Getter</code>, <code>Setter</code> and <code>Lens</code> aliases are no longer legal. Also, if you want to take a lens as an argument and use it in multiple contexts (e.g. as both a getter and a setter), you'll need to clone it to obtain a lens family. For example, this fails:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t \l y -&gt; l ^= y ^. l + <span style="color: red;">1</span> $ y
+&lt;interactive&gt;:<span style="color: red;">1</span>:<span style="color: red;">19</span>:
+    Couldn't match expected <span style="color: #06c; font-weight: bold;">type</span> `Getting d0 d1'
+                with actual <span style="color: #06c; font-weight: bold;">type</span> `Setting d0'
+    Expected <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Getting d0 d1<span style="color: green;">&#41;</span> -&gt; a1 -&gt; Getting d0 b1
+      Actual <span style="color: #06c; font-weight: bold;">type</span>: <span style="color: green;">&#40;</span>d0 -&gt; Setting d0<span style="color: green;">&#41;</span> -&gt; a0 -&gt; Setting b0
+    In the second argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>^.<span style="color: green;">&#41;</span>', namely `l'
+    In the first argument <span style="color: #06c; font-weight: bold;">of</span> `<span style="color: green;">&#40;</span>+<span style="color: green;">&#41;</span>', namely `y ^. l'
+&lt;/interactive&gt;</pre>
+<p>But we can clone the supplied monomorphic lens using the composition of <code>dlens</code> and <code>plens</code> above, since the <code>DataLensFamily</code> completely characterizes the <code>LensFamily</code> with:</p>
+<pre class="haskell">&nbsp;
+clone ::
+  <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Store c d d<span style="color: green;">&#41;</span> -&gt; <span style="color: green;">&#40;</span>a -&gt; Store c d b<span style="color: green;">&#41;</span><span style="color: green;">&#41;</span> -&gt;
+  LensFamily a b c d
+clone l f a = <span style="color: #06c; font-weight: bold;">case</span> l <span style="color: green;">&#40;</span>Store <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:id"><span style="font-weight: bold;">id</span></a><span style="color: green;">&#41;</span> a <span style="color: #06c; font-weight: bold;">of</span>
+  Store g c -&gt; <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:fmap"><span style="font-weight: bold;">fmap</span></a> g <span style="color: green;">&#40;</span>f c<span style="color: green;">&#41;</span>
+&nbsp;</pre>
+<p>and then the following code type checks:</p>
+<pre class="haskell">&nbsp;
+ghci&gt; :t \l y -&gt; clone l ^= y ^. clone l + <span style="color: red;">1</span> $ y
+\l y -&gt; clone l ^= y ^. clone l + <span style="color: red;">1</span> $ y
+  :: <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#t:Num"><span style="background-color: #efefbf; font-weight: bold;">Num</span></a> d =&gt; <span style="color: green;">&#40;</span><span style="color: green;">&#40;</span>c -&gt; Store c d1 d1<span style="color: green;">&#41;</span> -&gt; a -&gt; Store d d b<span style="color: green;">&#41;</span> -&gt; a -&gt; b
+&nbsp;</pre>
+<p>This means you could implement an entire library to deal with lens families with restricted getters and setters and remain within the confines of Haskell 98. However, the type signatures are considerably less elegant than what becomes available when you simply add Rank2Types.</p>
+<h2>Conclusion</h2>
+<p>So, we've demonstrated that van Laarhoven lens families let you have lenses that permit polymorphic update, let you offer lenses that are restricted to only allowing the use of getters, setters or modifiers, while granting you easy composition with the existing <code>(.)</code> and <code>id</code> from the <code>Prelude</code>.</p>
+<p>I think the practical existence and power of these combinators make a strong case for their use in any serious record reform proposal.</p>
+<p>My thanks go to Russell O'Connor. He first noticed that you can generalize van Laarhoven lenses and proposed the <code>clone</code> combinator as a path to Haskell 98/2010 compatibility, while retaining the nicer composition model.</p>
+	<div class="post-info">
+			</div>
+	<div class="post-footer">&nbsp;</div>
+</div>
+				
+<!-- You can start editing here. -->
+
+	<h3 id="comments">2 Responses to &#8220;Mirrored Lenses&#8221;</h3> 
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-105586">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=075bda3200412b54f321d25946f3cb98&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Ein</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-105586" title="">July 17th, 2012 at 11:41 am</a> </small>
+			<br clear="all"/>
+
+			<p>You mentioned at the end that record reform proposals should consider these concepts.  Have you thought about what those considerations might be for the current record namespace initiative (e.g. the proposals on <a href="http://hackage.haskell.org/trac/ghc/wiki/Records" rel="nofollow">http://hackage.haskell.org/trac/ghc/wiki/Records</a>, or even just SORF/DORF)?</p>
+		</li>
+
+	
+	
+		<li class="" id="comment-105589">
+		        <a href="http://en.gravatar.com/site/signup"><img style="padding-right: 2px" src="http://www.gravatar.com/avatar.php?gravatar_id=9c51a8b8afa2366a2ef4650c411f187a&amp;rating=R&amp;size=40&amp;d=wavatar" align="left"></a>
+			<cite>Edward Kmett</cite> Says:
+						<br />
+
+			<small class="commentmetadata"><a href="#comment-105589" title="">July 17th, 2012 at 1:23 pm</a> </small>
+			<br clear="all"/>
+
+			<p>Honestly, I&#8217;m pretty far behind in the record debate. Mostly because the signal to noise ratio was bad enough that I just gave up on it. In practice the use of lenses is mostly orthogonal to SORF/DORF.</p>
+<p>This does largely address the use of something like . as a field accessor though, because foo^.bar.baz.quux does exactly what an OOP developer would expect.</p>
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://comonad.com/reader/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+<p><input type="text" name="math" id="math" value="" size="22" tabindex="4" />
+<label for="url"><small>Simplify log(exp(12))</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="5"></textarea></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="6" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="600" />
+</p>
+
+</form>
+
+
+			</div>
+					<p align="center"></p>		
+	</div>
+	<div id="sidebar">
+		<h2>Archived Entry</h2>
+	<ul>
+	<li><strong>Post Date :</strong></li>
+	<li>Sunday, Jun 24th, 2012 at 10:38 pm</li>
+	<li><strong>Category :</strong></li>
+	<li><a href="../../../category/algorithms/index.html" title="View all posts in Algorithms" rel="category tag">Algorithms</a> and  <a href="../../../category/data-structures/index.html" title="View all posts in Data Structures" rel="category tag">Data Structures</a> and  <a href="../../../category/haskell/index.html" title="View all posts in Haskell" rel="category tag">Haskell</a> and  <a href="../../../category/lenses/index.html" title="View all posts in Lenses" rel="category tag">Lenses</a></li>
+	<li><strong>Do More :</strong></li>
+	<li>							You can <a href="#respond">leave a response</a>, or <a href="../trackback/index.html">trackback</a> from your own site.
+						
+						</li>
+	</ul>
+		
+	<h2>Wiki</h2>
+<ul>
+    <li><a href="../../../wiki%3bitem%3dOctober%202006%3bAugust%202006%3bJuly%202006.html">Old Journal</a></li>
+    <li><a href="../../../source%3bitem%3dlibraries.html">Source</a>
+    <li><a href="../../../wiki%3bitem%3dHarmless%2bAlgorithms%3bfine-occlusion%2bculling.html">Harmless Algorithms</a></li>
+</ul>
+<!--
+<h2>Pages</h2>
+<ul><li class="page_item page-item-2"><a href="http://comonad.com/reader/about/" title="About">About</a></li>
+<li class="page_item page-item-29"><a href="http://comonad.com/reader/source/" title="Source">Source</a></li>
+<li class="page_item page-item-31"><a href="http://comonad.com/reader/wiki-category/" title="View Category">View Category</a></li>
+<li class="page_item page-item-30"><a href="http://comonad.com/reader/wiki/" title="Wiki">Wiki</a></li>
+</ul>
+-->
+<!--
+<h2>Blog Topics</h2>
+<ul>	<li class="cat-item cat-item-29"><a href="http://comonad.com/reader/category/algorithms/" title="View all posts filed under Algorithms">Algorithms</a> (13)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://comonad.com/reader/category/category-theory/" title="View all posts filed under Category Theory">Category Theory</a> (32)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://comonad.com/reader/category/comonads/" title="View all posts filed under Comonads">Comonads</a> (16)
+</li>
+	<li class="cat-item cat-item-28"><a href="http://comonad.com/reader/category/data-structures/" title="View all posts filed under Data Structures">Data Structures</a> (13)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://comonad.com/reader/category/haskell/" title="View all posts filed under Haskell">Haskell</a> (58)
+<ul class='children'>
+	<li class="cat-item cat-item-34"><a href="http://comonad.com/reader/category/haskell/boston-haskell/" title="View all posts filed under Boston Haskell">Boston Haskell</a> (6)
+	<ul class='children'>
+	<li class="cat-item cat-item-42"><a href="http://comonad.com/reader/category/haskell/boston-haskell/hac-boston/" title="View all posts filed under Hac Boston">Hac Boston</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://comonad.com/reader/category/haskell/constraint-kinds/" title="View all posts filed under Constraint Kinds">Constraint Kinds</a> (2)
+</li>
+	<li class="cat-item cat-item-52"><a href="http://comonad.com/reader/category/haskell/infrastructure/" title="View all posts filed under Infrastructure">Infrastructure</a> (1)
+</li>
+	<li class="cat-item cat-item-54"><a href="http://comonad.com/reader/category/haskell/japan/" title="View all posts filed under Japan">Japan</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-20"><a href="http://comonad.com/reader/category/javascript/" title="View all posts filed under Javascript">Javascript</a> (1)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://comonad.com/reader/category/kan-extensions/" title="View all posts filed under Kan Extensions">Kan Extensions</a> (12)
+</li>
+	<li class="cat-item cat-item-47"><a href="http://comonad.com/reader/category/lenses/" title="View all posts filed under Lenses">Lenses</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://comonad.com/reader/category/logic/" title="View all posts filed under Logic">Logic</a> (4)
+</li>
+	<li class="cat-item cat-item-33"><a href="http://comonad.com/reader/category/macros/" title="View all posts filed under Macros">Macros</a> (1)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://comonad.com/reader/category/mathematics/" title="View all posts filed under Mathematics">Mathematics</a> (16)
+<ul class='children'>
+	<li class="cat-item cat-item-37"><a href="http://comonad.com/reader/category/mathematics/linear-algebra/" title="View all posts filed under Linear Algebra">Linear Algebra</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://comonad.com/reader/category/meta/" title="View all posts filed under Meta">Meta</a> (3)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://comonad.com/reader/category/monads/" title="View all posts filed under Monads">Monads</a> (27)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://comonad.com/reader/category/monoids/" title="View all posts filed under Monoids">Monoids</a> (7)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://comonad.com/reader/category/parsing/" title="View all posts filed under Parsing">Parsing</a> (5)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://comonad.com/reader/category/scheme/" title="View all posts filed under Scheme">Scheme</a> (1)
+</li>
+	<li class="cat-item cat-item-24"><a href="http://comonad.com/reader/category/squiggol/" title="View all posts filed under Squiggol">Squiggol</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://comonad.com/reader/category/type-hackery/" title="View all posts filed under Type Hackery">Type Hackery</a> (7)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://comonad.com/reader/category/type-theory/" title="View all posts filed under Type Theory">Type Theory</a> (5)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://comonad.com/reader/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a> (13)
+</li>
+</ul>
+-->
+<h2>Tag Cloud</h2>
+
+<h2><label for="s">Search</label></h2>
+	<ul>
+		<li>
+			<form id="searchform" method="get" action="http://comonad.com/reader/index.php">
+				<div style="text-align:center">
+					<p><input type="text" name="s" id="s" size="10" /> <input type="submit" name="submit" value="Search" /></p>
+				</div>
+			</form>
+		</li>
+	</ul>
+<!--
+<h2>Monthly</h2>
+	<ul>	<li><a href='http://comonad.com/reader/2013/05/' title='May 2013'>May 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/04/' title='April 2013'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2013/01/' title='January 2013'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/12/' title='December 2012'>December 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/09/' title='September 2012'>September 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/08/' title='August 2012'>August 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/06/' title='June 2012'>June 2012</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2012/05/' title='May 2012'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2012/04/' title='April 2012'>April 2012</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/12/' title='December 2011'>December 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/11/' title='November 2011'>November 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/10/' title='October 2011'>October 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/09/' title='September 2011'>September 2011</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2011/07/' title='July 2011'>July 2011</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2011/06/' title='June 2011'>June 2011</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2010/07/' title='July 2010'>July 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2010/05/' title='May 2010'>May 2010</a>&nbsp;(4)</li>
+	<li><a href='http://comonad.com/reader/2010/04/' title='April 2010'>April 2010</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/09/' title='September 2009'>September 2009</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2009/08/' title='August 2009'>August 2009</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2009/07/' title='July 2009'>July 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/06/' title='June 2009'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2009/03/' title='March 2009'>March 2009</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/12/' title='December 2008'>December 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/11/' title='November 2008'>November 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2008/06/' title='June 2008'>June 2008</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2008/05/' title='May 2008'>May 2008</a>&nbsp;(10)</li>
+	<li><a href='http://comonad.com/reader/2008/04/' title='April 2008'>April 2008</a>&nbsp;(7)</li>
+	<li><a href='http://comonad.com/reader/2008/03/' title='March 2008'>March 2008</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2008/01/' title='January 2008'>January 2008</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2007/07/' title='July 2007'>July 2007</a>&nbsp;(2)</li>
+	<li><a href='http://comonad.com/reader/2007/05/' title='May 2007'>May 2007</a>&nbsp;(1)</li>
+	<li><a href='http://comonad.com/reader/2006/11/' title='November 2006'>November 2006</a>&nbsp;(3)</li>
+	<li><a href='http://comonad.com/reader/2006/10/' title='October 2006'>October 2006</a>&nbsp;(2)</li>
+</ul>
+-->
+		
+<h2>Ads</h2><ul><li><div class="ads" align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-9028661600722510";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+//2006-10-18: Comonad.Reader
+google_ad_channel = "6386706477";
+google_color_border = "F3F6ED";
+google_color_bg = "F3F6ED";
+google_color_link = "0E2F0E"; // #0e3f0e 007733
+google_color_text = "000000";
+google_color_url = "007733.html";
+//--></script><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script></div>
+</li></ul>
+<h2>RSS Feeds</h2>
+	<ul>
+		<li>
+			<a title="RSS2 Feed for Posts" href="../../../feed/index.html">Posts</a> | <a title="RSS2 Feed for Comments" href="../../../comments/feed/index.html">Comments</a></li>	
+	</ul>	
+</div>
+<p id="footer">Design based on <a href="http://www.vanillamist.com/" title="Vanilla Mist">www.vanillamist.com</a></p></div>
+</div>
+</body>
+
+<!-- Mirrored from comonad.com/reader/2012/mirrored-lenses/007733/ by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:09:49 GMT -->
+</html>

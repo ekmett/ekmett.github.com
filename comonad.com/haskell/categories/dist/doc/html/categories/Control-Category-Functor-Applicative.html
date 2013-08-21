@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Functor-Applicative.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Functor.Applicative</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>categories-0.3: Category Library</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Functor.Applicative</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A strong lax (co)monoidal functor 
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> c, <A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> d, <A HREF="Control-Category-Functor.html#t%3AFunctor"
+>Functor</A
+> f c d) =&gt; <A NAME="t%3AApplicative"
+></A
+><B
+>Applicative</B
+> f c d  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aap"
+></A
+><B
+>ap</B
+> :: d (Prod d (f (Exp c a b)) (f a)) (f b)</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Applicative')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Applicative" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Functor-Applicative.html#t%3AApplicative"
+>Applicative</A
+> <A HREF="Control-Category-Functor-Identity.html#t%3AIdentity"
+>Identity</A
+> (-&gt;) (-&gt;)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aapc"
+></A
+><B
+>apc</B
+> :: (<A HREF="Control-Category-Cartesian-Closed.html#t%3ACCC"
+>CCC</A
+> d, <A HREF="Control-Category-Functor-Applicative.html#t%3AApplicative"
+>Applicative</A
+> f c d) =&gt; d (f (Exp c a b)) (Exp d (f a) (f b))</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> c, <A HREF="Control-Category-Cartesian.html#t%3ACoCartesian"
+>CoCartesian</A
+> d, <A HREF="Control-Category-Functor.html#t%3AFunctor"
+>Functor</A
+> f c d) =&gt; <A NAME="t%3ACoapplicative"
+></A
+><B
+>Coapplicative</B
+> f c d  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoap"
+></A
+><B
+>coap</B
+> :: d (f b) (Sum d (f (Coexp c a b)) (f a))</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoapc"
+></A
+><B
+>coapc</B
+> :: (<A HREF="Control-Category-Cartesian-Closed.html#t%3ACoCCC"
+>CoCCC</A
+> d, <A HREF="Control-Category-Functor-Applicative.html#t%3ACoapplicative"
+>Coapplicative</A
+> f c d) =&gt; d (Coexp d (f a) (f b)) (f (Coexp c a b))</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Functor-Applicative.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+</HTML
+>

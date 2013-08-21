@@ -1,5 +1,0 @@
-[woops
-ekmett@gmail.com**20080523031344] {
-hunk ./category-extras.cabal 105
-+                Control.Monad.Ideal,
-}

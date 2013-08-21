@@ -1,0 +1,2956 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:17:05 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Monad.Parameterized</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>monad-param-0.0.2: Parameterized monads</TD
+><TD CLASS="topbut"
+><A HREF="index.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Monad.Parameterized</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (requires the kitchen sink)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="section4"
+><B
+>Contents</B
+></TD
+></TR
+><TR
+><TD
+><DL
+><DT
+><A HREF="#1"
+>Rebound <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonad"
+>Monad</A
+></TT
+> 
+</A
+></DT
+><DT
+><A HREF="#2"
+>Rebound <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> 
+</A
+></DT
+><DT
+><A HREF="#3"
+>A bottom monad
+</A
+></DT
+><DT
+><A HREF="#4"
+>Convenient class aliases
+</A
+></DT
+><DT
+><A HREF="#5"
+>Traditional interfaces
+</A
+></DT
+><DT
+><A HREF="#6"
+>Export common monads in this sugar
+</A
+></DT
+></DL
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+><P
+>Implements a notion of parameterized monad by varying the monad itself, this lets us 
+ avoid having to carry a parameter around for monads that do not need it, and we can rederive
+ the normal notion of a parameterized monad from this variation for those that do.
+ The signature of <TT
+><A HREF="Control-Monad-Parameterized.html#v%3A%3E%3E%3D"
+>&gt;&gt;=</A
+></TT
+> costs us type inference for the types of <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Areturn"
+>return</A
+></TT
+> and <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Amzero"
+>mzero</A
+></TT
+>,
+ so we restore that by defining <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Areturn"
+>return</A
+></TT
+> as the unit of the <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TT
+> monad and <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Amzero"
+>mzero</A
+></TT
+> as 
+ the unit of the trivial bottom monad, and appealing to the monad laws to allow these to combine
+ with all other monads satisfying the monad laws through <TT
+><A HREF="Control-Monad-Parameterized.html#v%3A%3E%3E%3D"
+>&gt;&gt;=</A
+></TT
+>
+</P
+><P
+>Caveat: this currently does not permit types to vary under the <TT
+>do</TT
+>-sugar because of assumptions in GHC
+ about the shape of <TT
+><A HREF="Control-Monad-Parameterized.html#v%3A%3E%3E%3D"
+>&gt;&gt;=</A
+></TT
+>.
+</P
+><P
+>This imports and defines the correct instances for a good portion of the <TT
+>MTL</TT
+>, primarily because
+ it is so awkward to import them all otherwise due to the fact that most of them re-export the <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+></TT
+> syntax.
+ Does not export <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html"
+>Control.Monad.ST</A
+> or <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer.html"
+>Control.Monad.Writer</A
+> since it is unclear if you want strict or lazy versions in scope
+</P
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3AReturn"
+>Return</A
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AreturnM"
+>returnM</A
+> :: a -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3AFail"
+>Fail</A
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Afail"
+>fail</A
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m', <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m'') =&gt; <A HREF="#t%3ABind"
+>Bind</A
+> m m' m'' | m m' -&gt; m'' <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3E%3E%3D"
+>(&gt;&gt;=)</A
+> :: m a -&gt; (a -&gt; m' b) -&gt; m'' b</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3E%3E"
+>(&gt;&gt;)</A
+> :: m a -&gt; m' b -&gt; m'' b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3A%3D%3C%3C"
+>(=&lt;&lt;)</A
+> :: <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> m m' m'' =&gt; (a -&gt; m' b) -&gt; m a -&gt; m'' b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3AMPlus"
+>MPlus</A
+> m m' m'' | m m' -&gt; m'' <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amplus"
+>mplus</A
+> :: m a -&gt; m' a -&gt; m'' a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3AMonadZero"
+>MonadZero</A
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3AmzeroM"
+>mzeroM</A
+> :: m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A HREF="#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> m m m) =&gt; <A HREF="#t%3AMonad"
+>Monad</A
+> m </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> m m m, <A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> m) =&gt; <A HREF="#t%3AMonadPlus"
+>MonadPlus</A
+> m </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="#t%3AGo"
+>Go</A
+> n m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Ago"
+>go</A
+> :: n a -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Areturn"
+>return</A
+> :: a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Amzero"
+>mzero</A
+> :: <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/stm/Control-Concurrent-STM.html"
+>Control.Concurrent.STM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html"
+>Control.Monad.Cont</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont-Class.html"
+>Control.Monad.Cont.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html"
+>Control.Monad.Error</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html"
+>Control.Monad.Error.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-Fix.html"
+>Control.Monad.Fix</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html"
+>Control.Monad.Identity</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html"
+>Control.Monad.List</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html"
+>Control.Monad.Reader</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State.html"
+>Control.Monad.State</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Class.html"
+>Control.Monad.Writer.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapM"
+>mapM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapM_"
+>mapM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AforM"
+>forM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AforM_"
+>forM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Asequence"
+>sequence</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Asequence_"
+>sequence_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Ajoin"
+>join</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Amsum"
+>msum</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfilterM"
+>filterM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapAndUnzipM"
+>mapAndUnzipM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AzipWithM"
+>zipWithM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AzipWithM_"
+>zipWithM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfoldM"
+>foldM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfoldM_"
+>foldM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AreplicateM"
+>replicateM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AreplicateM_"
+>replicateM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aguard"
+>guard</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Awhen"
+>when</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aunless"
+>unless</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM"
+>liftM</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM2"
+>liftM2</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM3"
+>liftM3</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM4"
+>liftM4</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM5"
+>liftM5</A
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aap"
+>ap</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="1"
+>Rebound <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonad"
+>Monad</A
+></TT
+> 
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AReturn"
+></A
+><B
+>Return</B
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>The traditional <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Areturn"
+>return</A
+></TT
+>, note this probably has lost its type inference where you want to use it. 
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AreturnM"
+></A
+><B
+>returnM</B
+> :: a -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Return')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Return" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AFail"
+></A
+><B
+>Fail</B
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Restrict the cases where we allow pattern matching to <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Afail"
+>fail</A
+></TT
+>. You have to explicitly supply this for your <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonad"
+>Monad</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Afail"
+></A
+><B
+>fail</B
+> :: <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Char.html#t%3AString"
+>String</A
+> -&gt; m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Fail')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Fail" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m', <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> m'') =&gt; <A NAME="t%3ABind"
+></A
+><B
+>Bind</B
+> m m' m'' | m m' -&gt; m'' <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Implement parameterized monads like Oleg's restricted monads, but vary the monad itself rather than restrict its parameters
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3E%3E%3D"
+></A
+><B
+>(&gt;&gt;=)</B
+> :: m a -&gt; (a -&gt; m' b) -&gt; m'' b</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3E%3E"
+></A
+><B
+>(&gt;&gt;)</B
+> :: m a -&gt; m' b -&gt; m'' b</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Bind')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Bind" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> [] []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/GHC-Conc.html#t%3ASTM"
+>STM</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> [] <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> [] [] []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> a <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> [] <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/System-IO.html#t%3AIO"
+>IO</A
+>)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3ACont"
+>Cont</A
+> r)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReader"
+>Reader</A
+> e)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html#t%3AST"
+>ST</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html#t%3AST"
+>ST</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-ST-Lazy.html#t%3AST"
+>ST</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AState"
+>State</A
+> s)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriter"
+>Writer</A
+> w) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriter"
+>Writer</A
+> w) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriter"
+>Writer</A
+> w)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html#t%3AContT"
+>ContT</A
+> r m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html#t%3AReaderT"
+>ReaderT</A
+> e m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State-Lazy.html#t%3AStateT"
+>StateT</A
+> s m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Lazy.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Monoid.html#t%3AMonoid"
+>Monoid</A
+> w) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Strict.html#t%3AWriterT"
+>WriterT</A
+> w m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3A%3D%3C%3C"
+></A
+><B
+>(=&lt;&lt;)</B
+> :: <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> m m' m'' =&gt; (a -&gt; m' b) -&gt; m a -&gt; m'' b</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="2"
+>Rebound <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> 
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AMPlus"
+></A
+><B
+>MPlus</B
+> m m' m'' | m m' -&gt; m'' <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Break out mplus
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Amplus"
+></A
+><B
+>mplus</B
+> :: m a -&gt; m' a -&gt; m'' a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MPlus')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MPlus" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> [] [] []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m) (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AMonadZero"
+></A
+><B
+>MonadZero</B
+> m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Traditional <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Amzero"
+>mzero</A
+></TT
+>, note this probably has lost its type inference. 
+ You probably want <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Amzero"
+>mzero</A
+></TT
+>.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3AmzeroM"
+></A
+><B
+>mzeroM</B
+> :: m a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MonadZero')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MonadZero" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Data-Maybe.html#t%3AMaybe"
+>Maybe</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> []</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html#t%3AListT"
+>ListT</A
+> m)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AMonad"
+>Monad</A
+> m, <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html#t%3AError"
+>Error</A
+> e) =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> (<A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html#t%3AErrorT"
+>ErrorT</A
+> e m)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="3"
+>A bottom monad
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>data</SPAN
+> <A NAME="t%3AMZero"
+></A
+><B
+>MZero</B
+> a</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Same trick using with <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TT
+> to build a canonical <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Areturn"
+>return</A
+></TT
+>, here we exploit the <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> laws to make a canonical <TT
+><A HREF="Control-Monad-Parameterized.html#v%3Amzero"
+>mzero</A
+></TT
+>. Has no members except bottom.
+</TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MZero')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MZero" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AGo"
+>Go</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#t%3AFunctor"
+>Functor</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> a <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="4"
+>Convenient class aliases
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> m m m) =&gt; <A NAME="t%3AMonad"
+></A
+><B
+>Monad</B
+> m </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>When a parameterized monad can be used without varying its parameter, we can get the ease of use of the original <TT
+>Monad</TT
+> class.
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Monad')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Monad" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Parameterized.html#t%3AFail"
+>Fail</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> m, <A HREF="Control-Monad-Parameterized.html#t%3ABind"
+>Bind</A
+> m m m) =&gt; Monad m</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> m m m, <A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> m) =&gt; <A NAME="t%3AMonadPlus"
+></A
+><B
+>MonadPlus</B
+> m </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Class alias to get back an approximation of the original, easy-to-specify <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> class where available
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:MonadPlus')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:MonadPlus" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Monad-Parameterized.html#t%3AMPlus"
+>MPlus</A
+> m m m, <A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> m) =&gt; MonadPlus m</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="5"
+>Traditional interfaces
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A NAME="t%3AGo"
+></A
+><B
+>Go</B
+> n m  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Now of course we can have <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+></TT
+>s and <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+></TT
+>s float to the top of a <TT
+>do</TT
+> expression, so we need a way to convert them to any <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonad"
+>Monad</A
+></TT
+> or <TT
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadPlus"
+>MonadPlus</A
+></TT
+> instance respectively
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Ago"
+></A
+><B
+>go</B
+> :: n a -&gt; m a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>Usage: <TT
+>go (do something)</TT
+>
+</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Go')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Go" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AReturn"
+>Return</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AGo"
+>Go</A
+> <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AMonadZero"
+>MonadZero</A
+> a =&gt; <A HREF="Control-Monad-Parameterized.html#t%3AGo"
+>Go</A
+> <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Monad-Parameterized.html#t%3AGo"
+>Go</A
+> a a</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Areturn"
+></A
+><B
+>return</B
+> :: a -&gt; <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html#t%3AIdentity"
+>Identity</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>An inferable version of <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Prelude.html#v%3Areturn"
+>return</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Amzero"
+></A
+><B
+>mzero</B
+> :: <A HREF="Control-Monad-Parameterized.html#t%3AMZero"
+>MZero</A
+> a</TD
+></TR
+><TR
+><TD CLASS="doc"
+>An inferable version of <TT
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Amzero"
+>mzero</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+><A NAME="6"
+>Export common monads in this sugar
+</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/stm/Control-Concurrent-STM.html"
+>Control.Concurrent.STM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont.html"
+>Control.Monad.Cont</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Cont-Class.html"
+>Control.Monad.Cont.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error.html"
+>Control.Monad.Error</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Error-Class.html"
+>Control.Monad.Error.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad-Fix.html"
+>Control.Monad.Fix</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Identity.html"
+>Control.Monad.Identity</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-List.html"
+>Control.Monad.List</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Reader.html"
+>Control.Monad.Reader</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-State.html"
+>Control.Monad.State</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+>module <A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/mtl/Control-Monad-Writer-Class.html"
+>Control.Monad.Writer.Class</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapM"
+>mapM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapM_"
+>mapM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AforM"
+>forM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AforM_"
+>forM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Asequence"
+>sequence</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Asequence_"
+>sequence_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Ajoin"
+>join</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Amsum"
+>msum</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfilterM"
+>filterM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AmapAndUnzipM"
+>mapAndUnzipM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AzipWithM"
+>zipWithM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AzipWithM_"
+>zipWithM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfoldM"
+>foldM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AfoldM_"
+>foldM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AreplicateM"
+>replicateM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AreplicateM_"
+>replicateM_</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aguard"
+>guard</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Awhen"
+>when</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aunless"
+>unless</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM"
+>liftM</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM2"
+>liftM2</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM3"
+>liftM3</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM4"
+>liftM4</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3AliftM5"
+>liftM5</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="../../../../../usr/local/share/ghc-6.6.1/html/libraries/base/Control-Monad.html#v%3Aap"
+>ap</A
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/monad-param/dist/doc/html/Control-Monad-Parameterized.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 22:17:22 GMT -->
+</HTML
+>

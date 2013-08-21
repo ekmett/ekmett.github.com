@@ -1,6 +1,0 @@
-[0.0.3
-ekmett@gmail.com**20090412100000
- Ignore-this: 7a47a8483544a6a9a8386c54b56e3e47
-] hunk ./monad-cps.cabal 2
--version:            0.0.2
-+version:            0.0.3

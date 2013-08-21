@@ -1,5 +1,0 @@
-:t let spine (Abs Lam _ e) (a:as) = spine (e a) as in spine
-:t let spine (App f a) as = spine f (a:as) in spine 
-:t let spine (App f a) as = spine f (spine a as:as); spine (Abs Lam _ e) (a:as) = spine (e a) as in spine
-
-<!-- Localized -->

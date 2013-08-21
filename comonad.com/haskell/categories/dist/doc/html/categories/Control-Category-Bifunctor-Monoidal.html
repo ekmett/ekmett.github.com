@@ -1,0 +1,583 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--Rendered using the Haskell Html Library v0.2-->
+<HTML
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Bifunctor-Monoidal.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+<HEAD
+><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"
+><TITLE
+>Control.Category.Bifunctor.Monoidal</TITLE
+><LINK HREF="haddock.css" REL="stylesheet" TYPE="text/css"
+><SCRIPT SRC="haddock-util.js" TYPE="text/javascript"
+></SCRIPT
+></HEAD
+><BODY
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="topbar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><IMG SRC="haskell_icon.gif" WIDTH="16" HEIGHT="16" ALT=" "
+></TD
+><TD CLASS="title"
+>categories-0.3: Category Library</TD
+><TD CLASS="topbut"
+><A HREF="index-2.html"
+>Contents</A
+></TD
+><TD CLASS="topbut"
+><A HREF="doc-index.html"
+>Index</A
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="modulebar"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD
+><FONT SIZE="6"
+>Control.Category.Bifunctor.Monoidal</FONT
+></TD
+><TD ALIGN="right"
+><TABLE CLASS="narrow" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="infohead"
+>Portability</TD
+><TD CLASS="infoval"
+>non-portable (class-associated types)</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Stability</TD
+><TD CLASS="infoval"
+>experimental</TD
+></TR
+><TR
+><TD CLASS="infohead"
+>Maintainer</TD
+><TD CLASS="infoval"
+>Edward Kmett &lt;ekmett@gmail.com&gt;</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Description</TD
+></TR
+><TR
+><TD CLASS="doc"
+>A <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+></TT
+> category is a category with an associated biendofunctor that has an identity,
+ which satisfies Mac Lane''s pentagonal and triangular coherence conditions
+ Technically we usually say that category is monoidal, but since
+ most interesting categories in our world have multiple candidate bifunctors that you can 
+ use to enrich their structure, we choose here to think of the bifunctor as being 
+ monoidal. This lets us reuse the same Bifunctor over different categories without 
+ painful type annotations.
+</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Synopsis</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+> p k k k =&gt; <A HREF="#t%3AHasIdentity"
+>HasIdentity</A
+> p k </TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Bifunctor-Associative.html#t%3AAssociative"
+>Associative</A
+> p k, <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p k) =&gt; <A HREF="#t%3AMonoidal"
+>Monoidal</A
+> p k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aidl"
+>idl</A
+> :: k (p (Identity k p) a) a</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Aidr"
+>idr</A
+> :: k (p a (Identity k p)) a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Bifunctor-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> p k, <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p k) =&gt; <A HREF="#t%3AComonoidal"
+>Comonoidal</A
+> p k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acoidl"
+>coidl</A
+> :: k a (p (Identity k p) a)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="#v%3Acoidr"
+>coidr</A
+> :: k a (p a (Identity k p))</TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="section1"
+>Documentation</TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> <A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+> p k k k =&gt; <A NAME="t%3AHasIdentity"
+></A
+><B
+>HasIdentity</B
+> p k </TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+>Denotes that we have some reasonable notion of Identity for a particular <TT
+><A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+></TT
+> in this Category. This
+ notion is currently used by both <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+></TT
+> and <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+></TT
+>
+</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:HasIdentity')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:HasIdentity" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> (,) (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p k =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p (<A HREF="Control-Category-Dual.html#t%3ADual"
+>Dual</A
+> k)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k), <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> f k) =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Bifunctor-Associative.html#t%3AAssociative"
+>Associative</A
+> p k, <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p k) =&gt; <A NAME="t%3AMonoidal"
+></A
+><B
+>Monoidal</B
+> p k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>A monoidal category. <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#v%3Aidl"
+>idl</A
+></TT
+> and <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#v%3Aidr"
+>idr</A
+></TT
+> are traditionally denoted lambda and rho
+ the triangle identity holds:
+</P
+><PRE
+> first idr = second idl . associate 
+ second idl = first idr . associate
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aidl"
+></A
+><B
+>idl</B
+> :: k (p (Identity k p) a) a</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Aidr"
+></A
+><B
+>idr</B
+> :: k (p a (Identity k p)) a</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Monoidal')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Monoidal" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> (,) (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> p k =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> p (<A HREF="Control-Category-Dual.html#t%3ADual"
+>Dual</A
+> k)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k), <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> f k, <A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> k) =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><SPAN CLASS="keyword"
+>class</SPAN
+> (<A HREF="Control-Category-Bifunctor-Associative.html#t%3ACoassociative"
+>Coassociative</A
+> p k, <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AHasIdentity"
+>HasIdentity</A
+> p k) =&gt; <A NAME="t%3AComonoidal"
+></A
+><B
+>Comonoidal</B
+> p k  <SPAN CLASS="keyword"
+>where</SPAN
+></TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="ndoc"
+><P
+>A comonoidal category satisfies the dual form of the triangle identities
+</P
+><PRE
+> first idr = coassociate . second idl
+ second idl = coassociate . first idr
+</PRE
+><P
+>This type class is also (ab)used for the inverse operations needed for a strict (co)monoidal category.
+A strict (co)monoidal category is one that is both <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+></TT
+> and <TT
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+></TT
+> and satisfies the following laws:
+</P
+><PRE
+> idr . coidr = id 
+ idl . coidl = id 
+ coidl . idl = id 
+ coidr . idr = id 
+</PRE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+>Methods</TD
+></TR
+><TR
+><TD CLASS="body"
+><TABLE CLASS="vanilla" CELLSPACING="0" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoidl"
+></A
+><B
+>coidl</B
+> :: k a (p (Identity k p) a)</TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="decl"
+><A NAME="v%3Acoidr"
+></A
+><B
+>coidr</B
+> :: k a (p a (Identity k p))</TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s8"
+></TD
+></TR
+><TR
+><TD CLASS="section4"
+><IMG SRC="minus.gif" CLASS="coll" ONCLICK="toggle(this,'i:Comonoidal')" ALT="show/hide"
+> Instances</TD
+></TR
+><TR
+><TD CLASS="body"
+><DIV ID="i:Comonoidal" STYLE="display:block;"
+><TABLE CLASS="vanilla" CELLSPACING="1" CELLPADDING="0"
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> (,) (-&gt;)</TD
+></TR
+><TR
+><TD CLASS="decl"
+><A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AMonoidal"
+>Monoidal</A
+> p k =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> p (<A HREF="Control-Category-Dual.html#t%3ADual"
+>Dual</A
+> k)</TD
+></TR
+><TR
+><TD CLASS="decl"
+>(<A HREF="Control-Category-Bifunctor.html#t%3ABifunctor"
+>Bifunctor</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k) (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k), <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> f k, <A HREF="Control-Category-Cartesian.html#t%3ACartesian"
+>Cartesian</A
+> k) =&gt; <A HREF="Control-Category-Bifunctor-Monoidal.html#t%3AComonoidal"
+>Comonoidal</A
+> f (<A HREF="Control-Category-Transformer-Reader.html#t%3AReader"
+>Reader</A
+> e k)</TD
+></TR
+></TABLE
+></DIV
+></TD
+></TR
+></TABLE
+></TD
+></TR
+><TR
+><TD CLASS="s15"
+></TD
+></TR
+><TR
+><TD CLASS="botbar"
+>Produced by <A HREF="http://www.haskell.org/haddock/"
+>Haddock</A
+> version 0.8</TD
+></TR
+></TABLE
+></BODY
+>
+<!-- Mirrored from comonad.com/haskell/categories/dist/doc/html/categories/Control-Category-Bifunctor-Monoidal.html by HTTrack Website Copier/3.x [XR&CO'2013], Tue, 20 Aug 2013 23:12:43 GMT -->
+</HTML
+>

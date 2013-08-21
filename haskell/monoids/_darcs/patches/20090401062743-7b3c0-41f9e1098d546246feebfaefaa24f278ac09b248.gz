@@ -1,6 +1,0 @@
-[version bump, missing file
-ekmett@gmail.com**20090401062743] {
-hunk ./monoids.cabal 2
--version:	    0.1.18
-+version:	    0.1.19
-}
